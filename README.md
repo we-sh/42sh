@@ -14,9 +14,13 @@ develop    | [![Build Status](https://travis-ci.org/42shTests/42sh.svg?branch=de
 ### Makefile
 #### custom rules
 **libs** : build the internal libraries (located in ./libs/)
+
 **fcleanlibs** : apply fclean rule to all internal libs (located in ./libs)
+
 **test** : run the test suite located in ./test/
+
 **submodule** : pull the last version of master of all submodules
+
 **norme** : check the norme of all the .c and .h files (excepted some)  
 
 and all rules such as all, clean, fclean and re.
