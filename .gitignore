@@ -1,0 +1,11 @@
+# project specific
+*.log
+42sh
+
+# C program
+*.out
+*.a
+*.o
+
+# editors
+.*.swp
