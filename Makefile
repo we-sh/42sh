@@ -6,7 +6,7 @@
 #    By: anouvel <adrien.nouvel@outlook.com>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/04/30 13:39:33 by anouvel           #+#    #+#              #
-#    Updated: 2016/04/30 16:02:49 by anouvel          ###   ########.fr        #
+#    Updated: 2016/04/30 21:51:52 by anouvel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -99,6 +99,16 @@ fcleanlibs	:
 	@make -C $(DIRLIB)libft fclean
 	@make -C $(DIRLIB)logger fclean
 
+test		:	re
+	@cd $(DIRTST) && sh 42shTests.sh $$PWD/../$(NAME)
+
+submodule	:
+	@git submodule foreach git pull origin master
+
+norme		:
+	@/usr/bin/norminette \
+		$$(find * -name "*.[ch]" ! -path "libs/logger/*" ! -path "test/*")
+
 # ---------------------------------------------------------------------------- #
 
 clean		:
@@ -110,9 +120,6 @@ fclean		:	clean
 	@$(RM) -f $(NAME)
 
 re			:	fclean all
-
-test		:	re
-	@cd $(DIRTST) && sh 42shTests.sh $$PWD/../$(NAME)
 
 $(DIROBJ)	:
 	@$(MKDIR) -p $(DIROBJ)
