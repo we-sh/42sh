@@ -88,3 +88,12 @@ $ git merge develop
 $ git tag -a <x.y.z> -m <message>
 $ git push && git push --tags
 ```
+
+### Logger
+The project includes the logger library, and its configured to display all log messages :
+
+```logger_init(D_FATAL, "out.log");```
+
+To see the output of the logging, run the following command in an other shell :
+
+```$ tail -f out.log```
