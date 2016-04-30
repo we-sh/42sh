@@ -1,0 +1,9 @@
+[submodule "libs/logger"]
+	path = libs/logger
+	url = https://github.com/42shTests/logger.git
+[submodule "libs/libft"]
+	path = libs/libft
+	url = https://github.com/42shTests/libft.git
+[submodule "test"]
+	path = test
+	url = https://github.com/42shTests/42shTests.git
