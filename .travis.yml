@@ -7,3 +7,6 @@ compiler: clang
 
 script:
     - make test
+
+notifications:
+    slack: 42shtests:WAlcQhcIaSXhxW94fH854J7o
