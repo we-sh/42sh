@@ -6,7 +6,7 @@
 #    By: anouvel <adrien.nouvel@outlook.com>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/04/30 13:39:33 by anouvel           #+#    #+#              #
-#    Updated: 2016/04/30 21:51:52 by anouvel          ###   ########.fr        #
+#    Updated: 2016/05/09 15:12:57 by anouvel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -103,6 +103,7 @@ test		:	re
 	@cd $(DIRTST) && sh 42shTests.sh $$PWD/../$(NAME)
 
 submodule	:
+	@git submodule init && git submodule update
 	@git submodule foreach git pull origin master
 
 norme		:

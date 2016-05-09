@@ -19,7 +19,7 @@ develop    | [![Build Status](https://travis-ci.org/42shTests/42sh.svg?branch=de
 
 **test** : run the test suite located in ./test/
 
-**submodule** : pull the last version of master of all submodules
+**submodule** : initialize the git submodules and pull the last version of master of all submodules
 
 **norme** : check the norme of all the .c and .h files (excepted some)  
 
