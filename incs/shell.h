@@ -3,5 +3,6 @@
 
 # include "libft.h"
 # include "logger.h"
+# include "types.h"
 
 #endif
