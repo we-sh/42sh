@@ -6,7 +6,7 @@
 #    By: anouvel <adrien.nouvel@outlook.com>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/04/30 13:39:33 by anouvel           #+#    #+#              #
-#    Updated: 2016/05/09 15:12:57 by anouvel          ###   ########.fr        #
+#    Updated: 2016/05/09 19:55:43 by anouvel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ NAME		=	42sh
 # ---------------------------------------------------------------------------- #
 
 SRCS		=	\
-				main.c										\
+				main.c							\
 
 # ---------------------------------------------------------------------------- #
 # PROJECT CONFIGURATION
@@ -107,7 +107,7 @@ submodule	:
 	@git submodule foreach git pull origin master
 
 norme		:
-	@/usr/bin/norminette \
+	@/usr/bin/norminette -R CheckTopCommentHeader	\
 		$$(find * -name "*.[ch]" ! -path "libs/logger/*" ! -path "test/*")
 
 # ---------------------------------------------------------------------------- #
