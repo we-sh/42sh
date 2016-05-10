@@ -4,7 +4,7 @@
 ** TODO: Implement better signal handler
 */
 
-static void	signal_init(void)
+static void	s_signal_init(void)
 {
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
@@ -22,7 +22,7 @@ static void	signal_init(void)
 ** tcgetattr() save default terminal attr for shell.
 */
 
-static int	shell_init(void)
+static int	s_shell_init(void)
 {
 	int			sh_pgid;
 	int			sh_fd;
@@ -34,7 +34,7 @@ static int	shell_init(void)
 		while (tcgetpgrp(sh_fd) != (sh_pgid = getpgrp()))
 			kill(-sh_pgid, SIGTTIN);
 		log_info("pgid %d pgrp %d\n", sh_pgid, getpgrp());
-		signal_init();
+		s_signal_init();
 		if (setpgid(sh_pgid, sh_pgid))
 		{
 			log_fatal("setpgid() failed.\n");
@@ -53,7 +53,7 @@ int			main(int ac, const char *av[])
 	(void)av;
 	(void)ac;
 	logger_init(D_TRACE, "out.log");
-	if (shell_init())
+	if (s_shell_init())
 	{
 		log_fatal("shell_init() failed.");
 		return (-1);
