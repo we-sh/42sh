@@ -11,6 +11,9 @@ typedef struct				s_proc
 	char					completed;
 	char					stopped;
 	int						status;
+	int						stdin;
+	int						stdout;
+	int						stderr;
 }							t_proc;
 
 typedef struct				s_job
@@ -21,6 +24,7 @@ typedef struct				s_job
 	pid_t					pgid;
 	char					notified;
 	t_termios				tmodes;
+	int						foreground;
 	int						stdin;
 	int						stdout;
 	int						stderr;

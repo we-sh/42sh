@@ -7,6 +7,8 @@ typedef enum	e_st
 	ST_END_OF_INPUT,
 	ST_SETPGID,
 	ST_READ,
+	ST_FORK,
+	ST_PIPE
 }				t_st;
 
 #endif
