@@ -33,11 +33,12 @@ static int	shell_init(void)
 	{
 		while (tcgetpgrp(sh_fd) != (sh_pgid = getpgrp()))
 			kill(-sh_pgid, SIGTTIN);
+		log_info("pgid %d pgrp %d\n", sh_pgid, getpgrp());
 		signal_init();
 		if (setpgid(sh_pgid, sh_pgid))
 		{
 			log_fatal("setpgid() failed.\n");
-			exit(ST_SETPGID);
+			return (ST_SETPGID);
 		}
 		log_info("shell pgid: %d\n", sh_pgid);
 		tcsetpgrp(sh_fd, sh_pgid);
@@ -53,7 +54,11 @@ int			main(int ac, const char *av[])
 	(void)ac;
 	logger_init(D_TRACE, "out.log");
 	if (shell_init())
+	{
 		log_fatal("shell_init() failed.");
+		return (-1);
+	}
+	stdin_loop();
 	logger_close();
 	return (0);
 }

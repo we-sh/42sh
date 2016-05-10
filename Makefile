@@ -20,6 +20,7 @@ NAME		=	42sh
 
 SRCS		=	\
 				main.c							\
+				stdin_loop.c					\
 
 # ---------------------------------------------------------------------------- #
 # PROJECT CONFIGURATION
@@ -162,7 +163,14 @@ $(DIROBJ)main.o: srcs/main.c incs/shell.h libs/libft/./incs/libft.h \
   libs/logger/./incs/logger.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/main.c\n"
-		@$(CC) -c ./srcs/main.c -o ./.objs/main.o $(CPPFLAGS) $(CFLAGS) 
+		@$(CC) -c ./srcs/main.c -o ./.objs/main.o $(CPPFLAGS) $(CFLAGS)
+
+$(DIROBJ)stdin_loop.o: srcs/stdin_loop.c incs/shell.h libs/libft/./incs/libft.h \
+  libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
+  incs/types.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/stdin_loop.c\n"
+		@$(CC) -c ./srcs/stdin_loop.c -o ./.objs/stdin_loop.o $(CPPFLAGS) $(CFLAGS)
 
 
 #end
