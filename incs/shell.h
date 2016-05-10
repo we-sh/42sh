@@ -4,6 +4,7 @@
 # include "libft.h"
 # include "logger.h"
 # include "types.h"
+# include "statuses.h"
 
 # include <sys/types.h>
 # include <unistd.h>

@@ -1,7 +1,5 @@
 #include "shell.h"
 
-#define ST_SETPGID 2
-
 /*
 ** TODO: Implement better signal handler
 */
