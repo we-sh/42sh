@@ -17,6 +17,7 @@
 */
 # define PS1_DFLT "$ "
 
+int	shell_init(void);
 int	stdin_loop(void);
 
 #endif
