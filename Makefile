@@ -100,7 +100,7 @@ fcleanlibs	:
 	@make -C $(DIRLIB)logger fclean
 
 test		:	re
-	@cd $(DIRTST) && sh 42shTests.sh $$PWD/../$(NAME) --hard
+	@cd $(DIRTST) && sh 42ShellTester.sh $$PWD/../$(NAME) --hard
 
 submodule	:
 	@git submodule init && git submodule update
