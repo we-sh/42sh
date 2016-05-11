@@ -5,7 +5,7 @@
 
 typedef struct				s_proc
 {
-	t_process				*next;
+	t_proc					*next;
 	char					**argv;
 	pid_t					pid;
 	char					completed;
@@ -19,7 +19,7 @@ typedef struct				s_proc
 typedef struct				s_job
 {
 	t_job					*next;
-	t_process				*proc;
+	t_proc					*proc;
 	char					*command;
 	pid_t					pgid;
 	char					notified;

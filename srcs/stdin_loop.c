@@ -14,6 +14,7 @@ int	stdin_loop(void)
 		if ((r = get_next_line(STDIN_FILENO, &input)) < 1)
 			break ;
 		log_debug("input: |%s|\n", input);
+		parse(input);
 		ft_strdel(&input);
 	}
 	return (r != 0) ? ST_READ : ST_END_OF_INPUT;

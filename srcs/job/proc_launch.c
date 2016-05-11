@@ -1,7 +1,6 @@
 #include "shell.h"
 
-
-void					proc_launch(t_job *j, t_proc *p)
+void	proc_launch(t_job *j, t_proc *p)
 {
 	//pid_t				gpid;
 
@@ -22,10 +21,12 @@ void					proc_launch(t_job *j, t_proc *p)
 	//	signal (SIGCHLD, SIG_DFL);
 	//}
 
+	(void)j;
+
 	if (p->stdin != STDIN_FILENO)
 	{
-		dup2(p->stding, STDIN_FILENO);
-		close(p->stding);
+		dup2(p->stdin, STDIN_FILENO);
+		close(p->stdin);
 	}
 	if (p->stdout != STDOUT_FILENO)
 	{

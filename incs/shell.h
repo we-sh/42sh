@@ -4,6 +4,7 @@
 # include "libft.h"
 # include "logger.h"
 # include "types.h"
+# include "job.h"
 # include "statuses.h"
 # include "get_next_line.h"
 
@@ -17,7 +18,11 @@
 */
 # define PS1_DFLT "$ "
 
-int	shell_init(void);
-int	stdin_loop(void);
+int		shell_init(void);
+int		stdin_loop(void);
+int		parse(char const *input);
+int		job_launch(t_job *j);
+void	proc_launch(t_job *j, t_proc *p);
+
 
 #endif

@@ -34,7 +34,7 @@ int					job_launch(t_job *j)
 	job_pipe[0] = -1;
 	outputs[STDIN_FILENO] = j->stdin;
 	outputs[STDERR_FILENO] = j->stderr;
-	p = job->proc;
+	p = j->proc;
 	while (p)
 	{
 		if (p->next)
@@ -76,4 +76,5 @@ int					job_launch(t_job *j)
 	//}
 	//else
 	//	put job to background
+	return (ST_OK);
 }

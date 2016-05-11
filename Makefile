@@ -22,6 +22,9 @@ SRCS		=	\
 				main.c							\
 				stdin_loop.c					\
 				shell_init.c					\
+				parse.c							\
+				job/job_launch.c				\
+				job/proc_launch.c				\
 
 # ---------------------------------------------------------------------------- #
 # PROJECT CONFIGURATION
@@ -162,24 +165,51 @@ depend		:
 
 $(DIROBJ)main.o: srcs/main.c incs/shell.h libs/libft/./incs/libft.h \
   libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
-  incs/types.h incs/statuses.h libs/libft/./incs/get_next_line.h
+  incs/types.h incs/job.h incs/statuses.h \
+  libs/libft/./incs/get_next_line.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/main.c\n"
 		@$(CC) -c ./srcs/main.c -o ./.objs/main.o $(CPPFLAGS) $(CFLAGS) 
 
 $(DIROBJ)stdin_loop.o: srcs/stdin_loop.c incs/shell.h libs/libft/./incs/libft.h \
   libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
-  incs/types.h incs/statuses.h libs/libft/./incs/get_next_line.h
+  incs/types.h incs/job.h incs/statuses.h \
+  libs/libft/./incs/get_next_line.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/stdin_loop.c\n"
 		@$(CC) -c ./srcs/stdin_loop.c -o ./.objs/stdin_loop.o $(CPPFLAGS) $(CFLAGS) 
 
 $(DIROBJ)shell_init.o: srcs/shell_init.c incs/shell.h libs/libft/./incs/libft.h \
   libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
-  incs/types.h incs/statuses.h libs/libft/./incs/get_next_line.h
+  incs/types.h incs/job.h incs/statuses.h \
+  libs/libft/./incs/get_next_line.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/shell_init.c\n"
 		@$(CC) -c ./srcs/shell_init.c -o ./.objs/shell_init.o $(CPPFLAGS) $(CFLAGS) 
+
+$(DIROBJ)parse.o: srcs/parse.c incs/shell.h libs/libft/./incs/libft.h \
+  libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
+  incs/types.h incs/job.h incs/statuses.h \
+  libs/libft/./incs/get_next_line.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/parse.c\n"
+		@$(CC) -c ./srcs/parse.c -o ./.objs/parse.o $(CPPFLAGS) $(CFLAGS) 
+
+$(DIROBJ)job_launch.o: srcs/job/job_launch.c incs/shell.h \
+  libs/libft/./incs/libft.h libs/logger/./incs/logger.h \
+  libs/logger/./incs/logger_utils.h incs/types.h incs/job.h \
+  incs/statuses.h libs/libft/./incs/get_next_line.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/job/job_launch.c\n"
+		@$(CC) -c ./srcs/job/job_launch.c -o ./.objs/job_launch.o $(CPPFLAGS) $(CFLAGS) 
+
+$(DIROBJ)proc_launch.o: srcs/job/proc_launch.c incs/shell.h \
+  libs/libft/./incs/libft.h libs/logger/./incs/logger.h \
+  libs/logger/./incs/logger_utils.h incs/types.h incs/job.h \
+  incs/statuses.h libs/libft/./incs/get_next_line.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/job/proc_launch.c\n"
+		@$(CC) -c ./srcs/job/proc_launch.c -o ./.objs/proc_launch.o $(CPPFLAGS) $(CFLAGS) 
 
 
 #end
