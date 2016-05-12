@@ -20,8 +20,9 @@ NAME		=	42sh
 
 SRCS		=	\
 				main.c							\
+				init/shell_init.c				\
+				init/shell_is_interactive.c		\
 				stdin_loop.c					\
-				shell_init.c					\
 				parse.c							\
 				job/job_launch.c				\
 				job/proc_launch.c				\
@@ -171,6 +172,22 @@ $(DIROBJ)main.o: srcs/main.c incs/shell.h libs/libft/./incs/libft.h \
 		@printf "compiling ./srcs/main.c\n"
 		@$(CC) -c ./srcs/main.c -o ./.objs/main.o $(CPPFLAGS) $(CFLAGS) 
 
+$(DIROBJ)shell_init.o: srcs/init/shell_init.c incs/shell.h \
+  libs/libft/./incs/libft.h libs/logger/./incs/logger.h \
+  libs/logger/./incs/logger_utils.h incs/types.h incs/job.h \
+  incs/statuses.h libs/libft/./incs/get_next_line.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/init/shell_init.c\n"
+		@$(CC) -c ./srcs/init/shell_init.c -o ./.objs/shell_init.o $(CPPFLAGS) $(CFLAGS) 
+
+$(DIROBJ)shell_is_interactive.o: srcs/init/shell_is_interactive.c incs/shell.h \
+  libs/libft/./incs/libft.h libs/logger/./incs/logger.h \
+  libs/logger/./incs/logger_utils.h incs/types.h incs/job.h \
+  incs/statuses.h libs/libft/./incs/get_next_line.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/init/shell_is_interactive.c\n"
+		@$(CC) -c ./srcs/init/shell_is_interactive.c -o ./.objs/shell_is_interactive.o $(CPPFLAGS) $(CFLAGS) 
+
 $(DIROBJ)stdin_loop.o: srcs/stdin_loop.c incs/shell.h libs/libft/./incs/libft.h \
   libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
   incs/types.h incs/job.h incs/statuses.h \
@@ -178,14 +195,6 @@ $(DIROBJ)stdin_loop.o: srcs/stdin_loop.c incs/shell.h libs/libft/./incs/libft.h 
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/stdin_loop.c\n"
 		@$(CC) -c ./srcs/stdin_loop.c -o ./.objs/stdin_loop.o $(CPPFLAGS) $(CFLAGS) 
-
-$(DIROBJ)shell_init.o: srcs/shell_init.c incs/shell.h libs/libft/./incs/libft.h \
-  libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
-  incs/types.h incs/job.h incs/statuses.h \
-  libs/libft/./incs/get_next_line.h
-		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
-		@printf "compiling ./srcs/shell_init.c\n"
-		@$(CC) -c ./srcs/shell_init.c -o ./.objs/shell_init.o $(CPPFLAGS) $(CFLAGS) 
 
 $(DIROBJ)parse.o: srcs/parse.c incs/shell.h libs/libft/./incs/libft.h \
   libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \

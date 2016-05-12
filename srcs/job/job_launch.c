@@ -14,12 +14,12 @@ static int			s_fork_it(t_job *j, t_proc *p)
 		proc_launch(j, p);
 	else
 	{
-		//if (interactive mode)
-		//{
-		//	if (j->gpid == 0)
-		//		j->gpid = p->pid;
-		//	setpgid(p->pid, j->gpid);
-		//}
+		if (shell_is_interactive())
+		{
+			if (j->pgid == 0)
+				j->pgid = p->pid;
+			setpgid(p->pid, j->pgid);
+		}
 	}
 	return (ST_OK);
 }

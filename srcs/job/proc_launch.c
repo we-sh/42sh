@@ -1,27 +1,31 @@
 #include "shell.h"
 
-void	proc_launch(t_job *j, t_proc *p)
+static int	s_signal_handler(void)
 {
-	//pid_t				gpid;
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+	signal(SIGTSTP, SIG_DFL);
+	signal(SIGTTIN, SIG_DFL);
+	signal(SIGTTOU, SIG_DFL);
+	signal(SIGCHLD, SIG_DFL);
+	return (ST_OK);
+}
 
-	//if (interactive mode)
-	//{
-	//	p->pid = getpid();
-	//	gpid = j->gpid;
-	//	if (gpid == 0)
-	//		gpid = p->pid;
-	//	setpgid(p->pid, gpid);
-	//	//if (j->foreground == 1)
-	//	//	tcsetpgrp(FILE DESCRIPTOR TTY, gpid);
-	//	signal (SIGINT, SIG_DFL);
-	//	signal (SIGQUIT, SIG_DFL);
-	//	signal (SIGTSTP, SIG_DFL);
-	//	signal (SIGTTIN, SIG_DFL);
-	//	signal (SIGTTOU, SIG_DFL);
-	//	signal (SIGCHLD, SIG_DFL);
-	//}
+void		proc_launch(t_job *j, t_proc *p)
+{
+	pid_t pgid;
 
-	(void)j;
+	if (shell_is_interactive())
+	{
+		p->pid = getpid();
+		pgid = j->pgid;
+		if (pgid == 0)
+			pgid = p->pid;
+		setpgid(p->pid, pgid);
+		// if (j->foreground == 1)
+		// 	tcsetpgrp(FILE DESCRIPTOR TTY, pgid);
+		s_signal_handler();
+	}
 
 	if (p->stdin != STDIN_FILENO)
 	{

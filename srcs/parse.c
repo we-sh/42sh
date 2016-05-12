@@ -2,7 +2,8 @@
 
 /*
 ** For now input shall be well espaced
-** Split -> fill proc and job -> launch job
+** For now parse support only one command without special operator
+** ex : COMMAND [OPTIONS] : ls -l ../my_dir/
 */
 
 int	parse(char const *input)
@@ -18,6 +19,7 @@ int	parse(char const *input)
 		j.next = NULL;
 		j.proc = &p;
 		j.command = (char *)input;
+		j.foreground = 1;
 		j.stdin = STDIN_FILENO;
 		j.stdout = STDOUT_FILENO;
 		j.stderr = STDERR_FILENO;

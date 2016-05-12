@@ -10,21 +10,12 @@ static void	s_signal_handler(void)
 	signal(SIGCHLD, SIG_IGN);
 }
 
-static int	s_shell_is_interactive(int fd)
-{
-	int is_inter = isatty(fd);
-
-	log_warn("%s interactive\n", is_inter ? "is" : "is NOT");
-	log_info("ttyname: %s, ttyslot: %d\n", ttyname(fd), ttyslot());
-	return (is_inter);
-}
-
 int			shell_init(void)
 {
 	int			sh_pgid;
 	t_termios	sh_tmodes;
 
-	if (s_shell_is_interactive(STDIN_FILENO))
+	if (shell_is_interactive())
 	{
 		while (tcgetpgrp(STDIN_FILENO) != (sh_pgid = getpgrp()))
 			kill(-sh_pgid, SIGTTIN);
