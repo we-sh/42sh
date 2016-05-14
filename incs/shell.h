@@ -13,14 +13,25 @@
 # include <unistd.h>
 # include <signal.h>
 # include <termios.h>
+# include <errno.h>
 
 /*
 ** Prompt statement default value
 */
 # define PS1_DFLT "$ "
 
+/*
+** List of current jobs
+*/
+t_job	*g_current_jobs;
+
 int		stdin_loop(void);
 int		parse(char const *input);
+
+/*
+** exit/
+*/
+void	shell_exit(int status);
 
 /*
 ** i18n/
@@ -38,7 +49,18 @@ int		shell_language(int lang);
 /*
 ** job/
 */
+int		job_foreground(t_job *j, int sigcont);
+int		job_is_completed(t_job *j);
 int		job_launch(t_job *j);
+t_proc	*proc_find(pid_t pid);
 void	proc_launch(t_job *j, t_proc *p);
+int		proc_update_status(pid_t pid, int status);
+
+/*
+** signal/
+*/
+void	signal_sigchld(int sig);
+int		signal_to_ignore(void);
+int		signal_to_default(void);
 
 #endif

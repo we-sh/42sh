@@ -1,21 +1,10 @@
 #include "shell.h"
 
-static int	s_signal_handler(void)
-{
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
-	signal(SIGTSTP, SIG_DFL);
-	signal(SIGTTIN, SIG_DFL);
-	signal(SIGTTOU, SIG_DFL);
-	signal(SIGCHLD, SIG_DFL);
-	return (ST_OK);
-}
-
 void		proc_launch(t_job *j, t_proc *p)
 {
 	pid_t pgid;
 
-	if (shell_is_interactive())
+	if (shell_is_interactive() == 1)
 	{
 		p->pid = getpid();
 		pgid = j->pgid;
@@ -24,7 +13,7 @@ void		proc_launch(t_job *j, t_proc *p)
 		setpgid(p->pid, pgid);
 		// if (j->foreground == 1)
 		// 	tcsetpgrp(FILE DESCRIPTOR TTY, pgid);
-		s_signal_handler();
+		signal_to_default();
 	}
 
 	if (p->stdin != STDIN_FILENO)

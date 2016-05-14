@@ -14,7 +14,7 @@ static int			s_fork_it(t_job *j, t_proc *p)
 		proc_launch(j, p);
 	else
 	{
-		if (shell_is_interactive())
+		if (shell_is_interactive() == 1)
 		{
 			if (j->pgid == 0)
 				j->pgid = p->pid;
@@ -65,16 +65,17 @@ int					job_launch(t_job *j)
 
 		p = p->next;
 	}
-	//if (not interactive mode)
-	//{
+	if (shell_is_interactive() == 0)
+	{
 	//	wait for job to complete
 	//	after callback built-in
-	//}
-	//else if (j->foreground == 1)
-	//{
+	}
+	else if (j->foreground == 1)
+	{
+		job_foreground(j, 0);
 	//	put job to foreground
 	//	after callback built-in
-	//}
+	}
 	//else
 	//	put job to background
 	return (ST_OK);

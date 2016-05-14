@@ -20,6 +20,7 @@ typedef enum	e_st
 	ST_TTYNAME,
 	ST_MALLOC,
 	ST_TCSETPGRP,
+	ST_SIGNAL,
 	ST_TOTAL
 }				t_st;
 

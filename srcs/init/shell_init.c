@@ -1,15 +1,5 @@
 # include "shell.h"
 
-static void		s_signal_handler(void)
-{
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
-	signal(SIGTSTP, SIG_IGN);
-	signal(SIGTTIN, SIG_IGN);
-	signal(SIGTTOU, SIG_IGN);
-	signal(SIGCHLD, SIG_IGN);
-}
-
 int				shell_init(void)
 {
 	int			ret;
@@ -26,7 +16,8 @@ int				shell_init(void)
 			return (-ret);
 		while (tcgetpgrp(STDIN_FILENO) != (sh_pgid = getpgrp()))
 			kill(-sh_pgid, SIGTTIN);
-		s_signal_handler();
+		if ((ret = signal_to_ignore()) != ST_OK)
+			return (ret);
 		if (setpgid(sh_pgid, sh_pgid) < 0)
 		{
 			log_fatal("setpgid() failed.\n");

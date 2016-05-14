@@ -10,15 +10,16 @@ typedef struct				s_proc
 	pid_t					pid;
 	char					completed;
 	char					stopped;
-	int						status;
 	int						stdin;
 	int						stdout;
 	int						stderr;
+	int						exit_status;
 }							t_proc;
 
 typedef struct				s_job
 {
 	t_job					*next;
+	t_job					*prev;
 	t_proc					*proc;
 	char					*command;
 	pid_t					pgid;

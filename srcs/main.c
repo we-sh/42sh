@@ -1,5 +1,7 @@
 #include "shell.h"
 
+t_job	*g_current_jobs = NULL;
+
 int		main(int ac, const char *av[])
 {
 	(void)av;
