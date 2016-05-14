@@ -17,7 +17,7 @@ int				shell_init(void)
 	t_termios	sh_tmodes;
 
 	if ((ret = shell_language(LANG_EN)) < 0)
-		return (ret);
+		return (-ret);
 	if ((ret = shell_is_interactive()) < 0)
 		return (-ret);
 	if (shell_is_interactive() == 1)
