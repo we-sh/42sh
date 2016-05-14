@@ -18,7 +18,8 @@ static int			s_fork_it(t_job *j, t_proc *p)
 		{
 			if (j->pgid == 0)
 				j->pgid = p->pid;
-			setpgid(p->pid, j->pgid);
+			if (setpgid(p->pid, j->pgid) < 0)
+				return (ST_SETPGID);
 		}
 	}
 	return (ST_OK);
@@ -50,7 +51,7 @@ int					job_launch(t_job *j)
 		p->stdout = outputs[STDOUT_FILENO];
 		p->stderr = outputs[STDERR_FILENO];
 		if ((ret = s_fork_it(j, p)) != ST_OK)
-			exit(ret);
+			return(ret);
 
 		if (outputs[STDIN_FILENO] != j->stdin)
 			close(outputs[STDIN_FILENO]);

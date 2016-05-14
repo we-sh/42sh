@@ -8,6 +8,7 @@
 
 int	parse(char const *input)
 {
+	int		ret;
 	t_job	j;
 	t_proc	p;
 	char	**array;
@@ -23,7 +24,8 @@ int	parse(char const *input)
 		j.stdin = STDIN_FILENO;
 		j.stdout = STDOUT_FILENO;
 		j.stderr = STDERR_FILENO;
-		job_launch(&j);
+		if ((ret = job_launch(&j)) != ST_OK)
+			log_fatal("job launch error: %s\n", i18n_translate(ret));
 		/* TODO: free array */
 	}
 	return (ST_OK);
