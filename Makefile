@@ -20,6 +20,7 @@ NAME		=	42sh
 
 SRCS		=	\
 				main.c							\
+				init/shell_fd.c					\
 				init/shell_init.c				\
 				init/shell_is_interactive.c		\
 				stdin_loop.c					\
@@ -171,6 +172,14 @@ $(DIROBJ)main.o: srcs/main.c incs/shell.h libs/libft/./incs/libft.h \
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/main.c\n"
 		@$(CC) -c ./srcs/main.c -o ./.objs/main.o $(CPPFLAGS) $(CFLAGS) 
+
+$(DIROBJ)shell_fd.o: srcs/init/shell_fd.c incs/shell.h libs/libft/./incs/libft.h \
+  libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
+  incs/types.h incs/job.h incs/statuses.h \
+  libs/libft/./incs/get_next_line.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/init/shell_fd.c\n"
+		@$(CC) -c ./srcs/init/shell_fd.c -o ./.objs/shell_fd.o $(CPPFLAGS) $(CFLAGS) 
 
 $(DIROBJ)shell_init.o: srcs/init/shell_init.c incs/shell.h \
   libs/libft/./incs/libft.h libs/logger/./incs/logger.h \
