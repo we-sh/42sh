@@ -1,5 +1,10 @@
 #include "shell.h"
 
+/*
+** This function saves the status of a process retrieved through
+** the function `waitpid`.
+*/
+
 int	proc_update_status(pid_t pid, int status)
 {
 	t_proc		*p;

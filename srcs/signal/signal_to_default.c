@@ -1,5 +1,11 @@
 #include "shell.h"
 
+/*
+** This function sets all signal handlers to SIG_DFL.
+** It is called within each child process after `fork` to let the processes
+** handle the signals in their own way.
+*/
+
 int	signal_to_default(void)
 {
 	if (signal(SIGINT, SIG_DFL) == SIG_ERR)

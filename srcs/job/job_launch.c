@@ -1,7 +1,9 @@
 #include "shell.h"
 
 /*
-** 'fork_it' may contain the "before callback" of the Built-ins
+** This function takes a job t_job as argument and iterates
+** on its process list to launch them sequentially.
+** It handles pipes and redirections.
 */
 
 static int			s_fork_it(t_job *j, t_proc *p)

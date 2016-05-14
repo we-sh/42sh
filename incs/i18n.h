@@ -4,16 +4,16 @@
 # include "statuses.h"
 
 /*
-** This file contains translations for each status message
+** This file contains the translations of each status message.
 **
-** The enumeration `e_language` contains the list of available languages
-** LANG_GET must be at top of the enumeration and set to 0
-** LANG_TOTAL must be at bottom to represent the count of languages
+** The enumeration `e_language` contains the list of available languages.
+** LANG_GET must be at top of the enumeration and set to 0.
+** LANG_TOTAL must be at bottom to represent the count of languages.
 **
-** Each language is associated to a static const char[] suffixed with `g_i18n_`
-** The first key `ST_OK`, or 0, must contain the name of the described language
+** Each language is associated to a static const char[] suffixed with `g_i18n_`.
+** The first key `ST_OK`, or 0, must contain the name of the described language.
 **
-** Use the function i18n_translate(int *status) to get a translation at runtime
+** Use the function i18n_translate(int *status) to get a translation at runtime.
 */
 
 typedef enum			e_language

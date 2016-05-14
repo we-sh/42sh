@@ -1,5 +1,11 @@
 #include "shell.h"
 
+/*
+** This function sets all signal handlers to SIG_IGN except for SIGCHLD.
+** "When a shell enables job control, it should set itself to ignore all
+** the job control stop signals so that it doesn’t accidentally stop itself"
+*/
+
 int	signal_to_ignore(void)
 {
 	if (signal(SIGCHLD, signal_sigchld) == SIG_ERR)

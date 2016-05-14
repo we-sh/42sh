@@ -1,5 +1,13 @@
 #include "shell.h"
 
+/*
+** This function put a given job into foreground, may restart a stopped job
+** by sending to it the signal SIGCONT and wait for it to complete or
+** stop.
+** It waits for the job to report its status and then put the Shell
+** back to foreground, letting the user enter a new command.
+*/
+
 int	job_foreground(t_job *j, int sigcont)
 {
 	log_debug("put job to foreground (pgid: %d)\n", j->pgid);

@@ -1,5 +1,9 @@
 #include "shell.h"
 
+/*
+** This function is the entry point of a child process (freshly forked).
+*/
+
 void		proc_launch(t_job *j, t_proc *p)
 {
 	pid_t pgid;

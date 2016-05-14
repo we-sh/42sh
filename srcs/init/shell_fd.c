@@ -1,8 +1,9 @@
 #include "shell.h"
 
 /*
-** This function is called one time at initialization and return the actual tty
-** It returns negative value when an error occured
+** This function is called at initialization, and then returns the actual
+** terminal device file descriptor (tty).
+** It returns a negative value when an error occurs.
 */
 
 int	shell_fd(void)

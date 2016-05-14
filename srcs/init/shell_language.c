@@ -1,9 +1,10 @@
 #include "shell.h"
 
 /*
-** This function can set or get the runtime language
-** Set argument with value LANG_GET to request a get
-** This function is first call at initialization to allocate the memory
+** This function can set and get the runtime language.
+** Set the argument with the value LANG_GET to request a `get` or use an
+** available language from `i18n.h` to change the language.
+** This function is first called at initialization to allocate the memory
 ** and set the default value (LANG_GET + 1) which is the first defined
 ** language in the enumeration `e_language` (see i18n.h)
 */
