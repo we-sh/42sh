@@ -1,19 +1,22 @@
 #ifndef SHELL_H
 # define SHELL_H
 
-# include "libft.h"
-# include "logger.h"
-# include "types.h"
-# include "job.h"
-# include "statuses.h"
-# include "i18n.h"
-# include "get_next_line.h"
-
+/*
+** Extern headers and structures
+*/
 # include <sys/types.h>
 # include <unistd.h>
 # include <signal.h>
 # include <termios.h>
 # include <errno.h>
+typedef struct termios		t_termios;
+
+# include "libft.h"
+# include "logger.h"
+# include "job.h"
+# include "statuses.h"
+# include "i18n.h"
+# include "get_next_line.h"
 
 /*
 ** Prompt statement default value

@@ -1,11 +1,9 @@
 #ifndef JOB_H
 # define JOB_H
 
-# include "types.h"
-
 typedef struct				s_proc
 {
-	t_proc					*next;
+	struct s_proc			*next;
 	char					**argv;
 	pid_t					pid;
 	char					completed;
@@ -18,8 +16,8 @@ typedef struct				s_proc
 
 typedef struct				s_job
 {
-	t_job					*next;
-	t_job					*prev;
+	struct s_job			*next;
+	struct s_job			*prev;
 	t_proc					*proc;
 	char					*command;
 	pid_t					pgid;
