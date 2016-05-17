@@ -7,7 +7,7 @@ int	stdin_loop(void)
 
 	while (1)
 	{
-		if (shell_is_interactive())
+		if (shell_is_interactive() == 1)
 			ft_putstr(PS1_DFLT);
 		if ((r = get_next_line(STDIN_FILENO, &input)) < 1)
 			break ;

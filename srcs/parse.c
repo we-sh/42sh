@@ -4,6 +4,7 @@
 ** For now input shall be well espaced
 ** For now parse support only one command without special operator
 ** ex : COMMAND [OPTIONS] : ls -l ../my_dir/
+** WARNING: ft_strsplit return array even if input length == 0
 */
 
 int	parse(char const *input)
@@ -11,9 +12,11 @@ int	parse(char const *input)
 	int		ret;
 	t_job	j;
 	t_proc	p;
+	char	*cleaned;
 	char	**array;
 
-	if ((array = ft_strsplit(input, ' ')))
+	cleaned = ft_strser(input);
+	if (ft_strlen(cleaned) > 0 && (array = ft_strsplit(cleaned, ' ')) != NULL)
 	{
 		p.next = NULL;
 		p.argv = array;
@@ -41,5 +44,6 @@ int	parse(char const *input)
 			log_fatal("job launch error: %s\n", i18n_translate(ret));
 		/* TODO: free array */
 	}
+	ft_strdel(&cleaned);
 	return (ST_OK);
 }
