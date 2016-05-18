@@ -12,3 +12,8 @@
 
 # config
 .idea/
+
+# other
+._.DS_Store
+.DS_Store
+
