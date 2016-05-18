@@ -57,14 +57,17 @@ CPPFLAGS	=	\
 				-I $(DIRINC)					\
 				-I $(DIRLIB)libft/$(DIRINC)		\
 				-I $(DIRLIB)logger/$(DIRINC)	\
+				-I $(DIRLIB)libcaps/$(DIRINC)	\
 
 LDFLAGS		=	\
 				-L $(DIRLIB)libft				\
 				-L $(DIRLIB)logger				\
+				-L $(DIRLIB)libcaps				\
 
 LDLIBS		=	\
 				-lft							\
 				-llogger						\
+				-lcaps							\
 
 # GLOBAL SETUP
 AR			=	ar
@@ -116,13 +119,15 @@ $(NAME)		:	$(DIROBJ) $(OBJ)
 libs		:
 	@make -C $(DIRLIB)libft
 	@make -C $(DIRLIB)logger
+	@make -C $(DIRLIB)libcaps
 
 fcleanlibs	:
 	@make -C $(DIRLIB)libft fclean
 	@make -C $(DIRLIB)logger fclean
+	@make -C $(DIRLIB)libcaps fclean
 
 test		:	re
-	@cd $(DIRTST) && sh 42ShellTester.sh $$PWD/../$(NAME) --hard
+	@cd $(DIRTST) && sh 42shTests.sh $$PWD/../$(NAME) --hard
 
 submodule	:
 	@git submodule init && git submodule update
@@ -174,6 +179,7 @@ depend		:
 
 .PHONY	:	 libs test
 
+
 # ---------------------------------------------------------------------------- #
 # AUTO-GENERATED SECTION - do not modify
 # ---------------------------------------------------------------------------- #
@@ -186,7 +192,7 @@ $(DIROBJ)main.o: srcs/main.c incs/shell.h libs/libft/./incs/libft.h \
   incs/i18n.h libs/libft/./incs/get_next_line.h incs/lexer.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/main.c\n"
-		@$(CC) -c ./srcs/main.c -o ./.objs/main.o $(CPPFLAGS) $(CFLAGS) 
+		@$(CC) -c ./srcs/main.c -o ./.objs/main.o $(CPPFLAGS) $(CFLAGS)
 
 $(DIROBJ)shell_exit.o: srcs/exit/shell_exit.c incs/shell.h \
   libs/libft/./incs/libft.h libs/libft/./incs/list.h \
@@ -195,7 +201,7 @@ $(DIROBJ)shell_exit.o: srcs/exit/shell_exit.c incs/shell.h \
   libs/libft/./incs/get_next_line.h incs/lexer.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/exit/shell_exit.c\n"
-		@$(CC) -c ./srcs/exit/shell_exit.c -o ./.objs/shell_exit.o $(CPPFLAGS) $(CFLAGS) 
+		@$(CC) -c ./srcs/exit/shell_exit.c -o ./.objs/shell_exit.o $(CPPFLAGS) $(CFLAGS)
 
 $(DIROBJ)i18n_translate.o: srcs/i18n/i18n_translate.c incs/shell.h \
   libs/libft/./incs/libft.h libs/libft/./incs/list.h \
@@ -204,7 +210,7 @@ $(DIROBJ)i18n_translate.o: srcs/i18n/i18n_translate.c incs/shell.h \
   libs/libft/./incs/get_next_line.h incs/lexer.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/i18n/i18n_translate.c\n"
-		@$(CC) -c ./srcs/i18n/i18n_translate.c -o ./.objs/i18n_translate.o $(CPPFLAGS) $(CFLAGS) 
+		@$(CC) -c ./srcs/i18n/i18n_translate.c -o ./.objs/i18n_translate.o $(CPPFLAGS) $(CFLAGS)
 
 $(DIROBJ)shell_fd.o: srcs/init/shell_fd.c incs/shell.h libs/libft/./incs/libft.h \
   libs/libft/./incs/list.h libs/logger/./incs/logger.h \
@@ -212,7 +218,7 @@ $(DIROBJ)shell_fd.o: srcs/init/shell_fd.c incs/shell.h libs/libft/./incs/libft.h
   incs/i18n.h libs/libft/./incs/get_next_line.h incs/lexer.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/init/shell_fd.c\n"
-		@$(CC) -c ./srcs/init/shell_fd.c -o ./.objs/shell_fd.o $(CPPFLAGS) $(CFLAGS) 
+		@$(CC) -c ./srcs/init/shell_fd.c -o ./.objs/shell_fd.o $(CPPFLAGS) $(CFLAGS)
 
 $(DIROBJ)shell_init.o: srcs/init/shell_init.c incs/shell.h \
   libs/libft/./incs/libft.h libs/libft/./incs/list.h \
@@ -221,7 +227,7 @@ $(DIROBJ)shell_init.o: srcs/init/shell_init.c incs/shell.h \
   libs/libft/./incs/get_next_line.h incs/lexer.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/init/shell_init.c\n"
-		@$(CC) -c ./srcs/init/shell_init.c -o ./.objs/shell_init.o $(CPPFLAGS) $(CFLAGS) 
+		@$(CC) -c ./srcs/init/shell_init.c -o ./.objs/shell_init.o $(CPPFLAGS) $(CFLAGS)
 
 $(DIROBJ)shell_is_interactive.o: srcs/init/shell_is_interactive.c incs/shell.h \
   libs/libft/./incs/libft.h libs/libft/./incs/list.h \
@@ -230,7 +236,7 @@ $(DIROBJ)shell_is_interactive.o: srcs/init/shell_is_interactive.c incs/shell.h \
   libs/libft/./incs/get_next_line.h incs/lexer.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/init/shell_is_interactive.c\n"
-		@$(CC) -c ./srcs/init/shell_is_interactive.c -o ./.objs/shell_is_interactive.o $(CPPFLAGS) $(CFLAGS) 
+		@$(CC) -c ./srcs/init/shell_is_interactive.c -o ./.objs/shell_is_interactive.o $(CPPFLAGS) $(CFLAGS)
 
 $(DIROBJ)shell_language.o: srcs/init/shell_language.c incs/shell.h \
   libs/libft/./incs/libft.h libs/libft/./incs/list.h \
@@ -239,7 +245,7 @@ $(DIROBJ)shell_language.o: srcs/init/shell_language.c incs/shell.h \
   libs/libft/./incs/get_next_line.h incs/lexer.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/init/shell_language.c\n"
-		@$(CC) -c ./srcs/init/shell_language.c -o ./.objs/shell_language.o $(CPPFLAGS) $(CFLAGS) 
+		@$(CC) -c ./srcs/init/shell_language.c -o ./.objs/shell_language.o $(CPPFLAGS) $(CFLAGS)
 
 $(DIROBJ)stdin_loop.o: srcs/stdin_loop.c incs/shell.h libs/libft/./incs/libft.h \
   libs/libft/./incs/list.h libs/logger/./incs/logger.h \
@@ -247,7 +253,7 @@ $(DIROBJ)stdin_loop.o: srcs/stdin_loop.c incs/shell.h libs/libft/./incs/libft.h 
   incs/i18n.h libs/libft/./incs/get_next_line.h incs/lexer.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/stdin_loop.c\n"
-		@$(CC) -c ./srcs/stdin_loop.c -o ./.objs/stdin_loop.o $(CPPFLAGS) $(CFLAGS) 
+		@$(CC) -c ./srcs/stdin_loop.c -o ./.objs/stdin_loop.o $(CPPFLAGS) $(CFLAGS)
 
 $(DIROBJ)parse.o: srcs/parse.c incs/shell.h libs/libft/./incs/libft.h \
   libs/libft/./incs/list.h libs/logger/./incs/logger.h \
@@ -255,7 +261,7 @@ $(DIROBJ)parse.o: srcs/parse.c incs/shell.h libs/libft/./incs/libft.h \
   incs/i18n.h libs/libft/./incs/get_next_line.h incs/lexer.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/parse.c\n"
-		@$(CC) -c ./srcs/parse.c -o ./.objs/parse.o $(CPPFLAGS) $(CFLAGS) 
+		@$(CC) -c ./srcs/parse.c -o ./.objs/parse.o $(CPPFLAGS) $(CFLAGS)
 
 $(DIROBJ)job_alloc.o: srcs/job/job_alloc.c incs/shell.h libs/libft/./incs/libft.h \
   libs/libft/./incs/list.h libs/logger/./incs/logger.h \
@@ -272,7 +278,7 @@ $(DIROBJ)job_foreground.o: srcs/job/job_foreground.c incs/shell.h \
   libs/libft/./incs/get_next_line.h incs/lexer.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/job/job_foreground.c\n"
-		@$(CC) -c ./srcs/job/job_foreground.c -o ./.objs/job_foreground.o $(CPPFLAGS) $(CFLAGS) 
+		@$(CC) -c ./srcs/job/job_foreground.c -o ./.objs/job_foreground.o $(CPPFLAGS) $(CFLAGS)
 
 $(DIROBJ)job_is_completed.o: srcs/job/job_is_completed.c incs/shell.h \
   libs/libft/./incs/libft.h libs/libft/./incs/list.h \
@@ -281,7 +287,7 @@ $(DIROBJ)job_is_completed.o: srcs/job/job_is_completed.c incs/shell.h \
   libs/libft/./incs/get_next_line.h incs/lexer.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/job/job_is_completed.c\n"
-		@$(CC) -c ./srcs/job/job_is_completed.c -o ./.objs/job_is_completed.o $(CPPFLAGS) $(CFLAGS) 
+		@$(CC) -c ./srcs/job/job_is_completed.c -o ./.objs/job_is_completed.o $(CPPFLAGS) $(CFLAGS)
 
 $(DIROBJ)job_launch.o: srcs/job/job_launch.c incs/shell.h \
   libs/libft/./incs/libft.h libs/libft/./incs/list.h \
@@ -290,7 +296,7 @@ $(DIROBJ)job_launch.o: srcs/job/job_launch.c incs/shell.h \
   libs/libft/./incs/get_next_line.h incs/lexer.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/job/job_launch.c\n"
-		@$(CC) -c ./srcs/job/job_launch.c -o ./.objs/job_launch.o $(CPPFLAGS) $(CFLAGS) 
+		@$(CC) -c ./srcs/job/job_launch.c -o ./.objs/job_launch.o $(CPPFLAGS) $(CFLAGS)
 
 $(DIROBJ)proc_find.o: srcs/job/proc_find.c incs/shell.h libs/libft/./incs/libft.h \
   libs/libft/./incs/list.h libs/logger/./incs/logger.h \
@@ -298,7 +304,7 @@ $(DIROBJ)proc_find.o: srcs/job/proc_find.c incs/shell.h libs/libft/./incs/libft.
   incs/i18n.h libs/libft/./incs/get_next_line.h incs/lexer.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/job/proc_find.c\n"
-		@$(CC) -c ./srcs/job/proc_find.c -o ./.objs/proc_find.o $(CPPFLAGS) $(CFLAGS) 
+		@$(CC) -c ./srcs/job/proc_find.c -o ./.objs/proc_find.o $(CPPFLAGS) $(CFLAGS)
 
 $(DIROBJ)proc_launch.o: srcs/job/proc_launch.c incs/shell.h \
   libs/libft/./incs/libft.h libs/libft/./incs/list.h \
@@ -307,7 +313,7 @@ $(DIROBJ)proc_launch.o: srcs/job/proc_launch.c incs/shell.h \
   libs/libft/./incs/get_next_line.h incs/lexer.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/job/proc_launch.c\n"
-		@$(CC) -c ./srcs/job/proc_launch.c -o ./.objs/proc_launch.o $(CPPFLAGS) $(CFLAGS) 
+		@$(CC) -c ./srcs/job/proc_launch.c -o ./.objs/proc_launch.o $(CPPFLAGS) $(CFLAGS)
 
 $(DIROBJ)proc_update_status.o: srcs/job/proc_update_status.c incs/shell.h \
   libs/libft/./incs/libft.h libs/libft/./incs/list.h \
@@ -316,7 +322,7 @@ $(DIROBJ)proc_update_status.o: srcs/job/proc_update_status.c incs/shell.h \
   libs/libft/./incs/get_next_line.h incs/lexer.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/job/proc_update_status.c\n"
-		@$(CC) -c ./srcs/job/proc_update_status.c -o ./.objs/proc_update_status.o $(CPPFLAGS) $(CFLAGS) 
+		@$(CC) -c ./srcs/job/proc_update_status.c -o ./.objs/proc_update_status.o $(CPPFLAGS) $(CFLAGS)
 
 $(DIROBJ)list_node__proc_alloc.o: srcs/list/list_node__proc_alloc.c incs/shell.h \
   libs/libft/./incs/libft.h libs/libft/./incs/list.h \
@@ -334,7 +340,7 @@ $(DIROBJ)signal_sigchld.o: srcs/signal/signal_sigchld.c incs/shell.h \
   libs/libft/./incs/get_next_line.h incs/lexer.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/signal/signal_sigchld.c\n"
-		@$(CC) -c ./srcs/signal/signal_sigchld.c -o ./.objs/signal_sigchld.o $(CPPFLAGS) $(CFLAGS) 
+		@$(CC) -c ./srcs/signal/signal_sigchld.c -o ./.objs/signal_sigchld.o $(CPPFLAGS) $(CFLAGS)
 
 $(DIROBJ)signal_to_default.o: srcs/signal/signal_to_default.c incs/shell.h \
   libs/libft/./incs/libft.h libs/libft/./incs/list.h \
@@ -343,7 +349,7 @@ $(DIROBJ)signal_to_default.o: srcs/signal/signal_to_default.c incs/shell.h \
   libs/libft/./incs/get_next_line.h incs/lexer.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/signal/signal_to_default.c\n"
-		@$(CC) -c ./srcs/signal/signal_to_default.c -o ./.objs/signal_to_default.o $(CPPFLAGS) $(CFLAGS) 
+		@$(CC) -c ./srcs/signal/signal_to_default.c -o ./.objs/signal_to_default.o $(CPPFLAGS) $(CFLAGS)
 
 $(DIROBJ)signal_to_ignore.o: srcs/signal/signal_to_ignore.c incs/shell.h \
   libs/libft/./incs/libft.h libs/libft/./incs/list.h \
@@ -352,7 +358,7 @@ $(DIROBJ)signal_to_ignore.o: srcs/signal/signal_to_ignore.c incs/shell.h \
   libs/libft/./incs/get_next_line.h incs/lexer.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/signal/signal_to_ignore.c\n"
-		@$(CC) -c ./srcs/signal/signal_to_ignore.c -o ./.objs/signal_to_ignore.o $(CPPFLAGS) $(CFLAGS) 
+		@$(CC) -c ./srcs/signal/signal_to_ignore.c -o ./.objs/signal_to_ignore.o $(CPPFLAGS) $(CFLAGS)
 
 $(DIROBJ)lexer.o: srcs/lexer/lexer.c incs/shell.h libs/libft/./incs/libft.h \
   libs/libft/./incs/list.h libs/logger/./incs/logger.h \

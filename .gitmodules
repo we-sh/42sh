@@ -7,3 +7,6 @@
 [submodule "test"]
 	path = test
 	url = https://github.com/42shTests/42ShellTester.git
+[submodule "libs/libcaps"]
+	path = libs/libcaps
+	url = https://github.com/42shTests/libcaps.git
