@@ -10,6 +10,8 @@ int	signal_to_ignore(void)
 {
 	if (signal(SIGCHLD, signal_sigchld) == SIG_ERR)
 		return (ST_SIGNAL);
+	// if (signal(SIGCHLD, SIG_IGN) == SIG_ERR)
+	// 	return (ST_SIGNAL);
 	if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
 		return (ST_SIGNAL);
 	if (signal(SIGTSTP, SIG_IGN) == SIG_ERR)

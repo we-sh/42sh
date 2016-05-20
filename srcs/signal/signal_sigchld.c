@@ -45,22 +45,25 @@ static void	s_job_notification(void)
 		//	j->notified = 1;
 		//}
 	}
+
 }
 
 void		signal_sigchld(int sig)
 {
 	int		status;
 	pid_t	pid;
+	int		test;
 
+	test = 0;
 	if (sig == SIGCHLD)
 	{
 		log_info("SIGCHLD received");
 		errno = 0;
-		while (1)
+		while (test == 0)
 		{
 			pid = waitpid(WAIT_ANY, &status, WUNTRACED | WNOHANG);
 			if (proc_update_status(pid, status) == 0)
-				break ;
+				test = 1;
 		}
 		s_job_notification();
 	}

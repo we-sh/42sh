@@ -14,8 +14,11 @@ int		main(int ac, const char *av[])
 	logger_init(D_TRACE, "out.log");
 	if ((ret = shell_init()) != ST_OK)
 		log_fatal("shell initialization failed (%d)", ret);
+	termcaps_init();
 	if ((ret = stdin_loop()) != ST_END_OF_INPUT)
 		log_fatal("get_next_line failed (%d)", ret);
+	if (!caps__finalize())
+		return (-1); // Check le retour
 	logger_close();
 	return (0);
 }

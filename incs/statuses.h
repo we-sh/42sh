@@ -23,6 +23,7 @@ typedef enum	e_st
 	ST_SIGNAL,
 	ST_LEXER,
 	ST_BUFFER,
+	ST_EXIT,
 	ST_TOTAL
 }				t_st;
 

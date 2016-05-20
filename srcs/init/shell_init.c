@@ -3,8 +3,7 @@
 int				shell_init(void)
 {
 	int			ret;
-	int			sh_pgid;
-	t_termios	sh_tmodes;
+	pid_t		sh_pgid;
 
 	if ((ret = shell_language(LANG_EN)) < 0)
 		return (-ret);
@@ -16,8 +15,11 @@ int				shell_init(void)
 			return (-ret);
 		while (tcgetpgrp(STDIN_FILENO) != (sh_pgid = getpgrp()))
 			kill(-sh_pgid, SIGTTIN);
+
 		if ((ret = signal_to_ignore()) != ST_OK)
 			return (ret);
+
+		sh_pgid = getpid();
 		if (setpgid(sh_pgid, sh_pgid) < 0)
 		{
 			log_fatal("setpgid() failed.");
@@ -26,7 +28,6 @@ int				shell_init(void)
 		log_info("pgid: %d", sh_pgid);
 		if (tcsetpgrp(STDIN_FILENO, sh_pgid) < 0)
 			return (ST_TCSETPGRP);
-		tcgetattr(STDIN_FILENO, &sh_tmodes);
 	}
 	return (ST_OK);
 }

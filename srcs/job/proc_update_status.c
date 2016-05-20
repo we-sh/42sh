@@ -8,6 +8,7 @@
 int	proc_update_status(pid_t pid, int status)
 {
 	t_proc		*p;
+			
 
 	if (pid == 0 || errno == ECHILD)
 	{
