@@ -10,37 +10,24 @@
 int	parse(char const *input)
 {
 	int		ret;
-	t_job	j;
-	t_proc	p;
+	t_list	*p_node;
+	t_job	*j;
 	char	*cleaned;
 	char	**array;
 
+	INIT_LIST_HEAD(&g_current_jobs_list_head);
 	cleaned = ft_strser(input);
 	if (ft_strlen(cleaned) > 0 && (array = ft_strsplit(cleaned, ' ')) != NULL)
 	{
-		p.next = NULL;
-		p.argv = array;
-		p.pid = 0;
-		p.completed = 0;
-		p.stopped = 0;
-		p.stdin = STDIN_FILENO;
-		p.stdout = STDOUT_FILENO;
-		p.stderr = STDERR_FILENO;
-		p.exit_status = 0;
-		j.next = NULL;
-		j.proc = &p;
-		j.command = (char *)input;
-		j.foreground = 1;
-		j.stdin = STDIN_FILENO;
-		j.stdout = STDOUT_FILENO;
-		j.stderr = STDERR_FILENO;
-		j.pgid = 0;
-		j.notified = 0;
+		if ((j = job_alloc((char *)input)) == NULL)
+			return (ST_MALLOC);
+		list_push_back(&j->list_job, &g_current_jobs_list_head);
 
-		// temporary disguting:
-		g_current_jobs = &j;
+		if ((p_node = list_node__proc_alloc(array)) == NULL)
+			return (ST_MALLOC);
+		list_push_back(p_node, &j->proc_head);
 
-		if ((ret = job_launch(&j)) != ST_OK)
+		if ((ret = job_launch(j)) != ST_OK)
 			log_fatal("job launch error: %s\n", i18n_translate(ret));
 		/* TODO: free array */
 	}

@@ -3,7 +3,7 @@
 
 typedef struct				s_proc
 {
-	struct s_proc			*next;
+	t_list					list_proc;
 	char					**argv;
 	pid_t					pid;
 	char					completed;
@@ -16,9 +16,8 @@ typedef struct				s_proc
 
 typedef struct				s_job
 {
-	struct s_job			*next;
-	struct s_job			*prev;
-	t_proc					*proc;
+	t_list					list_job;
+	t_list					proc_head;
 	char					*command;
 	pid_t					pgid;
 	char					notified;

@@ -16,12 +16,16 @@
 static void	s_job_notification (void)
 {
 	t_job	*j;
-	t_job	*j_next;
+	t_list	*pos;
+	t_list	*safe;
+	t_list	*head;
 
-	j = g_current_jobs;
-	while (j)
+	head = &g_current_jobs_list_head;
+	safe = head->next;
+	while((pos = safe) && pos != head)
 	{
-		j_next = j->next;
+		safe = safe->next;
+		j = CONTAINER_OF(pos, t_job, list_job);
 		if (job_is_completed(j) == 1)
 		{
 			// check if it is a background job
@@ -33,12 +37,7 @@ static void	s_job_notification (void)
 			//}
 
 			// remove job from list of current jobs
-			if (j->prev)
-				j->prev->next = j->next;
-			else
-				g_current_jobs = j->next;
-			if (j->next)
-				j->next->prev = j->prev;
+			list_del(pos);
 		}
 		// else Ctrl + Z
 		//else if (is_job_stopped(j) == 1 && j->notified == 0)
@@ -46,8 +45,6 @@ static void	s_job_notification (void)
 		//	format_job_info (j, "stopped");
 		//	j->notified = 1;
 		//}
-
-		j = j_next;
 	}
 }
 

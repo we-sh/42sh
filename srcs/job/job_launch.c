@@ -30,6 +30,8 @@ static int			s_fork_it(t_job *j, t_proc *p)
 int					job_launch(t_job *j)
 {
 	int				ret;
+	t_list			*pos;
+	t_list			*head;
 	t_proc			*p;
 	int				job_pipe[2];
 	int				outputs[3];
@@ -37,10 +39,12 @@ int					job_launch(t_job *j)
 	job_pipe[0] = -1;
 	outputs[STDIN_FILENO] = j->stdin;
 	outputs[STDERR_FILENO] = j->stderr;
-	p = j->proc;
-	while (p)
+	head = &j->proc_head;
+	pos = head;
+	LIST_FOREACH(head, pos)
 	{
-		if (p->next)
+		p = CONTAINER_OF(pos, t_proc, list_proc);
+		if (pos->next != head)
 		{
 			if (pipe(job_pipe) < 0)
 				exit(ST_PIPE);
@@ -64,8 +68,6 @@ int					job_launch(t_job *j)
 		// useful if we need to keep last process alive:
 		//if (p->next == NULL)
 		//	break ;
-
-		p = p->next;
 	}
 	if (shell_is_interactive() == 0)
 	{
