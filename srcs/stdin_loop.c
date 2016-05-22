@@ -8,10 +8,10 @@ int	stdin_loop(void)
 	while (1)
 	{
 		if (shell_is_interactive() == 1)
-			ft_putstr(PS1_DFLT);
+			ft_putstr_fd(PS1_DFLT, shell_fd());
 		if ((r = get_next_line(STDIN_FILENO, &input)) < 1)
 			break ;
-		log_debug("input: |%s|", input);
+		log_debug("input: #%s#", input);
 		parse(input);
 		ft_strdel(&input);
 	}

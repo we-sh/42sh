@@ -19,7 +19,7 @@ int	shell_fd(void)
 			return (-ST_TTYNAME);
 		if ((*fd = open(tty_name, O_RDWR)) == -1)
 			return (-ST_OPEN);
-		log_warn("actual tty fd: %d", *fd);
+		log_info("actual tty fd: %d", *fd);
 		log_info("ttyname: %s, ttyslot: %d", tty_name, ttyslot());
 	}
 	return (*fd);

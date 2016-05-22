@@ -11,7 +11,10 @@ static int			s_fork_it(t_job *j, t_proc *p)
 	// before callback built-in
 	p->pid = fork();
 	if (p->pid < 0)
+	{
+		log_error("fork failed (%d)", p->pid);
 		return (ST_FORK);
+	}
 	else if (p->pid == 0)
 		proc_launch(j, p);
 	else
