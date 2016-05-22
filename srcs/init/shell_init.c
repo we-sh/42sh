@@ -28,5 +28,5 @@ int				shell_init(void)
 			return (ST_TCSETPGRP);
 		tcgetattr(STDIN_FILENO, &sh_tmodes);
 	}
-	return (0);
+	return (ST_OK);
 }
