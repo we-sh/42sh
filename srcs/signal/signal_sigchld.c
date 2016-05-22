@@ -53,7 +53,7 @@ void	signal_sigchld(int sig)
 	int		status;
 	pid_t	pid;
 
-	log_debug("SIGCHLD received\n");
+	log_debug("SIGCHLD received");
 	if (sig == SIGCHLD)
 	{
 		errno = 0;

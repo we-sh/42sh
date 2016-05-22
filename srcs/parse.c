@@ -28,7 +28,7 @@ int	parse(char const *input)
 		list_push_back(p_node, &j->proc_head);
 
 		if ((ret = job_launch(j)) != ST_OK)
-			log_fatal("job launch error: %s\n", i18n_translate(ret));
+			log_fatal("job launch error: %s", i18n_translate(ret));
 		/* TODO: free array */
 	}
 	ft_strdel(&cleaned);

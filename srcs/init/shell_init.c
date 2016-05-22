@@ -20,10 +20,10 @@ int				shell_init(void)
 			return (ret);
 		if (setpgid(sh_pgid, sh_pgid) < 0)
 		{
-			log_fatal("setpgid() failed.\n");
+			log_fatal("setpgid() failed.");
 			return (ST_SETPGID);
 		}
-		log_info("pgid: %d\n", sh_pgid);
+		log_info("pgid: %d", sh_pgid);
 		if (tcsetpgrp(STDIN_FILENO, sh_pgid) < 0)
 			return (ST_TCSETPGRP);
 		tcgetattr(STDIN_FILENO, &sh_tmodes);

@@ -11,7 +11,7 @@ int	stdin_loop(void)
 			ft_putstr(PS1_DFLT);
 		if ((r = get_next_line(STDIN_FILENO, &input)) < 1)
 			break ;
-		log_debug("input: |%s|\n", input);
+		log_debug("input: |%s|", input);
 		parse(input);
 		ft_strdel(&input);
 	}

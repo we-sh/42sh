@@ -10,7 +10,7 @@
 
 int	job_foreground(t_job *j, int sigcont)
 {
-	log_debug("put job to foreground (pgid: %d)\n", j->pgid);
+	log_debug("put job to foreground (pgid: %d)", j->pgid);
 
 	// make the job controlling the terminal
 	//if (tcsetpgrp(shell_fd(), j->pgid) == -1)
