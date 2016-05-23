@@ -21,6 +21,7 @@ typedef enum	e_st
 	ST_MALLOC,
 	ST_TCSETPGRP,
 	ST_SIGNAL,
+	ST_LEXER,
 	ST_TOTAL
 }				t_st;
 

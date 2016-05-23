@@ -18,6 +18,7 @@ typedef struct termios		t_termios;
 # include "statuses.h"
 # include "i18n.h"
 # include "get_next_line.h"
+# include "lexer.h"
 
 /*
 ** Prompt statement default value
@@ -68,5 +69,12 @@ t_job	*job_alloc(char *command);
 void	signal_sigchld(int sig);
 int		signal_to_ignore(void);
 int		signal_to_default(void);
+
+/*
+** lexer/
+*/
+int			lexer(char const *input, t_lexer *lexer);
+t_token 	*token_list(void);
+int			tokenize(const char *s, t_lexer *lexer);
 
 #endif

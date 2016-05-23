@@ -14,9 +14,11 @@ int	parse(char const *input)
 	t_job	*j;
 	char	*cleaned;
 	char	**array;
+	t_lexer l;
 
 	INIT_LIST_HEAD(&g_current_jobs_list_head);
 	cleaned = ft_strser(input);
+	lexer(cleaned, &l);
 	if (ft_strlen(cleaned) > 0 && (array = ft_strsplit(cleaned, ' ')) != NULL)
 	{
 		if ((j = job_alloc((char *)input)) == NULL)
