@@ -5,7 +5,7 @@
 
 typedef enum 	e_token_type
 {
-	NOT_A_TOKEN,
+	TOKEN_NONE,
 	TOKEN_ESP,
 	TOKEN_SEMI,
 	TOKEN_BACKSLASH,
