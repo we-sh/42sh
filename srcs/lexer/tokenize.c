@@ -1,19 +1,19 @@
 #include "shell.h"
 
-static void s_lexer_add(t_lexer *lexer, const char *str,
-	size_t len, t_token_type type, t_token_code code)
+static void		s_lexer_add(t_lexer *lexer, const char *str, t_token token)
 {
 	t_lexer_token item;
-	ft_strncpy(item.content, str, len);
-	item.content[len] = '\0';
-	item.len = len;
-	item.type = type;
-	item.code = code;
+
+	ft_strncpy(item.content, str, token.len);
+	item.content[token.len] = '\0';
+	item.len = token.len;
+	item.type = token.type;
+	item.code = token.code;
 	lexer->tokens[lexer->size] = item;
 	(lexer->size)++;
 }
 
-static t_token *s_token_recognizer(const char *s)
+static t_token	*s_token_recognizer(const char *s)
 {
 	const t_token *list = token_list();
 
@@ -23,43 +23,66 @@ static t_token *s_token_recognizer(const char *s)
 			return ((t_token *)list);
 		list++;
 	}
-	return NULL;
+	return (NULL);
 }
 
-int		tokenize(const char *s, t_lexer *lexer)
-{
-	char		buf[TOKEN_BUF_SIZE];
-	int			i;
-	int			j;
-	t_token		*token_found;
+static char		g_buf[TOKEN_BUF_SIZE];
+static int		g_buf_index;
 
-	ft_bzero(buf, TOKEN_BUF_SIZE);
+/*
+** Fill buffer char by char in order to catch TT_NAME.
+*/
+
+static void		s_bufferize(char c)
+{
+	g_buf[g_buf_index] = c;
+	g_buf_index++;
+	/* TODO: handle this case correctly */
+	if (g_buf_index >= TOKEN_BUF_SIZE)
+	{
+		log_error("Buffer overflow.\n");
+		exit(ST_BUFFER);
+	}
+}
+
+/*
+** Add buffer to lexer as TT_NAME and reset buffer.
+*/
+
+static void		s_buffer_dump(t_lexer *lexer)
+{
+	t_token t;
+
+	if (g_buf_index > 0)
+	{
+		g_buf[g_buf_index] = '\0';
+		t.len = g_buf_index;
+		t.type = TT_NAME;
+		t.code = TC_NONE;
+		s_lexer_add(lexer, g_buf, t);
+		ft_bzero(g_buf, TOKEN_BUF_SIZE);
+		g_buf_index = 0;
+	}
+}
+
+int				tokenize(const char *s, t_lexer *lexer)
+{
+	t_token	*token_found;
+	int		i;
+
 	i = 0;
-	j = 0;
 	while (s && s[i])
 	{
 		token_found = s_token_recognizer(&s[i]);
-
 		if (token_found != NULL)
 		{
-			/* add TOKEN_NAME if exists and reset buffer */
-			if (ft_strlen(buf) > 0)
-			{
-				s_lexer_add(lexer, buf, ft_strlen(buf), TT_NAME, TC_NONE);
-				ft_bzero(buf, TOKEN_BUF_SIZE);
-				j = 0;
-			}
-			s_lexer_add(lexer, &s[i], token_found->len, token_found->type, token_found->code);
+			s_buffer_dump(lexer);
+			s_lexer_add(lexer, &s[i], *token_found);
 			i += token_found->len;
 		}
 		else
-		{
-			buf[j] = s[i];
-			j++;
-			i++;
-		}
+			s_bufferize(s[i++]);
 	}
-	if (ft_strlen(buf) > 0)
-		s_lexer_add(lexer, buf, ft_strlen(buf), TT_NAME, TC_NONE);
+	s_buffer_dump(lexer);
 	return (ST_OK);
 }

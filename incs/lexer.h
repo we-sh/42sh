@@ -55,7 +55,7 @@ typedef struct s_token
 
 typedef struct 	s_lexer_token
 {
-	char			content[128]; /* Replace with dynamic array */
+	char			content[256]; /* Replace with dynamic array */
 	size_t			len;
 	t_token_type	type;
 	t_token_code	code;
