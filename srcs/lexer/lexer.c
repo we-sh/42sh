@@ -6,7 +6,7 @@ static void	s_print(const t_lexer *lexer)
 
 	while (i < lexer->size)
 	{
-		log_debug("[%d] \"%s\" (token type: %d)", i, lexer->tokens[i].content, lexer->tokens[i].type);
+		log_debug("tokens[%d] \"%s\" (type: %d, code: %d)", i, lexer->tokens[i].content, lexer->tokens[i].type, lexer->tokens[i].code);
 		i++;
 	}
 }

@@ -1,12 +1,14 @@
 #include "shell.h"
 
-static void s_lexer_add(t_lexer *lexer, const char *str, int len, t_token_type type)
+static void s_lexer_add(t_lexer *lexer, const char *str,
+	size_t len, t_token_type type, t_token_code code)
 {
 	t_lexer_token item;
 	ft_strncpy(item.content, str, len);
-	item.content[len] = 0;
-	item.size = len;
+	item.content[len] = '\0';
+	item.len = len;
 	item.type = type;
+	item.code = code;
 	lexer->tokens[lexer->size] = item;
 	(lexer->size)++;
 }
@@ -17,7 +19,7 @@ static t_token *s_token_recognizer(const char *s)
 
 	while (list && list->op)
 	{
-		if (ft_strncmp(s, list->op, list->size) == 0)
+		if (ft_strncmp(s, list->op, list->len) == 0)
 			return ((t_token *)list);
 		list++;
 	}
@@ -43,14 +45,12 @@ int		tokenize(const char *s, t_lexer *lexer)
 			/* add TOKEN_NAME if exists and reset buffer */
 			if (ft_strlen(buf) > 0)
 			{
-				s_lexer_add(lexer, buf, ft_strlen(buf), TOKEN_NAME);
+				s_lexer_add(lexer, buf, ft_strlen(buf), TT_NAME, TC_NONE);
 				ft_bzero(buf, TOKEN_BUF_SIZE);
 				j = 0;
 			}
-			/* add TOKEN, skipping TOKEN_ESP */
-			if (token_found->type != TOKEN_ESP)
-				s_lexer_add(lexer, &s[i], token_found->size, token_found->type);
-			i += token_found->size;
+			s_lexer_add(lexer, &s[i], token_found->len, token_found->type, token_found->code);
+			i += token_found->len;
 		}
 		else
 		{
@@ -60,6 +60,6 @@ int		tokenize(const char *s, t_lexer *lexer)
 		}
 	}
 	if (ft_strlen(buf) > 0)
-		s_lexer_add(lexer, buf, ft_strlen(buf), TOKEN_NAME);
+		s_lexer_add(lexer, buf, ft_strlen(buf), TT_NAME, TC_NONE);
 	return (ST_OK);
 }

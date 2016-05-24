@@ -3,34 +3,62 @@
 
 #define TOKEN_BUF_SIZE 256
 
+/*
+** Refers to category
+*/
+
 typedef enum 	e_token_type
 {
-	TOKEN_NONE,
-	TOKEN_ESP,
-	TOKEN_SEMI,
-	TOKEN_BACKSLASH,
-	TOKEN_INHIB,
-	TOKEN_DBL_SEMI,
-	TOKEN_DBL_AND,
-	TOKEN_DBL_OR,
-	TOKEN_PIPE,
-	TOKEN_AND,
-	TOKEN_REDIR,
-	TOKEN_NAME
+	TT_NONE,
+	TT_SEPARATOR,
+	TT_INHIBITOR,
+	TT_JOBS,
+	TT_REDIR,
+	TT_SPECIAL,
+	TT_NAME,
+	TT_ERROR
 }				t_token_type;
+
+/*
+** Refers to token symbol
+** Should be unique for each operators
+*/
+
+typedef enum	e_token_code
+{
+	TC_NONE,
+	TC_BACKSLASH,
+	TC_QUOTE,
+	TC_DBL_QUOTE,
+	TC_DBL_SEMI,
+	TC_DBL_AND,
+	TC_DBL_OR,
+	TC_DBL_CHEV_LEFT,
+	TC_DBL_CHEV_RIGHT,
+	TC_CHEV_RIGHT,
+	TC_CHEV_LEFT,
+	TC_SEMI,
+	TC_PIPE,
+	TC_SPACE,
+	TC_TAB,
+	TC_NEWLINE,
+	TC_AND
+}				t_token_code;
 
 typedef struct s_token
 {
 	const char		*op;
-	int				size;
+	size_t			len;
 	t_token_type	type;
+	t_token_code	code;
 } 				t_token;
 
 typedef struct 	s_lexer_token
 {
 	char			content[128]; /* Replace with dynamic array */
-	int				size;
+	size_t			len;
 	t_token_type	type;
+	t_token_code	code;
 } 				t_lexer_token;
 
 typedef struct	s_lexer
