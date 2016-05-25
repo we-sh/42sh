@@ -72,6 +72,11 @@ static void		s_buffer_dump(t_lexer *lexer)
 	}
 }
 
+int				s_is_escaped(t_token *token)
+{
+	return (token && token->code == TC_BACKSLASH) ? 1 : 0;
+}
+
 int				s_is_inhibited(t_token *token)
 {
 	static int	inhibitor_code;
@@ -106,6 +111,12 @@ int				tokenize(const char *s, t_lexer *lexer)
 	while (s && s[i])
 	{
 		token_found = s_token_recognizer(&s[i]);
+		if (s_is_escaped(token_found))
+		{
+			s_bufferize(&s[++i], 1);
+			i++;
+			continue ;
+		}
 		is_inhibited = s_is_inhibited(token_found);
 		if (token_found != NULL && is_inhibited == 1)
 		{
