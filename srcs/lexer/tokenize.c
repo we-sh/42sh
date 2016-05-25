@@ -1,5 +1,11 @@
 #include "shell.h"
 
+/*
+** Simple implementation of lexer
+** Just return array of tokens
+** Support some inhibitors like quotes and double quotes
+*/
+
 static void		s_lexer_add(t_lexer *lexer, const char *str, t_token token)
 {
 	t_lexer_token item;
@@ -33,10 +39,11 @@ static int		g_buf_index;
 ** Fill buffer char by char in order to catch TT_NAME.
 */
 
-static void		s_bufferize(char c)
+static void		s_bufferize(const char *str, size_t len)
 {
-	g_buf[g_buf_index] = c;
-	g_buf_index++;
+	/* TODO: add this function to libft */
+	strncat(g_buf, str, len);
+	g_buf_index += len;
 	/* TODO: handle this case correctly */
 	if (g_buf_index >= TOKEN_BUF_SIZE)
 	{
@@ -65,23 +72,54 @@ static void		s_buffer_dump(t_lexer *lexer)
 	}
 }
 
+int				s_is_inhibited(t_token *token)
+{
+	static int	inhibitor_code;
+
+	if (token != NULL && token->type == TT_INHIBITOR)
+	{
+		if (token->code == inhibitor_code) /* Remove */
+			inhibitor_code = 0;
+		else if (inhibitor_code == 0) /* Add */
+		{
+			inhibitor_code = token->code;
+			/* Will returns true the next call otherwise token inhib himself. */
+			return (0);
+		}
+	}
+	return (inhibitor_code > 0) ? 1 : 0;
+}
+
+/*
+** Parse string argument chars by chars in order to detect special shell operators
+** If no operators are detected, current char will be bufferized
+*/
+
 int				tokenize(const char *s, t_lexer *lexer)
 {
 	t_token	*token_found;
+	int		is_inhibited;
 	int		i;
 
 	i = 0;
+	is_inhibited = 0;
 	while (s && s[i])
 	{
 		token_found = s_token_recognizer(&s[i]);
-		if (token_found != NULL)
+		is_inhibited = s_is_inhibited(token_found);
+		if (token_found != NULL && is_inhibited == 1)
+		{
+			s_bufferize(token_found->op, token_found->len);
+			i += token_found->len;
+		}
+		else if (token_found != NULL && is_inhibited == 0)
 		{
 			s_buffer_dump(lexer);
 			s_lexer_add(lexer, &s[i], *token_found);
 			i += token_found->len;
 		}
 		else
-			s_bufferize(s[i++]);
+			s_bufferize(&s[i++], 1);
 	}
 	s_buffer_dump(lexer);
 	return (ST_OK);

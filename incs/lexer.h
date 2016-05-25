@@ -12,6 +12,7 @@ typedef enum 	e_token_type
 	TT_NONE,
 	TT_SEPARATOR,
 	TT_INHIBITOR,
+	TT_ESCAPE,
 	TT_JOBS,
 	TT_REDIR,
 	TT_SPECIAL,

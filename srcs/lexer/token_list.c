@@ -19,7 +19,7 @@ static const t_token tokens[] = {
 	{"<", 1, TT_REDIR, TC_CHEV_LEFT},
 	{"|", 1, TT_REDIR, TC_PIPE},
 	{"&", 1, TT_SPECIAL, TC_AND},
-	{"\\", 1, TT_INHIBITOR, TC_BACKSLASH},
+	{"\\", 1, TT_ESCAPE, TC_BACKSLASH},
 	{"\"", 1, TT_INHIBITOR, TC_DBL_QUOTE},
 	{"'", 1, TT_INHIBITOR, TC_QUOTE},
 	{" ", 1, TT_SEPARATOR, TC_SPACE},
