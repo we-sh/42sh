@@ -133,5 +133,5 @@ int				tokenize(const char *s, t_lexer *lexer)
 			s_bufferize(&s[i++], 1);
 	}
 	s_buffer_dump(lexer);
-	return (ST_OK);
+	return (s_is_inhibited(NULL)) ? ST_LEXER : ST_OK;
 }
