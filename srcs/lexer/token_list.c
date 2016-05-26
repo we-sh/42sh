@@ -1,4 +1,4 @@
-# include "shell.h"
+#include "shell.h"
 
 /*
 ** This file refers all tokens operators.
@@ -8,7 +8,7 @@
 ** Later we should set TT_SEPARATOR dynamically (IFS)
 */
 
-static const t_token tokens[] = {
+static const t_token g_tokens[] = {
 	{"<<", 2, TT_REDIR, TC_DBL_CHEV_LEFT},
 	{">>", 2, TT_REDIR, TC_DBL_CHEV_RIGHT},
 	{"||", 2, TT_JOBS, TC_DBL_OR},
@@ -28,7 +28,7 @@ static const t_token tokens[] = {
 	{NULL, 1, TT_NONE, TC_NONE}
 };
 
-t_token *token_list(void)
+t_token	*token_list(void)
 {
-	return (t_token *)tokens;
+	return (t_token *)g_tokens;
 }

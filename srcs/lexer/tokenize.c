@@ -96,8 +96,8 @@ int				s_is_inhibited(t_token *token)
 }
 
 /*
-** Parse string argument chars by chars in order to detect special shell operators
-** If no operators are detected, current char will be bufferized
+** Parse string argument chars by chars in order to detect special shell
+** operators If no operators are detected, current char will be bufferized
 */
 
 int				tokenize(const char *s, t_lexer *lexer)
