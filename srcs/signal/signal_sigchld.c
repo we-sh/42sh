@@ -13,7 +13,7 @@
 ** - free the job when completed
 */
 
-static void	s_job_notification (void)
+static void	s_job_notification(void)
 {
 	t_job	*j;
 	t_list	*pos;
@@ -22,7 +22,7 @@ static void	s_job_notification (void)
 
 	head = &g_current_jobs_list_head;
 	safe = head->next;
-	while((pos = safe) && pos != head)
+	while ((pos = safe) && pos != head)
 	{
 		safe = safe->next;
 		j = CONTAINER_OF(pos, t_job, list_job);
@@ -35,7 +35,6 @@ static void	s_job_notification (void)
 			//	display a message "job completed"
 			//	reinit_prompt();
 			//}
-
 			// remove job from list of current jobs
 			list_del(pos);
 		}
@@ -48,7 +47,7 @@ static void	s_job_notification (void)
 	}
 }
 
-void	signal_sigchld(int sig)
+void		signal_sigchld(int sig)
 {
 	int		status;
 	pid_t	pid;
