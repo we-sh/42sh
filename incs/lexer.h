@@ -1,13 +1,13 @@
-#ifndef TOKEN_H
-# define TOKEN_H
+#ifndef LEXER_H
+# define LEXER_H
 
-#define TOKEN_BUF_SIZE 256
+# define TOKEN_BUF_SIZE 256
 
 /*
 ** Refers to category
 */
 
-typedef enum 	e_token_type
+typedef enum	e_token_type
 {
 	TT_NONE,
 	TT_SEPARATOR,
@@ -46,26 +46,26 @@ typedef enum	e_token_code
 	TC_AND
 }				t_token_code;
 
-typedef struct s_token
+typedef struct	s_token
 {
 	const char		*op;
 	size_t			len;
 	t_token_type	type;
 	t_token_code	code;
-} 				t_token;
+}				t_token;
 
-typedef struct 	s_lexer_token
+typedef struct	s_lexer_token
 {
 	char			content[256]; /* Replace with dynamic array */
 	size_t			len;
 	t_token_type	type;
 	t_token_code	code;
-} 				t_lexer_token;
+}				t_lexer_token;
 
 typedef struct	s_lexer
 {
-  t_lexer_token tokens[2048];  /* Replace with dynamic array */
-  int			size;
+	t_lexer_token	tokens[2048];  /* Replace with dynamic array */
+	int				size;
 }				t_lexer;
 
 #endif
