@@ -1,6 +1,8 @@
 #ifndef JOB_H
 # define JOB_H
 
+typedef struct termios		t_termios;
+
 typedef struct				s_proc
 {
 	t_list					list_proc;

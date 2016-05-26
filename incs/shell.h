@@ -9,7 +9,6 @@
 # include <signal.h>
 # include <termios.h>
 # include <errno.h>
-typedef struct termios		t_termios;
 
 # include "libft.h"
 # include "list.h"
