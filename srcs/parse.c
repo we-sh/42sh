@@ -24,11 +24,9 @@ int	parse(char const *input)
 		if ((j = job_alloc((char *)input)) == NULL)
 			return (ST_MALLOC);
 		list_push_back(&j->list_job, &g_current_jobs_list_head);
-
 		if ((p_node = list_node__proc_alloc(array)) == NULL)
 			return (ST_MALLOC);
 		list_push_back(p_node, &j->proc_head);
-
 		if ((ret = job_launch(j)) != ST_OK)
 			log_fatal("job launch error: %s", i18n_translate(ret));
 		/* TODO: free array */
