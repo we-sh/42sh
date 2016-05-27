@@ -31,7 +31,7 @@ t_job *s_job_create(char **array, char const *input)
 
 int	parse(t_sh *sh, char const *input)
 {
-	int		ret;
+	int		exit_status;
 	t_job	*j;
 	char	*cleaned;
 	char	**array;
@@ -43,10 +43,17 @@ int	parse(t_sh *sh, char const *input)
 	if (ft_strlen(cleaned) > 0 && (array = ft_strsplit(cleaned, '|')) != NULL)
 	{
 		if ((j = s_job_create(array, input)) == NULL)
+		{
 			log_fatal("parse job");
+			return (-1);
+		}
 		ft_memdel_tab((void ***)&array);
-		if ((ret = job_launch(sh, j)) != ST_OK)
-			log_fatal("job launch error: %s", i18n_translate(ret));
+		exit_status = job_launch(sh, j);
+		if (exit_status != ST_OK)
+		{
+			log_fatal("job launch error: %s", i18n_translate(exit_status));
+			return (exit_status);
+		}
 	}
 	ft_strdel(&cleaned);
 	return (ST_OK);

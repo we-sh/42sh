@@ -52,9 +52,9 @@ int				parse(t_sh *sh, char const *input);
 int				builtin_callback(int callback, t_sh *sh, t_proc *p);
 
 /*
-** exit/
+** log_st /
 */
-void			shell_exit(int status);
+void			log_st(int status);
 
 /*
 ** i18n/

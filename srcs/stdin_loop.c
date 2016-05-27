@@ -3,6 +3,7 @@
 int					stdin_loop(t_sh *sh)
 {
 	char			*input;
+	int 			exit_status;
 
 	input = NULL;
 	while (1)
@@ -18,7 +19,12 @@ int					stdin_loop(t_sh *sh)
 			log_info("exit");
 			break ;
 		}
-		parse(sh, input);
+		exit_status = parse(sh, input);
+		if (exit_status != ST_OK)
+		{
+			log_st(exit_status);
+			return (-1);
+		}
 		ft_strdel(&input);
 		input = NULL;
 	}

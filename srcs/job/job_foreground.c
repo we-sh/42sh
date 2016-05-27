@@ -15,7 +15,7 @@ int	s_leave_job_foreground(t_sh *sh, t_job *j)
 
 	// make the shell controlling the terminal
 	if (tcsetpgrp(sh->fd, sh->pgid) == -1)
-		shell_exit(ST_TCSETPGRP);
+	  return (ST_TCSETPGRP);
 
 	// save termios structure when job is stopped but not completed
 	// so that we can launch job again with its termios
@@ -34,7 +34,7 @@ int	job_foreground(t_sh *sh, t_job *j, int sigcont)
 
 	// make the job controlling the terminal
 	if (tcsetpgrp(sh->fd, j->pgid) == -1)
-		shell_exit(ST_TCSETPGRP);
+	  return (ST_TCSETPGRP);
 
 	// reset termios structure to its initial configuration
 	//if ((ret = update_termios(TCSADRAIN, &g_sh->termios_backup)) != STATUS_OK)

@@ -38,6 +38,7 @@ int					job_launch(t_sh *sh, t_job *j)
 	t_proc			*p;
 	int				job_pipe[2];
 	int				outputs[3];
+	int 			exit_status;
 
 	job_pipe[0] = -1;
 	outputs[STDIN_FILENO] = j->stdin;
@@ -79,7 +80,9 @@ int					job_launch(t_sh *sh, t_job *j)
 	}
 	else if (j->foreground == 1)
 	{
-		job_foreground(sh, j, 0);
+		exit_status = job_foreground(sh, j, 0);
+		if (exit_status != ST_OK)
+		  return (exit_status);
 	//	put job to foreground
 	//	after callback built-in
 	}

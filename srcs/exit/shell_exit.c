@@ -6,7 +6,7 @@
 ** - (TODO) set the termios structure to its original value
 */
 
-void	shell_exit(int status)
+void	log_st(int status)
 {
 	if (status > ST_OK)
 	{
@@ -14,7 +14,4 @@ void	shell_exit(int status)
 		ft_putstr_fd(": ", STDERR_FILENO);
 		ft_putendl_fd(i18n_translate(status), STDERR_FILENO);
 	}
-	exit(status);
-	//TEMP
-	// this will be just a log function
 }
