@@ -6,7 +6,7 @@
 ** It handles pipes and redirections.
 */
 
-static int			s_fork_it(t_job *j, t_proc *p)
+static int			s_fork_it(t_sh *sh, t_job *j, t_proc *p)
 {
 	// before callback built-in
 	p->pid = fork();
@@ -16,7 +16,7 @@ static int			s_fork_it(t_job *j, t_proc *p)
 		return (ST_FORK);
 	}
 	else if (p->pid == 0)
-		proc_launch(j, p);
+		proc_launch(sh, j, p);
 	else
 	{
 		if (shell_is_interactive() == 1)
@@ -59,7 +59,7 @@ int					job_launch(t_sh *sh, t_job *j)
 		p->stdin = outputs[STDIN_FILENO];
 		p->stdout = outputs[STDOUT_FILENO];
 		p->stderr = outputs[STDERR_FILENO];
-		if ((ret = s_fork_it(j, p)) != ST_OK)
+		if ((ret = s_fork_it(sh, j, p)) != ST_OK)
 			return(ret);
 
 		if (outputs[STDIN_FILENO] != j->stdin)
@@ -85,5 +85,13 @@ int					job_launch(t_sh *sh, t_job *j)
 	}
 	//else
 	//	put job to background
+	//	return here to avoid builtin callback
+
+	if ((pos = list_nth(head, -1)) != head)
+	{
+		p = CONTAINER_OF(pos, t_proc, list_proc);
+		if ((ret = builtin_callback(BLTIN_CB_AFTER, sh, p)) != ST_OK)
+			return (ret);
+	}
 	return (ST_OK);
 }

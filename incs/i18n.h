@@ -34,7 +34,9 @@ static const char		*g_i18n_fr[] = {
 	[ST_TTYNAME] = "impossible de récupérer le nom de l'interface du fd",
 	[ST_MALLOC] = "allocation de memoire impossible",
 	[ST_TCSETPGRP] = "impossible d'associer le PID à l'interface du terminal",
-	[ST_SIGNAL] = "impossible d'intercepter le signal"
+	[ST_SIGNAL] = "impossible d'intercepter le signal",
+	[ST_NOT_A_BUILTIN] = NULL,
+	[ST_CHDIR] = "imposible de changer de répertoire courant"
 };
 
 static const char		*g_i18n_en[] = {
@@ -47,7 +49,9 @@ static const char		*g_i18n_en[] = {
 	[ST_TTYNAME] = "failed getting the related device name of the fd",
 	[ST_MALLOC] = "memory allocation failed",
 	[ST_TCSETPGRP] = "failed setting the PID with the terminal device",
-	[ST_SIGNAL] = "failed catching signal"
+	[ST_SIGNAL] = "failed catching signal",
+	[ST_NOT_A_BUILTIN] = NULL,
+	[ST_CHDIR] = "failed changing current directory"
 };
 
 static const char		**g_i18n_translations[] = {

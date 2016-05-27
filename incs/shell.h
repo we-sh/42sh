@@ -14,6 +14,14 @@
 # include <errno.h>
 # include <curses.h>
 
+/*
+** Shell structure
+*/
+typedef struct	e_sh
+{
+	pid_t		pgid;
+}				t_sh;
+
 # include "libft.h"
 # include "list.h"
 # include "logger.h"
@@ -24,14 +32,7 @@
 # include "i18n.h"
 # include "get_next_line.h"
 # include "lexer.h"
-
-/*
-** Shell structure
-*/
-typedef struct	e_sh
-{
-	pid_t		pgid;
-}				t_sh;
+# include "builtin.h"
 
 /*
 ** List of current jobs
@@ -40,6 +41,11 @@ t_list		g_current_jobs_list_head;
 
 int				stdin_loop(t_sh *sh);
 int				parse(t_sh *sh, char const *input);
+
+/*
+** builtins/
+*/
+int				builtin_callback(int callback, t_sh *sh, t_proc *p);
 
 /*
 ** exit/
@@ -67,7 +73,7 @@ int				job_is_completed(t_job *j);
 int				job_is_stopped(t_job *j);
 int				job_launch(t_sh *sh, t_job *j);
 t_proc			*proc_find(pid_t pid);
-void			proc_launch(t_job *j, t_proc *p);
+void			proc_launch(t_sh *sh, t_job *j, t_proc *p);
 int				proc_update_status(pid_t pid, int status);
 t_list			*list_node__proc_alloc(char **argv);
 t_job			*job_alloc(char const *command);

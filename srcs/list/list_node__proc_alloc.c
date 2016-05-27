@@ -13,6 +13,7 @@ t_list			*list_node__proc_alloc(char **argv)
 	p->stdin = STDIN_FILENO;
 	p->stdout = STDOUT_FILENO;
 	p->stderr = STDERR_FILENO;
-	p->exit_status = 0;
+	p->exit_status = EXIT_SUCCESS;
+	p->builtin_status = ST_OK;
 	return (&p->list_proc);
 }

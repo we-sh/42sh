@@ -4,13 +4,13 @@
 ** This function is the entry point of a child process (freshly forked).
 */
 
-void		proc_launch(t_job *j, t_proc *p)
+void		proc_launch(t_sh *sh, t_job *j, t_proc *p)
 {
-	pid_t pgid;
+	pid_t	pgid;
 
+	p->pid = getpid();
 	if (shell_is_interactive() == 1)
 	{
-		p->pid = getpid();
 		pgid = j->pgid;
 		if (pgid == 0)
 			pgid = p->pid;
@@ -36,7 +36,7 @@ void		proc_launch(t_job *j, t_proc *p)
 		close(p->stderr);
 	}
 
-	// built-in body callback here
+	builtin_callback(BLTIN_CB_EXEC, sh, p);
 	execvp(p->argv[0], p->argv);
 	// show error
 	exit(EXIT_FAILURE);

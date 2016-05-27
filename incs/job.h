@@ -14,6 +14,7 @@ typedef struct				s_proc
 	int						stdout;
 	int						stderr;
 	int						exit_status;
+	int						builtin_status;
 }							t_proc;
 
 typedef struct				s_job
