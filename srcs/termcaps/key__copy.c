@@ -1,4 +1,4 @@
-# include "shell.h"
+#include "shell.h"
 
 int			key__copy(t_internal_context *in_context)
 {
@@ -9,9 +9,16 @@ int			key__copy(t_internal_context *in_context)
 	{
 		in_context->state = STATE_REGULAR;
 		if (key__share__selection_get(in_context, &copy_start, &copy_size) > 0)
-			FATAL("key__share__selection_get() failed %s\r", "");
-		if (key__share__copy_build_copy(&in_context->command_line, copy_start, copy_size, &in_context->copy) > 0)
-			FATAL("key__share__copy_build_copy() failed %s\r", "");
+		{
+			log_error("key__share__selection_get() failed %s", "");
+			return (0);
+		}
+		if (key__share__copy_build_copy(&in_context->command_line, copy_start,
+					copy_size, &in_context->copy) > 0)
+		{
+			log_error("key__share__copy_build_copy() failed %s", "");
+			return (0);
+		}
 	}
 	return (1);
 }

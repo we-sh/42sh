@@ -92,6 +92,6 @@ char			*termcaps_read_input(const int fd);
 int				termcaps_string_to_command_line(const size_t input_buffer_size,
 										  const char *input_buffer,
 										  t_list_head *command_line);
-struct termios	termcaps_old_termios(void);
+struct termios	*termcaps_old_termios(void);
 
 #endif

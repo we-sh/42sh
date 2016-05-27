@@ -78,16 +78,14 @@
 **	CS8 : This specifies eight bits per byte.
 **	
 */
+
 static int termcaps_termios_init(const int fd)
 {
 	struct termios			termios_old;
 	struct termios			termios_new;
 
-	/* get the current termios structure */
 	if (tcgetattr(0, &termios_old) != 0)
 		return (-1); // a set
-
-	/* POSIX raw */
 	termios_new.c_iflag &= ~(IGNBRK | BRKINT | PARMRK | ISTRIP
 							 | INLCR | IGNCR | ICRNL | IXON);
 	termios_new.c_oflag &= ~OPOST;
@@ -97,15 +95,12 @@ static int termcaps_termios_init(const int fd)
 	termios_new.c_cc[VMIN] = 1;
 	termios_new.c_cc[VTIME] = 0;
 
-
 	long termios_ospeed = cfgetospeed(&termios_old);
 	if (termios_ospeed > SHRT_MAX)
 		ospeed = SHRT_MAX;
 	else
 		ospeed = termios_ospeed;
 
-
-	/* set terminal in raw mode */
 	termcaps_old_termios();
 	if (tcsetattr(fd, TCSADRAIN, &termios_new) != 0) // WHY NOT TCSADRAIN
 		return (-1); // a set
@@ -126,6 +121,7 @@ static int termcaps_termios_init(const int fd)
 /*
 ** Emacs like
 */
+
 static int termcaps_initialize_key_map_meta(void)
 {
 	ASSERT(caps__init_func_by_keycode(CAPS__KEYCODE_META_M, &key__send));
@@ -156,6 +152,7 @@ static int termcaps_initialize_key_map_meta(void)
 /*
 ** Legit
 */
+
 static int termcaps_initialize_key_map_cursor(void)
 {
 	ASSERT(caps__init_func(DELETE_UNDER_CURSOR_KEY, &key__delete_under_cursor));
@@ -186,6 +183,5 @@ int			termcaps_init()
 		return (-1); //udpate return
 	if (termcaps_termios_init(shell_fd()) < 0)
 		return (-1); //udpate return
-
 	return (ST_OK);
 }

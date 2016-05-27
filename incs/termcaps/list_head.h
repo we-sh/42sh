@@ -77,7 +77,7 @@ void			list_head__command_line_destroy(t_list_head *head);
 /*
 ** list head command line to buffer
 */
-bool		list_head__command_line_to_buffer(const t_list_head *head, const size_t buffer_size_max, size_t *buffer_size, char *buffer);
+int				list_head__command_line_to_buffer(const t_list_head *head, const size_t buffer_size_max, size_t *buffer_size, char *buffer);
 
 /*
 ** -- History node structure --

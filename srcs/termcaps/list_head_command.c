@@ -3,21 +3,21 @@
 /*
 ** list node command line
 */
+
 t_list_node_cmd	*list_node__command_line_create(const size_t character_size, const char *character)
 {
 	t_list_node_cmd	*new;
 
 	if (!character_size || character_size > CHARACTER_SIZE_MAX || !character)
 	{
-		LOG_ERROR("character_size %zu size_max %zu character %p",
-				  character_size, CHARACTER_SIZE_MAX, (void *)character);
-		return ((t_list_node_cmd *)0);
+		log_error("character_size %zu size_max %zu character %p", character_size, CHARACTER_SIZE_MAX, (void *)character);
+		return (NULL);
 	}
 	new = (t_list_node_cmd *)malloc(sizeof(t_list_node_cmd));
 	if (!new)
 	{
-		LOG_ERROR("malloc() failed %s", "");
-		return ((t_list_node_cmd *)0);
+		log_error("malloc() failed %s", "");
+		return (NULL);
 	}
 	INIT_LIST_HEAD(&new->list);
 	new->character_size = character_size;
@@ -35,11 +35,11 @@ void			list_node__command_line_destroy(t_list *entry)
 
 /*
 ** list head command line
-**
-** dup()
-** destroy()
-** to buffer()
+** dup
+** destroy
+** to buffer
 */
+
 t_list_head		*list_head__command_line_dup(t_list_head *dst, t_list_head *src)
 {
 	t_list			*pos;
@@ -54,7 +54,10 @@ t_list_head		*list_head__command_line_dup(t_list_head *dst, t_list_head *src)
 		cur = CONTAINER_OF(pos, t_list_node_cmd, list);
 		new = list_node__command_line_create(cur->character_size, cur->character);
 		if (!new)
-			FATAL("list_node__command_line_create() failed %s", "");
+		{
+			log_error("list_node__command_line_create() failed");
+			return (0);
+		}
 		list_head__insert(dst, offset, &new->list);
 		offset++;
 	}
@@ -76,7 +79,10 @@ void			list_head__command_line_destroy(t_list_head *head)
 	}
 }
 
-bool		list_head__command_line_to_buffer(const t_list_head *head, const size_t buffer_size_max, size_t *buffer_size, char *buffer)
+int				list_head__command_line_to_buffer(const t_list_head *head,
+												const size_t buffer_size_max,
+												size_t *buffer_size,
+												char *buffer)
 {
 	size_t			buffer_offset;
 	t_list			*pos;
@@ -95,5 +101,5 @@ bool		list_head__command_line_to_buffer(const t_list_head *head, const size_t bu
 		buffer_offset += node_cmd->character_size;
 	}
 	*buffer_size = buffer_offset;
-	return (TRUE);
+	return (1);
 }

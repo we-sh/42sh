@@ -3,7 +3,7 @@
 int					stdin_loop(void)
 {
 	char			*input;
-	struct termios	termios_old;
+	struct termios	*termios_old;
 
 	input = NULL;
 	while (1)
@@ -11,15 +11,17 @@ int					stdin_loop(void)
 		input = termcaps_read_input(shell_fd());
 		if (input == NULL)
 		{
-			log_info("input null");
+			log_info("termcaps_read_input() failed");
 			break ;
 		}
 		if (!ft_strcmp(input, "exit"))//temporaire
 		{
-			log_info("exit\n");
+			log_info("exit");
 			termios_old = termcaps_old_termios();
-			if (tcsetattr(shell_fd(), TCSADRAIN, &termios_old) != 0)
-				FATAL("tcsetattr() failed t finalize %s\r", "");
+			if (termios_old == NULL)
+				log_error("termcaps_old_termios() failed");
+			else if (tcsetattr(shell_fd(), TCSADRAIN, termios_old) != 0)
+				log_error("tcsetattr() failed t finalize, restart your terminal");
 			exit(0);
 		}
 		parse(input);

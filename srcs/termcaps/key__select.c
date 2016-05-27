@@ -6,7 +6,8 @@ int		key__select(t_internal_context *in_context)
 	{
 		in_context->state = STATE_SELECTION;
 		in_context->selection_offset_start = in_context->command_line.offset;
-		in_context->selection_offset_end = MINISHELL_KEY__SHARE__SELECTION_OFFSET_UNDEFINED;
+		in_context->selection_offset_end =
+			MINISHELL_KEY__SHARE__SELECTION_OFFSET_UNDEFINED;
 	}
 	else if (in_context->state == STATE_SELECTION)
 	{
