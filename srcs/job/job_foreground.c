@@ -31,8 +31,7 @@ int	job_foreground(t_job *j, int sigcont)
 			// todo error management
 		}
 	}
-	while (job_is_completed(j) == 0);
-	//while (is_job_completed(j) == 0 && is_job_stopped(j) == 0);
+	while (job_is_completed(j) == 0 && job_is_stopped(j) == 0);
 
 	// make the shell controlling the terminal
 	if (tcsetpgrp(shell_fd(), shell_pid) == -1)

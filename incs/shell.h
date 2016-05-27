@@ -55,6 +55,7 @@ int				shell_language(int lang);
 */
 int				job_foreground(t_job *j, int sigcont);
 int				job_is_completed(t_job *j);
+int				job_is_stopped(t_job *j);
 int				job_launch(t_job *j);
 t_proc			*proc_find(pid_t pid);
 void			proc_launch(t_job *j, t_proc *p);

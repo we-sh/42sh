@@ -31,6 +31,7 @@ SRCS		=	\
 				job/job_alloc.c					\
 				job/job_foreground.c			\
 				job/job_is_completed.c			\
+				job/job_is_stopped.c			\
 				job/job_launch.c				\
 				job/proc_find.c					\
 				job/proc_launch.c				\
@@ -359,6 +360,18 @@ $(DIROBJ)job_is_completed.o: srcs/job/job_is_completed.c incs/shell.h \
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/job/job_is_completed.c\n"
 		@$(CC) -c ./srcs/job/job_is_completed.c -o ./.objs/job_is_completed.o $(CPPFLAGS) $(CFLAGS) 
+
+$(DIROBJ)job_is_stopped.o: srcs/job/job_is_stopped.c incs/shell.h \
+  libs/libft/./incs/libft.h libs/libft/./incs/list.h \
+  libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
+  incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
+  libs/libcaps/./incs/types.h incs/termcaps/log.h \
+  incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
+  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/lexer.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/job/job_is_stopped.c\n"
+		@$(CC) -c ./srcs/job/job_is_stopped.c -o ./.objs/job_is_stopped.o $(CPPFLAGS) $(CFLAGS) 
 
 $(DIROBJ)job_launch.o: srcs/job/job_launch.c incs/shell.h \
   libs/libft/./incs/libft.h libs/libft/./incs/list.h \
