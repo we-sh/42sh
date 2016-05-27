@@ -3,6 +3,7 @@
 /*
 ** list head
 */
+
 void	list_head__insert(t_list_head *head, size_t offset, t_list *new)
 {
 	list_insert(new, &head->list, offset);
@@ -23,7 +24,10 @@ void	list_head__init(t_list_head *head)
 	INIT_LIST_HEAD(&head->list);
 }
 
-void	list_head__slice(t_list_head *new, t_list_head *head, size_t start, size_t len)
+void	list_head__slice(t_list_head *new,
+						t_list_head *head,
+						size_t start,
+						size_t len)
 {
 	list_slice(&new->list, &head->list, start, len);
 	new->size += len;

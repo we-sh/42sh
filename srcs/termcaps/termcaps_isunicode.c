@@ -1,6 +1,6 @@
 #include "shell.h"
 
-# define ISUTF(c) (((c) & 0xc0) != 0x80)
+#define ISUTF(c) (((c) & 0xc0) != 0x80)
 
 int	termcaps_isunicode(const char c, size_t *out_character_bytes_count)
 {
