@@ -86,8 +86,8 @@ static int termcaps_termios_init(const int fd)
 
 	if (tcgetattr(0, &termios_old) != 0)
 		return (-1); // a set
-	termios_new.c_iflag &= ~(IGNBRK | BRKINT | PARMRK | ISTRIP
-							 | INLCR | IGNCR | ICRNL | IXON);
+	termios_new.c_iflag &= ~(IGNBRK | BRKINT | PARMRK | ISTRIP | IXON
+							 | INLCR | IGNCR | ICRNL);
 	termios_new.c_oflag &= ~OPOST;
 	termios_new.c_lflag &= ~(ECHO | ECHONL | ICANON | ISIG | IEXTEN);
 	termios_new.c_cflag &= ~(CSIZE | PARENB);
