@@ -16,7 +16,7 @@ void		proc_launch(t_sh *sh, t_job *j, t_proc *p)
 			pgid = p->pid;
 		setpgid(p->pid, pgid);
 		if (j->foreground == 1)
-			tcsetpgrp(shell_fd(), pgid);
+			tcsetpgrp(sh->fd, pgid);
 		signal_to_default();
 	}
 

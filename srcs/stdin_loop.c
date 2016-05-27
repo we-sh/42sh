@@ -3,12 +3,11 @@
 int					stdin_loop(t_sh *sh)
 {
 	char			*input;
-	struct termios	*termios_old;
 
 	input = NULL;
 	while (1)
 	{
-		input = termcaps_read_input(shell_fd());
+		input = termcaps_read_input(sh->fd);
 		if (input == NULL)
 		{
 			log_info("termcaps_read_input() failed");
@@ -17,12 +16,7 @@ int					stdin_loop(t_sh *sh)
 		if (!ft_strcmp(input, "exit"))//temporaire
 		{
 			log_info("exit");
-			termios_old = termcaps_old_termios();
-			if (termios_old == NULL)
-				log_error("termcaps_old_termios() failed");
-			else if (tcsetattr(shell_fd(), TCSADRAIN, termios_old) != 0)
-				log_error("tcsetattr() failed t finalize, restart your terminal");
-			exit(0);
+			break ;
 		}
 		parse(sh, input);
 		ft_strdel(&input);

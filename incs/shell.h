@@ -22,8 +22,8 @@ typedef struct	e_sh
 {
 	pid_t			pgid;
 	int 			fd;
-	struct termios 	oldter;
-	struct termios 	newter;
+	struct termios 	termios_old;
+	struct termios 	termios_new;
 }				t_sh;
 
 # include "libft.h"
@@ -64,7 +64,7 @@ char const		*i18n_translate(int status);
 /*
 ** init/
 */
-int				shell_fd(void);
+//int				shell_fd(void);
 int				shell_init(t_sh *sh);
 int				shell_is_interactive(void);
 int				shell_language(int lang);

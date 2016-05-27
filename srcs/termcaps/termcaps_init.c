@@ -99,7 +99,7 @@ static int termcaps_termios_init(t_sh *sh)
 	else
 		ospeed = termios_ospeed;
 
-	if (tcsetattr(fd, TCSADRAIN, &sh->termios_new) != 0) // WHY NOT TCSADRAIN
+	if (tcsetattr(sh->fd, TCSADRAIN, &sh->termios_new) != 0) // WHY NOT TCSADRAIN
 		return (-1); // a set
 	return (1);
 }
@@ -167,7 +167,7 @@ int			termcaps_init(t_sh *sh)
 		return (-1); //udpate return
 	if (termcaps_initialize_key_map_meta() < 0 || termcaps_initialize_key_map_cursor() < 0)
 		return (-1); //udpate return
-	if (termcaps_termios_init(shell_fd()) < 0)
+	if (termcaps_termios_init(sh) < 0)
 		return (-1); //udpate return
 	return (ST_OK);
 }

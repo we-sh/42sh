@@ -20,6 +20,9 @@ int		main(int ac, const char *av[])
 		log_fatal("get_next_line failed (%d)", ret);
 	if (!caps__finalize())
 		return (-1); // Check le retour
+	// shell_end() ?
+	if (tcsetattr(0, TCSANOW, &sh.termios_old) == -1)
+	  log_fatal("tcsetattr() failed to restore the terminal");
 	logger_close();
 	return (0);
 }
