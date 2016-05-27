@@ -14,7 +14,11 @@ void		proc_launch(t_job *j, t_proc *p)
 		pgid = j->pgid;
 		if (pgid == 0)
 			pgid = p->pid;
-		setpgid(p->pid, pgid);
+		if (setpgid(p->pid, pgid) != 0)
+		{
+			perror("setgid");
+			return ;
+		}
 		if (j->foreground == 1)
 			tcsetpgrp(shell_fd(), pgid);
 		signal_to_default();
@@ -22,22 +26,50 @@ void		proc_launch(t_job *j, t_proc *p)
 
 	if (p->stdin != STDIN_FILENO)
 	{
-		dup2(p->stdin, STDIN_FILENO);
-		close(p->stdin);
+		if (dup2(p->stdin, STDIN_FILENO) == -1)
+		{
+			perror("dup2");
+			return ;
+		}
+		if (close(p->stdin) != 0)
+		{
+			perror("close");
+			return ;
+		}
 	}
 	if (p->stdout != STDOUT_FILENO)
 	{
-		dup2(p->stdout, STDOUT_FILENO);
-		close(p->stdout);
+		if (dup2(p->stdout, STDOUT_FILENO) == -1)
+		{
+			perror("dup2");
+			return ;
+		}
+		if (close(p->stdout) != 0)
+		{
+			perror("close");
+			return ;
+		}
 	}
 	if (p->stderr != STDERR_FILENO)
 	{
-		dup2(p->stderr, STDERR_FILENO);
-		close(p->stderr);
+		if (dup2(p->stderr, STDERR_FILENO))
+		{
+			perror("dup2");
+			return ;
+		}
+		if (close(p->stderr))
+		{
+			perror("close");
+			return ;
+		}
 	}
 
 	// built-in body callback here
-	execvp(p->argv[0], p->argv);
+	if (execvp(p->argv[0], p->argv) == -1)
+	{
+		perror("execvp");
+		return ;
+	}
 	// show error
 	exit(EXIT_FAILURE);
 }
