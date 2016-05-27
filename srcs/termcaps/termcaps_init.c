@@ -86,8 +86,8 @@ static int termcaps_termios_init(const int fd)
 
 	if (tcgetattr(0, &termios_old) != 0)
 		return (-1); // a set
-	termios_new.c_iflag &= ~(IGNBRK | BRKINT | PARMRK | ISTRIP | IXON
-							 | INLCR | IGNCR | ICRNL);
+	termios_new.c_iflag &= ~(IGNBRK | BRKINT | PARMRK | ISTRIP
+							 | INLCR | IGNCR | ICRNL | IXON);
 	termios_new.c_oflag &= ~OPOST;
 	termios_new.c_lflag &= ~(ECHO | ECHONL | ICANON | ISIG | IEXTEN);
 	termios_new.c_cflag &= ~(CSIZE | PARENB);
@@ -101,24 +101,8 @@ static int termcaps_termios_init(const int fd)
 	else
 		ospeed = termios_ospeed;
 
-	if (termcaps_old_termios() == NULL)
-  {
-    log_error("termcaps_old_termios() failed");
-    return (-1);
-  }
 	if (tcsetattr(fd, TCSADRAIN, &termios_new) != 0) // WHY NOT TCSADRAIN
 		return (-1); // a set
-	// if (termcaps_read_input(fd) < 0)
-	// {
-	// 	LOG_ERROR("minishell__read_input() failed %s\r", "");
-	// 	/* set terminal back to normal */
-	// 	if (tcsetattr(fd, TCSADRAIN, &termios_old) != 0)
-	// 		LOG_ERROR("tcsetattr() failed t finalize %s\r", "");
-	// 	return (-1);
-	// }
-	// /* set terminal back to normal */
-	// if (tcsetattr(fd, TCSADRAIN, &termios_old) != 0)
-	// 	FATAL("tcsetattr() failed t finalize %s\r", "");
 	return (1);
 }
 
