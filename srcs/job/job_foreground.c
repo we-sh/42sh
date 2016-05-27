@@ -8,11 +8,8 @@
 ** back to foreground, letting the user enter a new command.
 */
 
-int	s_bask_to_shell(t_sh *sh, t_job *j)
+int	s_bask_to_shell(t_sh *sh)
 {
-	// temporary
-	(void)j;
-
 	// make the shell controlling the terminal
 	if (tcsetpgrp(sh->fd, sh->pgid) == -1)
 	  return (ST_TCSETPGRP);
@@ -34,7 +31,7 @@ int	job_foreground(t_sh *sh, t_job *j, int sigcont)
 		{
 			// todo notify the user a problem occured
 		}
-		return (s_bask_to_shell(sh, j));
+		return (s_bask_to_shell(sh));
 	}
 
 	// reset termios structure to its initial configuration
@@ -47,7 +44,7 @@ int	job_foreground(t_sh *sh, t_job *j, int sigcont)
 		{
 			// todo notify the user a problem occured
 			log_error("failed to continue the stopped job %d", j->pgid);
-			return (s_bask_to_shell(sh, j));
+			return (s_bask_to_shell(sh));
 		}
 	}
 	while (job_is_completed(j) == 0 && job_is_stopped(j) == 0);
@@ -60,5 +57,5 @@ int	job_foreground(t_sh *sh, t_job *j, int sigcont)
 		log_error("failed to save termios structure a the job %d", j->pgid);
 	}
 
-	return (s_bask_to_shell(sh, j));
+	return (s_bask_to_shell(sh));
 }
