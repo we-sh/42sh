@@ -28,6 +28,7 @@ int	proc_update_status(pid_t pid, int status)
 			p->completed = 1;
 			if (WIFSIGNALED(status))
 			{
+				log_debug("proc %d signal recieved: %d", pid, WTERMSIG(status));
 				// notify user about signal (segfault, sigabort...)
 			}
 		}
