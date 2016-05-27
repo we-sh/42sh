@@ -15,8 +15,8 @@ void		proc_launch(t_job *j, t_proc *p)
 		if (pgid == 0)
 			pgid = p->pid;
 		setpgid(p->pid, pgid);
-		// if (j->foreground == 1)
-		// 	tcsetpgrp(FILE DESCRIPTOR TTY, pgid);
+		if (j->foreground == 1)
+			tcsetpgrp(shell_fd(), pgid);
 		signal_to_default();
 	}
 

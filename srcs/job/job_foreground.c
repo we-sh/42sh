@@ -10,11 +10,14 @@
 
 int	job_foreground(t_job *j, int sigcont)
 {
+	// temporary
+	int shell_pid = getpid();
+
 	log_debug("put job to foreground (pgid: %d)", j->pgid);
 
 	// make the job controlling the terminal
-	//if (tcsetpgrp(shell_fd(), j->pgid) == -1)
-	//	shell_exit(ST_TCSETPGRP);
+	if (tcsetpgrp(shell_fd(), j->pgid) == -1)
+		shell_exit(ST_TCSETPGRP);
 
 	// reset termios structure to its initial configuration
 	//if ((ret = update_termios(TCSADRAIN, &g_sh->termios_backup)) != STATUS_OK)
@@ -32,8 +35,8 @@ int	job_foreground(t_job *j, int sigcont)
 	//while (is_job_completed(j) == 0 && is_job_stopped(j) == 0);
 
 	// make the shell controlling the terminal
-	//if (tcsetpgrp(shell_fd(), SHELL PID) == -1)
-	//	shell_exit(ST_TCSETPGRP);
+	if (tcsetpgrp(shell_fd(), shell_pid) == -1)
+		shell_exit(ST_TCSETPGRP);
 
 	// save termios structure when job is stopped but not completed
 	// so that we can launch job again with its termios
