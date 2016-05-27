@@ -3,17 +3,18 @@
 /*
 ** Get the NEXT / PREV word offset
 */
-# define ISSPACE(node) (node->character_size == 1 && ft_isspace(node->character[0]))
+#define ISSPACE(node) (node->character_size == 1 && ft_isspace(node->character[0]))
 
-void				key__share__prev_word_offset(const t_list_head *command_line, size_t current_offset, size_t *out_offset)
+void		key__share__prev_word_offset(const t_list_head *command_line,
+										size_t current_offset,
+										size_t *out_offset)
 {
-	t_list			*pos;
-	t_list_node_cmd	*node_cmd;
-	
+	t_list				*pos;
+	t_list_node_cmd		*node_cmd;
 	enum {
 		STATE_UNDEFINED,
 		STATE_ALNUM
-	} state;
+	}					state;
 
 	pos = list_nth(&command_line->list, current_offset - 1);
 	state = STATE_UNDEFINED;
@@ -30,14 +31,16 @@ void				key__share__prev_word_offset(const t_list_head *command_line, size_t cur
 	*out_offset = current_offset;
 }
 
-void				key__share__next_word_offset(const t_list_head *command_line, size_t current_offset, size_t *out_offset)
+void		key__share__next_word_offset(const t_list_head *command_line,
+										size_t current_offset,
+										size_t *out_offset)
 {
 	t_list			*pos;
 	t_list_node_cmd	*node_cmd;
 	enum {
 		STATE_UNDEFINED,
 		STATE_ISSPACE
-	} state;
+	}				state;
 
 	pos = list_nth(&command_line->list, current_offset);
 	state = STATE_UNDEFINED;
