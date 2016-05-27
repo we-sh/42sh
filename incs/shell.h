@@ -30,7 +30,10 @@
 */
 typedef struct	e_sh
 {
-	pid_t		pgid;
+	pid_t			pgid;
+	int 			fd;
+	struct termios 	oldter;
+	struct termios 	newter;
 }				t_sh;
 
 /*
@@ -97,12 +100,11 @@ int				termcaps_display_command_line(const t_list_head *command_line);
 size_t			termcaps_get_character_bytes_count(const size_t input_bytes_count,
 								  const char *input_bytes,
 								  size_t *out_missing_bytes_count);
-int				termcaps_init(void);
+int				termcaps_init(t_sh *sh);
 int				termcaps_isunicode(const char c, size_t *out_character_bytes_count);
 char			*termcaps_read_input(const int fd);
 int				termcaps_string_to_command_line(const size_t input_buffer_size,
 										  const char *input_buffer,
 										  t_list_head *command_line);
-struct termios	*termcaps_old_termios(void);
 
 #endif

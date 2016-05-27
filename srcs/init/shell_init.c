@@ -28,5 +28,10 @@ int				shell_init(t_sh *sh)
 		if (tcsetpgrp(STDIN_FILENO, sh->pgid) < 0)
 			return (ST_TCSETPGRP);
 	}
+	if (termcaps_init(sh) != ST_OK)
+	{
+ 	 log_error("termcaps_init() failed"); 
+	 return (-1);
+	}
 	return (ST_OK);
 }
