@@ -30,6 +30,7 @@ int	job_foreground(t_sh *sh, t_job *j, int sigcont)
 		if (!(errno == EINVAL && (job_is_completed(j) == 1 || job_is_stopped(j) == 1)))
 		{
 			// todo notify the user a problem occured
+			log_error("failed to set the stopped job %d", j->pgid);
 		}
 		return (s_bask_to_shell(sh));
 	}
