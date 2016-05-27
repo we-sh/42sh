@@ -8,8 +8,6 @@
 
 void	shell_exit(int status)
 {
-  struct termios  *ter;
-
 	if (status > ST_OK)
 	{
 		ft_putstr_fd(PROGRAM_NAME, STDERR_FILENO);
