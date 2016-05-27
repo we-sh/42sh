@@ -1,6 +1,6 @@
 #include "shell.h"
 
-int					stdin_loop(void)
+int					stdin_loop(t_sh *sh)
 {
 	char			*input;
 	struct termios	termios_old;
@@ -22,7 +22,7 @@ int					stdin_loop(void)
 				FATAL("tcsetattr() failed t finalize %s\r", "");
 			exit(0);
 		}
-		parse(input);
+		parse(sh, input);
 		ft_strdel(&input);
 		input = NULL;
 	}

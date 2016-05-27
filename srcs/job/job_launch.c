@@ -30,7 +30,7 @@ static int			s_fork_it(t_job *j, t_proc *p)
 	return (ST_OK);
 }
 
-int					job_launch(t_job *j)
+int					job_launch(t_sh *sh, t_job *j)
 {
 	int				ret;
 	t_list			*pos;
@@ -79,7 +79,7 @@ int					job_launch(t_job *j)
 	}
 	else if (j->foreground == 1)
 	{
-		job_foreground(j, 0);
+		job_foreground(sh, j, 0);
 	//	put job to foreground
 	//	after callback built-in
 	}

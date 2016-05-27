@@ -1,10 +1,10 @@
 #include "shell.h"
 
-int				shell_init(void)
+int				shell_init(t_sh *sh)
 {
 	int			ret;
-	pid_t		sh_pgid;
 
+	sh->pgid = getpid();
 	if ((ret = shell_language(LANG_EN)) < 0)
 		return (-ret);
 	if ((ret = shell_is_interactive()) < 0)
@@ -13,20 +13,19 @@ int				shell_init(void)
 	{
 		if ((ret = shell_fd()) < 0)
 			return (-ret);
-		while (tcgetpgrp(STDIN_FILENO) != (sh_pgid = getpgrp()))
-			kill(-sh_pgid, SIGTTIN);
+		while (tcgetpgrp(STDIN_FILENO) != (sh->pgid = getpgrp()))
+			kill(-sh->pgid, SIGTTIN);
 
 		if ((ret = signal_to_ignore()) != ST_OK)
 			return (ret);
 
-		sh_pgid = getpid();
-		if (setpgid(sh_pgid, sh_pgid) < 0)
+		if (setpgid(sh->pgid, sh->pgid) < 0)
 		{
 			log_fatal("setpgid() failed.");
 			return (ST_SETPGID);
 		}
-		log_info("pgid: %d", sh_pgid);
-		if (tcsetpgrp(STDIN_FILENO, sh_pgid) < 0)
+		log_info("pgid: %d", sh->pgid);
+		if (tcsetpgrp(STDIN_FILENO, sh->pgid) < 0)
 			return (ST_TCSETPGRP);
 	}
 	return (ST_OK);
