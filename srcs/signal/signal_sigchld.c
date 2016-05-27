@@ -52,18 +52,16 @@ void		signal_sigchld(int sig)
 {
 	int		status;
 	pid_t	pid;
-	int		test;
 
-	test = 0;
 	if (sig == SIGCHLD)
 	{
 		log_info("SIGCHLD received");
 		errno = 0;
-		while (test == 0)
+		while (1)
 		{
 			pid = waitpid(WAIT_ANY, &status, WUNTRACED | WNOHANG);
 			if (proc_update_status(pid, status) == 0)
-				test = 1;
+				break ;
 		}
 		s_job_notification();
 	}

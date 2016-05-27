@@ -1,6 +1,7 @@
 #ifndef SHELL_H
 # define SHELL_H
 # define TTY_DEVICE "/dev/tty"
+# define PROGRAM_NAME "42sh"
 
 /*
 ** Extern headers and structures
@@ -61,7 +62,8 @@ t_proc			*proc_find(pid_t pid);
 void			proc_launch(t_job *j, t_proc *p);
 int				proc_update_status(pid_t pid, int status);
 t_list			*list_node__proc_alloc(char **argv);
-t_job			*job_alloc(char *command);
+t_job			*job_alloc(char const *command);
+int				job_wait(t_job *j);
 
 /*
 ** signal/

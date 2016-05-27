@@ -15,6 +15,7 @@ int		main(int ac, const char *av[])
 	if ((ret = shell_init()) != ST_OK)
 		log_fatal("shell initialization failed (%d)", ret);
 	termcaps_init();
+	INIT_LIST_HEAD(&g_current_jobs_list_head);
 	if ((ret = stdin_loop()) != ST_END_OF_INPUT)
 		log_fatal("get_next_line failed (%d)", ret);
 	if (!caps__finalize())

@@ -74,7 +74,7 @@ int					job_launch(t_job *j)
 	}
 	if (shell_is_interactive() == 0)
 	{
-	//	wait for job to complete
+		job_wait(j);
 	//	after callback built-in
 	}
 	else if (j->foreground == 1)
