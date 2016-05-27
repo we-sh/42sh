@@ -36,8 +36,8 @@ int	proc_update_status(pid_t pid, int status)
 					// notify user about signal (segfault, sigabort...)
 				}
 			}
-			log_debug("proc %d status: stopped %d, completed %d", pid, p->stopped, p->completed);
 		}
+		log_debug("proc %d status: stopped %d, completed %d", pid, p->stopped, p->completed);
 		return (0);
 	}
 	return (-1);
