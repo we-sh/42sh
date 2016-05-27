@@ -19,19 +19,25 @@ int	proc_update_status(pid_t pid, int status)
 		return (-1);
 	if ((p = proc_find(pid)) != NULL)
 	{
-		p->exit_status = WEXITSTATUS(status);
-		log_debug("proc %d exited with %d", pid, p->exit_status);
-		if (WIFSTOPPED(status))
-			p->stopped = 1;
-		else
+		if (WIFEXITED(status))
 		{
-			p->completed = 1;
-			if (WIFSIGNALED(status))
-			{
-				// notify user about signal (segfault, sigabort...)
-			}
+			p->exit_status = WEXITSTATUS(status);
+			log_debug("proc %d exited with %d", pid, p->exit_status);
 		}
-		log_debug("proc %d status: stopped %d, completed %d", pid, p->stopped, p->completed);
+		else if (WIFSIGNALED(status))
+		{
+			if (WIFSTOPPED(status))
+				p->stopped = 1;
+			else
+			{
+				p->completed = 1;
+				if (WIFSIGNALED(status))
+				{
+					// notify user about signal (segfault, sigabort...)
+				}
+			}
+			log_debug("proc %d status: stopped %d, completed %d", pid, p->stopped, p->completed);
+		}
 		return (0);
 	}
 	return (-1);
