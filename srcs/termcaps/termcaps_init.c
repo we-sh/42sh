@@ -79,29 +79,27 @@
 **	
 */
 
-static int termcaps_termios_init(const int fd)
+static int termcaps_termios_init(t_sh *sh)
 {
-	struct termios			termios_old;
-	struct termios			termios_new;
-
-	if (tcgetattr(0, &termios_old) != 0)
+	if (tcgetattr(0, &sh->termios_old) != 0)
 		return (-1); // a set
-	termios_new.c_iflag &= ~(IGNBRK | BRKINT | PARMRK | ISTRIP | IXON
+	sh->termios_new.c_iflag &= ~(IGNBRK | BRKINT | PARMRK | ISTRIP | IXON
 							 | INLCR | IGNCR | ICRNL);
-	termios_new.c_oflag &= ~OPOST;
-	termios_new.c_lflag &= ~(ECHO | ECHONL | ICANON | ISIG | IEXTEN);
-	termios_new.c_cflag &= ~(CSIZE | PARENB);
-	termios_new.c_cflag |= CS8;
-	termios_new.c_cc[VMIN] = 1;
-	termios_new.c_cc[VTIME] = 0;
+	sh->termios_new.c_oflag &= ~OPOST;
+	sh->termios_new.c_lflag &= ~(ECHO | ECHONL | ICANON | ISIG | IEXTEN);
+	sh->termios_new.c_cflag &= ~(CSIZE | PARENB);
+	sh->termios_new.c_cflag |= CS8;
+	sh->termios_new.c_cc[VMIN] = 1;
+	sh->termios_new.c_cc[VTIME] = 0;
 
-	long termios_ospeed = cfgetospeed(&termios_old);
+	//TEMP
+	long termios_ospeed = cfgetospeed(&sh->termios_old);
 	if (termios_ospeed > SHRT_MAX)
 		ospeed = SHRT_MAX;
 	else
 		ospeed = termios_ospeed;
 
-	if (tcsetattr(fd, TCSADRAIN, &termios_new) != 0) // WHY NOT TCSADRAIN
+	if (tcsetattr(fd, TCSADRAIN, &sh->termios_new) != 0) // WHY NOT TCSADRAIN
 		return (-1); // a set
 	return (1);
 }
@@ -163,7 +161,7 @@ static int termcaps_initialize_key_map_cursor(void)
 	return (1);
 }
 
-int			termcaps_init()
+int			termcaps_init(t_sh *sh)
 {
 	if (!caps__initialize())
 		return (-1); //udpate return
