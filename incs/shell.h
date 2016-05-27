@@ -17,9 +17,13 @@
 /*
 ** Shell structure
 */
+
 typedef struct	e_sh
 {
-	pid_t		pgid;
+	pid_t			pgid;
+	int 			fd;
+	struct termios 	oldter;
+	struct termios 	newter;
 }				t_sh;
 
 # include "libft.h"
@@ -33,17 +37,6 @@ typedef struct	e_sh
 # include "get_next_line.h"
 # include "lexer.h"
 # include "builtin.h"
-
-/*
-** Shell structure
-*/
-typedef struct	e_sh
-{
-	pid_t			pgid;
-	int 			fd;
-	struct termios 	oldter;
-	struct termios 	newter;
-}				t_sh;
 
 /*
 ** List of current jobs
