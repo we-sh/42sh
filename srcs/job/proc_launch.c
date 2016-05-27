@@ -52,7 +52,7 @@ void		proc_launch(t_job *j, t_proc *p)
 	}
 	if (p->stderr != STDERR_FILENO)
 	{
-		if (dup2(p->stderr, STDERR_FILENO))
+		if (dup2(p->stderr, STDERR_FILENO) == -1)
 		{
 			perror("dup2");
 			return ;
