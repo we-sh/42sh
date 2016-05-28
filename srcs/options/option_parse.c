@@ -1,28 +1,13 @@
 #include "shell.h"
 
 /*
-** This function may parse options within an `char **argv`.
-** It returns a table of pairs `KEY-VALUE` (name and optional value)
+** This function may parse options.
 **
 ** It considers:
 ** - multiple options with single characters (e.g. `rm -rf`, `ls -lRA`)
 ** - single options with multiple characters (e.g. `--unset`)
 ** - value that may follow the option (e.g. `-u PATH`)
 ** - delimiter of end of options `--`
-**
-** When no value if specified (e.g. the command line `ls -l`), the second
-** pointer is set to NULL.
-**
-** Example with `env -i -u PATH --unset HOME ls`, the function will return:
-** {
-**   [0] -> [0] = "i"
-**          [1] = NULL
-**   [1] -> [0] = "u"
-**          [1] = "PATH"
-**   [2] -> [0] = "unset"
-**          [1] = "HOME"
-**   [3] -> NULL
-** }
 **
 ** For more information about POSIX options:
 ** http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html
