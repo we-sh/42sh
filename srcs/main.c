@@ -71,16 +71,15 @@ int		main(int argc, char *argv[])
 		// loop
 		if ((exit_status = stdin_loop(&sh)) != ST_END_OF_INPUT)
 			log_fatal("get_next_line failed (%d)", ret);
+		if (!caps__finalize())
+			return (-1); // Check le retour
+		if (tcsetattr(0, TCSANOW, &sh.termios_old) == -1)
+		  log_fatal("tcsetattr() failed to restore the terminal");
 	}
 
 	// shell_end()
-	if (!caps__finalize())
-		return (-1); // Check le retour
 	if (close(sh.fd) != 0)
 		log_error("close() failed");
-	if (tcsetattr(0, TCSANOW, &sh.termios_old) == -1)
-	  log_fatal("tcsetattr() failed to restore the terminal");
-
 	logger_close();
 	return (exit_status);
 }
