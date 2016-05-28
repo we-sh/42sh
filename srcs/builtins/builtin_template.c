@@ -24,34 +24,37 @@
 ** current directory.
 */
 
-int			s_before(t_sh *sh, t_proc *p)
+int			s_before(t_builtin const *builtin, t_sh *sh, t_proc *p)
 {
+	(void)builtin;
 	(void)sh;
 	(void)p;
 	return (ST_OK);
 }
 
-int			s_exec(t_sh *sh, t_proc *p)
+int			s_exec(t_builtin const *builtin, t_sh *sh, t_proc *p)
 {
+	(void)builtin;
 	(void)sh;
 	(void)p;
 	return (EXIT_SUCCESS);
 }
 
-int			s_after(t_sh *sh, t_proc *p)
+int			s_after(t_builtin const *builtin, t_sh *sh, t_proc *p)
 {
+	(void)builtin;
 	(void)sh;
 	(void)p;
 	return (ST_OK);
 }
 
-int			builtin_template(int callback, t_sh *sh, t_proc *p)
+int			builtin_template(t_builtin const *builtin, int callback, t_sh *sh, t_proc *p)
 {
 	if (callback == BLTIN_CB_BEFORE)
-		return (s_before(sh, p));
+		return (s_before(builtin, sh, p));
 	if (callback == BLTIN_CB_EXEC)
-		exit(s_exec(sh, p));
+		exit(s_exec(builtin, sh, p));
 	if (callback == BLTIN_CB_AFTER)
-		return (s_after(sh, p));
+		return (s_after(builtin, sh, p));
 	return (ST_OK);
 }

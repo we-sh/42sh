@@ -1,11 +1,11 @@
 #include "shell.h"
 
-int			s_before(t_proc *p)
+int			s_before(t_builtin const *builtin, t_proc *p)
 {
 	int		ret;
 
 	log_debug("builtin callback cd: before");
-	if ((ret = option_parse(&p->builtin_options_head, *g_builtin_cd.options, &p->argv, 1)) != ST_OK)
+	if ((ret = option_parse(&p->builtin_options_head, builtin->options, &p->argv, 1)) != ST_OK)
 	{
 		if (ret != ST_EINVAL)
 		{
@@ -39,11 +39,11 @@ int			s_after(t_proc *p)
 	return (ST_OK);
 }
 
-int			builtin_cd(int callback, t_sh *sh, t_proc *p)
+int			builtin_cd(t_builtin const *builtin, int callback, t_sh *sh, t_proc *p)
 {
 	(void)sh;
 	if (callback == BLTIN_CB_BEFORE)
-		return (s_before(p));
+		return (s_before(builtin, p));
 	if (callback == BLTIN_CB_EXEC)
 		exit(s_exec(p));
 	if (callback == BLTIN_CB_AFTER)
