@@ -42,12 +42,12 @@ int				shell_init(t_sh *sh)
 		return (-ret);
 	if (shell_is_interactive() == 1)
 	{
-	  	sh->fd = shell_fd_init();
-	  	if (sh->fd == -1)
-	  	{
+		sh->fd = shell_fd_init();
+		if (sh->fd == -1)
+		{
 		  log_error("shell_fd_init() failed");
 		  return (-1);
-	  	}
+		}
 		while (tcgetpgrp(STDIN_FILENO) != (sh->pgid = getpgrp()))
 			kill(-sh->pgid, SIGTTIN);
 
@@ -62,11 +62,6 @@ int				shell_init(t_sh *sh)
 		log_info("pgid: %d", sh->pgid);
 		if (tcsetpgrp(STDIN_FILENO, sh->pgid) < 0)
 			return (ST_TCSETPGRP);
-	}
-	if (termcaps_init(sh) != ST_OK)
-	{
-		 log_error("termcaps_init() failed");
-		 return (-1);
 	}
 	return (ST_OK);
 }

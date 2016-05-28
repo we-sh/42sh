@@ -63,8 +63,13 @@ int		main(int argc, char *argv[])
 	}
 	else
 	{
+		if (termcaps_init(&sh) != ST_OK)
+		{
+			 log_error("termcaps_init() failed");
+			 return (-1);
+		}
 		// loop
-		if ((ret = stdin_loop(&sh)) != ST_END_OF_INPUT)
+		if ((exit_status = stdin_loop(&sh)) != ST_END_OF_INPUT)
 			log_fatal("get_next_line failed (%d)", ret);
 	}
 
