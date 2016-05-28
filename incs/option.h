@@ -50,8 +50,18 @@ static t_option				g_builtin_cd_option_test = {
 	.value = NULL
 };
 
+static t_option				g_builtin_cd_option_t = {
+	.name = "t",
+	.is_single_char = 1,
+	.has_value = 1,
+	.value_is_numeric_only = 1,
+	.value_is_alnum_only = 0,
+	.value = NULL
+};
+
 static const t_option		*g_builtin_cd_options[] = {
 	[0] = &g_builtin_cd_option_p2,
 	[1] = &g_builtin_cd_option_test,
-	[2] = NULL
+	[2] = &g_builtin_cd_option_t,
+	[3] = NULL
 };

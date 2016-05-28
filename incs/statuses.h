@@ -26,6 +26,8 @@ typedef enum	e_st
 	ST_EXIT,
 	ST_NOT_A_BUILTIN,
 	ST_CHDIR,
+	ST_ENOENT,
+	ST_EINVAL,
 	ST_TOTAL
 }				t_st;
 

@@ -8,7 +8,10 @@
 
 static int			s_fork_it(t_sh *sh, t_job *j, t_proc *p)
 {
-	// before callback built-in
+	int	ret;
+
+	if ((ret = builtin_callback(BLTIN_CB_BEFORE, sh, p)) != ST_OK)
+		return (ret);
 	p->pid = fork();
 	if (p->pid < 0)
 	{

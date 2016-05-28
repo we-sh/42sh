@@ -1,0 +1,163 @@
+#include "shell.h"
+
+/*
+** This function may parse options within an `char **argv`.
+** It returns a table of pairs `KEY-VALUE` (name and optional value)
+**
+** It considers:
+** - multiple options with single characters (e.g. `rm -rf`, `ls -lRA`)
+** - single options with multiple characters (e.g. `--unset`)
+** - value that may follow the option (e.g. `-u PATH`)
+** - delimiter of end of options `--`
+**
+** When no value if specified (e.g. the command line `ls -l`), the second
+** pointer is set to NULL.
+**
+** Example with `env -i -u PATH --unset HOME ls`, the function will return:
+** {
+**   [0] -> [0] = "i"
+**          [1] = NULL
+**   [1] -> [0] = "u"
+**          [1] = "PATH"
+**   [2] -> [0] = "unset"
+**          [1] = "HOME"
+**   [3] -> NULL
+** }
+**
+** For more information about POSIX options:
+** http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html
+*/
+
+
+
+
+/* ------------------------------------------------------------------ */
+/* waiting for libft merge */
+static size_t	ft_array_pop(char ***argv, size_t start, size_t len)
+{
+	size_t	i;
+	size_t	k;
+
+	i = 0;
+	while (i < len && (*argv)[start])
+	{
+		ft_memdel((void **)&(*argv)[start]);
+		k = 0;
+		while ((*argv)[start + k + 1])
+		{
+			(*argv)[start + k] = (*argv)[start + k + 1];
+			k++;
+		}
+		(*argv)[start + k] = NULL;
+		i++;
+	}
+	return (i);
+}
+/* ------------------------------------------------------------------ */
+
+
+
+
+static int			s_is_valid(t_option const **available_opt,
+						char **argv, size_t i, size_t is_single_char)
+{
+	size_t			k;
+
+	k = 0;
+	while (available_opt[k])
+	{
+		if (is_single_char > 0 && available_opt[k]->is_single_char == 1
+			&& argv[i][is_single_char] == available_opt[k]->name[0])
+		{
+			if (available_opt[k]->has_value == 1
+				&& (argv[i][is_single_char + 1] != '\0'
+				|| is_single_char > 1 || argv[i + 1] == NULL))
+				return (-ST_EINVAL);
+			return (k);
+		}
+		if (is_single_char == 0
+			&& ft_strcmp(argv[i] + 2, available_opt[k]->name) == 0)
+		{
+			if (available_opt[k]->has_value == 1 && argv[i + 1] == NULL)
+				return (-ST_EINVAL);
+			return (k);
+		}
+		k++;
+	}
+	return (-ST_EINVAL);
+}
+
+static int			s_single(t_list *list_head,
+						t_option const **available_opt,
+						char ***argv, size_t i)
+{
+	size_t			k;
+	int				opt;
+	t_list			*option_node;
+
+	k = 1;
+	while ((*argv)[i][k])
+	{
+		log_debug("parsing single character option %c", (*argv)[i][k]);
+		if ((opt = s_is_valid(available_opt, *argv, i, k)) < ST_OK)
+			return (-opt);
+		if ((option_node = list_node__option_alloc(available_opt[opt], *argv, i)) == NULL)
+			return (ST_MALLOC);
+		list_push_back(option_node, list_head);
+		k++;
+	}
+	ft_array_pop(argv, i, 1);
+	if (k == 2 && available_opt[opt]->has_value == 1)
+		ft_array_pop(argv, i, 1);
+	return (ST_OK);
+}
+
+static int			s_multi(t_list *list_head,
+						t_option const **available_opt,
+						char ***argv, size_t i)
+{
+	int				opt;
+	t_list			*option_node;
+
+	log_debug("parsing multi character option %s", (*argv)[i] + 2);
+	if ((opt = s_is_valid(available_opt, *argv, i, 0)) < ST_OK)
+		return (-opt);
+	if ((option_node = list_node__option_alloc(available_opt[opt], *argv, i)) == NULL)
+		return (ST_MALLOC);
+	list_push_back(option_node, list_head);
+	ft_array_pop(argv, i, 1);
+	if (available_opt[opt]->has_value == 1)
+		ft_array_pop(argv, i, 1);
+	return (ST_OK);
+}
+
+int					option_parse(t_list *list_head,
+						t_option const **available_opt,
+						char ***argv, size_t start)
+{
+	size_t		i;
+	int			ret;
+
+	i = start;
+	INIT_LIST_HEAD(list_head);
+	while ((*argv)[i])
+	{
+		if ((*argv)[i][0] != '-' || ((*argv)[i][0] == '-' && (*argv)[i][1] == '\0')
+			|| ft_strcmp((*argv)[i], "--") == 0)
+			break ;
+		if ((*argv)[i][0] == '-' && (*argv)[i][1] != '-')
+		{
+			if ((ret = s_single(list_head, available_opt, argv, i)) != ST_OK)
+				return (ret);
+			i -= 1;
+		}
+		else if ((*argv)[i][0] == '-' && (*argv)[i][1] == '-')
+		{
+			if ((ret = s_multi(list_head, available_opt, argv, i)) != ST_OK)
+				return (ret);
+			i -= 1;
+		}
+		i++;
+	}
+	return (ST_OK);
+}

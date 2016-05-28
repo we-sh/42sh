@@ -1,34 +1,38 @@
 #include "shell.h"
 
-int			s_before(t_sh *sh, t_proc *p)
+int			s_before(t_proc *p)
 {
-	// do whatever needed before fork (parse arguments, set `builtin_status` to be used within callbacks `exec` and `after`)
-	(void)sh;
-	(void)p;
+	int		ret;
 
-	//p->builtin_status = ST_OK; (default value == ST_OK)
+	log_debug("builtin callback cd: before");
+	if ((ret = option_parse(&p->builtin_options_head, *g_builtin_cd.options, &p->argv, 1)) != ST_OK)
+	{
+		if (ret != ST_EINVAL)
+		{
+			log_fatal("parsing builtin option failed");
+			return (ret);
+		}
+		p->builtin_status = ret;
+	}
 	return (ST_OK);
 }
 
-int			s_exec(t_sh *sh, t_proc *p)
+int			s_exec(t_proc *p)
 {
-	// do whatever needed within the child process (display)
-	// returns an exit status!
-	(void)sh;
-	(void)p;
-
+	log_debug("builtin callback cd: exec");
+	if (p->builtin_status != ST_OK)
+	{
+		// todo use `log_status()` instead
+		ft_putendl_fd(i18n_translate(p->builtin_status), STDERR_FILENO);
+	}
 	return (EXIT_SUCCESS);
 }
 
-int			s_after(t_sh *sh, t_proc *p)
+int			s_after(t_proc *p)
 {
-	// only called within the last process of a job (last element of the list `list_job`)
-	// do whatever needed after job completed (change current directory, exit...)
-	(void)sh;
-
+	log_debug("builtin callback cd: after");
 	if (p->builtin_status == ST_OK)
 	{
-		// options should be pop before
 		if (chdir(p->argv[1]) < 0)
 			return (ST_CHDIR);
 	}
@@ -37,11 +41,12 @@ int			s_after(t_sh *sh, t_proc *p)
 
 int			builtin_cd(int callback, t_sh *sh, t_proc *p)
 {
+	(void)sh;
 	if (callback == BLTIN_CB_BEFORE)
-		return (s_before(sh, p));
+		return (s_before(p));
 	if (callback == BLTIN_CB_EXEC)
-		exit(s_exec(sh, p));
+		exit(s_exec(p));
 	if (callback == BLTIN_CB_AFTER)
-		return (s_after(sh, p));
+		return (s_after(p));
 	return (ST_OK);
 }

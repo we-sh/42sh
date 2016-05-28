@@ -30,6 +30,7 @@ typedef struct	e_sh
 # include "libft.h"
 # include "list.h"
 # include "logger.h"
+# include "option.h"
 # include "job.h"
 # include "termcaps.h"
 # include "caps.h"
@@ -83,6 +84,14 @@ int				proc_update_status(pid_t pid, int status);
 t_list			*list_node__proc_alloc(char **argv);
 t_job			*job_alloc(char const *command);
 int				job_wait(t_job *j);
+
+/*
+** options/
+*/
+int				option_parse(t_list *list_head,
+					t_option const **available_options,
+					char ***argv, size_t start);
+t_list			*list_node__option_alloc(t_option const *option_ref, char **argv, size_t i);
 
 /*
 ** signal/

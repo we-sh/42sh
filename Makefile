@@ -38,6 +38,8 @@ SRCS		=	\
 				job/proc_launch.c				\
 				job/proc_update_status.c		\
 				list/list_node__proc_alloc.c	\
+				options/list_node__option_alloc.c\
+				options/option_parse.c			\
 				signal/signal_sigchld.c			\
 				signal/signal_to_default.c		\
 				signal/signal_to_ignore.c		\

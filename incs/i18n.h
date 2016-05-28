@@ -36,7 +36,9 @@ static const char		*g_i18n_fr[] = {
 	[ST_TCSETPGRP] = "impossible d'associer le PID à l'interface du terminal",
 	[ST_SIGNAL] = "impossible d'intercepter le signal",
 	[ST_NOT_A_BUILTIN] = NULL,
-	[ST_CHDIR] = "imposible de changer de répertoire courant"
+	[ST_CHDIR] = "imposible de changer de répertoire courant",
+	[ST_ENOENT] = "fichier ou dossier introuvable",
+	[ST_EINVAL] = "argument invalide"
 };
 
 static const char		*g_i18n_en[] = {
@@ -51,7 +53,9 @@ static const char		*g_i18n_en[] = {
 	[ST_TCSETPGRP] = "failed setting the PID with the terminal device",
 	[ST_SIGNAL] = "failed catching signal",
 	[ST_NOT_A_BUILTIN] = NULL,
-	[ST_CHDIR] = "failed changing current directory"
+	[ST_CHDIR] = "failed changing current directory",
+	[ST_ENOENT] = "no such file or directory",
+	[ST_EINVAL] = "invalid argument"
 };
 
 static const char		**g_i18n_translations[] = {

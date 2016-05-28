@@ -52,7 +52,7 @@ int	job_foreground(t_sh *sh, t_job *j, int sigcont)
 
 	// save termios structure when job is stopped but not completed
 	// so that we can launch job again with its termios
-	if (is_job_completed(j) == 0 && tcgetattr(shell_fd(), &j->termios) != 0)
+	if (job_is_completed(j) == 0 && tcgetattr(shell_fd(), &j->tmodes) != 0)
 	{
 		// todo notify user a problem occured
 		log_error("failed to save termios structure a the job %d", j->pgid);
