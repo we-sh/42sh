@@ -9,7 +9,7 @@ void		proc_launch(t_sh *sh, t_job *j, t_proc *p)
 	pid_t	pgid;
 
 	p->pid = getpid();
-	if (shell_is_interactive() == 1)
+	if (sh->is_interactive)
 	{
 		pgid = j->pgid;
 		if (pgid == 0)

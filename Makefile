@@ -25,7 +25,6 @@ SRCS		=	\
 				log_status/log_status.c			\
 				i18n/i18n_translate.c			\
 				init/shell_init.c				\
-				init/shell_is_interactive.c		\
 				init/shell_language.c			\
 				stdin_loop.c					\
 				parse.c							\

@@ -47,7 +47,7 @@ int		shell_init(t_sh *sh)
 		log_error("shell_fd_init() failed");
 		return (-1);
 	}
-	if (shell_is_interactive() == 1)
+	if (sh->is_interactive)
 	{
 		while (tcgetpgrp(STDIN_FILENO) != (sh->pgid = getpgrp()))
 			kill(-sh->pgid, SIGTTIN);

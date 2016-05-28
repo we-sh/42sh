@@ -19,7 +19,7 @@ static int			s_fork_it(t_sh *sh, t_job *j, t_proc *p)
 		proc_launch(sh, j, p);
 	else
 	{
-		if (shell_is_interactive() == 1)
+		if (sh->is_interactive)
 		{
 			if (j->pgid == 0)
 				j->pgid = p->pid;
@@ -73,7 +73,7 @@ int					job_launch(t_sh *sh, t_job *j)
 		//if (p->next == NULL)
 		//	break ;
 	}
-	if (shell_is_interactive() == 0)
+	if (!sh->is_interactive)
 	{
 		job_wait(j);
 	//	after callback built-in

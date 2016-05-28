@@ -83,7 +83,6 @@ static int		s_termcaps_treat_input(const t_input_type input_type,
 
 static int		s_print_first_prompt(void)
 {
-	ASSERT(shell_is_interactive() >= 0);
 	if (context.state == STATE_REGULAR)
 	{
 		ASSERT(termcaps_string_to_command_line(PROMPT_SIZE,
