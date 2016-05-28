@@ -1,4 +1,5 @@
 #include "shell.h"
+#include "builtin_struct.h"
 
 static int	s_before(t_proc *p)
 {
@@ -40,14 +41,14 @@ static int	s_exec(t_builtin const *builtin, t_proc *p)
 	ft_putstr(": ");
 	ft_putendl(g_builtins[-p->builtin_status]->usage);
 	ft_putendl(i18n_translate(g_builtins[-p->builtin_status]->description));
-	if (builtin->options != NULL)
+	if (g_builtins[-p->builtin_status]->options != NULL)
 	{
 		ft_putendl("options:");
 		i = 0;
-		while (builtin->options[i])
+		while (g_builtins[-p->builtin_status]->options[i])
 		{
 			ft_putstr("- ");
-			ft_putendl(builtin->options[i]->name);
+			ft_putendl(g_builtins[-p->builtin_status]->options[i]->name);
 			ft_putstr("  ");
 			ft_putendl(i18n_translate(builtin->options[i]->description));
 			i++;

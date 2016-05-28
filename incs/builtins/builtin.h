@@ -1,8 +1,9 @@
 #ifndef BUILTIN_H
 # define BUILTIN_H
 
+# include "option.h"
+
 /*
-** -------------------------------------------------------
 ** Builtin structure and associated enum and typedef
 */
 
@@ -36,40 +37,5 @@ typedef struct				s_builtin
 */
 int							builtin_cd(t_builtin const *builtin, int callback, t_sh *sh, t_proc *p);
 int							builtin_help(t_builtin const *builtin, int callback, t_sh *sh, t_proc *p);
-
-/*
-** -------------------------------------------------------
-** `cd`
-*/
-
-static const t_builtin		g_builtin_cd = {
-	.index = BLTIN_CD,
-	.name = "cd",
-	.usage = "cd [-P] [dir]",
-	.description = ST_BLTIN_CD,
-	.exe = &builtin_cd,
-	.options = g_builtin_cd_options
-};
-
-static const t_builtin		g_builtin_help = {
-	.index = BLTIN_HELP,
-	.name = "help",
-	.usage = "help [builtin]",
-	.description = ST_BLTIN_HELP,
-	.exe = &builtin_help,
-	.options = NULL
-};
-
-/*
-** -------------------------------------------------------
-** Table of builtins
-*/
-
-static const t_builtin		*g_builtins[] = {
-	[BLTIN_NONE] = NULL,
-	[BLTIN_CD] = &g_builtin_cd,
-	[BLTIN_HELP] = &g_builtin_help,
-	[BLTIN_TOTAL] = NULL
-};
 
 #endif

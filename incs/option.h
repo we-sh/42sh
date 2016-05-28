@@ -1,4 +1,6 @@
-#include "shell.h"
+#ifndef OPTION_H
+# define OPTION_H
+
 
 /*
 ** Generic structure for options.
@@ -29,23 +31,4 @@ typedef struct				s_option
 	char					*value;
 }							t_option;
 
-/*
-** -------------------------------------------------------
-** Options for builtin `cd`
-*/
-
-static t_option				g_builtin_cd_option_p2 = {
-	.name = "P",
-	.description = ST_BLTIN_CD_OPT_P2,
-	.is_single_char = 1,
-	.has_value = 0,
-	.value_is_numeric = 0,
-	.value_is_alnum = 0,
-	.value_is_indexof = NULL,
-	.value = NULL
-};
-
-static const t_option		*g_builtin_cd_options[] = {
-	[0] = &g_builtin_cd_option_p2,
-	[1] = NULL
-};
+#endif

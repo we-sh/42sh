@@ -92,6 +92,7 @@ CFLAGS		=	\
 CPPFLAGS	=	\
 				-I $(DIRINC)					\
 				-I $(DIRINCCAPS)				\
+				-I $(DIRINCBLTIN)				\
 				-I $(DIRLIB)libft/$(DIRINC)		\
 				-I $(DIRLIB)logger/$(DIRINC)	\
 				-I $(DIRLIB)libcaps/$(DIRINC)	\
@@ -118,6 +119,7 @@ DIRSRC		=	./srcs/
 DIROBJ		=	./.objs/
 DIRINC		=	./incs/
 DIRINCCAPS	=	./incs/termcaps/
+DIRINCBLTIN	=	./incs/builtins/
 DIRLIB		=	./libs/
 DIRTST		=	./test/
 

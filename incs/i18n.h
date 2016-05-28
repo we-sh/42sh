@@ -42,7 +42,8 @@ static const char		*g_i18n_fr[] = {
 	[ST_E2BIG] = "liste des arguments trop longue",
 	[ST_BLTIN_CD] = "change le répertoire courant avec DIR",
 	[ST_BLTIN_CD_OPT_P2] = "résoudre les liens symboliques",
-	[ST_BLTIN_HELP] = "montre le manuel de BUILTIN"
+	[ST_BLTIN_HELP] = "montre le manuel de BUILTIN",
+	[ST_USAGE] = "mode d'emploi"
 };
 
 static const char		*g_i18n_en[] = {
@@ -63,7 +64,8 @@ static const char		*g_i18n_en[] = {
 	[ST_E2BIG] = "argument list too long",
 	[ST_BLTIN_CD] = "change the current directory to DIR",
 	[ST_BLTIN_CD_OPT_P2] = "do not follow symbolic links",
-	[ST_BLTIN_HELP] = "show the manual of BUILTIN"
+	[ST_BLTIN_HELP] = "show the manual of BUILTIN",
+	[ST_USAGE] = "usage"
 };
 
 static const char		**g_i18n_translations[] = {
