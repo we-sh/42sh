@@ -28,6 +28,9 @@ typedef enum	e_st
 	ST_CHDIR,
 	ST_ENOENT,
 	ST_EINVAL,
+	ST_E2BIG,
+	ST_BLTIN_CD,
+	ST_BLTIN_HELP,
 	ST_TOTAL
 }				t_st;
 

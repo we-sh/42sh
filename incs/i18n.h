@@ -38,7 +38,10 @@ static const char		*g_i18n_fr[] = {
 	[ST_NOT_A_BUILTIN] = NULL,
 	[ST_CHDIR] = "imposible de changer de répertoire courant",
 	[ST_ENOENT] = "fichier ou dossier introuvable",
-	[ST_EINVAL] = "argument invalide"
+	[ST_EINVAL] = "argument invalide",
+	[ST_E2BIG] = "liste des arguments trop longue",
+	[ST_BLTIN_CD] = "change le répertoire courant avec DIR",
+	[ST_BLTIN_HELP] = "montre le manuel de BUILTIN"
 };
 
 static const char		*g_i18n_en[] = {
@@ -55,7 +58,10 @@ static const char		*g_i18n_en[] = {
 	[ST_NOT_A_BUILTIN] = NULL,
 	[ST_CHDIR] = "failed changing current directory",
 	[ST_ENOENT] = "no such file or directory",
-	[ST_EINVAL] = "invalid argument"
+	[ST_EINVAL] = "invalid argument",
+	[ST_E2BIG] = "argument list too long",
+	[ST_BLTIN_CD] = "change the current directory to DIR",
+	[ST_BLTIN_HELP] = "show the manual of BUILTIN"
 };
 
 static const char		**g_i18n_translations[] = {

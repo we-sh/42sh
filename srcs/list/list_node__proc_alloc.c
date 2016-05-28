@@ -1,5 +1,15 @@
 #include "shell.h"
 
+static int		s_argc(char **argv)
+{
+	int	i;
+
+	i = 0;
+	while (argv[i])
+		i++;
+	return (i);
+}
+
 t_list			*list_node__proc_alloc(char **argv)
 {
 	t_proc		*p;
@@ -7,6 +17,7 @@ t_list			*list_node__proc_alloc(char **argv)
 	if ((p = malloc(sizeof(t_proc))) == NULL)
 		return (NULL);
 	p->argv = argv;
+	p->argc = s_argc(argv);
 	p->pid = 0;
 	p->completed = 0;
 	p->stopped = 0;

@@ -21,6 +21,7 @@ NAME		=	42sh
 SRCS		=	\
 				main.c							\
 				builtins/cd/builtin_cd.c		\
+				builtins/help/builtin_help.c	\
 				builtins/builtin_callback.c		\
 				log_status/log_status.c			\
 				i18n/i18n_translate.c			\
