@@ -47,7 +47,6 @@ SRCS		=	\
 				lexer/token_list.c				\
 				lexer/tokenize.c				\
 				termcaps/termcaps_init.c		\
-				termcaps/termcaps_old_termios.c					\
 				termcaps/termcaps_read_input.c					\
 				termcaps/termcaps_get_character_bytes_count.c	\
 				termcaps/termcaps_string_to_command_line.c		\
@@ -560,18 +559,6 @@ $(DIROBJ)termcaps_init.o: srcs/termcaps/termcaps_init.c incs/shell.h \
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/termcaps/termcaps_init.c\n"
 		@$(CC) -c ./srcs/termcaps/termcaps_init.c -o ./.objs/termcaps_init.o $(CPPFLAGS) $(CFLAGS) 
-
-$(DIROBJ)termcaps_old_termios.o: srcs/termcaps/termcaps_old_termios.c incs/shell.h \
-  libs/libft/./incs/libft.h libs/libft/./incs/list.h \
-  libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
-  incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
-  libs/libcaps/./incs/types.h incs/termcaps/log.h \
-  incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
-		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
-		@printf "compiling ./srcs/termcaps/termcaps_old_termios.c\n"
-		@$(CC) -c ./srcs/termcaps/termcaps_old_termios.c -o ./.objs/termcaps_old_termios.o $(CPPFLAGS) $(CFLAGS) 
 
 $(DIROBJ)termcaps_read_input.o: srcs/termcaps/termcaps_read_input.c incs/shell.h \
   libs/libft/./incs/libft.h libs/libft/./incs/list.h \
