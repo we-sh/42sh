@@ -22,7 +22,7 @@ SRCS		=	\
 				main.c							\
 				builtins/cd/builtin_cd.c		\
 				builtins/builtin_callback.c		\
-				exit/shell_exit.c				\
+				log_status/log_status.c			\
 				i18n/i18n_translate.c			\
 				init/shell_fd.c					\
 				init/shell_init.c				\
@@ -229,9 +229,9 @@ $(DIROBJ)main.o: srcs/main.c incs/shell.h libs/libft/./incs/libft.h \
   libs/logger/./incs/logger_utils.h incs/job.h incs/termcaps/termcaps.h \
   incs/termcaps/list_head.h libs/libcaps/./incs/types.h \
   incs/termcaps/log.h incs/termcaps/termcaps_struct.h \
-  incs/termcaps/key.h libs/libcaps/./incs/caps.h incs/statuses.h \
-  incs/i18n.h libs/libft/./incs/get_next_line.h incs/lexer.h \
-  incs/builtin.h
+  incs/termcaps/key.h libs/libcaps/./incs/caps.h \
+  libs/libcaps/./incs/logger.h incs/statuses.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/main.c\n"
 		@$(CC) -c ./srcs/main.c -o ./.objs/main.o $(CPPFLAGS) $(CFLAGS) 
@@ -242,8 +242,9 @@ $(DIROBJ)builtin_cd.o: srcs/builtins/cd/builtin_cd.c incs/shell.h \
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/statuses.h incs/i18n.h libs/libft/./incs/get_next_line.h \
+  incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/builtins/cd/builtin_cd.c\n"
 		@$(CC) -c ./srcs/builtins/cd/builtin_cd.c -o ./.objs/builtin_cd.o $(CPPFLAGS) $(CFLAGS) 
@@ -254,23 +255,25 @@ $(DIROBJ)builtin_callback.o: srcs/builtins/builtin_callback.c incs/shell.h \
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/statuses.h incs/i18n.h libs/libft/./incs/get_next_line.h \
+  incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/builtins/builtin_callback.c\n"
 		@$(CC) -c ./srcs/builtins/builtin_callback.c -o ./.objs/builtin_callback.o $(CPPFLAGS) $(CFLAGS) 
 
-$(DIROBJ)shell_exit.o: srcs/exit/shell_exit.c incs/shell.h \
+$(DIROBJ)log_status.o: srcs/log_status/log_status.c incs/shell.h \
   libs/libft/./incs/libft.h libs/libft/./incs/list.h \
   libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/statuses.h incs/i18n.h libs/libft/./incs/get_next_line.h \
+  incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
-		@printf "compiling ./srcs/exit/shell_exit.c\n"
-		@$(CC) -c ./srcs/exit/shell_exit.c -o ./.objs/shell_exit.o $(CPPFLAGS) $(CFLAGS) 
+		@printf "compiling ./srcs/log_status/log_status.c\n"
+		@$(CC) -c ./srcs/log_status/log_status.c -o ./.objs/log_status.o $(CPPFLAGS) $(CFLAGS) 
 
 $(DIROBJ)i18n_translate.o: srcs/i18n/i18n_translate.c incs/shell.h \
   libs/libft/./incs/libft.h libs/libft/./incs/list.h \
@@ -278,8 +281,9 @@ $(DIROBJ)i18n_translate.o: srcs/i18n/i18n_translate.c incs/shell.h \
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/statuses.h incs/i18n.h libs/libft/./incs/get_next_line.h \
+  incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/i18n/i18n_translate.c\n"
 		@$(CC) -c ./srcs/i18n/i18n_translate.c -o ./.objs/i18n_translate.o $(CPPFLAGS) $(CFLAGS) 
@@ -289,9 +293,9 @@ $(DIROBJ)shell_fd.o: srcs/init/shell_fd.c incs/shell.h libs/libft/./incs/libft.h
   libs/logger/./incs/logger_utils.h incs/job.h incs/termcaps/termcaps.h \
   incs/termcaps/list_head.h libs/libcaps/./incs/types.h \
   incs/termcaps/log.h incs/termcaps/termcaps_struct.h \
-  incs/termcaps/key.h libs/libcaps/./incs/caps.h incs/statuses.h \
-  incs/i18n.h libs/libft/./incs/get_next_line.h incs/lexer.h \
-  incs/builtin.h
+  incs/termcaps/key.h libs/libcaps/./incs/caps.h \
+  libs/libcaps/./incs/logger.h incs/statuses.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/init/shell_fd.c\n"
 		@$(CC) -c ./srcs/init/shell_fd.c -o ./.objs/shell_fd.o $(CPPFLAGS) $(CFLAGS) 
@@ -302,8 +306,9 @@ $(DIROBJ)shell_init.o: srcs/init/shell_init.c incs/shell.h \
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/statuses.h incs/i18n.h libs/libft/./incs/get_next_line.h \
+  incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/init/shell_init.c\n"
 		@$(CC) -c ./srcs/init/shell_init.c -o ./.objs/shell_init.o $(CPPFLAGS) $(CFLAGS) 
@@ -314,8 +319,9 @@ $(DIROBJ)shell_is_interactive.o: srcs/init/shell_is_interactive.c incs/shell.h \
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/statuses.h incs/i18n.h libs/libft/./incs/get_next_line.h \
+  incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/init/shell_is_interactive.c\n"
 		@$(CC) -c ./srcs/init/shell_is_interactive.c -o ./.objs/shell_is_interactive.o $(CPPFLAGS) $(CFLAGS) 
@@ -326,8 +332,9 @@ $(DIROBJ)shell_language.o: srcs/init/shell_language.c incs/shell.h \
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/statuses.h incs/i18n.h libs/libft/./incs/get_next_line.h \
+  incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/init/shell_language.c\n"
 		@$(CC) -c ./srcs/init/shell_language.c -o ./.objs/shell_language.o $(CPPFLAGS) $(CFLAGS) 
@@ -337,9 +344,9 @@ $(DIROBJ)stdin_loop.o: srcs/stdin_loop.c incs/shell.h libs/libft/./incs/libft.h 
   libs/logger/./incs/logger_utils.h incs/job.h incs/termcaps/termcaps.h \
   incs/termcaps/list_head.h libs/libcaps/./incs/types.h \
   incs/termcaps/log.h incs/termcaps/termcaps_struct.h \
-  incs/termcaps/key.h libs/libcaps/./incs/caps.h incs/statuses.h \
-  incs/i18n.h libs/libft/./incs/get_next_line.h incs/lexer.h \
-  incs/builtin.h
+  incs/termcaps/key.h libs/libcaps/./incs/caps.h \
+  libs/libcaps/./incs/logger.h incs/statuses.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/stdin_loop.c\n"
 		@$(CC) -c ./srcs/stdin_loop.c -o ./.objs/stdin_loop.o $(CPPFLAGS) $(CFLAGS) 
@@ -349,9 +356,9 @@ $(DIROBJ)parse.o: srcs/parse.c incs/shell.h libs/libft/./incs/libft.h \
   libs/logger/./incs/logger_utils.h incs/job.h incs/termcaps/termcaps.h \
   incs/termcaps/list_head.h libs/libcaps/./incs/types.h \
   incs/termcaps/log.h incs/termcaps/termcaps_struct.h \
-  incs/termcaps/key.h libs/libcaps/./incs/caps.h incs/statuses.h \
-  incs/i18n.h libs/libft/./incs/get_next_line.h incs/lexer.h \
-  incs/builtin.h
+  incs/termcaps/key.h libs/libcaps/./incs/caps.h \
+  libs/libcaps/./incs/logger.h incs/statuses.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/parse.c\n"
 		@$(CC) -c ./srcs/parse.c -o ./.objs/parse.o $(CPPFLAGS) $(CFLAGS) 
@@ -361,9 +368,9 @@ $(DIROBJ)job_alloc.o: srcs/job/job_alloc.c incs/shell.h libs/libft/./incs/libft.
   libs/logger/./incs/logger_utils.h incs/job.h incs/termcaps/termcaps.h \
   incs/termcaps/list_head.h libs/libcaps/./incs/types.h \
   incs/termcaps/log.h incs/termcaps/termcaps_struct.h \
-  incs/termcaps/key.h libs/libcaps/./incs/caps.h incs/statuses.h \
-  incs/i18n.h libs/libft/./incs/get_next_line.h incs/lexer.h \
-  incs/builtin.h
+  incs/termcaps/key.h libs/libcaps/./incs/caps.h \
+  libs/libcaps/./incs/logger.h incs/statuses.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/job/job_alloc.c\n"
 		@$(CC) -c ./srcs/job/job_alloc.c -o ./.objs/job_alloc.o $(CPPFLAGS) $(CFLAGS) 
@@ -374,8 +381,9 @@ $(DIROBJ)job_foreground.o: srcs/job/job_foreground.c incs/shell.h \
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/statuses.h incs/i18n.h libs/libft/./incs/get_next_line.h \
+  incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/job/job_foreground.c\n"
 		@$(CC) -c ./srcs/job/job_foreground.c -o ./.objs/job_foreground.o $(CPPFLAGS) $(CFLAGS) 
@@ -386,8 +394,9 @@ $(DIROBJ)job_is_completed.o: srcs/job/job_is_completed.c incs/shell.h \
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/statuses.h incs/i18n.h libs/libft/./incs/get_next_line.h \
+  incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/job/job_is_completed.c\n"
 		@$(CC) -c ./srcs/job/job_is_completed.c -o ./.objs/job_is_completed.o $(CPPFLAGS) $(CFLAGS) 
@@ -398,8 +407,9 @@ $(DIROBJ)job_is_stopped.o: srcs/job/job_is_stopped.c incs/shell.h \
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/statuses.h incs/i18n.h libs/libft/./incs/get_next_line.h \
+  incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/job/job_is_stopped.c\n"
 		@$(CC) -c ./srcs/job/job_is_stopped.c -o ./.objs/job_is_stopped.o $(CPPFLAGS) $(CFLAGS) 
@@ -410,8 +420,9 @@ $(DIROBJ)job_launch.o: srcs/job/job_launch.c incs/shell.h \
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/statuses.h incs/i18n.h libs/libft/./incs/get_next_line.h \
+  incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/job/job_launch.c\n"
 		@$(CC) -c ./srcs/job/job_launch.c -o ./.objs/job_launch.o $(CPPFLAGS) $(CFLAGS) 
@@ -421,9 +432,9 @@ $(DIROBJ)job_wait.o: srcs/job/job_wait.c incs/shell.h libs/libft/./incs/libft.h 
   libs/logger/./incs/logger_utils.h incs/job.h incs/termcaps/termcaps.h \
   incs/termcaps/list_head.h libs/libcaps/./incs/types.h \
   incs/termcaps/log.h incs/termcaps/termcaps_struct.h \
-  incs/termcaps/key.h libs/libcaps/./incs/caps.h incs/statuses.h \
-  incs/i18n.h libs/libft/./incs/get_next_line.h incs/lexer.h \
-  incs/builtin.h
+  incs/termcaps/key.h libs/libcaps/./incs/caps.h \
+  libs/libcaps/./incs/logger.h incs/statuses.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/job/job_wait.c\n"
 		@$(CC) -c ./srcs/job/job_wait.c -o ./.objs/job_wait.o $(CPPFLAGS) $(CFLAGS) 
@@ -433,9 +444,9 @@ $(DIROBJ)proc_find.o: srcs/job/proc_find.c incs/shell.h libs/libft/./incs/libft.
   libs/logger/./incs/logger_utils.h incs/job.h incs/termcaps/termcaps.h \
   incs/termcaps/list_head.h libs/libcaps/./incs/types.h \
   incs/termcaps/log.h incs/termcaps/termcaps_struct.h \
-  incs/termcaps/key.h libs/libcaps/./incs/caps.h incs/statuses.h \
-  incs/i18n.h libs/libft/./incs/get_next_line.h incs/lexer.h \
-  incs/builtin.h
+  incs/termcaps/key.h libs/libcaps/./incs/caps.h \
+  libs/libcaps/./incs/logger.h incs/statuses.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/job/proc_find.c\n"
 		@$(CC) -c ./srcs/job/proc_find.c -o ./.objs/proc_find.o $(CPPFLAGS) $(CFLAGS) 
@@ -446,8 +457,9 @@ $(DIROBJ)proc_launch.o: srcs/job/proc_launch.c incs/shell.h \
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/statuses.h incs/i18n.h libs/libft/./incs/get_next_line.h \
+  incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/job/proc_launch.c\n"
 		@$(CC) -c ./srcs/job/proc_launch.c -o ./.objs/proc_launch.o $(CPPFLAGS) $(CFLAGS) 
@@ -458,8 +470,9 @@ $(DIROBJ)proc_update_status.o: srcs/job/proc_update_status.c incs/shell.h \
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/statuses.h incs/i18n.h libs/libft/./incs/get_next_line.h \
+  incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/job/proc_update_status.c\n"
 		@$(CC) -c ./srcs/job/proc_update_status.c -o ./.objs/proc_update_status.o $(CPPFLAGS) $(CFLAGS) 
@@ -470,8 +483,9 @@ $(DIROBJ)list_node__proc_alloc.o: srcs/list/list_node__proc_alloc.c incs/shell.h
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/statuses.h incs/i18n.h libs/libft/./incs/get_next_line.h \
+  incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/list/list_node__proc_alloc.c\n"
 		@$(CC) -c ./srcs/list/list_node__proc_alloc.c -o ./.objs/list_node__proc_alloc.o $(CPPFLAGS) $(CFLAGS) 
@@ -482,8 +496,9 @@ $(DIROBJ)signal_sigchld.o: srcs/signal/signal_sigchld.c incs/shell.h \
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/statuses.h incs/i18n.h libs/libft/./incs/get_next_line.h \
+  incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/signal/signal_sigchld.c\n"
 		@$(CC) -c ./srcs/signal/signal_sigchld.c -o ./.objs/signal_sigchld.o $(CPPFLAGS) $(CFLAGS) 
@@ -494,8 +509,9 @@ $(DIROBJ)signal_to_default.o: srcs/signal/signal_to_default.c incs/shell.h \
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/statuses.h incs/i18n.h libs/libft/./incs/get_next_line.h \
+  incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/signal/signal_to_default.c\n"
 		@$(CC) -c ./srcs/signal/signal_to_default.c -o ./.objs/signal_to_default.o $(CPPFLAGS) $(CFLAGS) 
@@ -506,8 +522,9 @@ $(DIROBJ)signal_to_ignore.o: srcs/signal/signal_to_ignore.c incs/shell.h \
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/statuses.h incs/i18n.h libs/libft/./incs/get_next_line.h \
+  incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/signal/signal_to_ignore.c\n"
 		@$(CC) -c ./srcs/signal/signal_to_ignore.c -o ./.objs/signal_to_ignore.o $(CPPFLAGS) $(CFLAGS) 
@@ -517,9 +534,9 @@ $(DIROBJ)lexer.o: srcs/lexer/lexer.c incs/shell.h libs/libft/./incs/libft.h \
   libs/logger/./incs/logger_utils.h incs/job.h incs/termcaps/termcaps.h \
   incs/termcaps/list_head.h libs/libcaps/./incs/types.h \
   incs/termcaps/log.h incs/termcaps/termcaps_struct.h \
-  incs/termcaps/key.h libs/libcaps/./incs/caps.h incs/statuses.h \
-  incs/i18n.h libs/libft/./incs/get_next_line.h incs/lexer.h \
-  incs/builtin.h
+  incs/termcaps/key.h libs/libcaps/./incs/caps.h \
+  libs/libcaps/./incs/logger.h incs/statuses.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/lexer/lexer.c\n"
 		@$(CC) -c ./srcs/lexer/lexer.c -o ./.objs/lexer.o $(CPPFLAGS) $(CFLAGS) 
@@ -530,8 +547,9 @@ $(DIROBJ)token_list.o: srcs/lexer/token_list.c incs/shell.h \
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/statuses.h incs/i18n.h libs/libft/./incs/get_next_line.h \
+  incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/lexer/token_list.c\n"
 		@$(CC) -c ./srcs/lexer/token_list.c -o ./.objs/token_list.o $(CPPFLAGS) $(CFLAGS) 
@@ -541,9 +559,9 @@ $(DIROBJ)tokenize.o: srcs/lexer/tokenize.c incs/shell.h libs/libft/./incs/libft.
   libs/logger/./incs/logger_utils.h incs/job.h incs/termcaps/termcaps.h \
   incs/termcaps/list_head.h libs/libcaps/./incs/types.h \
   incs/termcaps/log.h incs/termcaps/termcaps_struct.h \
-  incs/termcaps/key.h libs/libcaps/./incs/caps.h incs/statuses.h \
-  incs/i18n.h libs/libft/./incs/get_next_line.h incs/lexer.h \
-  incs/builtin.h
+  incs/termcaps/key.h libs/libcaps/./incs/caps.h \
+  libs/libcaps/./incs/logger.h incs/statuses.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/lexer/tokenize.c\n"
 		@$(CC) -c ./srcs/lexer/tokenize.c -o ./.objs/tokenize.o $(CPPFLAGS) $(CFLAGS) 
@@ -554,8 +572,9 @@ $(DIROBJ)termcaps_init.o: srcs/termcaps/termcaps_init.c incs/shell.h \
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/statuses.h incs/i18n.h libs/libft/./incs/get_next_line.h \
+  incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/termcaps/termcaps_init.c\n"
 		@$(CC) -c ./srcs/termcaps/termcaps_init.c -o ./.objs/termcaps_init.o $(CPPFLAGS) $(CFLAGS) 
@@ -566,8 +585,9 @@ $(DIROBJ)termcaps_read_input.o: srcs/termcaps/termcaps_read_input.c incs/shell.h
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/statuses.h incs/i18n.h libs/libft/./incs/get_next_line.h \
+  incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/termcaps/termcaps_read_input.c\n"
 		@$(CC) -c ./srcs/termcaps/termcaps_read_input.c -o ./.objs/termcaps_read_input.o $(CPPFLAGS) $(CFLAGS) 
@@ -579,8 +599,9 @@ $(DIROBJ)termcaps_get_character_bytes_count.o: \
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/statuses.h incs/i18n.h libs/libft/./incs/get_next_line.h \
+  incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/termcaps/termcaps_get_character_bytes_count.c\n"
 		@$(CC) -c ./srcs/termcaps/termcaps_get_character_bytes_count.c -o ./.objs/termcaps_get_character_bytes_count.o $(CPPFLAGS) $(CFLAGS) 
@@ -592,8 +613,9 @@ $(DIROBJ)termcaps_string_to_command_line.o: \
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/statuses.h incs/i18n.h libs/libft/./incs/get_next_line.h \
+  incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/termcaps/termcaps_string_to_command_line.c\n"
 		@$(CC) -c ./srcs/termcaps/termcaps_string_to_command_line.c -o ./.objs/termcaps_string_to_command_line.o $(CPPFLAGS) $(CFLAGS) 
@@ -605,8 +627,9 @@ $(DIROBJ)termcaps_character_to_command_line.o: \
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/statuses.h incs/i18n.h libs/libft/./incs/get_next_line.h \
+  incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/termcaps/termcaps_character_to_command_line.c\n"
 		@$(CC) -c ./srcs/termcaps/termcaps_character_to_command_line.c -o ./.objs/termcaps_character_to_command_line.o $(CPPFLAGS) $(CFLAGS) 
@@ -618,8 +641,9 @@ $(DIROBJ)termcaps_display_command_line.o: \
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/statuses.h incs/i18n.h libs/libft/./incs/get_next_line.h \
+  incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/termcaps/termcaps_display_command_line.c\n"
 		@$(CC) -c ./srcs/termcaps/termcaps_display_command_line.c -o ./.objs/termcaps_display_command_line.o $(CPPFLAGS) $(CFLAGS) 
@@ -630,8 +654,9 @@ $(DIROBJ)termcaps_isunicode.o: srcs/termcaps/termcaps_isunicode.c incs/shell.h \
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/statuses.h incs/i18n.h libs/libft/./incs/get_next_line.h \
+  incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/termcaps/termcaps_isunicode.c\n"
 		@$(CC) -c ./srcs/termcaps/termcaps_isunicode.c -o ./.objs/termcaps_isunicode.o $(CPPFLAGS) $(CFLAGS) 
@@ -642,8 +667,9 @@ $(DIROBJ)list_head.o: srcs/termcaps/list_head.c incs/shell.h \
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/statuses.h incs/i18n.h libs/libft/./incs/get_next_line.h \
+  incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/termcaps/list_head.c\n"
 		@$(CC) -c ./srcs/termcaps/list_head.c -o ./.objs/list_head.o $(CPPFLAGS) $(CFLAGS) 
@@ -654,8 +680,9 @@ $(DIROBJ)list_head_command.o: srcs/termcaps/list_head_command.c incs/shell.h \
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/statuses.h incs/i18n.h libs/libft/./incs/get_next_line.h \
+  incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/termcaps/list_head_command.c\n"
 		@$(CC) -c ./srcs/termcaps/list_head_command.c -o ./.objs/list_head_command.o $(CPPFLAGS) $(CFLAGS) 
@@ -666,8 +693,9 @@ $(DIROBJ)list_head_history.o: srcs/termcaps/list_head_history.c incs/shell.h \
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/statuses.h incs/i18n.h libs/libft/./incs/get_next_line.h \
+  incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/termcaps/list_head_history.c\n"
 		@$(CC) -c ./srcs/termcaps/list_head_history.c -o ./.objs/list_head_history.o $(CPPFLAGS) $(CFLAGS) 
@@ -678,8 +706,9 @@ $(DIROBJ)key__backspace.o: srcs/termcaps/key__backspace.c incs/shell.h \
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/statuses.h incs/i18n.h libs/libft/./incs/get_next_line.h \
+  incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/termcaps/key__backspace.c\n"
 		@$(CC) -c ./srcs/termcaps/key__backspace.c -o ./.objs/key__backspace.o $(CPPFLAGS) $(CFLAGS) 
@@ -690,8 +719,9 @@ $(DIROBJ)key__copy.o: srcs/termcaps/key__copy.c incs/shell.h \
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/statuses.h incs/i18n.h libs/libft/./incs/get_next_line.h \
+  incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/termcaps/key__copy.c\n"
 		@$(CC) -c ./srcs/termcaps/key__copy.c -o ./.objs/key__copy.o $(CPPFLAGS) $(CFLAGS) 
@@ -703,8 +733,9 @@ $(DIROBJ)key__cursor_to_begin_of_line.o: \
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/statuses.h incs/i18n.h libs/libft/./incs/get_next_line.h \
+  incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/termcaps/key__cursor_to_begin_of_line.c\n"
 		@$(CC) -c ./srcs/termcaps/key__cursor_to_begin_of_line.c -o ./.objs/key__cursor_to_begin_of_line.o $(CPPFLAGS) $(CFLAGS) 
@@ -715,8 +746,9 @@ $(DIROBJ)key__cursor_to_end_of_line.o: srcs/termcaps/key__cursor_to_end_of_line.
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/statuses.h incs/i18n.h libs/libft/./incs/get_next_line.h \
+  incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/termcaps/key__cursor_to_end_of_line.c\n"
 		@$(CC) -c ./srcs/termcaps/key__cursor_to_end_of_line.c -o ./.objs/key__cursor_to_end_of_line.o $(CPPFLAGS) $(CFLAGS) 
@@ -728,8 +760,9 @@ $(DIROBJ)key__cursor_to_next_character.o: \
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/statuses.h incs/i18n.h libs/libft/./incs/get_next_line.h \
+  incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/termcaps/key__cursor_to_next_character.c\n"
 		@$(CC) -c ./srcs/termcaps/key__cursor_to_next_character.c -o ./.objs/key__cursor_to_next_character.o $(CPPFLAGS) $(CFLAGS) 
@@ -741,8 +774,9 @@ $(DIROBJ)key__cursor_to_next_command.o: \
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/statuses.h incs/i18n.h libs/libft/./incs/get_next_line.h \
+  incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/termcaps/key__cursor_to_next_command.c\n"
 		@$(CC) -c ./srcs/termcaps/key__cursor_to_next_command.c -o ./.objs/key__cursor_to_next_command.o $(CPPFLAGS) $(CFLAGS) 
@@ -753,8 +787,9 @@ $(DIROBJ)key__cursor_to_next_line.o: srcs/termcaps/key__cursor_to_next_line.c \
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/statuses.h incs/i18n.h libs/libft/./incs/get_next_line.h \
+  incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/termcaps/key__cursor_to_next_line.c\n"
 		@$(CC) -c ./srcs/termcaps/key__cursor_to_next_line.c -o ./.objs/key__cursor_to_next_line.o $(CPPFLAGS) $(CFLAGS) 
@@ -765,8 +800,9 @@ $(DIROBJ)key__cursor_to_next_word.o: srcs/termcaps/key__cursor_to_next_word.c \
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/statuses.h incs/i18n.h libs/libft/./incs/get_next_line.h \
+  incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/termcaps/key__cursor_to_next_word.c\n"
 		@$(CC) -c ./srcs/termcaps/key__cursor_to_next_word.c -o ./.objs/key__cursor_to_next_word.o $(CPPFLAGS) $(CFLAGS) 
@@ -778,8 +814,9 @@ $(DIROBJ)key__cursor_to_prev_character.o: \
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/statuses.h incs/i18n.h libs/libft/./incs/get_next_line.h \
+  incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/termcaps/key__cursor_to_prev_character.c\n"
 		@$(CC) -c ./srcs/termcaps/key__cursor_to_prev_character.c -o ./.objs/key__cursor_to_prev_character.o $(CPPFLAGS) $(CFLAGS) 
@@ -791,8 +828,9 @@ $(DIROBJ)key__cursor_to_prev_command.o: \
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/statuses.h incs/i18n.h libs/libft/./incs/get_next_line.h \
+  incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/termcaps/key__cursor_to_prev_command.c\n"
 		@$(CC) -c ./srcs/termcaps/key__cursor_to_prev_command.c -o ./.objs/key__cursor_to_prev_command.o $(CPPFLAGS) $(CFLAGS) 
@@ -803,8 +841,9 @@ $(DIROBJ)key__cursor_to_prev_line.o: srcs/termcaps/key__cursor_to_prev_line.c \
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/statuses.h incs/i18n.h libs/libft/./incs/get_next_line.h \
+  incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/termcaps/key__cursor_to_prev_line.c\n"
 		@$(CC) -c ./srcs/termcaps/key__cursor_to_prev_line.c -o ./.objs/key__cursor_to_prev_line.o $(CPPFLAGS) $(CFLAGS) 
@@ -815,8 +854,9 @@ $(DIROBJ)key__cursor_to_prev_word.o: srcs/termcaps/key__cursor_to_prev_word.c \
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/statuses.h incs/i18n.h libs/libft/./incs/get_next_line.h \
+  incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/termcaps/key__cursor_to_prev_word.c\n"
 		@$(CC) -c ./srcs/termcaps/key__cursor_to_prev_word.c -o ./.objs/key__cursor_to_prev_word.o $(CPPFLAGS) $(CFLAGS) 
@@ -827,8 +867,9 @@ $(DIROBJ)key__cut.o: srcs/termcaps/key__cut.c incs/shell.h \
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/statuses.h incs/i18n.h libs/libft/./incs/get_next_line.h \
+  incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/termcaps/key__cut.c\n"
 		@$(CC) -c ./srcs/termcaps/key__cut.c -o ./.objs/key__cut.o $(CPPFLAGS) $(CFLAGS) 
@@ -839,8 +880,9 @@ $(DIROBJ)key__cut_to_end_of_line.o: srcs/termcaps/key__cut_to_end_of_line.c \
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/statuses.h incs/i18n.h libs/libft/./incs/get_next_line.h \
+  incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/termcaps/key__cut_to_end_of_line.c\n"
 		@$(CC) -c ./srcs/termcaps/key__cut_to_end_of_line.c -o ./.objs/key__cut_to_end_of_line.o $(CPPFLAGS) $(CFLAGS) 
@@ -851,8 +893,9 @@ $(DIROBJ)key__delete_command_line.o: srcs/termcaps/key__delete_command_line.c \
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/statuses.h incs/i18n.h libs/libft/./incs/get_next_line.h \
+  incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/termcaps/key__delete_command_line.c\n"
 		@$(CC) -c ./srcs/termcaps/key__delete_command_line.c -o ./.objs/key__delete_command_line.o $(CPPFLAGS) $(CFLAGS) 
@@ -863,8 +906,9 @@ $(DIROBJ)key__delete_under_cursor.o: srcs/termcaps/key__delete_under_cursor.c \
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/statuses.h incs/i18n.h libs/libft/./incs/get_next_line.h \
+  incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/termcaps/key__delete_under_cursor.c\n"
 		@$(CC) -c ./srcs/termcaps/key__delete_under_cursor.c -o ./.objs/key__delete_under_cursor.o $(CPPFLAGS) $(CFLAGS) 
@@ -875,8 +919,9 @@ $(DIROBJ)key__paste.o: srcs/termcaps/key__paste.c incs/shell.h \
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/statuses.h incs/i18n.h libs/libft/./incs/get_next_line.h \
+  incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/termcaps/key__paste.c\n"
 		@$(CC) -c ./srcs/termcaps/key__paste.c -o ./.objs/key__paste.o $(CPPFLAGS) $(CFLAGS) 
@@ -887,8 +932,9 @@ $(DIROBJ)key__select.o: srcs/termcaps/key__select.c incs/shell.h \
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/statuses.h incs/i18n.h libs/libft/./incs/get_next_line.h \
+  incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/termcaps/key__select.c\n"
 		@$(CC) -c ./srcs/termcaps/key__select.c -o ./.objs/key__select.o $(CPPFLAGS) $(CFLAGS) 
@@ -899,8 +945,9 @@ $(DIROBJ)key__send.o: srcs/termcaps/key__send.c incs/shell.h \
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/statuses.h incs/i18n.h libs/libft/./incs/get_next_line.h \
+  incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/termcaps/key__send.c\n"
 		@$(CC) -c ./srcs/termcaps/key__send.c -o ./.objs/key__send.o $(CPPFLAGS) $(CFLAGS) 
@@ -911,8 +958,9 @@ $(DIROBJ)key__share.o: srcs/termcaps/key__share.c incs/shell.h \
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/statuses.h incs/i18n.h libs/libft/./incs/get_next_line.h \
+  incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/termcaps/key__share.c\n"
 		@$(CC) -c ./srcs/termcaps/key__share.c -o ./.objs/key__share.o $(CPPFLAGS) $(CFLAGS) 
@@ -923,8 +971,9 @@ $(DIROBJ)key__share_words.o: srcs/termcaps/key__share_words.c incs/shell.h \
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h incs/statuses.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtin.h
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/statuses.h incs/i18n.h libs/libft/./incs/get_next_line.h \
+  incs/lexer.h incs/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/termcaps/key__share_words.c\n"
 		@$(CC) -c ./srcs/termcaps/key__share_words.c -o ./.objs/key__share_words.o $(CPPFLAGS) $(CFLAGS) 
