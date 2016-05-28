@@ -1,6 +1,6 @@
 #include "shell.h"
 
-int			s_before(t_builtin const *builtin, t_proc *p)
+static int	s_before(t_builtin const *builtin, t_proc *p)
 {
 	int		ret;
 
@@ -17,7 +17,7 @@ int			s_before(t_builtin const *builtin, t_proc *p)
 	return (ST_OK);
 }
 
-int			s_exec(t_proc *p)
+static int	s_exec(t_proc *p)
 {
 	log_debug("builtin callback cd: exec");
 	if (p->builtin_status != ST_OK)
@@ -28,7 +28,7 @@ int			s_exec(t_proc *p)
 	return (EXIT_SUCCESS);
 }
 
-int			s_after(t_proc *p)
+static int	s_after(t_proc *p)
 {
 	log_debug("builtin callback cd: after");
 	if (p->builtin_status == ST_OK)

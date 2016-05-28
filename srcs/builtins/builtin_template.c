@@ -24,7 +24,7 @@
 ** current directory.
 */
 
-int			s_before(t_builtin const *builtin, t_sh *sh, t_proc *p)
+static int	s_before(t_builtin const *builtin, t_sh *sh, t_proc *p)
 {
 	(void)builtin;
 	(void)sh;
@@ -32,7 +32,7 @@ int			s_before(t_builtin const *builtin, t_sh *sh, t_proc *p)
 	return (ST_OK);
 }
 
-int			s_exec(t_builtin const *builtin, t_sh *sh, t_proc *p)
+static int	s_exec(t_builtin const *builtin, t_sh *sh, t_proc *p)
 {
 	(void)builtin;
 	(void)sh;
@@ -40,7 +40,7 @@ int			s_exec(t_builtin const *builtin, t_sh *sh, t_proc *p)
 	return (EXIT_SUCCESS);
 }
 
-int			s_after(t_builtin const *builtin, t_sh *sh, t_proc *p)
+static int	s_after(t_builtin const *builtin, t_sh *sh, t_proc *p)
 {
 	(void)builtin;
 	(void)sh;

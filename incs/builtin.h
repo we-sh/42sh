@@ -26,7 +26,7 @@ typedef struct				s_builtin
 {
 	int						index;
 	char const				*name;
-	int						(*exe)(t_builtin const *, int, t_sh *, t_proc *);
+	int						(*exe)(struct s_builtin const *, int, t_sh *, t_proc *);
 	t_option const 			**options;
 }							t_builtin;
 
