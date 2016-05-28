@@ -6,8 +6,6 @@
 ** Builtin structure and associated enum and typedef
 */
 
-typedef struct s_builtin	t_builtin;
-
 typedef enum				e_builtin_index
 {
 	BLTIN_NONE,
