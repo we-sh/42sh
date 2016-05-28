@@ -22,8 +22,9 @@ typedef struct				s_option
 	char const				*name;
 	char					is_single_char;
 	char					has_value;
-	char					value_is_numeric_only;
-	char					value_is_alnum_only;
+	char					value_is_numeric;
+	char					value_is_alnum;
+	char const				**value_is_indexof;
 	char					*value;
 }							t_option;
 
@@ -32,12 +33,19 @@ typedef struct				s_option
 ** Options for builtin `cd`
 */
 
+static const char			*g_builtin_cd_option_test_indexof[] = {
+	[0] = "arg1",
+	[1] = "hihihaha",
+	[2] = NULL
+};
+
 static t_option				g_builtin_cd_option_p2 = {
 	.name = "P",
 	.is_single_char = 1,
 	.has_value = 0,
-	.value_is_numeric_only = 0,
-	.value_is_alnum_only = 0,
+	.value_is_numeric = 0,
+	.value_is_alnum = 0,
+	.value_is_indexof = NULL,
 	.value = NULL
 };
 
@@ -45,8 +53,9 @@ static t_option				g_builtin_cd_option_test = {
 	.name = "test",
 	.is_single_char = 0,
 	.has_value = 1,
-	.value_is_numeric_only = 1,
-	.value_is_alnum_only = 0,
+	.value_is_numeric = 0,
+	.value_is_alnum = 0,
+	.value_is_indexof = g_builtin_cd_option_test_indexof,
 	.value = NULL
 };
 
@@ -54,8 +63,9 @@ static t_option				g_builtin_cd_option_t = {
 	.name = "t",
 	.is_single_char = 1,
 	.has_value = 1,
-	.value_is_numeric_only = 1,
-	.value_is_alnum_only = 0,
+	.value_is_numeric = 1,
+	.value_is_alnum = 0,
+	.value_is_indexof = NULL,
 	.value = NULL
 };
 

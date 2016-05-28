@@ -38,10 +38,69 @@ static size_t	ft_array_pop(char ***argv, size_t start, size_t len)
 	}
 	return (i);
 }
+
+static int	ft_array_indexof(char const **array, char const *str)
+{
+	while(*array)
+	{
+		if (ft_strcmp(*array, str) == 0)
+			return (1);
+		array++;
+	}
+	return (0);
+}
+
+static int	ft_strisnumeric(char const *str)
+{
+	char const	*ptr;
+
+	ptr = str;
+	while(*ptr)
+	{
+		if (str == ptr)
+		{
+			if (ft_isdigit(*ptr) == 0 && *ptr != '-' && *ptr != '+')
+				return (0);
+		}
+		else if (ft_isdigit(*ptr) == 0)
+			return (0);
+		ptr++;
+	}
+	return (1);
+}
+
+static int	ft_strisalnum(char const *str)
+{
+	while(*str)
+	{
+		if (ft_isalnum(*str) == 0)
+			return (0);
+		str++;
+	}
+	return (1);
+}
 /* ------------------------------------------------------------------ */
 
 
-
+static int			s_value_is_valid(t_option const **available_opt,
+						size_t opt, char *value)
+{
+	if (available_opt[opt]->has_value == 1)
+	{
+		if (value == NULL)
+			return (-ST_EINVAL);
+		if (available_opt[opt]->value_is_numeric == 1
+			&& ft_strisnumeric(value) == 0)
+			return (-ST_EINVAL);
+		if (available_opt[opt]->value_is_alnum == 1
+			&& ft_strisalnum(value) == 0)
+			return (-ST_EINVAL);
+		if (available_opt[opt]->value_is_indexof != NULL
+			&& ft_array_indexof(available_opt[opt]->value_is_indexof, value) == 0)
+			return (-ST_EINVAL);
+	}
+	return (opt);
+}
 
 static int			s_is_valid(t_option const **available_opt,
 						char **argv, size_t i, size_t is_single_char)
@@ -55,18 +114,13 @@ static int			s_is_valid(t_option const **available_opt,
 			&& argv[i][is_single_char] == available_opt[k]->name[0])
 		{
 			if (available_opt[k]->has_value == 1
-				&& (argv[i][is_single_char + 1] != '\0'
-				|| is_single_char > 1 || argv[i + 1] == NULL))
+				&& (argv[i][is_single_char + 1] != '\0' || is_single_char > 1))
 				return (-ST_EINVAL);
-			return (k);
+			return (s_value_is_valid(available_opt, k, argv[i + 1]));
 		}
 		if (is_single_char == 0
 			&& ft_strcmp(argv[i] + 2, available_opt[k]->name) == 0)
-		{
-			if (available_opt[k]->has_value == 1 && argv[i + 1] == NULL)
-				return (-ST_EINVAL);
-			return (k);
-		}
+			return (s_value_is_valid(available_opt, k, argv[i + 1]));
 		k++;
 	}
 	return (-ST_EINVAL);

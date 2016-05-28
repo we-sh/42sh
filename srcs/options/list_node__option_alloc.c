@@ -10,8 +10,8 @@ t_list			*list_node__option_alloc(t_option const *option_ref,
 	option->name = option_ref->name;
 	option->is_single_char = option_ref->is_single_char;
 	option->has_value = option_ref->has_value;
-	option->value_is_numeric_only = option_ref->value_is_numeric_only;
-	option->value_is_alnum_only = option_ref->value_is_alnum_only;
+	option->value_is_numeric = option_ref->value_is_numeric;
+	option->value_is_alnum = option_ref->value_is_alnum;
 	option->value = NULL;
 	if (option_ref->has_value == 1)
 		if ((option->value = ft_strdup(argv[i + 1])) == NULL)
