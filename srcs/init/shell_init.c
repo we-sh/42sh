@@ -65,8 +65,8 @@ int				shell_init(t_sh *sh)
 	}
 	if (termcaps_init(sh) != ST_OK)
 	{
- 	 log_error("termcaps_init() failed"); 
-	 return (-1);
+		 log_error("termcaps_init() failed");
+		 return (-1);
 	}
 	return (ST_OK);
 }
