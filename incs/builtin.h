@@ -22,13 +22,11 @@ typedef enum				e_builtin_callback
 	BLTIN_CB_AFTER
 }							t_builtin_callback;
 
-typedef int 				(*t_builtin_execute)(t_builtin const *, int, t_sh *, t_proc *);
-
 typedef struct				s_builtin
 {
 	int						index;
 	char const				*name;
-	t_builtin_execute		execute;
+	int						(*exe)(t_builtin const *, int, t_sh *, t_proc *);
 	t_option const 			**options;
 }							t_builtin;
 
@@ -45,7 +43,7 @@ int							builtin_cd(t_builtin const *builtin, int callback, t_sh *sh, t_proc *p
 static const t_builtin		g_builtin_cd = {
 	.index = BLTIN_CD,
 	.name = "cd",
-	.execute = &builtin_cd,
+	.exe = &builtin_cd,
 	.options = g_builtin_cd_options
 };
 
