@@ -30,6 +30,7 @@ typedef enum	e_st
 	ST_EINVAL,
 	ST_E2BIG,
 	ST_BLTIN_CD,
+	ST_BLTIN_CD_OPT_P2,
 	ST_BLTIN_HELP,
 	ST_TOTAL
 }				t_st;

@@ -26,8 +26,10 @@ static int	s_before(t_proc *p)
 	return (ST_OK);
 }
 
-static int	s_exec(t_proc *p)
+static int	s_exec(t_builtin const *builtin, t_proc *p)
 {
+	int i;
+
 	if (p->builtin_status > ST_OK)
 	{
 		// todo use `log_status()` instead
@@ -38,6 +40,19 @@ static int	s_exec(t_proc *p)
 	ft_putstr(": ");
 	ft_putendl(g_builtins[-p->builtin_status]->usage);
 	ft_putendl(i18n_translate(g_builtins[-p->builtin_status]->description));
+	if (builtin->options != NULL)
+	{
+		ft_putendl("options:");
+		i = 0;
+		while (builtin->options[i])
+		{
+			ft_putstr("- ");
+			ft_putendl(builtin->options[i]->name);
+			ft_putstr("  ");
+			ft_putendl(i18n_translate(builtin->options[i]->description));
+			i++;
+		}
+	}
 	return (EXIT_SUCCESS);
 }
 
@@ -48,6 +63,6 @@ int			builtin_help(t_builtin const *builtin, int callback, t_sh *sh, t_proc *p)
 	if (callback == BLTIN_CB_BEFORE)
 		return (s_before(p));
 	if (callback == BLTIN_CB_EXEC)
-		exit(s_exec(p));
+		exit(s_exec(builtin, p));
 	return (ST_OK);
 }

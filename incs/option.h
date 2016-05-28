@@ -20,6 +20,7 @@ typedef struct				s_option
 {
 	t_list					list_option;
 	char const				*name;
+	int						description;
 	char					is_single_char;
 	char					has_value;
 	char					value_is_numeric;
@@ -33,14 +34,9 @@ typedef struct				s_option
 ** Options for builtin `cd`
 */
 
-static const char			*g_builtin_cd_option_test_indexof[] = {
-	[0] = "arg1",
-	[1] = "hihihaha",
-	[2] = NULL
-};
-
 static t_option				g_builtin_cd_option_p2 = {
 	.name = "P",
+	.description = ST_BLTIN_CD_OPT_P2,
 	.is_single_char = 1,
 	.has_value = 0,
 	.value_is_numeric = 0,
@@ -49,29 +45,7 @@ static t_option				g_builtin_cd_option_p2 = {
 	.value = NULL
 };
 
-static t_option				g_builtin_cd_option_test = {
-	.name = "test",
-	.is_single_char = 0,
-	.has_value = 1,
-	.value_is_numeric = 0,
-	.value_is_alnum = 0,
-	.value_is_indexof = g_builtin_cd_option_test_indexof,
-	.value = NULL
-};
-
-static t_option				g_builtin_cd_option_t = {
-	.name = "t",
-	.is_single_char = 1,
-	.has_value = 1,
-	.value_is_numeric = 1,
-	.value_is_alnum = 0,
-	.value_is_indexof = NULL,
-	.value = NULL
-};
-
 static const t_option		*g_builtin_cd_options[] = {
 	[0] = &g_builtin_cd_option_p2,
-	[1] = &g_builtin_cd_option_test,
-	[2] = &g_builtin_cd_option_t,
-	[3] = NULL
+	[1] = NULL
 };
