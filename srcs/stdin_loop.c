@@ -22,7 +22,7 @@ int					stdin_loop(t_sh *sh)
 		exit_status = parse(sh, input);
 		if (exit_status != ST_OK)
 		{
-			log_st(exit_status);
+			log_status(exit_status, NULL);
 			return (-1);
 		}
 		ft_strdel(&input);
