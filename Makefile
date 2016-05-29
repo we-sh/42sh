@@ -33,17 +33,21 @@ SRCS		=	\
 				job/job_alloc.c					\
 				job/job_available_id.c			\
 				job/job_foreground.c			\
+				job/job_free.c					\
 				job/job_is_completed.c			\
 				job/job_is_stopped.c			\
 				job/job_kill.c					\
 				job/job_launch.c				\
+				job/job_list_clean.c			\
 				job/job_wait.c					\
 				job/proc_find.c					\
+				job/proc_free.c					\
 				job/proc_launch.c				\
 				job/proc_update_status.c		\
 				list/list_node__proc_alloc.c	\
 				options/option_is_set.c			\
 				options/list_node__option_alloc.c\
+				options/option_free.c			\
 				options/option_parse.c			\
 				signal/signal_sigchld.c			\
 				signal/signal_to_default.c		\
@@ -413,6 +417,18 @@ $(DIROBJ)job_foreground.o: srcs/job/job_foreground.c incs/shell.h \
 		@printf "compiling ./srcs/job/job_foreground.c\n"
 		@$(CC) -c ./srcs/job/job_foreground.c -o ./.objs/job_foreground.o $(CPPFLAGS) $(CFLAGS) 
 
+$(DIROBJ)job_free.o: srcs/job/job_free.c incs/shell.h libs/libft/./incs/libft.h \
+  libs/libft/./incs/list.h libs/logger/./incs/logger.h \
+  libs/logger/./incs/logger_utils.h incs/statuses.h incs/option.h \
+  incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
+  libs/libcaps/./incs/types.h incs/termcaps/log.h \
+  incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtins/builtin.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/job/job_free.c\n"
+		@$(CC) -c ./srcs/job/job_free.c -o ./.objs/job_free.o $(CPPFLAGS) $(CFLAGS) 
+
 $(DIROBJ)job_is_completed.o: srcs/job/job_is_completed.c incs/shell.h \
   libs/libft/./incs/libft.h libs/libft/./incs/list.h \
   libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
@@ -464,6 +480,19 @@ $(DIROBJ)job_launch.o: srcs/job/job_launch.c incs/shell.h \
 		@printf "compiling ./srcs/job/job_launch.c\n"
 		@$(CC) -c ./srcs/job/job_launch.c -o ./.objs/job_launch.o $(CPPFLAGS) $(CFLAGS) 
 
+$(DIROBJ)job_list_clean.o: srcs/job/job_list_clean.c incs/shell.h \
+  libs/libft/./incs/libft.h libs/libft/./incs/list.h \
+  libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
+  incs/statuses.h incs/option.h incs/job.h incs/termcaps/termcaps.h \
+  incs/termcaps/list_head.h libs/libcaps/./incs/types.h \
+  incs/termcaps/log.h incs/termcaps/termcaps_struct.h \
+  incs/termcaps/key.h libs/libcaps/./incs/caps.h \
+  libs/libcaps/./incs/logger.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtins/builtin.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/job/job_list_clean.c\n"
+		@$(CC) -c ./srcs/job/job_list_clean.c -o ./.objs/job_list_clean.o $(CPPFLAGS) $(CFLAGS) 
+
 $(DIROBJ)job_wait.o: srcs/job/job_wait.c incs/shell.h libs/libft/./incs/libft.h \
   libs/libft/./incs/list.h libs/logger/./incs/logger.h \
   libs/logger/./incs/logger_utils.h incs/statuses.h incs/option.h \
@@ -487,6 +516,18 @@ $(DIROBJ)proc_find.o: srcs/job/proc_find.c incs/shell.h libs/libft/./incs/libft.
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/job/proc_find.c\n"
 		@$(CC) -c ./srcs/job/proc_find.c -o ./.objs/proc_find.o $(CPPFLAGS) $(CFLAGS) 
+
+$(DIROBJ)proc_free.o: srcs/job/proc_free.c incs/shell.h libs/libft/./incs/libft.h \
+  libs/libft/./incs/list.h libs/logger/./incs/logger.h \
+  libs/logger/./incs/logger_utils.h incs/statuses.h incs/option.h \
+  incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
+  libs/libcaps/./incs/types.h incs/termcaps/log.h \
+  incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtins/builtin.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/job/proc_free.c\n"
+		@$(CC) -c ./srcs/job/proc_free.c -o ./.objs/proc_free.o $(CPPFLAGS) $(CFLAGS) 
 
 $(DIROBJ)proc_launch.o: srcs/job/proc_launch.c incs/shell.h \
   libs/libft/./incs/libft.h libs/libft/./incs/list.h \
@@ -552,6 +593,19 @@ $(DIROBJ)list_node__option_alloc.o: srcs/options/list_node__option_alloc.c \
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/options/list_node__option_alloc.c\n"
 		@$(CC) -c ./srcs/options/list_node__option_alloc.c -o ./.objs/list_node__option_alloc.o $(CPPFLAGS) $(CFLAGS) 
+
+$(DIROBJ)option_free.o: srcs/options/option_free.c incs/shell.h \
+  libs/libft/./incs/libft.h libs/libft/./incs/list.h \
+  libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
+  incs/statuses.h incs/option.h incs/job.h incs/termcaps/termcaps.h \
+  incs/termcaps/list_head.h libs/libcaps/./incs/types.h \
+  incs/termcaps/log.h incs/termcaps/termcaps_struct.h \
+  incs/termcaps/key.h libs/libcaps/./incs/caps.h \
+  libs/libcaps/./incs/logger.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtins/builtin.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/options/option_free.c\n"
+		@$(CC) -c ./srcs/options/option_free.c -o ./.objs/option_free.o $(CPPFLAGS) $(CFLAGS) 
 
 $(DIROBJ)option_parse.o: srcs/options/option_parse.c incs/shell.h \
   libs/libft/./incs/libft.h libs/libft/./incs/list.h \

@@ -42,6 +42,7 @@ int	parse(t_sh *sh, char const *input)
 	lexer(cleaned, &l);
 	if (ft_strlen(cleaned) > 0 && (array = ft_strsplit(cleaned, '|')) != NULL)
 	{
+		job_list_clean(1);
 		if ((j = s_job_create(array, input)) == NULL)
 		{
 			log_fatal("parse job");
