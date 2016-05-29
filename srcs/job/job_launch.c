@@ -11,25 +11,28 @@ static int			s_fork_it(t_sh *sh, t_job *j, t_proc *p)
 	int	ret;
 
 	if ((ret = builtin_callback(BLTIN_CB_BEFORE, sh, p)) != ST_OK)
-		return (job_kill(j, ret));
+		return (job_kill(sh, j, ret));
 	p->pid = fork();
 	if (p->pid < 0)
 	{
 		log_error("fork failed (%d)", p->pid);
-		return (job_kill(j, ST_FORK));
+		return (job_kill(sh, j, ST_FORK));
 	}
 	else if (p->pid == 0)
 		proc_launch(sh, j, p);
 	else
 	{
-		if (sh->is_interactive)
+		if (sh->is_interactive == 1)
 		{
 			if (j->pgid == 0)
 				j->pgid = p->pid;
-			if (j->pgid == p->pid && setpgid(p->pid, j->pgid) < 0)
+			if (setpgid(p->pid, j->pgid) < 0)
 			{
-				log_fatal("setpgid(%d, %d) error: %s", p->pid, j->pgid, strerror(errno));
-				return (job_kill(j, ST_SETPGID));
+				errno = 0;
+				if (waitpid(p->pid, NULL, WNOHANG) && errno != ECHILD)
+				{
+					return (job_kill(sh, j, ST_SETPGID));
+				}
 			}
 		}
 	}
@@ -47,6 +50,11 @@ int					job_launch(t_sh *sh, t_job *j)
 	int 			exit_status;
 
 	log_info("launching job `%s`", j->command);
+	if (j->foreground == 1 && sh->is_interactive == 1)
+	{
+		if (tcsetattr(sh->fd, TCSADRAIN, &sh->termios_old) == -1)
+			return (job_kill(sh, j, ST_TCSETATTR));
+	}
 	job_pipe[0] = -1;
 	outputs[STDIN_FILENO] = j->stdin;
 	outputs[STDERR_FILENO] = j->stderr;
@@ -58,7 +66,7 @@ int					job_launch(t_sh *sh, t_job *j)
 		if (pos->next != head)
 		{
 			if (pipe(job_pipe) < 0)
-				return (job_kill(j, ST_PIPE));
+				return (job_kill(sh, j, ST_PIPE));
 			outputs[STDOUT_FILENO] = job_pipe[STDOUT_FILENO];
 		}
 		else
@@ -68,7 +76,7 @@ int					job_launch(t_sh *sh, t_job *j)
 		p->stdout = outputs[STDOUT_FILENO];
 		p->stderr = outputs[STDERR_FILENO];
 		if ((ret = s_fork_it(sh, j, p)) != ST_OK)
-			return(job_kill(j, ret));
+			return(job_kill(sh, j, ret));
 
 		if (outputs[STDIN_FILENO] != j->stdin)
 			close(outputs[STDIN_FILENO]);
@@ -80,7 +88,7 @@ int					job_launch(t_sh *sh, t_job *j)
 		//if (p->next == NULL)
 		//	break ;
 	}
-	if (!sh->is_interactive)
+	if (sh->is_interactive == 0)
 	{
 		job_wait(j);
 	//	after callback built-in

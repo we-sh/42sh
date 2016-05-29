@@ -26,7 +26,7 @@ typedef struct				s_job
 	t_list					proc_head;
 	char					*command;
 	pid_t					pgid;
-	char					notified;
+	int						notified;
 	t_termios				tmodes;
 	int						foreground;
 	int						stdin;

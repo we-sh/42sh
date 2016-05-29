@@ -8,19 +8,22 @@
 ** back to foreground, letting the user enter a new command.
 */
 
-int	s_bask_to_shell(t_sh *sh, t_job *j)
+int	s_bask_to_shell(t_sh *sh)
 {
-	// make the shell controlling the terminal
+	int	ret;
+
+	ret = ST_OK;
 	if (tcsetpgrp(sh->fd, sh->pgid) == -1)
 	{
 		log_fatal("s_bask_to_shell: tcsetpgrp failed");
-		return (job_kill(j, ST_TCSETPGRP));
+		ret = ST_TCSETPGRP;
 	}
-
-	// reset the termios structure to its previous state
 	if (tcsetattr(sh->fd, TCSADRAIN, &sh->termios_new) == -1)
-		return (job_kill(j, ST_TCSETATTR));
-
+	{
+		log_fatal("s_bask_to_shell: tcsetattr failed");
+		if (ret == ST_OK)
+			ret = ST_TCSETATTR;
+	}
 	return (ST_OK);
 }
 
@@ -28,41 +31,37 @@ int	job_foreground(t_sh *sh, t_job *j, int sigcont)
 {
 	log_debug("put job to foreground (id: %d, pgid: %d)", j->id, j->pgid);
 
+	j->notified = 1;
+
 	// make the job controlling the terminal
 	if (tcsetpgrp(sh->fd, j->pgid) == -1)
 	{
-		if (!(errno == EINVAL && (job_is_completed(j) == 1 || job_is_stopped(j) == 1)))
+		if (errno != EINVAL)
 		{
 			// todo notify the user a problem occured
-			log_error("failed to set the stopped job %d", j->pgid);
+			log_error("failed to make the job %d controlling terminal", j->pgid);
+			return (job_kill(sh, j, ST_TCSETPGRP));
 		}
-		return (s_bask_to_shell(sh, j));
 	}
-
-	// reset termios structure to its initial configuration
-	if (tcsetattr(sh->fd, TCSADRAIN, &sh->termios_old) == -1)
-		return (job_kill(j, ST_TCSETATTR));
-
-	if (sigcont == 1)
+	else if (sigcont == 1)
 	{
-		// stopped job to continued job
 		if (kill(-j->pgid, SIGCONT) < 0)
 		{
 			// todo notify the user a problem occured
 			log_error("failed to continue the stopped job %d", j->pgid);
-			return (s_bask_to_shell(sh, j));
+			return (job_kill(sh, j, ST_SIGCONT));
+		}
+		if (tcgetattr(sh->fd, &j->tmodes) == -1)
+		{
+			log_error("failed to set terminal structure");
+			return (job_kill(sh, j, ST_SIGCONT));
 		}
 	}
-
 	job_wait(j);
-
-	// save termios structure when job is stopped but not completed
-	// so that we can launch job again with its termios
 	if (job_is_completed(j) == 0 && tcgetattr(sh->fd, &j->tmodes) != 0)
 	{
 		// todo notify user a problem occured
 		log_error("failed to save termios structure a the job %d", j->pgid);
 	}
-
-	return (s_bask_to_shell(sh, j));
+	return (s_bask_to_shell(sh));
 }
