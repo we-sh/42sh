@@ -6,17 +6,27 @@
 ** It handles pipes and redirections.
 */
 
+static int			s_kill_job(t_job *j, int status)
+{
+	if (j->pgid != 0)
+	{
+		kill(-j->pgid, SIGTERM);
+		kill(-j->pgid, SIGCONT);
+	}
+	return (status);
+}
+
 static int			s_fork_it(t_sh *sh, t_job *j, t_proc *p)
 {
 	int	ret;
 
 	if ((ret = builtin_callback(BLTIN_CB_BEFORE, sh, p)) != ST_OK)
-		return (ret);
+		return (s_kill_job(j, ret));
 	p->pid = fork();
 	if (p->pid < 0)
 	{
 		log_error("fork failed (%d)", p->pid);
-		return (ST_FORK);
+		return (s_kill_job(j, ST_FORK));
 	}
 	else if (p->pid == 0)
 		proc_launch(sh, j, p);
@@ -26,8 +36,11 @@ static int			s_fork_it(t_sh *sh, t_job *j, t_proc *p)
 		{
 			if (j->pgid == 0)
 				j->pgid = p->pid;
-			if (setpgid(p->pid, j->pgid) < 0)
-				return (ST_SETPGID);
+			if (j->pgid == p->pid && setpgid(p->pid, j->pgid) < 0)
+			{
+				log_fatal("setpgid(%d, %d) error: %s", p->pid, j->pgid, strerror(errno));
+				return (s_kill_job(j, ST_SETPGID));
+			}
 		}
 	}
 	return (ST_OK);
@@ -43,6 +56,7 @@ int					job_launch(t_sh *sh, t_job *j)
 	int				outputs[3];
 	int 			exit_status;
 
+	log_info("launching job `%s`", j->command);
 	job_pipe[0] = -1;
 	outputs[STDIN_FILENO] = j->stdin;
 	outputs[STDERR_FILENO] = j->stderr;

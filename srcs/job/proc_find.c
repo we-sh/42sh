@@ -20,7 +20,9 @@ t_proc	*proc_find(pid_t pid)
 		{
 			p = CONTAINER_OF(p_pos, t_proc, list_proc);
 			if (p->pid == pid)
+			{
 				return (p);
+			}
 		}
 	}
 	return (NULL);

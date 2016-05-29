@@ -51,7 +51,8 @@ int	job_foreground(t_sh *sh, t_job *j, int sigcont)
 			return (s_bask_to_shell(sh));
 		}
 	}
-	while (job_is_completed(j) == 0 && job_is_stopped(j) == 0);
+	job_wait(j);
+	//while (job_is_completed(j) == 0 && job_is_stopped(j) == 0);
 
 	// save termios structure when job is stopped but not completed
 	// so that we can launch job again with its termios
