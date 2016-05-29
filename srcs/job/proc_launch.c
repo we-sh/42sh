@@ -11,13 +11,26 @@ void		proc_launch(t_sh *sh, t_job *j, t_proc *p)
 	p->pid = getpid();
 	if (sh->is_interactive)
 	{
-		pgid = j->pgid;
-		if (pgid == 0)
-			pgid = p->pid;
-		setpgid(p->pid, pgid);
-		if (j->foreground == 1)
-			tcsetpgrp(sh->fd, pgid);
-		signal_to_default();
+		if (j->pgid == 0)
+			j->pgid = p->pid;
+		if (setpgid(p->pid, j->pgid) == -1)
+		{
+			log_fatal("setpgid(%d, %d) error: %s", p->pid, j->pgid, strerror(errno));
+			exit(EXIT_FAILURE);
+		}
+		/*if (j->foreground == 1)
+		{
+			if (tcsetpgrp(shell_fd(), j->pgid) == -1)
+			{
+				log_fatal("tcsetpgrp(%d, %d) error: %s", shell_fd(), j->pgid, strerror(errno));
+				exit(EXIT_FAILURE);
+			}
+		}*/
+		if (signal_to_default() != ST_OK)
+		{
+			log_fatal("signal_to_default error (pid: %d)", p->pid);
+			exit(EXIT_FAILURE);
+		}
 	}
 
 	if (p->stdin != STDIN_FILENO)

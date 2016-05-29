@@ -11,8 +11,11 @@
 int	s_bask_to_shell(t_sh *sh)
 {
 	// make the shell controlling the terminal
-	if (tcsetpgrp(sh->fd, sh->pgid) == -1)
-	  return (ST_TCSETPGRP);
+	if (tcsetpgrp(shell_fd(), sh->pgid) == -1)
+	{
+		log_fatal("s_bask_to_shell: tcsetpgrp failed");
+		shell_exit(ST_TCSETPGRP);
+	}
 
 	// reset the termios structure to its previous state
 	//if ((ret = update_termios(TCSADRAIN, &g_sh->termios)) != STATUS_OK)
@@ -22,7 +25,7 @@ int	s_bask_to_shell(t_sh *sh)
 
 int	job_foreground(t_sh *sh, t_job *j, int sigcont)
 {
-	log_debug("put job to foreground (pgid: %d)", j->pgid);
+	log_debug("put job to foreground (id: %d, pgid: %d)", j->id, j->pgid);
 
 	// make the job controlling the terminal
 	if (tcsetpgrp(shell_fd(), j->pgid) == -1)
