@@ -28,5 +28,6 @@ t_list			*list_node__proc_alloc(char *command, char **argv)
 	p->stderr = STDERR_FILENO;
 	p->exit_status = EXIT_SUCCESS;
 	p->bltin_status = ST_OK;
+	INIT_LIST_HEAD(&p->bltin_opt_head);
 	return (&p->list_proc);
 }

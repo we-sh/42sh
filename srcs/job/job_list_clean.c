@@ -15,8 +15,9 @@ void	job_list_clean(int notified)
 		j = CONTAINER_OF(pos, t_job, list_job);
 		if (notified == 0 || j->notified == 1)
 		{
+			pos->prev->next = safe;
+			safe->prev = pos->prev;
 			job_free(&j);
-			list_del(pos);
 		}
 	}
 }

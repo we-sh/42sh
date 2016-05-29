@@ -14,7 +14,6 @@ void	proc_free(t_proc **p)
 		safe = safe->next;
 		opt = CONTAINER_OF(pos, t_option, list_option);
 		option_free(&opt);
-		list_del(pos);
 	}
 	ft_memdel_tab((void ***)&(*p)->argv);
 	ft_memdel((void **)&(*p)->command);

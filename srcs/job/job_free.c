@@ -14,7 +14,6 @@ void	job_free(t_job **j)
 		safe = safe->next;
 		p = CONTAINER_OF(pos, t_proc, list_proc);
 		proc_free(&p);
-		list_del(pos);
 	}
 	ft_memdel((void **)&(*j)->command);
 	ft_memdel((void **)&(*j));
