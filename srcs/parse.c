@@ -21,7 +21,7 @@ t_job *s_job_create(char **array, char const *input)
 	while (array[i] != NULL)
 	{
 		p_array = ft_strsplit(array[i], ' ');
-		if ((p_node = list_node__proc_alloc(p_array)) == NULL)
+		if ((p_node = list_node__proc_alloc(array[i], p_array)) == NULL)
 			return (NULL);
 		list_push_back(p_node, &j->proc_head);
 		i++;

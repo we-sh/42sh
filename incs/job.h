@@ -7,6 +7,7 @@ typedef struct				s_proc
 {
 	t_list					list_proc;
 	char					**argv;
+	char					*command;
 	int						argc;
 	pid_t					pid;
 	char					completed;
@@ -15,8 +16,8 @@ typedef struct				s_proc
 	int						stdout;
 	int						stderr;
 	int						exit_status;
-	int						builtin_status;
-	t_list					builtin_options_head;
+	int						bltin_status;
+	t_list					bltin_opt_head;
 }							t_proc;
 
 typedef struct				s_job
@@ -31,6 +32,7 @@ typedef struct				s_job
 	int						stdin;
 	int						stdout;
 	int						stderr;
+	int						id;
 }							t_job;
 
 #endif

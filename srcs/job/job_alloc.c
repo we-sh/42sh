@@ -15,5 +15,6 @@ t_job	*job_alloc(char const *command)
 	j->stderr = STDERR_FILENO;
 	j->pgid = 0;
 	j->notified = 0;
+	j->id = job_available_id();
 	return (j);
 }

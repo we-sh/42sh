@@ -5,7 +5,7 @@
 
 static t_option				g_builtin_cd_option_p2 = {
 	.name = "P",
-	.description = ST_BLTIN_CD_OPT_P2,
+	.index = ST_BLTIN_CD_OPT_P2,
 	.is_single_char = 1,
 	.has_value = 0,
 	.value_is_numeric = 0,

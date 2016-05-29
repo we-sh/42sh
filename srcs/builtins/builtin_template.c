@@ -6,7 +6,7 @@
 ** `BLTIN_CB_BEFORE`
 ** A callback called before the process is forked.
 ** Used to parse arguments, check options and pop their arguments, and set the
-** builtin status (p->builtin_status).
+** builtin status (p->bltin_status).
 ** The builtin status may be used to display errors and to give up behaviors
 ** that may appear during the other callbacks.
 **

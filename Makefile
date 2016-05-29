@@ -22,6 +22,7 @@ SRCS		=	\
 				main.c							\
 				builtins/cd/builtin_cd.c		\
 				builtins/help/builtin_help.c	\
+				builtins/jobs/builtin_jobs.c	\
 				builtins/builtin_callback.c		\
 				log_status/log_status.c			\
 				i18n/i18n_translate.c			\
@@ -30,6 +31,7 @@ SRCS		=	\
 				stdin_loop.c					\
 				parse.c							\
 				job/job_alloc.c					\
+				job/job_available_id.c			\
 				job/job_foreground.c			\
 				job/job_is_completed.c			\
 				job/job_is_stopped.c			\
@@ -39,6 +41,7 @@ SRCS		=	\
 				job/proc_launch.c				\
 				job/proc_update_status.c		\
 				list/list_node__proc_alloc.c	\
+				options/option_is_set.c			\
 				options/list_node__option_alloc.c\
 				options/option_parse.c			\
 				signal/signal_sigchld.c			\

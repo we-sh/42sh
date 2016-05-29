@@ -1,6 +1,16 @@
 #include "shell.h"
 #include "builtin_struct.h"
 
+static int		s_argc(char **argv)
+{
+	int	i;
+
+	i = 0;
+	while (argv[i])
+		i++;
+	return (i);
+}
+
 int	builtin_callback(int callback, t_sh *sh, t_proc *p)
 {
 	int	i;
@@ -12,13 +22,14 @@ int	builtin_callback(int callback, t_sh *sh, t_proc *p)
 		{
 			if (callback == BLTIN_CB_BEFORE && g_builtins[i]->options != NULL)
 			{
-				p->builtin_status = option_parse(&p->builtin_options_head,
+				p->bltin_status = option_parse(&p->bltin_opt_head,
 					g_builtins[i]->options, &p->argv, 1);
-				if (p->builtin_status != ST_OK
-					&& p->builtin_status != ST_EINVAL)
+				p->argc = s_argc(p->argv);
+				if (p->bltin_status != ST_OK
+					&& p->bltin_status != ST_EINVAL)
 				{
 					log_fatal("parsing builtin options failed");
-					return (p->builtin_status);
+					return (p->bltin_status);
 				}
 			}
 			return (g_builtins[i]->exe(g_builtins[i], callback, sh, p));

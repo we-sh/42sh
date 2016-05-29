@@ -74,6 +74,7 @@ int				shell_language(int lang);
 /*
 ** job/
 */
+int				job_available_id(void);
 int				job_foreground(t_sh *sh, t_job *j, int sigcont);
 int				job_is_completed(t_job *j);
 int				job_is_stopped(t_job *j);
@@ -81,13 +82,14 @@ int				job_launch(t_sh *sh, t_job *j);
 t_proc			*proc_find(pid_t pid);
 void			proc_launch(t_sh *sh, t_job *j, t_proc *p);
 int				proc_update_status(pid_t pid, int status);
-t_list			*list_node__proc_alloc(char **argv);
+t_list			*list_node__proc_alloc(char *command, char **argv);
 t_job			*job_alloc(char const *command);
 int				job_wait(t_job *j);
 
 /*
 ** options/
 */
+int				option_is_set(t_list *list_option_head, int option_index);
 int				option_parse(t_list *list_head,
 					t_option const **available_options,
 					char ***argv, size_t start);

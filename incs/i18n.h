@@ -43,6 +43,11 @@ static const char		*g_i18n_fr[] = {
 	[ST_BLTIN_CD] = "change le répertoire courant avec DIR",
 	[ST_BLTIN_CD_OPT_P2] = "résoudre les liens symboliques",
 	[ST_BLTIN_HELP] = "montre le manuel de BUILTIN",
+	[ST_BLTIN_JOBS] = "affiche le status des jobs de la session courante",
+	[ST_BLTIN_JOBS_OPT_L] = "affiche plus d'informations sur les jobs",
+	[ST_BLTIN_JOBS_OPT_P] = "affiche seulement les IDs maîtres",
+	[ST_DONE] = "terminé",
+	[ST_RUNNING] = "en cours",
 	[ST_USAGE] = "mode d'emploi"
 };
 
@@ -65,6 +70,11 @@ static const char		*g_i18n_en[] = {
 	[ST_BLTIN_CD] = "change the current directory to DIR",
 	[ST_BLTIN_CD_OPT_P2] = "do not follow symbolic links",
 	[ST_BLTIN_HELP] = "show the manual of BUILTIN",
+	[ST_BLTIN_JOBS] = "display status of jobs in the current session",
+	[ST_BLTIN_JOBS_OPT_L] = "provide more information about each job listed",
+	[ST_BLTIN_JOBS_OPT_P] = "display only the leaders process IDs",
+	[ST_DONE] = "done",
+	[ST_RUNNING] = "running",
 	[ST_USAGE] = "usage"
 };
 

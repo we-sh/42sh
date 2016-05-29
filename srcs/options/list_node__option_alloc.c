@@ -7,6 +7,7 @@ t_list			*list_node__option_alloc(t_option const *option_ref,
 
 	if ((option = malloc(sizeof(t_option))) == NULL)
 		return (NULL);
+	option->index = option_ref->index;
 	option->name = option_ref->name;
 	option->is_single_char = option_ref->is_single_char;
 	option->has_value = option_ref->has_value;

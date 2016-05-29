@@ -2,7 +2,7 @@
 
 static int	s_before(t_proc *p)
 {
-	if (p->builtin_status == ST_OK)
+	if (p->bltin_status == ST_OK)
 	{
 		// todo check path and co
 	}
@@ -11,23 +11,24 @@ static int	s_before(t_proc *p)
 
 static int	s_exec(t_builtin const *builtin, t_proc *p)
 {
-	if (p->builtin_status != ST_OK)
+	if (p->bltin_status != ST_OK)
 	{
 		// todo use `log_status()` instead
-		ft_putendl_fd(i18n_translate(p->builtin_status), STDERR_FILENO);
-		if (p->builtin_status == ST_EINVAL)
+		ft_putendl_fd(i18n_translate(p->bltin_status), STDERR_FILENO);
+		if (p->bltin_status == ST_EINVAL)
 		{
 			ft_putstr_fd(i18n_translate(ST_USAGE), STDERR_FILENO);
 			ft_putstr_fd(": ", STDERR_FILENO);
 			ft_putendl_fd(builtin->usage, STDERR_FILENO);
 		}
+		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
 }
 
 static int	s_after(t_proc *p)
 {
-	if (p->builtin_status == ST_OK)
+	if (p->bltin_status == ST_OK)
 	{
 		if (chdir(p->argv[1]) < 0)
 			return (ST_CHDIR);
