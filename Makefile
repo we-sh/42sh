@@ -35,6 +35,7 @@ SRCS		=	\
 				job/job_foreground.c			\
 				job/job_is_completed.c			\
 				job/job_is_stopped.c			\
+				job/job_kill.c					\
 				job/job_launch.c				\
 				job/job_wait.c					\
 				job/proc_find.c					\

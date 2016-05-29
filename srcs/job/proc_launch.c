@@ -6,8 +6,6 @@
 
 void		proc_launch(t_sh *sh, t_job *j, t_proc *p)
 {
-	pid_t	pgid;
-
 	p->pid = getpid();
 	if (sh->is_interactive)
 	{
@@ -18,14 +16,6 @@ void		proc_launch(t_sh *sh, t_job *j, t_proc *p)
 			log_fatal("setpgid(%d, %d) error: %s", p->pid, j->pgid, strerror(errno));
 			exit(EXIT_FAILURE);
 		}
-		/*if (j->foreground == 1)
-		{
-			if (tcsetpgrp(shell_fd(), j->pgid) == -1)
-			{
-				log_fatal("tcsetpgrp(%d, %d) error: %s", shell_fd(), j->pgid, strerror(errno));
-				exit(EXIT_FAILURE);
-			}
-		}*/
 		if (signal_to_default() != ST_OK)
 		{
 			log_fatal("signal_to_default error (pid: %d)", p->pid);

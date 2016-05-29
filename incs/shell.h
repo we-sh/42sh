@@ -85,6 +85,7 @@ int				proc_update_status(pid_t pid, int status);
 t_list			*list_node__proc_alloc(char *command, char **argv);
 t_job			*job_alloc(char const *command);
 int				job_wait(t_job *j);
+int				job_kill(t_job *j, int status);
 
 /*
 ** options/
