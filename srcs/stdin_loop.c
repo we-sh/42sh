@@ -10,10 +10,7 @@ int					stdin_loop(t_sh *sh)
 	{
 		input = termcaps_read_input(sh->fd);
 		if (input == NULL)
-		{
-			log_info("termcaps_read_input() failed");
-			break ;
-		}
+			continue ;
 		if (!ft_strcmp(input, "exit"))//temporaire
 		{
 			log_info("exit");

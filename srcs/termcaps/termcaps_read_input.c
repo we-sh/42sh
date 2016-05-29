@@ -107,7 +107,12 @@ static int		s_termcaps_read_loop(const int fd)
 	while (context.state != STATE_EXIT && context.state != STATE_CONTINUE)
 	{
 		input_buffer_size = read(fd, input_buffer, 1);
-		ASSERT(input_buffer_size == 1);
+		ASSERT(input_buffer_size <= 1);
+		if (input_buffer_size <= 0)
+		{
+			context.state = STATE_WAIT;
+			return (1);
+		}
 		s_termcaps_identify_input(input_buffer[0],
 								&input_type,
 								&input_size_missing);
@@ -133,7 +138,10 @@ static int		s_termcaps_read_loop(const int fd)
 
 char			*termcaps_read_input(const int fd)
 {
-	ASSERT(s_print_first_prompt() != 0);
+	if (context.state != STATE_WAIT)
+	{
+		ASSERT(s_print_first_prompt() != 0);
+	}
 	context.state = STATE_REGULAR;
 	context.buffer = NULL;
 	if (!s_termcaps_read_loop(fd))
