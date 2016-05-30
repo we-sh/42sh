@@ -31,7 +31,7 @@ static int	s_exec(t_builtin const *builtin, t_proc *p, t_sh *sh)
 		{
 			ft_putendl_fd(sh->envp[i], STDOUT_FILENO);
 			i++;
-		}	
+		}
 	}
 	else if (p->bltin_status != ST_OK && p->bltin_status != 2)
 	{
