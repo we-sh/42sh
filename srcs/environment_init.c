@@ -13,7 +13,6 @@ static	int		s_environment_default(char **env)
 int		environment_init(t_sh *sh, const char *envp[])
 {
 	int i;
-	int j;
 
 	i = 0;
 	if (envp[i] == NULL)
@@ -23,17 +22,18 @@ int		environment_init(t_sh *sh, const char *envp[])
 	}
 	while (envp[i])
 		i++;
-	j = 0;
 	sh->envp = (char **)malloc(sizeof(char *) * i);
-	while (envp[j])
+	i = 0;
+	while (envp[i])
 	{			
-		 if ((sh->envp[j] = ft_strdup(envp[j])) == NULL)
+		 if ((sh->envp[i] = ft_strdup(envp[i])) == NULL)
 		 {
 		 	log_fatal("ft_strdup failded because of insuffisant memory availale");
 		 	return (-ST_MALLOC);
 		 }
-//		ft_putendl_fd(sh->envp[j], 1);
-		j++;
+//	ft_putendl_fd(sh->envp[i], 1);
+		 i++;
 	}
+	sh->envp[i] = NULL;
 	return (ST_OK);
 }

@@ -26,11 +26,19 @@ static int	s_exec(t_builtin const *builtin, t_proc *p)
 	return (EXIT_SUCCESS);
 }
 
-static int	s_after(t_proc *p)
+static int	s_after(t_proc *p, t_sh *sh)
 {
+	int		i;
+
+	i = 0;
 	if (p->bltin_status == ST_OK)
 	{
-		ft_putendl_fd("setenv ok ", STDERR_FILENO);
+		while (sh->envp[i])
+		{
+			ft_putendl_fd(sh->envp[i], STDERR_FILENO);
+			caps__print_cap(CAPS__CARRIAGE_RETURN, 0);
+			i++;
+		}
 	}
 	return (ST_OK);
 }
@@ -43,6 +51,6 @@ int			builtin_setenv(t_builtin const *builtin, int callback, t_sh *sh, t_proc *p
 	if (callback == BLTIN_CB_EXEC)
 		exit(s_exec(builtin, p));
 	if (callback == BLTIN_CB_AFTER)
-		return (s_after(p));
+		return (s_after(p, sh));
 	return (ST_OK);
 }
