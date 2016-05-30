@@ -13,6 +13,7 @@ typedef enum				e_builtin_index
 	BLTIN_CD,
 	BLTIN_HELP,
 	BLTIN_JOBS,
+	BLTIN_SETENV,
 	BLTIN_TOTAL
 }							t_builtin_index;
 
@@ -39,5 +40,6 @@ typedef struct				s_builtin
 int							builtin_cd(t_builtin const *builtin, int callback, t_sh *sh, t_proc *p);
 int							builtin_help(t_builtin const *builtin, int callback, t_sh *sh, t_proc *p);
 int							builtin_jobs(t_builtin const *builtin, int callback, t_sh *sh, t_proc *p);
+int							builtin_setenv(t_builtin const *builtin, int callback, t_sh *sh, t_proc *p);
 
 #endif
