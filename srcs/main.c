@@ -12,7 +12,7 @@ static void	usage(void)
 	fprintf(stderr, "	-c <command>\n");
 }
 
-int		main(int argc, char *argv[])
+int		main(int argc, char *argv[], const char *envp[])
 {
 	int 	exit_status;
 	int	ret;
@@ -27,6 +27,8 @@ int		main(int argc, char *argv[])
 	int	c;
 	char	*opt;
 
+//	(void)envp;
+	environment_init(&sh, envp);
 	while ((c = getopt(argc, argv, "hc:")) != -1)
 	{
 		switch (c)

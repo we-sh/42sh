@@ -18,14 +18,15 @@
 ** Shell structure
 */
 
-typedef struct	e_sh
+typedef struct		e_sh
 {
 	pid_t			pgid;
-	int			is_interactive;
+	int				is_interactive;
 	int 			fd;
+	char			**envp;
 	struct termios 	termios_old;
 	struct termios 	termios_new;
-}				t_sh;
+}					t_sh;
 
 # include "libft.h"
 # include "list.h"
@@ -47,6 +48,7 @@ t_list		g_current_jobs_list_head;
 
 int				stdin_loop(t_sh *sh);
 int				parse(t_sh *sh, char const *input);
+int				environment_init(t_sh *sh, const char *envp[]);
 
 /*
 ** builtins/
