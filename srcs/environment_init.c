@@ -1,5 +1,4 @@
 #include "shell.h"
-	
 
 static	int		s_environment_default(char ***env)
 {
@@ -25,7 +24,7 @@ int		environment_init(t_sh *sh, char **envp)
 	sh->envp = (char **)malloc(sizeof(char *) * (i + 1));
 	i = 0;
 	while (envp[i])
-	{			
+	{
 		 if ((sh->envp[i] = strdup(envp[i])) == NULL)
 		 {
 		 	log_fatal("ft_strdup failded because of insuffisant memory availale");

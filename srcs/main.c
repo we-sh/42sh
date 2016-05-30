@@ -12,7 +12,7 @@ static void	usage(void)
 	fprintf(stderr, "	-c <command>\n");
 }
 
-int		main(int argc, char *argv[], char **envp)
+int		main(int argc, char *argv[], char *envp[])
 {
 	int	ret;
 	t_sh	sh;
