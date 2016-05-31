@@ -69,7 +69,7 @@ static int	s_exec(t_proc *p)
 	{
 		position = 0;
 		j = CONTAINER_OF(j_pos, t_job, list_job);
-		//if (j->foreground == 0)
+		//if (j->foreground == 0 || job_is_stopped(j) == 1)
 		//{
 			// todo display only background
 			if (list_nth(&g_current_jobs_list_head, -1) == j_pos)
