@@ -27,7 +27,7 @@ static int	s_before(t_proc *p)
 	return (ST_OK);
 }
 
-static int	s_exec(t_builtin const *builtin, t_proc *p)
+static int	s_exec(t_proc *p)
 {
 	int i;
 
@@ -47,10 +47,10 @@ static int	s_exec(t_builtin const *builtin, t_proc *p)
 		i = 0;
 		while (g_builtins[-p->bltin_status]->options[i])
 		{
-			ft_putstr("- ");
-			ft_putendl(g_builtins[-p->bltin_status]->options[i]->name);
-			ft_putstr("  ");
-			ft_putendl(i18n_translate(builtin->options[i]->index));
+			ft_putstr(" `");
+			ft_putstr(g_builtins[-p->bltin_status]->options[i]->name);
+			ft_putstr("` ");
+			ft_putendl(i18n_translate(g_builtins[-p->bltin_status]->options[i]->index));
 			i++;
 		}
 	}
@@ -64,6 +64,6 @@ int			builtin_help(t_builtin const *builtin, int callback, t_sh *sh, t_proc *p)
 	if (callback == BLTIN_CB_BEFORE)
 		return (s_before(p));
 	if (callback == BLTIN_CB_EXEC)
-		exit(s_exec(builtin, p));
+		exit(s_exec(p));
 	return (ST_OK);
 }
