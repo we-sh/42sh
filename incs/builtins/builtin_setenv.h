@@ -6,7 +6,7 @@
 static const t_builtin		g_builtin_setenv = {
 	.index = BLTIN_SETENV,
 	.name = "setenv",
-	.usage = "setenv [setenv]",
+	.usage = "setenv [VAR[word]]",
 	.description = ST_BLTIN_SETENV,
 	.exe = &builtin_setenv,
 	.options = NULL

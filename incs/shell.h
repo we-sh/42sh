@@ -48,7 +48,7 @@ t_list		g_current_jobs_list_head;
 
 int				stdin_loop(t_sh *sh);
 int				parse(t_sh *sh, char const *input);
-int				environment_init(t_sh *sh, const char *envp[]);
+int				environment_init(t_sh *sh, char **envp);
 
 /*
 ** builtins/
