@@ -27,7 +27,7 @@ static int			s_value_is_valid(t_option const **available_opt,
 			&& ft_strisalnum(value) == 0)
 			return (-ST_EINVAL);
 		if (available_opt[opt]->value_is_indexof != NULL
-			&& ft_array_indexof(available_opt[opt]->value_is_indexof, value) == 0)
+			&& ft_array_indexof(available_opt[opt]->value_is_indexof, value) == -1)
 			return (-ST_EINVAL);
 	}
 	return (opt);
