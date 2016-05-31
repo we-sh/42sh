@@ -21,7 +21,11 @@ int		environment_init(t_sh *sh, char **envp)
 	}
 	while (envp[i])
 		i++;
+<<<<<<< 3420ac782f455766f156b2cd5789ac93f58cb4a3
 	sh->envp = (char **)malloc(sizeof(char *) * (i + 1));
+=======
+	sh->envp = (char **)malloc(sizeof(char *) * i + 1);
+>>>>>>> setenv with option doesn't work yet
 	i = 0;
 	while (envp[i])
 	{
@@ -30,6 +34,10 @@ int		environment_init(t_sh *sh, char **envp)
 		 	log_fatal("ft_strdup failded because of insuffisant memory availale");
 		 	return (-ST_MALLOC);
 		 }
+<<<<<<< 3420ac782f455766f156b2cd5789ac93f58cb4a3
+=======
+	//ft_putendl_fd(sh->envp[i], 1);
+>>>>>>> setenv with option doesn't work yet
 		 i++;
 	}
 	sh->envp[i] = NULL;
