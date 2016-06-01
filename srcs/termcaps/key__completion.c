@@ -56,7 +56,7 @@ void	s_get_path_and_match(size_t cmd_size,
 	match = ft_strrchr(cmd + cmd_size, '/');
 	if (match == NULL)
 	{
-		path = NULL;
+		path = "./";
 		match = cmd + cmd_size;
 	}
 	else
