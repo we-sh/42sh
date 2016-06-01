@@ -81,7 +81,7 @@
 
 static int termcaps_termios_init(t_sh *sh)
 {
-	if (tcgetattr(0, &sh->termios_old) != 0)
+	if (tcgetattr(sh->fd, &sh->termios_old) != 0)
 	{
 		log_fatal("tcgetattr() failed");
 		return (-1); // a set
@@ -138,6 +138,8 @@ static int termcaps_initialize_key_map_meta(void)
 	&key__cursor_to_next_word));
 	ASSERT(caps__init_func_by_keycode(CAPS__KEYCODE_BACKSPACE,
 	&key__backspace));
+	ASSERT(caps__init_func_by_keycode(CAPS__KEYCODE_CTRL_I,
+	&key__completion));
 	return (1);
 }
 
@@ -170,10 +172,19 @@ static int termcaps_initialize_key_map_cursor(void)
 int			termcaps_init(t_sh *sh)
 {
 	if (termcaps_termios_init(sh) < 0)
+	{
+		log_fatal("termcaps_termios_init() failed");
 		return (-1); //udpate return
+	}
 	if (!caps__initialize())
+	{
+		log_fatal("caps__initialize() failed");
 		return (-1); //udpate return
+	}
 	if (termcaps_initialize_key_map_meta() < 0 || termcaps_initialize_key_map_cursor() < 0)
+	{
+		log_fatal("termcaps_initialize_key_map() failed");
 		return (-1); //udpate return
+	}
 	return (ST_OK);
 }

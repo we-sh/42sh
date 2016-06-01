@@ -113,4 +113,9 @@ int	key__cut_to_end_of_line(t_internal_context *in_context);
 */
 int	key__paste(t_internal_context *in_context);
 
+/*
+** Completion
+*/
+int	key__completion(t_internal_context *in_context);
+
 #endif /* KEY_H */
