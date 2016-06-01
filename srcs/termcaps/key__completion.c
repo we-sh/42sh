@@ -147,8 +147,10 @@ int		key__completion(t_internal_context *context)
 		return (0);
 	}
 
-	if (list_len(&head) == 1)
+	if (list_size(&head) == 1)
 	{
+		t_node_dir *node_dir = CONTAINER_OF`list_nth(&head, 1);
+		size_t	size = 
 		if (!termcaps_string_to_command_line())
 			log_error("termcaps_string_to_command_line() failed");
 
