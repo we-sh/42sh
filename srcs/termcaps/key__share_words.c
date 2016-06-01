@@ -3,7 +3,7 @@
 /*
 ** Get the NEXT / PREV word offset
 */
-#define ISSPACE(node) (node->character_size == 1 && ft_isspace(node->character[0]))
+#define ISSPACE(node) (node->character_size==1&&ft_isspace(node->character[0]))
 
 void		key__share__prev_word_offset(const t_list_head *command_line,
 										size_t current_offset,

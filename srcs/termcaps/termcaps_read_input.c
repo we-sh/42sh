@@ -1,6 +1,6 @@
 #include "shell.h"
 
-static t_internal_context context = {
+static t_internal_context g_context = {
 	.state = STATE_REGULAR,
 
 	.buffer = NULL,
@@ -8,8 +8,8 @@ static t_internal_context context = {
 	.command_line = {
 		.size = 0,
 		.list = {
-			.next = &context.command_line.list,
-			.prev = &context.command_line.list
+			.next = &g_context.command_line.list,
+			.prev = &g_context.command_line.list
 		},
 		.offset = 0
 	},
@@ -17,8 +17,8 @@ static t_internal_context context = {
 	.copy = {
 		.size = 0,
 		.list = {
-			.next = &context.copy.list,
-			.prev = &context.copy.list
+			.next = &g_context.copy.list,
+			.prev = &g_context.copy.list
 		},
 		.offset = 0
 	},
@@ -28,8 +28,8 @@ static t_internal_context context = {
 	.history = {
 		.size = 0,
 		.list = {
-			.next = &context.history.list,
-			.prev = &context.history.list
+			.next = &g_context.history.list,
+			.prev = &g_context.history.list
 		},
 		.offset = 0
 	},
@@ -81,18 +81,18 @@ static int		s_termcaps_treat_input(const t_input_type input_type,
 	return (1);
 }
 
-static int		s_print_first_prompt(void)
+static int		s_print_first_prompt(t_internal_context *context)
 {
-	if (context.state == STATE_REGULAR)
+	if (context->state == STATE_REGULAR)
 	{
 		ASSERT(termcaps_string_to_command_line(PROMPT_SIZE,
-												PROMPT, &context.command_line));
-		ASSERT(termcaps_display_command_line(&context.command_line));
+												PROMPT, &context->command_line));
+		ASSERT(termcaps_display_command_line(&context->command_line));
 	}
-	else if (context.state == STATE_CONTINUE)
+	else if (context->state == STATE_CONTINUE)
 	{
 		caps__print_cap(CAPS__CARRIAGE_RETURN, 0);
-		ASSERT(termcaps_display_command_line(&context.command_line));
+		ASSERT(termcaps_display_command_line(&context->command_line));
 	}
 	return (1);
 }
@@ -104,13 +104,13 @@ static int		s_termcaps_read_loop(const int fd)
 	t_input_type	input_type;
 	size_t			input_size_missing;
 
-	while (context.state != STATE_EXIT && context.state != STATE_CONTINUE)
+	while (g_context.state != STATE_EXIT && g_context.state != STATE_CONTINUE)
 	{
 		input_buffer_size = read(fd, input_buffer, 1);
 		ASSERT(input_buffer_size <= 1);
 		if (input_buffer_size <= 0)
 		{
-			context.state = STATE_WAIT;
+			g_context.state = STATE_WAIT;
 			return (1);
 		}
 		s_termcaps_identify_input(input_buffer[0],
@@ -123,14 +123,14 @@ static int		s_termcaps_read_loop(const int fd)
 		}
 		if (input_size_missing)
 			input_buffer_size += read(fd, input_buffer + 1, input_size_missing);
-		caps__delete_line(context.command_line.offset);
+		caps__delete_line(g_context.command_line.offset);
 		s_termcaps_treat_input(input_type, input_buffer_size, input_buffer,
-								&context);
-		if (context.state == STATE_REGULAR || context.state == STATE_SELECTION)
+								&g_context);
+		if (g_context.state == STATE_REGULAR || g_context.state == STATE_SELECTION)
 		{
-			ASSERT(termcaps_display_command_line(&context.command_line));
-			caps__cursor_to_offset(context.command_line.offset,
-									context.command_line.size);
+			ASSERT(termcaps_display_command_line(&g_context.command_line));
+			caps__cursor_to_offset(g_context.command_line.offset,
+									g_context.command_line.size);
 		}
 	}
 	return (1);
@@ -138,22 +138,22 @@ static int		s_termcaps_read_loop(const int fd)
 
 char			*termcaps_read_input(const int fd)
 {
-	if (context.state != STATE_WAIT)
+	if (g_context.state != STATE_WAIT)
 	{
-		ASSERT(s_print_first_prompt() != 0);
+		ASSERT(s_print_first_prompt(&g_context) != 0);
 	}
-	context.state = STATE_REGULAR;
-	context.buffer = NULL;
+	g_context.state = STATE_REGULAR;
+	g_context.buffer = NULL;
 	if (!s_termcaps_read_loop(fd))
 	{
-		context.buffer = NULL;
-		context.state = STATE_EXIT;
+		g_context.buffer = NULL;
+		g_context.state = STATE_EXIT;
 	}
-	if (context.state == STATE_EXIT)
+	if (g_context.state == STATE_EXIT)
 	{
-		list_head__command_line_destroy(&context.copy);
-		list_head__command_line_destroy(&context.command_line);
-		list_head__history_destroy(&context.history);
+		list_head__command_line_destroy(&g_context.copy);
+		list_head__command_line_destroy(&g_context.command_line);
+		list_head__history_destroy(&g_context.history);
 	}
-	return (context.buffer);
+	return (g_context.buffer);
 }
