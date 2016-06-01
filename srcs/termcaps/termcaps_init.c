@@ -86,21 +86,21 @@ static int termcaps_termios_init(t_sh *sh)
 		log_fatal("tcgetattr() failed");
 		return (-1); // a set
 	}
-	sh->termios_new.c_iflag &= ~(IGNBRK | BRKINT | PARMRK | ISTRIP | IXON
-							 | INLCR | IGNCR | ICRNL);
-	sh->termios_new.c_oflag &= ~OPOST;
-	sh->termios_new.c_lflag &= ~(ECHO | ECHONL | ICANON | ISIG | IEXTEN);
-	sh->termios_new.c_cflag &= ~(CSIZE | PARENB);
-	sh->termios_new.c_cflag |= CS8;
+	//sh->termios_new.c_iflag &= ~(IGNBRK | BRKINT | PARMRK | ISTRIP | IXON
+	//						 | INLCR | IGNCR | ICRNL);
+	//sh->termios_new.c_oflag &= ~OPOST;
+	sh->termios_new.c_lflag &= ~(ECHO | ECHONL);// | ICANON | ISIG | IEXTEN);
+	//sh->termios_new.c_cflag &= ~(CSIZE | PARENB);
+	//sh->termios_new.c_cflag |= CS8;
 	sh->termios_new.c_cc[VMIN] = 1;
 	sh->termios_new.c_cc[VTIME] = 2;
 
 	//TEMP
-	long termios_ospeed = cfgetospeed(&sh->termios_old);
-	if (termios_ospeed > SHRT_MAX)
-		ospeed = SHRT_MAX;
-	else
-		ospeed = termios_ospeed;
+	//long termios_ospeed = cfgetospeed(&sh->termios_old);
+	//if (termios_ospeed > SHRT_MAX)
+	//	ospeed = SHRT_MAX;
+	//else
+	//	ospeed = termios_ospeed;
 
 	if (tcsetattr(sh->fd, TCSADRAIN, &sh->termios_new) != 0)
 	{
