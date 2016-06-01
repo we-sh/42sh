@@ -47,15 +47,17 @@ bool	s_list_dir(const char *path,
 	struct dirent	*ep;
 	t_list			*new;
 
-	log_debug("path %s match %s match_size %zu", path ? path : "Null", match ? match : "Null", match_size);
+	//log_debug("path %s match %s match_size %zu", path ? path : "Null", match ? match : "Null", match_size);
 	INIT_LIST_HEAD(head);
 	dp = opendir(path);
 	if (dp != NULL)
 	{
 		while ((ep = readdir(dp)) != NULL)
 		{
-			if (!ft_memcmp(ep->d_name, ".", sizeof(".")) || !ft_memcmp(ep->d_name, "..", sizeof("..")))
+			if (!ft_memcmp(ep->d_name, ".", sizeof(".")) ||
+				!ft_memcmp(ep->d_name, "..", sizeof("..")))
 				continue ;
+			log_debug("ep->d_name {%s}", ep->d_name);
 			if (!ft_memcmp(ep->d_name, match, match_size))
 			{
 				new = node_dir__create(ep->d_name);
@@ -149,11 +151,18 @@ int		key__completion(t_internal_context *context)
 
 	if (list_size(&head) == 1)
 	{
-		t_node_dir *node_dir = CONTAINER_OF`list_nth(&head, 1);
-		size_t	size = 
-		if (!termcaps_string_to_command_line())
-			log_error("termcaps_string_to_command_line() failed");
+		t_list *node = list_nth(&head, 1);
+		log_debug("log == &head ? %s", node == &head ? "true":"false");
 
+		t_node_dir *node_dir = CONTAINER_OF(node, t_node_dir, list);
+		log_debug("node_dir->filename %s", node_dir->filename);
+
+		if (!termcaps_string_to_command_line(ft_strlen(node_dir->filename) - match.size,
+					node_dir->filename + match.size,
+					&context->command_line))
+		{
+			log_error("termcaps_string_to_command_line() failed");
+		}
 	}
 	else
 	{
@@ -168,15 +177,13 @@ int		key__completion(t_internal_context *context)
 			ft_putstr("\n\r");
 			y_diff++;
 		}
+		while (y_diff)
+		{
+			caps__print_cap(CAPS__UP, 0);
+			y_diff--;
+		}
 	}
 	list_dir__destroy(&head);
-
-	while (y_diff)
-	{
-		caps__print_cap(CAPS__UP, 0);
-		y_diff--;
-	}
-	caps__print_cap(CAPS__CARRIAGE_RETURN, 0);
 
 	return (1);
 }

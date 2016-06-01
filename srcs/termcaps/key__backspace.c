@@ -9,7 +9,7 @@ int			key__backspace(t_internal_context *in_context)
 		if (in_context->command_line.offset <= PROMPT_SIZE)
 			return (1);
 		entry = list_nth(&in_context->command_line.list,
-				in_context->command_line.offset - 1);
+				in_context->command_line.offset);
 		list_head__del(&in_context->command_line, entry);
 		in_context->command_line.offset--;
 		list_node__command_line_destroy(entry);
