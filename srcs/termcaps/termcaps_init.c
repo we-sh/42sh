@@ -116,25 +116,25 @@ static int termcaps_termios_init(t_sh *sh)
 
 static int termcaps_initialize_key_map_meta(void)
 {
-	ASSERT(caps__init_func_by_keycode(CAPS__KEYCODE_META_M, &key__send));
-	ASSERT(caps__init_func_by_keycode(CAPS__KEYCODE_META_Q,
+	ASSERT(caps__init_func_by_keycode(CAPS__KEYCODE_CTRL_M, &key__send));
+	ASSERT(caps__init_func_by_keycode(CAPS__KEYCODE_CTRL_Q,
 	&key__delete_command_line));
-	ASSERT(caps__init_func_by_keycode(CAPS__KEYCODE_META_D,
+	ASSERT(caps__init_func_by_keycode(CAPS__KEYCODE_CTRL_D,
 	&key__delete_under_cursor));
-	ASSERT(caps__init_func_by_keycode(CAPS__KEYCODE_META_A,
+	ASSERT(caps__init_func_by_keycode(CAPS__KEYCODE_CTRL_A,
 	&key__cursor_to_begin_of_line));
-	ASSERT(caps__init_func_by_keycode(CAPS__KEYCODE_META_E,
+	ASSERT(caps__init_func_by_keycode(CAPS__KEYCODE_CTRL_E,
 	&key__cursor_to_end_of_line));
-	ASSERT(caps__init_func_by_keycode(CAPS__KEYCODE_META_SPACE,
+	ASSERT(caps__init_func_by_keycode(CAPS__KEYCODE_CTRL_SPACE,
 	&key__select));
-	ASSERT(caps__init_func_by_keycode(CAPS__KEYCODE_META_W, &key__cut));
-	ASSERT(caps__init_func_by_keycode(CAPS__KEYCODE_META_X, &key__copy));
-	ASSERT(caps__init_func_by_keycode(CAPS__KEYCODE_META_Y, &key__paste));
-	ASSERT(caps__init_func_by_keycode(CAPS__KEYCODE_META_K,
+	ASSERT(caps__init_func_by_keycode(CAPS__KEYCODE_CTRL_W, &key__cut));
+	ASSERT(caps__init_func_by_keycode(CAPS__KEYCODE_CTRL_X, &key__copy));
+	ASSERT(caps__init_func_by_keycode(CAPS__KEYCODE_CTRL_Y, &key__paste));
+	ASSERT(caps__init_func_by_keycode(CAPS__KEYCODE_CTRL_K,
 	&key__cut_to_end_of_line));
-	ASSERT(caps__init_func_by_keycode(CAPS__KEYCODE_META_CURSOR_LEFT,
+	ASSERT(caps__init_func_by_keycode(CAPS__KEYCODE_CTRL_CURSOR_LEFT,
 	&key__cursor_to_prev_word));
-	ASSERT(caps__init_func_by_keycode(CAPS__KEYCODE_META_CURSOR_RIGHT,
+	ASSERT(caps__init_func_by_keycode(CAPS__KEYCODE_CTRL_CURSOR_RIGHT,
 	&key__cursor_to_next_word));
 	ASSERT(caps__init_func_by_keycode(CAPS__KEYCODE_BACKSPACE,
 	&key__backspace));
