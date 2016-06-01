@@ -16,7 +16,7 @@ void		key__share__prev_word_offset(const t_list_head *command_line,
 		STATE_ALNUM
 	}					state;
 
-	pos = list_nth(&command_line->list, current_offset - 1);
+	pos = list_nth(&command_line->list, current_offset);
 	state = STATE_UNDEFINED;
 	while (current_offset > PROMPT_SIZE)
 	{
@@ -42,7 +42,7 @@ void		key__share__next_word_offset(const t_list_head *command_line,
 		STATE_ISSPACE
 	}				state;
 
-	pos = list_nth(&command_line->list, current_offset);
+	pos = list_nth(&command_line->list, current_offset + 1);
 	state = STATE_UNDEFINED;
 	while (current_offset < command_line->size)
 	{
