@@ -1,40 +1,79 @@
 #include "shell.h"
 #include <dirent.h>
 
-void	s_list_dir(const char *path,
+typedef struct	s_node_dir
+{
+	char			*filename;
+	t_list			list;
+}				t_node_dir;
+
+static t_list	*node_dir__create(const char *filename)
+{
+	t_node_dir	*new;
+
+	new = malloc(sizeof(t_node_dir));
+	if (!new)
+		return (NULL);
+	new->filename = ft_strdup(filename);
+	if (!new->filename)
+	{
+		free(new);
+		return (NULL);
+	}
+	return (&new->list);
+}
+
+static void		list_dir__destroy(t_list *head)
+{
+	t_list		*pos;
+	t_list		*safe;
+	t_node_dir	*node_dir;
+
+	safe = head->next;
+	while ((pos = head) && (pos != head) && (safe = safe->next))
+	{
+		node_dir = CONTAINER_OF(pos, t_node_dir, list);
+		free(node_dir->filename);
+		free(node_dir);
+	}
+}
+
+bool	s_list_dir(const char *path,
 		const size_t match_size,
 		const char *match,
-		int *out_nb_lines)
+		t_list *head)
 {
 	DIR				*dp;
 	struct dirent	*ep;
-	int				nb_lines;
+	t_list			*new;
 
 	log_debug("path %s match %s match_size %zu", path ? path : "Null", match ? match : "Null", match_size);
-	*out_nb_lines = 0;
+	INIT_LIST_HEAD(head);
 	dp = opendir(path);
 	if (dp != NULL)
 	{
-		caps__print_cap(CAPS__DOWN, 0);
-		caps__print_cap(CAPS__CARRIAGE_RETURN, 0);
-		nb_lines = 1;
 		while ((ep = readdir(dp)) != NULL)
 		{
 			if (!ft_memcmp(ep->d_name, ".", sizeof(".")) || !ft_memcmp(ep->d_name, "..", sizeof("..")))
 				continue ;
-			log_debug("ep->d_name %s", ep->d_name);
 			if (!ft_memcmp(ep->d_name, match, match_size))
 			{
-				ft_putstr(ep->d_name);
-				caps__print_cap(CAPS__DOWN, 0);
-				caps__print_cap(CAPS__CARRIAGE_RETURN, 0);
-				nb_lines++;
+				new = node_dir__create(ep->d_name);
+				if (!new)
+				{
+					log_error("node_dir__create() failed");
+					list_dir__destroy(head);
+					if (closedir(dp) != 0)
+						log_error("closedir() failed");
+					return (false);
+				}
+				list_push_back(new, head);
 			}
 		}
 		if (closedir(dp) != 0)
 			log_error("closedir() failed");
-		*out_nb_lines = nb_lines;
 	}
+	return (true);
 }
 
 void	s_get_path_and_match(size_t cmd_size,
@@ -78,6 +117,7 @@ int		key__completion(t_internal_context *context)
 	char		cmd[1024];
 	char		*path;
 	t_buffer	match;
+	t_list		head;
 	int			y_diff;
 
 	if (!list_head__command_line_to_buffer(&context->command_line,
@@ -101,7 +141,33 @@ int		key__completion(t_internal_context *context)
 		s_get_path_and_match(cmd_size, cmd, &path, &match);
 	}
 
-	s_list_dir(path, match.size, match.bytes,  &y_diff);
+	if (!s_list_dir(path, match.size, match.bytes, &head))
+	{
+		log_error("s_list_dir() failed");
+		return (0);
+	}
+
+	if (list_len(&head) == 1)
+	{
+		if (!termcaps_string_to_command_line())
+			log_error("termcaps_string_to_command_line() failed");
+
+	}
+	else
+	{
+		ft_putstr("\n\r");
+		y_diff = 1;
+		t_list *pos;
+		LIST_FOREACH(&head, pos)
+		{
+			t_node_dir *node_dir = CONTAINER_OF(pos, t_node_dir, list);
+
+			ft_putstr(node_dir->filename);
+			ft_putstr("\n\r");
+			y_diff++;
+		}
+	}
+	list_dir__destroy(&head);
 
 	while (y_diff)
 	{
