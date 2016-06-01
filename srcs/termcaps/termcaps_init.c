@@ -82,15 +82,18 @@
 static int termcaps_termios_init(t_sh *sh)
 {
 	if (tcgetattr(0, &sh->termios_old) != 0)
+	{
+		log_fatal("tcgetattr() failed");
 		return (-1); // a set
+	}
 	sh->termios_new.c_iflag &= ~(IGNBRK | BRKINT | PARMRK | ISTRIP | IXON
 							 | INLCR | IGNCR | ICRNL);
 	sh->termios_new.c_oflag &= ~OPOST;
 	sh->termios_new.c_lflag &= ~(ECHO | ECHONL | ICANON | ISIG | IEXTEN);
 	sh->termios_new.c_cflag &= ~(CSIZE | PARENB);
 	sh->termios_new.c_cflag |= CS8;
-	sh->termios_new.c_cc[VMIN] = 0;
-	sh->termios_new.c_cc[VTIME] = 0;
+	sh->termios_new.c_cc[VMIN] = 1;
+	sh->termios_new.c_cc[VTIME] = 2;
 
 	//TEMP
 	long termios_ospeed = cfgetospeed(&sh->termios_old);
@@ -99,8 +102,11 @@ static int termcaps_termios_init(t_sh *sh)
 	else
 		ospeed = termios_ospeed;
 
-	if (tcsetattr(sh->fd, TCSADRAIN, &sh->termios_new) != 0) // WHY NOT TCSADRAIN
+	if (tcsetattr(sh->fd, TCSADRAIN, &sh->termios_new) != 0)
+	{
+		log_fatal("tcsetattr() failed");
 		return (-1); // a set
+	}
 	return (1);
 }
 
@@ -163,11 +169,11 @@ static int termcaps_initialize_key_map_cursor(void)
 
 int			termcaps_init(t_sh *sh)
 {
+	if (termcaps_termios_init(sh) < 0)
+		return (-1); //udpate return
 	if (!caps__initialize())
 		return (-1); //udpate return
 	if (termcaps_initialize_key_map_meta() < 0 || termcaps_initialize_key_map_cursor() < 0)
-		return (-1); //udpate return
-	if (termcaps_termios_init(sh) < 0)
 		return (-1); //udpate return
 	return (ST_OK);
 }

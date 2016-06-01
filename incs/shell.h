@@ -21,7 +21,7 @@
 typedef struct	e_sh
 {
 	pid_t			pgid;
-	int			is_interactive;
+	bool 			is_interactive;
 	int 			fd;
 	struct termios 	termios_old;
 	struct termios 	termios_new;

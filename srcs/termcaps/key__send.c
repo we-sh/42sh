@@ -25,25 +25,25 @@ static int		s_bufferize_input(t_internal_context *context)
 	if (!list_head__command_line_to_buffer(&context->command_line,
 				sizeof(buffer) - 1, &buffer_size, buffer))
 	{
-		log_error("list_head__command_line_to_buffer() failed %s\r", "");
+		log_error("list_head__command_line_to_buffer() failed");
 		return (0);
 	}
 	buffer[buffer_size] = '\0';
 	if (!s_fill_context_buffer(context, buffer))
 	{
-		log_error("(s_fill_context_buffer() failed %s", "");
+		log_error("(s_fill_context_buffer() failed");
 		return (0);
 	}
 	if (!key__share__command_line_to_history(context))
 	{
-		log_error("key__share__command_line_to_history() failed %s\r", "");
+		log_error("key__share__command_line_to_history() failed");
 		return (0);
 	}
 	context->history.offset = context->history.size;
 	if (!termcaps_string_to_command_line(PROMPT_SIZE, PROMPT,
 										&context->command_line))
 	{
-		log_error("minishell__string_to_command_line() failed %s", PROMPT);
+		log_error("minishell__string_to_command_line() failed", PROMPT);
 		return (0);
 	}
 	return (1);
@@ -55,7 +55,7 @@ int				key__send(t_internal_context *context)
 	{
 		if (!termcaps_display_command_line(&context->command_line))
 		{
-			log_error("minishell__display_command_line() failed %s\r", "");
+			log_error("minishell__display_command_line() failed");
 			return (0);
 		}
 		caps__print_cap(CAPS__DOWN, 0);
@@ -64,7 +64,7 @@ int				key__send(t_internal_context *context)
 		{
 			if (!s_bufferize_input(context))
 			{
-				log_error("s_bufferize_input() failed %s", "");
+				log_error("s_bufferize_input() failed");
 				return (0);
 			}
 		}
