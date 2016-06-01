@@ -183,6 +183,7 @@ int		key__completion(t_internal_context *context)
 			y_diff--;
 		}
 	}
+
 	list_dir__destroy(&head);
 
 	return (1);
