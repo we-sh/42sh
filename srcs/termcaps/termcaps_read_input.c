@@ -107,8 +107,8 @@ static int		s_termcaps_read_loop(const int fd)
 	while (g_context.state != STATE_EXIT && g_context.state != STATE_CONTINUE)
 	{
 		input_buffer_size = read(fd, input_buffer, 1);
-		ASSERT(input_buffer_size <= 1);
-		if (input_buffer_size <= 0)
+		ASSERT(input_buffer_size == 1 || input_buffer_size == 0);
+		if (input_buffer_size == 0)
 		{
 			g_context.state = STATE_WAIT;
 			return (1);
