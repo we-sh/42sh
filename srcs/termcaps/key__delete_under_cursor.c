@@ -9,6 +9,7 @@ int		key__delete_under_cursor(t_internal_context *in_context)
 		if (in_context->command_line.size == PROMPT_SIZE)
 		{
 			in_context->state = STATE_EXIT;
+			in_context->buffer = ft_strdup("exit");
 			return (1);
 		}
 		if (in_context->command_line.offset == in_context->command_line.size)
