@@ -54,34 +54,31 @@ int		main(int argc, char *argv[], char **envp)
 
 	// shell_init()
 	logger_init(D_TRACE, "out.log");
-	if ((ret = shell_init(&sh)) != ST_OK)
-		log_fatal("shell initialization failed (%d)", ret);
 	INIT_LIST_HEAD(&g_current_jobs_list_head);
 
 	exit_status = 0;
+	sh.is_interactive = opt_type == OPT_TYPE_COMMAND ? false : isatty(STDIN_FILENO);
+	if ((ret = shell_init(&sh)) != ST_OK)
+		log_fatal("shell initialization failed (%d)", ret);
 	if (opt_type == OPT_TYPE_COMMAND)
 	{
 		exit_status = parse(&sh, opt);
 	}
 	else
 	{
-		if (termcaps_init(&sh) != ST_OK)
-		{
-			 log_error("termcaps_init() failed");
-			 return (-1);
-		}
-		// loop
 		if ((exit_status = stdin_loop(&sh)) != ST_END_OF_INPUT)
 			log_fatal("get_next_line failed (%d)", ret);
-		if (!caps__finalize())
-			return (-1); // Check le retour
+	}
+	if (sh.is_interactive == true)
+	{
 		if (tcsetattr(0, TCSANOW, &sh.termios_old) == -1)
-		  log_fatal("tcsetattr() failed to restore the terminal");
+			log_fatal("tcsetattr() failed to restore the terminal");
+		if (close(sh.fd) != 0)
+			log_error("close() failed");
 	}
 
+
 	// shell_end()
-	if (close(sh.fd) != 0)
-		log_error("close() failed");
 	logger_close();
 	return (exit_status);
 }
