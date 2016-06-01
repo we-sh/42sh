@@ -81,7 +81,7 @@
 
 static int termcaps_termios_init(t_sh *sh)
 {
-	if (tcgetattr(sh->fd, &sh->termios_old) != 0)
+	if (tcgetattr(0, &sh->termios_old) != 0)
 	{
 		log_fatal("tcgetattr() failed");
 		return (-1); // a set
