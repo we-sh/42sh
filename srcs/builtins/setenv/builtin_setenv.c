@@ -49,22 +49,7 @@ static int s_env_set_new_variable(t_sh **sh, char *variable, char *value)
 	tmp[i] = NULL;
 	 ft_putendl_fd("IN inside env_set_new_variable2", 1);//debug
 		caps__print_cap(CAPS__CARRIAGE_RETURN, 0);
-//	(void)variable;
-//	(void)value;
-		ft_putendl_fd("IN inside env_set_new_variable3", 1);//debug
-		caps__print_cap(CAPS__CARRIAGE_RETURN, 0);
-	(*sh)->envp = (char **)malloc(sizeof(char *) * size + 2);
-		ft_putendl_fd("IN inside env_set_new_variable4", 1);//debug
-		caps__print_cap(CAPS__CARRIAGE_RETURN, 0);
-	i = 0;
-	while (tmp[i] != NULL)
-	{
-		(*sh)->envp[i] = ft_strdup(tmp[i]);
-		//free(tmp[i]);
-		i++;
-	}
-	//free(tmp);
-	(*sh)->envp[i] = NULL;
+	(*sh)->envp = tmp;
 	 ft_putendl_fd(" OUT inside env_set_new_variable", 1);//debug	
 		caps__print_cap(CAPS__CARRIAGE_RETURN, 0);
 	return (ST_OK);
