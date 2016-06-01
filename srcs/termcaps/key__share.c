@@ -60,7 +60,7 @@ int			key__share__copy_build_copy(t_list_head *command_line,
 
 	list_head__command_line_destroy(out_copy);
 	list_head__init(out_copy);
-	pos = list_nth(&command_line->list, copy_start);
+	pos = list_nth(&command_line->list, copy_start + 1);
 	copy_offset = 0;
 	while (copy_offset < copy_size)
 	{

@@ -6,7 +6,7 @@ static int				s_get_next_command(t_internal_context *context)
 	t_list_node_history	*history_node;
 
 	history_entry = list_nth(&context->history.list,
-			context->history.offset);
+			context->history.offset + 1);
 	history_node = CONTAINER_OF(history_entry,
 			t_list_node_history, list);
 	if (!list_head__command_line_dup(&context->command_line,
