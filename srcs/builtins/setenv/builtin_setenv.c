@@ -22,45 +22,48 @@ static int s_concat_variable(char **str, char *key, char *value)
 
 static int s_env_set_new_variable(t_sh **sh, char *variable, char *value)
 {
-	int i;
 	char **tmp;
+	int i;
+	int size;
 
 	i = 0;
+	size = 0;
 	 ft_putendl_fd("IN inside env_set_new_variable", 1);//debug
 		caps__print_cap(CAPS__CARRIAGE_RETURN, 0);
-	while ((*sh)->envp[i])
-		i++;
-	tmp = (char *)malloc(sizeof(char *) * i + 2);
+	while ((*sh)->envp[size])
+		size++;
+	tmp = (char **)malloc(sizeof(char *) * size + 2);
 	 ft_putendl_fd("IN inside env_set_new_variable1", 1);//debug
 		caps__print_cap(CAPS__CARRIAGE_RETURN, 0);
-	i = 0;
-	while ((*sh)->envp[i])
+	while ((*sh)->envp[i] != NULL)
 	{
 		// ft_putnbr_fd(i, 1); // debug
 		// ft_putendl_fd((*sh)->envp[i], 1);//debug
-		tmp[i] = (*sh)->envp[i];
-		free((*sh)->envp[i]);
+		tmp[i] = ft_strdup((*sh)->envp[i]);
+	//	free((*sh)->envp[i]);
 		i++;
 	}
-	free((*sh)->envp);
-	 ft_putendl_fd("IN inside env_set_new_variable2", 1);//debug
-		caps__print_cap(CAPS__CARRIAGE_RETURN, 0);
-	(void)variable;
-	(void)value;
-//	s_concat_variable(&(tmp[i]), variable, value);
-	 ft_putendl_fd("IN inside env_set_new_variable3", 1);//debug
-		caps__print_cap(CAPS__CARRIAGE_RETURN, 0);
+	//free((*sh)->envp);
+	s_concat_variable(&(tmp[i]), variable, value);
 	i++;
 	tmp[i] = NULL;
-	(*sh)->envp = (char **)malloc(sizeof(char *) * i);
+	 ft_putendl_fd("IN inside env_set_new_variable2", 1);//debug
+		caps__print_cap(CAPS__CARRIAGE_RETURN, 0);
+//	(void)variable;
+//	(void)value;
+		ft_putendl_fd("IN inside env_set_new_variable3", 1);//debug
+		caps__print_cap(CAPS__CARRIAGE_RETURN, 0);
+	(*sh)->envp = (char **)malloc(sizeof(char *) * size + 2);
+		ft_putendl_fd("IN inside env_set_new_variable4", 1);//debug
+		caps__print_cap(CAPS__CARRIAGE_RETURN, 0);
 	i = 0;
-	while (tmp[i])
+	while (tmp[i] != NULL)
 	{
 		(*sh)->envp[i] = ft_strdup(tmp[i]);
-		free(tmp[i]);
+		//free(tmp[i]);
 		i++;
 	}
-	free(tmp);
+	//free(tmp);
 	(*sh)->envp[i] = NULL;
 	 ft_putendl_fd(" OUT inside env_set_new_variable", 1);//debug	
 		caps__print_cap(CAPS__CARRIAGE_RETURN, 0);
