@@ -6,7 +6,7 @@
 #    By: mleconte <mleconte@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/04/30 13:39:33 by anouvel           #+#    #+#              #
-#    Updated: 2016/05/26 17:36:10 by mleconte         ###   ########.fr        #
+#    Updated: 2016/06/01 15:01:03 by abombard         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -86,6 +86,7 @@ SRCS		=	\
 				termcaps/key__send.c							\
 				termcaps/key__share.c							\
 				termcaps/key__share_words.c						\
+				termcaps/key__completion.c						\
 
 # ---------------------------------------------------------------------------- #
 # PROJECT CONFIGURATION
@@ -1107,6 +1108,19 @@ $(DIROBJ)key__share_words.o: srcs/termcaps/key__share_words.c incs/shell.h \
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/termcaps/key__share_words.c\n"
 		@$(CC) -c ./srcs/termcaps/key__share_words.c -o ./.objs/key__share_words.o $(CPPFLAGS) $(CFLAGS) 
+
+$(DIROBJ)key__completion.o: srcs/termcaps/key__completion.c incs/shell.h \
+  libs/libft/./incs/libft.h libs/libft/./incs/list.h \
+  libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
+  incs/statuses.h incs/option.h incs/job.h incs/termcaps/termcaps.h \
+  incs/termcaps/list_head.h libs/libcaps/./incs/types.h \
+  incs/termcaps/log.h incs/termcaps/termcaps_struct.h \
+  incs/termcaps/key.h libs/libcaps/./incs/caps.h \
+  libs/libcaps/./incs/logger.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtins/builtin.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/termcaps/key__completion.c\n"
+		@$(CC) -c ./srcs/termcaps/key__completion.c -o ./.objs/key__completion.o $(CPPFLAGS) $(CFLAGS) 
 
 
 #end
