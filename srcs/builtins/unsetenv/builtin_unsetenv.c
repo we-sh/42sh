@@ -48,7 +48,7 @@ static int	s_before(t_proc *p)
 	ret = 0;
 	if (p->bltin_status == ST_OK)
 	{
-		if (p->argc == 0)
+		if (p->argc == 1)
 			p->bltin_status = ST_E2SMALL;
 		else
 			p->bltin_status = ST_OK;
