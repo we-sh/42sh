@@ -4,21 +4,28 @@ static char	**s_unsetenv_unset(t_sh *sh, int pos)
 {
 	char		**tmp;
 	int			i;
+	int			j;
 	int			size;
-
+//CHECK DES RETURN ST_MALLOC
 	i = 0;
+	j = 0;
 	size = 0;
 	tmp = NULL;
+	log_info("position : %d ", pos);
 	while (sh->envp[size])
 		size++;
 	tmp = (char **)malloc(sizeof(char *) * size);
-	while (sh->envp[i] != NULL)
+	log_info("size : %d ", size+1);
+	while (sh->envp[i]) //improve this
 	{
+		log_info("sh->envp[%d] : %s", i, sh->envp[i]);
 		if (i != pos)
-			tmp[i] = strdup(sh->envp[i]);
-		i++;
+			tmp[j++] = ft_strdup(sh->envp[i++]);
+		else
+			i++;
 	}
-	tmp[i] = NULL;
+	tmp[j] = NULL;
+	log_info("sh->envp[%d] : %s", i, sh->envp[i]);
 	ft_memdel_tab((void ***)&sh->envp);
 	return (tmp);
 }
@@ -73,7 +80,7 @@ static int	s_after(t_sh *sh, t_proc *p)
 	return (ST_OK);
 }
 
-int			builtin_setenv(t_builtin const *builtin, int callback, t_sh *sh, t_proc *p)
+int			builtin_unsetenv(t_builtin const *builtin, int callback, t_sh *sh, t_proc *p)
 {
 	if (callback == BLTIN_CB_BEFORE)
 		return (s_before(p));
