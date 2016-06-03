@@ -54,6 +54,9 @@ int				environment_init(t_sh *sh, char **envp);
 ** builtins/
 */
 int				builtin_callback(int callback, t_sh *sh, t_proc *p);
+int				setenv_set_variable_and_value(t_sh *sh, t_proc *p);
+int				setenv_argv_is_valid(t_proc *p);
+int				env_index_value(t_sh *sh, char *variable);
 
 /*
 ** log_status /
