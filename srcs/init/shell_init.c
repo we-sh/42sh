@@ -39,6 +39,7 @@ int		shell_init(t_sh *sh)
 {
 	int		ret;
 
+	sh->last_exit_status = 0;
 	sh->pgid = getpid();
 	if ((ret = shell_language(LANG_EN)) < 0)
 		return (-ret);

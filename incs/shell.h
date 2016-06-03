@@ -25,6 +25,7 @@ typedef struct	e_sh
 	int 			fd;
 	struct termios 	termios_old;
 	struct termios 	termios_new;
+	int				last_exit_status;
 }				t_sh;
 
 # include "libft.h"

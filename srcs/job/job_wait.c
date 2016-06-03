@@ -21,12 +21,19 @@ int	job_wait(t_job *j_orig)
 			LIST_FOREACH(&j->proc_head, p_pos)
 			{
 				p = CONTAINER_OF(p_pos, t_proc, list_proc);
-				errno = 0;
-				pid = waitpid(p->pid, &status, WUNTRACED);
-				if (errno == ECHILD)
-					p->completed = 1;
-				else
-					proc_update_status(pid, status);
+				if (p->completed == 0 && p->stopped == 0)
+				{
+					errno = 0;
+					pid = waitpid(p->pid, &status, WUNTRACED);
+					if (pid < 0 && errno == ECHILD)
+					{
+						p->completed = 1;
+					}
+					else
+					{
+						proc_update_status(pid, status);
+					}
+				}
 			}
 		}
 		if (job_is_completed(j_orig) == 1 || job_is_stopped(j_orig) == 1)

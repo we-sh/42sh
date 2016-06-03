@@ -47,7 +47,6 @@ int					job_launch(t_sh *sh, t_job *j)
 	t_proc			*p;
 	int				job_pipe[2];
 	int				outputs[3];
-	int 			exit_status;
 
 	log_info("launching job `%s`", j->command);
 	if (j->foreground == 1 && sh->is_interactive == 1)
@@ -95,9 +94,9 @@ int					job_launch(t_sh *sh, t_job *j)
 	}
 	else if (j->foreground == 1)
 	{
-		exit_status = job_foreground(sh, j, 0);
-		if (exit_status != ST_OK)
-		  return (exit_status);
+		ret = job_foreground(sh, j, 0);
+		if (ret != ST_OK)
+		  return (ret);
 	//	put job to foreground
 	//	after callback built-in
 	}
@@ -108,6 +107,7 @@ int					job_launch(t_sh *sh, t_job *j)
 	if ((pos = list_nth(head, -1)) != head)
 	{
 		p = CONTAINER_OF(pos, t_proc, list_proc);
+		sh->last_exit_status = p->exit_status;
 		if ((ret = builtin_callback(BLTIN_CB_AFTER, sh, p)) != ST_OK)
 			return (ret);
 	}

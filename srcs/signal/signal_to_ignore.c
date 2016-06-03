@@ -8,7 +8,7 @@
 
 int	signal_to_ignore(void)
 {
-	if (signal(SIGCHLD, SIG_IGN) == SIG_ERR)
+	if (signal(SIGCHLD, SIG_DFL) == SIG_ERR)
 		return (ST_SIGNAL);
 	if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
 		return (ST_SIGNAL);
