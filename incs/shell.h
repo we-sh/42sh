@@ -26,7 +26,8 @@ typedef struct		e_sh
 	char			**envp;
 	struct termios 	termios_old;
 	struct termios 	termios_new;
-}					t_sh;
+	int				last_exit_status;
+}				t_sh;
 
 # include "libft.h"
 # include "list.h"

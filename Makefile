@@ -24,6 +24,7 @@ SRCS		=	\
 				parse.c							\
 				environment_init.c				\
 				builtins/cd/builtin_cd.c		\
+				builtins/exit/builtin_exit.c	\
 				builtins/help/builtin_help.c	\
 				builtins/jobs/builtin_jobs.c	\
 				builtins/setenv/builtin_setenv.c\
@@ -302,6 +303,19 @@ $(DIROBJ)builtin_cd.o: srcs/builtins/cd/builtin_cd.c incs/shell.h \
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/builtins/cd/builtin_cd.c\n"
 		@$(CC) -c ./srcs/builtins/cd/builtin_cd.c -o ./.objs/builtin_cd.o $(CPPFLAGS) $(CFLAGS) 
+
+$(DIROBJ)builtin_exit.o: srcs/builtins/exit/builtin_exit.c incs/shell.h \
+  libs/libft/./incs/libft.h libs/libft/./incs/list.h \
+  libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
+  incs/statuses.h incs/option.h incs/job.h incs/termcaps/termcaps.h \
+  incs/termcaps/list_head.h libs/libcaps/./incs/types.h \
+  incs/termcaps/log.h incs/termcaps/termcaps_struct.h \
+  incs/termcaps/key.h libs/libcaps/./incs/caps.h \
+  libs/libcaps/./incs/logger.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtins/builtin.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/builtins/exit/builtin_exit.c\n"
+		@$(CC) -c ./srcs/builtins/exit/builtin_exit.c -o ./.objs/builtin_exit.o $(CPPFLAGS) $(CFLAGS) 
 
 $(DIROBJ)builtin_help.o: srcs/builtins/help/builtin_help.c incs/shell.h \
   libs/libft/./incs/libft.h libs/libft/./incs/list.h \

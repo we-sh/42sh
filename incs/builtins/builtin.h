@@ -11,6 +11,7 @@ typedef enum				e_builtin_index
 {
 	BLTIN_NONE,
 	BLTIN_CD,
+	BLTIN_EXIT,
 	BLTIN_HELP,
 	BLTIN_JOBS,
 	BLTIN_SETENV,
@@ -39,6 +40,7 @@ typedef struct				s_builtin
 ** List of builtins prototypes
 */
 int							builtin_cd(t_builtin const *builtin, int callback, t_sh *sh, t_proc *p);
+int							builtin_exit(t_builtin const *builtin, int callback, t_sh *sh, t_proc *p);
 int							builtin_help(t_builtin const *builtin, int callback, t_sh *sh, t_proc *p);
 int							builtin_jobs(t_builtin const *builtin, int callback, t_sh *sh, t_proc *p);
 int							builtin_setenv(t_builtin const *builtin, int callback, t_sh *sh, t_proc *p);

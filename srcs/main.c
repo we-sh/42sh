@@ -14,7 +14,6 @@ static void	usage(void)
 
 int		main(int argc, char *argv[], char **envp)
 {
-	int 	exit_status;
 	int	ret;
 	t_sh	sh;
 
@@ -56,17 +55,16 @@ int		main(int argc, char *argv[], char **envp)
 	logger_init(D_TRACE, "out.log");
 	INIT_LIST_HEAD(&g_current_jobs_list_head);
 
-	exit_status = 0;
 	sh.is_interactive = opt_type == OPT_TYPE_COMMAND ? false : isatty(STDIN_FILENO);
 	if ((ret = shell_init(&sh)) != ST_OK)
 		log_fatal("shell initialization failed (%d)", ret);
 	if (opt_type == OPT_TYPE_COMMAND)
 	{
-		exit_status = parse(&sh, opt);
+		ret = parse(&sh, opt);
 	}
 	else
 	{
-		if ((exit_status = stdin_loop(&sh)) != ST_END_OF_INPUT)
+		if ((ret = stdin_loop(&sh)) != ST_END_OF_INPUT)
 			log_fatal("get_next_line failed (%d)", ret);
 	}
 	if (sh.is_interactive == true)
@@ -80,5 +78,5 @@ int		main(int argc, char *argv[], char **envp)
 
 	// shell_end()
 	logger_close();
-	return (exit_status);
+	return (sh.last_exit_status);
 }
