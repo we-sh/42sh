@@ -8,7 +8,7 @@
 
 static int	s_shell_fd_init(const bool is_interactive, int *out_fd)
 {
-  	int 		fd;
+	int			fd;
 	char		*tty_name;
 
 	*out_fd = -1;
@@ -28,7 +28,7 @@ static int	s_shell_fd_init(const bool is_interactive, int *out_fd)
 	}
 	else
 	{
-		fd = STDOUT_FILENO;
+		fd = STDIN_FILENO;
 	}
 	*out_fd = fd;
 	log_info("is_interactive ? %s fd: %d", is_interactive ? "true" : "false", fd);
@@ -49,7 +49,7 @@ int		shell_init(t_sh *sh)
 	}
 	if (sh->is_interactive == true)
 	{
-	  	/* jobs */
+		/* jobs */
 		while (tcgetpgrp(STDIN_FILENO) != (sh->pgid = getpgrp()))
 		{
 			if (kill(-sh->pgid, SIGTTIN) != 0)

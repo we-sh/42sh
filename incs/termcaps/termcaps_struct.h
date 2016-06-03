@@ -12,11 +12,13 @@ typedef struct	s_pos
 */
 typedef struct	s_internal_context
 {
-	enum { 	STATE_WAIT,
+	enum {	STATE_WAIT,
 		STATE_REGULAR,
 		STATE_SELECTION,
 		STATE_CONTINUE,
 		STATE_EXIT }							state;
+
+	int										fd;
 
 	char									*buffer;
 
