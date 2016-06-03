@@ -3,24 +3,25 @@
 
 typedef struct	s_node_dir
 {
-	char			*filename;
+	t_buffer		filename;
 	t_list			list;
 }				t_node_dir;
 
-static t_list	*node_dir__create(const char *filename)
+static t_node_dir	*node_dir__create(const char *filename)
 {
 	t_node_dir	*new;
 
 	new = malloc(sizeof(t_node_dir));
 	if (!new)
 		return (NULL);
-	new->filename = ft_strdup(filename);
-	if (!new->filename)
+	new->filename.size = ft_strlen(filename);
+	new->filename.bytes = ft_strdup(filename);
+	if (!new->filename.bytes)
 	{
 		free(new);
 		return (NULL);
 	}
-	return (&new->list);
+	return (new);
 }
 
 static void		list_dir__destroy(t_list *head)
@@ -33,31 +34,31 @@ static void		list_dir__destroy(t_list *head)
 	while ((pos = head) && (pos != head) && (safe = safe->next))
 	{
 		node_dir = CONTAINER_OF(pos, t_node_dir, list);
-		free(node_dir->filename);
+		free(node_dir->filename.bytes);
 		free(node_dir);
 	}
 }
 
-bool	s_list_dir(const char *path,
-		const size_t match_size,
-		const char *match,
-		t_list *head)
+size_t	s_list_dir(const char *path,
+				   const size_t match_size,
+				   const char *match,
+				   t_list *head)
 {
 	DIR				*dp;
 	struct dirent	*ep;
-	t_list			*new;
+	t_node_dir		*new;
+	size_t			ref_size;
 
-	//log_debug("path %s match %s match_size %zu", path ? path : "Null", match ? match : "Null", match_size);
 	INIT_LIST_HEAD(head);
+	ref_size = 0;
 	dp = opendir(path);
 	if (dp != NULL)
 	{
 		while ((ep = readdir(dp)) != NULL)
 		{
-			if (!ft_memcmp(ep->d_name, ".", sizeof(".")) ||
-				!ft_memcmp(ep->d_name, "..", sizeof("..")))
+			if ((match_size > 0 && match[0] == '.') ||
+				!ft_memcmp(ep->d_name, ".", sizeof(".") - 1))
 				continue ;
-			log_debug("ep->d_name {%s}", ep->d_name);
 			if (!ft_memcmp(ep->d_name, match, match_size))
 			{
 				new = node_dir__create(ep->d_name);
@@ -67,15 +68,17 @@ bool	s_list_dir(const char *path,
 					list_dir__destroy(head);
 					if (closedir(dp) != 0)
 						log_error("closedir() failed");
-					return (false);
+					return (0);
 				}
-				list_push_back(new, head);
+				if (new->filename.size > ref_size)
+					ref_size = new->filename.size;
+				list_push_back(&new->list, head);
 			}
 		}
 		if (closedir(dp) != 0)
 			log_error("closedir() failed");
 	}
-	return (true);
+	return (ref_size);
 }
 
 void	s_get_path_and_match(size_t cmd_size,
@@ -120,7 +123,6 @@ int		key__completion(t_internal_context *context)
 	char		*path;
 	t_buffer	match;
 	t_list		head;
-	int			y_diff;
 
 	if (!list_head__command_line_to_buffer(&context->command_line,
 				sizeof(cmd) - 1,
@@ -143,45 +145,76 @@ int		key__completion(t_internal_context *context)
 		s_get_path_and_match(cmd_size, cmd, &path, &match);
 	}
 
-	if (!s_list_dir(path, match.size, match.bytes, &head))
+	size_t	ref_size = s_list_dir(path, match.size, match.bytes, &head);
+	if (!ref_size)
 	{
 		log_error("s_list_dir() failed");
 		return (0);
 	}
+	ref_size += 1;
+	log_debug("ref_size %d", ref_size);
 
 	if (list_size(&head) == 1)
 	{
 		t_list *node = list_nth(&head, 1);
-		log_debug("log == &head ? %s", node == &head ? "true":"false");
+		if (node == &head)
+			log_fatal("node == head");
 
 		t_node_dir *node_dir = CONTAINER_OF(node, t_node_dir, list);
-		log_debug("node_dir->filename %s", node_dir->filename);
+		log_debug("node_dir->filename %.*s", node_dir->filename.size, node_dir->filename.bytes);
 
-		if (!termcaps_string_to_command_line(ft_strlen(node_dir->filename) - match.size,
-					node_dir->filename + match.size,
-					&context->command_line))
+		if (!termcaps_string_to_command_line(node_dir->filename.size - match.size,
+											 node_dir->filename.bytes + match.size,
+											 &context->command_line))
 		{
 			log_error("termcaps_string_to_command_line() failed");
 		}
 	}
 	else
 	{
-		ft_putstr("\n\r");
-		y_diff = 1;
+		size_t	buffer_size_max = (ref_size + sizeof("\n\r") - 1) * caps__win(WIN_LINE);
+		char	*buffer = malloc(buffer_size_max);
+		if (!buffer)
+		{
+			log_fatal("malloc() failed size %d", buffer_size_max);
+			return (0);
+		}
+		size_t	buffer_offset = 0;
+
+		size_t	filename_by_line = caps__win(WIN_COLUMNS) / ref_size;
+		size_t	filename_count = 0;
+
+		int	   y_diff = 0;
+
 		t_list *pos;
 		LIST_FOREACH(&head, pos)
 		{
 			t_node_dir *node_dir = CONTAINER_OF(pos, t_node_dir, list);
 
-			ft_putstr(node_dir->filename);
-			ft_putstr("\n\r");
-			y_diff++;
+			if (buffer_offset + ref_size >= buffer_size_max)
+			{
+				log_fatal("buffer overflow buffer_size_max %zu", buffer_size_max);
+				break ;
+			}
+			if (filename_count++ % filename_by_line == 0)
+			{
+				ft_memcpy(buffer + buffer_offset, "\n\r", sizeof("\n\r") - 1);
+				buffer_offset += sizeof("\n\r") - 1;
+				y_diff++;
+			}
+			ft_memcpy(buffer + buffer_offset, node_dir->filename.bytes, node_dir->filename.size);
+			buffer_offset += node_dir->filename.size;
+			ft_memset(buffer + buffer_offset, ' ', ref_size - node_dir->filename.size);
+			buffer_offset += ref_size - node_dir->filename.size;
 		}
+		write(1, buffer, buffer_offset);
+		free(buffer);
 		while (y_diff)
 		{
 			caps__print_cap(CAPS__UP, 0);
 			y_diff--;
 		}
+		caps__print_cap(CAPS__CARRIAGE_RETURN, 0);
 	}
 
 	list_dir__destroy(&head);
