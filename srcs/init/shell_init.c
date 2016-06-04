@@ -37,6 +37,7 @@ int		shell_init(t_sh *sh)
 {
 	int		ret;
 
+	INIT_LIST_HEAD(&g_current_jobs_list_head);
 	sh->last_exit_status = 0;
 	sh->pgid = getpid();
 	if ((ret = shell_language(LANG_EN)) < 0)

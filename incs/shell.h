@@ -18,20 +18,23 @@
 ** Shell structure
 */
 
+# include "list.h"
+
 typedef struct		e_sh
 {
 	pid_t			pgid;
 	bool 			is_interactive;
 	int 			fd;
+	char			**argv;
 	char			**envp;
 	struct termios 	termios_old;
 	struct termios 	termios_new;
 	int				last_exit_status;
+	t_list			opt_head;
 }					t_sh;
 
 # include "libft.h"
 # include "libftprintf.h"
-# include "list.h"
 # include "logger.h"
 # include "statuses.h"
 # include "option.h"
@@ -64,7 +67,7 @@ void			builtin_usage(t_builtin const *bltin, int status);
 /*
 ** log_status /
 */
-void			log_status(const int status, const char *info);
+int				display_status(const int status, const char *prefix, const char *suffix);
 
 /*
 ** i18n/
@@ -102,6 +105,7 @@ void			proc_free(t_proc **p);
 ** options/
 */
 int				option_is_set(t_list *list_option_head, int option_index);
+char			*option_get_value(t_list *list_option_head, int option_index);
 int				option_parse(t_list *list_head,
 					t_option const **available_options,
 					char ***argv, size_t start);

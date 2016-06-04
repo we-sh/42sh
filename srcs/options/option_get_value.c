@@ -1,6 +1,6 @@
 #include "shell.h"
 
-int	option_is_set(t_list *list_option_head, int option_index)
+char	*option_get_value(t_list *list_option_head, int option_index)
 {
 	t_list		*opt_pos;
 	t_option	*opt;
@@ -9,7 +9,7 @@ int	option_is_set(t_list *list_option_head, int option_index)
 	{
 		opt = CONTAINER_OF(opt_pos, t_option, list_option);
 		if (opt->index == option_index)
-			return (1);
+			return (opt->value);
 	}
-	return (0);
+	return (NULL);
 }

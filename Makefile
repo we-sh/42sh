@@ -33,7 +33,7 @@ SRCS		=	\
 				builtins/unsetenv/builtin_unsetenv.c\
 				builtins/builtin_callback.c		\
 				builtins/builtin_usage.c		\
-				log_status/log_status.c			\
+				display/display_status.c		\
 				i18n/i18n_translate.c			\
 				init/shell_init.c				\
 				init/shell_language.c			\
@@ -52,6 +52,7 @@ SRCS		=	\
 				job/proc_launch.c				\
 				job/proc_update_status.c		\
 				list/list_node__proc_alloc.c	\
+				options/option_get_value.c		\
 				options/option_is_set.c			\
 				options/list_node__option_alloc.c\
 				options/option_free.c			\

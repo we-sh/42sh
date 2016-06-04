@@ -57,9 +57,12 @@ static const char		*g_i18n_fr[] = {
 	[ST_BLTIN_SETENV_FIRST_CHAR] = "Le nom de variable doit commencer avec une lettre.",
 	[ST_BLTIN_SETENV_TMANY_ARGV] = "setenv: trop d'arguments",
 	[ST_BLTIN_UNSETENV] = "est utilisé pour supprimer une variable d'environnement",
+	[ST_OPTION_C] = "lire les commandes à partir de STRING",
+	[ST_OPTION_HELP] = "affiche le manuel du shell",
 	[ST_DONE] = "terminé",
 	[ST_RUNNING] = "en cours",
-	[ST_USAGE] = "mode d'emploi"
+	[ST_USAGE] = "mode d'emploi",
+	[ST_OPTIONS] = "options"
 };
 
 static const char		*g_i18n_en[] = {
@@ -95,9 +98,12 @@ static const char		*g_i18n_en[] = {
 	[ST_BLTIN_SETENV_FIRST_CHAR] = "Variable name must begin with a letter.",
 	[ST_BLTIN_SETENV_TMANY_ARGV] = "setenv: too many arguments",
 	[ST_BLTIN_UNSETENV] = "Is used to delete an environment variable",
+	[ST_OPTION_C] = "read commands from STRING",
+	[ST_OPTION_HELP] = "show the manual of the shell",
 	[ST_DONE] = "done",
 	[ST_RUNNING] = "running",
-	[ST_USAGE] = "usage"
+	[ST_USAGE] = "usage",
+	[ST_OPTIONS] = "options"
 };
 
 static const char		**g_i18n_translations[] = {
