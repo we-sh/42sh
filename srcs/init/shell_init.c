@@ -6,13 +6,13 @@
 ** It returns a negative value when an error occurs.
 */
 
-static int	s_shell_fd_init(const bool is_interactive, int *out_fd)
+static int	s_shell_fd_init(t_sh *sh)
 {
 	int			fd;
 	char		*tty_name;
 
-	*out_fd = -1;
-	if (is_interactive == true)
+	fd = -1;
+	if (sh->is_interactive == true)
 	{
 		if ((tty_name = ttyname(STDIN_FILENO)) == NULL)
 		{
@@ -27,11 +27,9 @@ static int	s_shell_fd_init(const bool is_interactive, int *out_fd)
 		log_info("ttyname: %s, ttyslot: %d", tty_name, ttyslot());
 	}
 	else
-	{
-		fd = STDIN_FILENO;
-	}
-	*out_fd = fd;
-	log_info("is_interactive ? %s fd: %d", is_interactive ? "true" : "false", fd);
+		sh->fd = STDIN_FILENO;
+	sh->fd = fd;
+	log_info("is_interactive ? %s fd: %d", sh->is_interactive ? "true" : "false", fd);
 	return (ST_OK);
 }
 
@@ -43,7 +41,7 @@ int		shell_init(t_sh *sh)
 	sh->pgid = getpid();
 	if ((ret = shell_language(LANG_EN)) < 0)
 		return (-ret);
-	if (s_shell_fd_init(sh->is_interactive, &sh->fd) != ST_OK)
+	if (s_shell_fd_init(sh) != ST_OK)
 	{
 		log_error("s_shell_fd_init() failed");
 		return (-1);
