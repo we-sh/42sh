@@ -93,7 +93,7 @@ static int termcaps_termios_init(t_sh *sh)
 	sh->termios_new.c_cflag &= ~(CSIZE | PARENB);
 	sh->termios_new.c_cflag |= CS8;
 	sh->termios_new.c_cc[VMIN] = 1;
-	sh->termios_new.c_cc[VTIME] = 2;
+	sh->termios_new.c_cc[VTIME] = 232;
 
 	//TEMP
 	//long termios_ospeed = cfgetospeed(&sh->termios_old);
