@@ -57,7 +57,17 @@ int		main(int argc, char *argv[], char *envp[])
 
 	sh.is_interactive = opt_type == OPT_TYPE_COMMAND ? false : isatty(STDIN_FILENO);
 	if ((ret = shell_init(&sh)) != ST_OK)
-		log_fatal("shell initialization failed (%d)", ret);
+	{
+		log_status(ret, "shell_init()");
+		if (sh.is_interactive == true)
+		{
+			if (tcsetattr(0, TCSANOW, &sh.termios_old) == -1)
+				log_fatal("tcsetattr() failed to restore the terminal");
+			if (close(sh.fd) != 0)
+				log_error("close() failed");
+		}
+		return (EXIT_FAILURE);
+	}
 	if (opt_type == OPT_TYPE_COMMAND)
 	{
 		ret = parse(&sh, opt);

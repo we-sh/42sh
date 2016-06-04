@@ -59,7 +59,8 @@ static const char		*g_i18n_fr[] = {
 	[ST_BLTIN_UNSETENV] = "est utilisé pour supprimer une variable d'environnement",
 	[ST_DONE] = "terminé",
 	[ST_RUNNING] = "en cours",
-	[ST_USAGE] = "mode d'emploi"
+	[ST_USAGE] = "mode d'emploi",
+	[ST_TERMCAPS_INIT] = "erreur lors de l'initialisation des termcaps"
 };
 
 static const char		*g_i18n_en[] = {
@@ -97,7 +98,8 @@ static const char		*g_i18n_en[] = {
 	[ST_BLTIN_UNSETENV] = "Is used to delete an environment variable",
 	[ST_DONE] = "done",
 	[ST_RUNNING] = "running",
-	[ST_USAGE] = "usage"
+	[ST_USAGE] = "usage",
+	[ST_TERMCAPS_INIT] = "failed to initialize termcaps"
 };
 
 static const char		**g_i18n_translations[] = {

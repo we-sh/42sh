@@ -48,7 +48,8 @@ typedef enum	e_st
 	ST_DONE,
 	ST_RUNNING,
 	ST_USAGE,
-	ST_TOTAL
+	ST_TOTAL,
+	ST_TERMCAPS_INIT
 }				t_st;
 
 #endif
