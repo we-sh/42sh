@@ -11,30 +11,26 @@ static char	**s_unsetenv_unset(t_sh *sh, int pos)
 	j = 0;
 	size = 0;
 	tmp = NULL;
-	log_info("position : %d ", pos);
 	while (sh->envp[size])
 		size++;
 	tmp = (char **)malloc(sizeof(char *) * size);
-	log_info("size : %d ", size+1);
-	while (sh->envp[i]) //improve this
+	while (sh->envp[i])
 	{
-		log_info("sh->envp[%d] : %s", i, sh->envp[i]);
 		if (i != pos)
 			tmp[j++] = ft_strdup(sh->envp[i++]);
 		else
 			i++;
 	}
 	tmp[j] = NULL;
-	log_info("sh->envp[%d] : %s", i, sh->envp[i]);
 	ft_memdel_tab((void ***)&sh->envp);
 	return (tmp);
 }
 
-static int	s_env_check_if_unset(t_sh *sh, t_proc *p)
+static int	s_env_check_if_unset(t_sh *sh, char *argv)
 {
 	int		ret;
 
-	if ((ret = env_index_value(sh, p->argv[1])) == -1)
+	if ((ret = env_index_value(sh, argv)) == -1)
 		return (ST_OK); //I don't care Bro
 	else
 		sh->envp = s_unsetenv_unset(sh, ret);
@@ -81,7 +77,8 @@ static int	s_after(t_sh *sh, t_proc *p)
 	{
 		while (p->argv[i])
 		{
-			s_env_check_if_unset(sh, p);
+			log_info("p->argv[%d] : %s", i, p->argv[i]);
+			s_env_check_if_unset(sh, p->argv[i]);
 			i++;
 		}
 	}
