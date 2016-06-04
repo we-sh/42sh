@@ -17,7 +17,6 @@ char		*env_get(char **envp, char *key)
 	int 		nbr;
 
 	i = 0;
-	tmp = NULL;
 	size = ft_strlen(key);
 	while (*envp[i])
 	{
