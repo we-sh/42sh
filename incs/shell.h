@@ -62,6 +62,11 @@ int				env_index_value(t_sh *sh, char *variable);
 void			builtin_usage(t_builtin const *bltin, int status);
 
 /*
+** env /
+*/
+char			*env_get(char **envp, char *key);
+
+/*
 ** log_status /
 */
 void			log_status(const int status, const char *info);
