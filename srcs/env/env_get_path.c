@@ -8,8 +8,8 @@
 
 char 			*env_get_path(char **envp)
 {
-	char		*tmp;
-	int			uid;
+	char			*tmp;
+	uid_t			uid;
 
 	if ((tmp = env_get(envp, "PATH")) == NULL)
 	{

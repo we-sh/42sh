@@ -8,6 +8,8 @@
 */
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <pwd.h>
+# include <linux/limits.h>
 # include <unistd.h>
 # include <signal.h>
 # include <termios.h>
@@ -66,6 +68,9 @@ void			builtin_usage(t_builtin const *bltin, int status);
 */
 char			*env_get(char **envp, char *key);
 char 			*env_get_path(char **envp);
+char 			*env_get_user(char **envp);
+char 			*env_get_home(char **envp);
+char 			*env_get_term(char **envp);
 
 /*
 ** log_status /

@@ -28,7 +28,6 @@ int		main(int argc, char *argv[], char *envp[])
 
 //	(void)envp;
 	environment_init(&sh, envp);
-	printf("%s\n\r",env_get_path(sh.envp));
 	while ((c = getopt(argc, argv, "hc:")) != -1)
 	{
 		switch (c)
