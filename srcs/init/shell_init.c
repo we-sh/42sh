@@ -17,17 +17,17 @@ static int	s_shell_fd_init(t_sh *sh)
 		if ((tty_name = ttyname(STDIN_FILENO)) == NULL)
 		{
 			log_error("ttyname() failed");
-			return (-1);
+			return (ST_TTYNAME);
 		}
 		if ((fd = open(tty_name, O_RDWR)) == -1)
 		{
 			log_error("open() failed");
-			return (-1);
+			return (ST_OPEN);
 		}
 		log_info("ttyname: %s, ttyslot: %d", tty_name, ttyslot());
 	}
 	else
-		sh->fd = STDIN_FILENO;
+		fd = STDIN_FILENO;
 	sh->fd = fd;
 	log_info("is_interactive ? %s fd: %d", sh->is_interactive ? "true" : "false", fd);
 	return (ST_OK);
@@ -41,10 +41,10 @@ int		shell_init(t_sh *sh)
 	sh->pgid = getpid();
 	if ((ret = shell_language(LANG_EN)) < 0)
 		return (-ret);
-	if (s_shell_fd_init(sh) != ST_OK)
+	if ((ret = s_shell_fd_init(sh)) != ST_OK)
 	{
 		log_error("s_shell_fd_init() failed");
-		return (-1);
+		return (ret);
 	}
 	if (sh->is_interactive == true)
 	{
