@@ -65,6 +65,7 @@ void			builtin_usage(t_builtin const *bltin, int status);
 ** env /
 */
 char			*env_get(char **envp, char *key);
+char 			*env_get_path(char **envp);
 
 /*
 ** log_status /
