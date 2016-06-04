@@ -31,6 +31,7 @@ typedef enum	e_st
 	ST_ENOENT,
 	ST_EINVAL,
 	ST_E2BIG,
+	ST_NAN,
 	ST_BLTIN_CD,
 	ST_BLTIN_CD_OPT_P2,
 	ST_BLTIN_EXIT,

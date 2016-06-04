@@ -25,6 +25,7 @@ SRCS		=	\
 				builtins/help/builtin_help.c	\
 				builtins/jobs/builtin_jobs.c	\
 				builtins/builtin_callback.c		\
+				builtins/builtin_usage.c		\
 				log_status/log_status.c			\
 				i18n/i18n_translate.c			\
 				init/shell_init.c				\

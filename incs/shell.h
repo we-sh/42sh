@@ -29,6 +29,7 @@ typedef struct	e_sh
 }				t_sh;
 
 # include "libft.h"
+# include "libftprintf.h"
 # include "list.h"
 # include "logger.h"
 # include "statuses.h"
@@ -53,6 +54,7 @@ int				parse(t_sh *sh, char const *input);
 ** builtins/
 */
 int				builtin_callback(int callback, t_sh *sh, t_proc *p);
+void			builtin_usage(t_builtin const *bltin, int status);
 
 /*
 ** log_status /
