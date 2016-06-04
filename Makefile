@@ -28,7 +28,6 @@ SRCS		=	\
 				builtins/help/builtin_help.c	\
 				builtins/jobs/builtin_jobs.c	\
 				builtins/setenv/builtin_setenv.c\
-				builtins/setenv/builtin_setenv_funct.c\
 				builtins/setenv/builtin_setenv_argv_is_valid.c\
 				builtins/unsetenv/builtin_unsetenv.c\
 				builtins/builtin_callback.c		\
@@ -38,6 +37,8 @@ SRCS		=	\
 				env/env_get_user.c				\
 				env/env_get_home.c				\
 				env/env_get_term.c				\
+				env/env_set.c					\
+				env/env_unset.c					\
 				log_status/log_status.c			\
 				i18n/i18n_translate.c			\
 				init/shell_init.c				\
@@ -369,19 +370,6 @@ $(DIROBJ)builtin_setenv.o: srcs/builtins/setenv/builtin_setenv.c incs/shell.h \
 		@printf "compiling ./srcs/builtins/setenv/builtin_setenv.c\n"
 		@$(CC) -c ./srcs/builtins/setenv/builtin_setenv.c -o ./.objs/builtin_setenv.o $(CPPFLAGS) $(CFLAGS) 
 
-$(DIROBJ)builtin_setenv_funct.o: srcs/builtins/setenv/builtin_setenv_funct.c \
-  incs/shell.h libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h \
-  libs/libft/./incs/list.h libs/logger/./incs/logger.h \
-  libs/logger/./incs/logger_utils.h incs/statuses.h incs/option.h \
-  incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
-  libs/libcaps/./incs/types.h incs/termcaps/log.h \
-  incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtins/builtin.h
-		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
-		@printf "compiling ./srcs/builtins/setenv/builtin_setenv_funct.c\n"
-		@$(CC) -c ./srcs/builtins/setenv/builtin_setenv_funct.c -o ./.objs/builtin_setenv_funct.o $(CPPFLAGS) $(CFLAGS) 
-
 $(DIROBJ)builtin_setenv_argv_is_valid.o: \
   srcs/builtins/setenv/builtin_setenv_argv_is_valid.c incs/shell.h \
   libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h \
@@ -503,6 +491,32 @@ $(DIROBJ)env_get_term.o: srcs/env/env_get_term.c incs/shell.h \
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/env/env_get_term.c\n"
 		@$(CC) -c ./srcs/env/env_get_term.c -o ./.objs/env_get_term.o $(CPPFLAGS) $(CFLAGS) 
+
+$(DIROBJ)env_set.o: srcs/env/env_set.c incs/shell.h libs/libft/./incs/libft.h \
+  libs/libft/./incs/libftprintf.h libs/libft/./incs/list.h \
+  libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
+  incs/statuses.h incs/option.h incs/job.h incs/termcaps/termcaps.h \
+  incs/termcaps/list_head.h libs/libcaps/./incs/types.h \
+  incs/termcaps/log.h incs/termcaps/termcaps_struct.h \
+  incs/termcaps/key.h libs/libcaps/./incs/caps.h \
+  libs/libcaps/./incs/logger.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtins/builtin.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/env/env_set.c\n"
+		@$(CC) -c ./srcs/env/env_set.c -o ./.objs/env_set.o $(CPPFLAGS) $(CFLAGS) 
+
+$(DIROBJ)env_unset.o: srcs/env/env_unset.c incs/shell.h libs/libft/./incs/libft.h \
+  libs/libft/./incs/libftprintf.h libs/libft/./incs/list.h \
+  libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
+  incs/statuses.h incs/option.h incs/job.h incs/termcaps/termcaps.h \
+  incs/termcaps/list_head.h libs/libcaps/./incs/types.h \
+  incs/termcaps/log.h incs/termcaps/termcaps_struct.h \
+  incs/termcaps/key.h libs/libcaps/./incs/caps.h \
+  libs/libcaps/./incs/logger.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtins/builtin.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/env/env_unset.c\n"
+		@$(CC) -c ./srcs/env/env_unset.c -o ./.objs/env_unset.o $(CPPFLAGS) $(CFLAGS) 
 
 $(DIROBJ)log_status.o: srcs/log_status/log_status.c incs/shell.h \
   libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h \

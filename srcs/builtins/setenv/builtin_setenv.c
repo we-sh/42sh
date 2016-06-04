@@ -52,7 +52,7 @@ static int	s_after(t_sh *sh, t_proc *p)
 {
 
 	if (p->bltin_status == 2)
-		setenv_set_variable_and_value(sh, p);
+		env_set(&sh->envp, p->argv[1], p->argv[2]);
 	p->bltin_status = ST_OK;
 	return (ST_OK);
 }
