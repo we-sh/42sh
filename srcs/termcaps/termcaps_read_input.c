@@ -89,10 +89,9 @@ static int		s_print_first_prompt(t_internal_context *context)
 		ASSERT(termcaps_string_to_command_line(PROMPT_SIZE,
 											   PROMPT,
 											   &context->command_line));
-		if (context->fd != 0)
-			ASSERT(termcaps_display_command_line(&context->command_line));
+		ASSERT(termcaps_display_command_line(&context->command_line));
 	}
-	else if (context->state == STATE_CONTINUE && context->fd != 0)
+	else if (context->state == STATE_CONTINUE)
 	{
 		caps__print_cap(CAPS__CARRIAGE_RETURN, 0);
 		ASSERT(termcaps_display_command_line(&context->command_line));
@@ -110,13 +109,7 @@ static int		s_termcaps_read_loop(const int fd)
 	while (g_context.state != STATE_EXIT && g_context.state != STATE_CONTINUE)
 	{
 		input_buffer_size = read(fd, input_buffer, 1);
-		ASSERT(input_buffer_size == 1 || input_buffer_size == 0);
-		if (input_buffer_size == 0)
-		{
-			key__send(&g_context);
-			g_context.state = STATE_EXIT;
-			return (1);
-		}
+		ASSERT(input_buffer_size == 1);
 		s_termcaps_identify_input(input_buffer[0],
 								&input_type,
 								&input_size_missing);
@@ -127,12 +120,10 @@ static int		s_termcaps_read_loop(const int fd)
 		}
 		if (input_size_missing)
 			input_buffer_size += read(fd, input_buffer + 1, input_size_missing);
-		if (fd != 0)
-			caps__delete_line(g_context.command_line.offset);
+		caps__delete_line(g_context.command_line.offset);
 		s_termcaps_treat_input(input_type, input_buffer_size, input_buffer,
 								&g_context);
-		if (fd != 0 &&
-			(g_context.state == STATE_REGULAR || g_context.state == STATE_SELECTION))
+		if (g_context.state == STATE_REGULAR || g_context.state == STATE_SELECTION)
 		{
 			ASSERT(termcaps_display_command_line(&g_context.command_line));
 			caps__cursor_to_offset(g_context.command_line.offset,
@@ -144,7 +135,7 @@ static int		s_termcaps_read_loop(const int fd)
 
 char			*termcaps_read_input(const int fd)
 {
-	if (fd < 0)
+	if (fd <= 0)
 	{
 		log_fatal("Invalid fd %d", fd);
 		return (NULL);
