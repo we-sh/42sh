@@ -108,7 +108,7 @@ static const char		*g_i18n_en[] = {
 	[ST_DONE] = "done",
 	[ST_RUNNING] = "running",
 	[ST_USAGE] = "usage",
-	[ST_TERMCAPS_INIT] = "failed to initialize termcaps"
+	[ST_TERMCAPS_INIT] = "failed to initialize termcaps",
 	[ST_OPTIONS] = "options"
 };
 

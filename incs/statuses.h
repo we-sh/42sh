@@ -54,6 +54,7 @@ typedef enum	e_st
 	ST_USAGE,
 	ST_TERMCAPS_INIT
 	ST_OPTIONS,
+	ST_TERMCAPS_INIT,
 	ST_TOTAL
 }				t_st;
 
