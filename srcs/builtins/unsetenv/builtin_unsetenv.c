@@ -74,8 +74,17 @@ static int	s_exec(t_builtin const *builtin, t_proc *p)
 
 static int	s_after(t_sh *sh, t_proc *p)
 {
+	int		i;
+
+	i = 1;
 	if (p->bltin_status == ST_OK)
-		s_env_check_if_unset(sh, p);
+	{
+		while (p-argv[i])
+		{
+			s_env_check_if_unset(sh, p);
+			i++;
+		}
+	}
 	p->bltin_status = ST_OK;
 	return (ST_OK);
 }
