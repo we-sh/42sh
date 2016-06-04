@@ -84,7 +84,7 @@ static int termcaps_termios_init(t_sh *sh)
 	if (tcgetattr(0, &sh->termios_old) != 0)
 	{
 		log_fatal("tcgetattr() failed");
-		return (-1); // a set
+		return (0);
 	}
 	sh->termios_new.c_iflag &= ~(IGNBRK | BRKINT | PARMRK | ISTRIP | IXON
 							 | INLCR | IGNCR | ICRNL);
@@ -105,7 +105,7 @@ static int termcaps_termios_init(t_sh *sh)
 	if (tcsetattr(sh->fd, TCSADRAIN, &sh->termios_new) != 0)
 	{
 		log_fatal("tcsetattr() failed");
-		return (-1); // a set
+		return (0);
 	}
 	return (1);
 }
@@ -171,20 +171,20 @@ static int termcaps_initialize_key_map_cursor(void)
 
 int			termcaps_init(t_sh *sh)
 {
-	if (termcaps_termios_init(sh) < 0)
+	if (!termcaps_termios_init(sh))
 	{
 		log_fatal("termcaps_termios_init() failed");
-		return (-1); //udpate return
+		return (0); //udpate return
 	}
 	if (!caps__initialize())
 	{
 		log_fatal("caps__initialize() failed");
-		return (-1); //udpate return
+		return (0); //udpate return
 	}
-	if (termcaps_initialize_key_map_meta() < 0 || termcaps_initialize_key_map_cursor() < 0)
+	if (!termcaps_initialize_key_map_meta() || !termcaps_initialize_key_map_cursor())
 	{
 		log_fatal("termcaps_initialize_key_map() failed");
-		return (-1); //udpate return
+		return (0); //udpate return
 	}
-	return (ST_OK);
+	return (1);
 }

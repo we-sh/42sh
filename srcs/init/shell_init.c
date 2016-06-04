@@ -66,8 +66,8 @@ int		shell_init(t_sh *sh)
 			return (ST_TCSETPGRP);
 
 		/* termcaps */
-		if (termcaps_init(sh) != ST_OK)
-			return (-1);
+		if (!termcaps_init(sh))
+			return (ST_TERMCAPS_INIT);
 	}
 	return (ST_OK);
 }

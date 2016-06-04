@@ -62,6 +62,7 @@ static const char		*g_i18n_fr[] = {
 	[ST_DONE] = "terminé",
 	[ST_RUNNING] = "en cours",
 	[ST_USAGE] = "mode d'emploi",
+	[ST_TERMCAPS_INIT] = "erreur lors de l'initialisation des termcaps",
 	[ST_OPTIONS] = "options"
 };
 
@@ -103,6 +104,7 @@ static const char		*g_i18n_en[] = {
 	[ST_DONE] = "done",
 	[ST_RUNNING] = "running",
 	[ST_USAGE] = "usage",
+	[ST_TERMCAPS_INIT] = "failed to initialize termcaps",
 	[ST_OPTIONS] = "options"
 };
 
