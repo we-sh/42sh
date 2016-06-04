@@ -30,6 +30,7 @@ typedef struct		e_sh
 }				t_sh;
 
 # include "libft.h"
+# include "libftprintf.h"
 # include "list.h"
 # include "logger.h"
 # include "statuses.h"
@@ -58,6 +59,7 @@ int				builtin_callback(int callback, t_sh *sh, t_proc *p);
 int				setenv_set_variable_and_value(t_sh *sh, t_proc *p);
 int				setenv_argv_is_valid(t_proc *p);
 int				env_index_value(t_sh *sh, char *variable);
+void			builtin_usage(t_builtin const *bltin, int status);
 
 /*
 ** log_status /

@@ -32,6 +32,7 @@ SRCS		=	\
 				builtins/setenv/builtin_setenv_argv_is_valid.c\
 				builtins/unsetenv/builtin_unsetenv.c\
 				builtins/builtin_callback.c		\
+				builtins/builtin_usage.c		\
 				log_status/log_status.c			\
 				i18n/i18n_translate.c			\
 				init/shell_init.c				\

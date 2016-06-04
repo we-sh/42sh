@@ -6,8 +6,8 @@ static int	s_before(t_proc *p)
 	int	i;
 	int	exists;
 
-	if (p->argc != 2)
-		p->bltin_status = p->argc > 2 ? ST_E2BIG : ST_EINVAL;
+	if (p->argc > 2)
+		p->bltin_status = ST_E2BIG;
 	else
 	{
 		exists = 0;
@@ -27,16 +27,35 @@ static int	s_before(t_proc *p)
 	return (ST_OK);
 }
 
-static int	s_exec(t_proc *p)
+static int	s_display_help(t_builtin const *bltin)
+{
+	int	i;
+
+	ft_printf("%s\n%s: %s\n",
+		i18n_translate(bltin->description),
+		i18n_translate(ST_USAGE),
+		bltin->usage);
+	i = BLTIN_NONE;
+	while (++i < BLTIN_TOTAL)
+	{
+		ft_printf(" %-10s: %s\n",
+			g_builtins[i]->name,
+			i18n_translate(g_builtins[i]->description));
+	}
+	return (EXIT_SUCCESS);
+}
+
+static int	s_exec(t_builtin const *builtin, t_proc *p)
 {
 	int i;
 
 	if (p->bltin_status > ST_OK)
 	{
-		// todo use `log_status()` instead
-		ft_putendl_fd(i18n_translate(p->bltin_status), STDERR_FILENO);
+		builtin_usage(builtin, p->bltin_status);
 		return (EXIT_FAILURE);
 	}
+	if (p->argc == 1)
+		return (s_display_help(builtin));
 	ft_putstr(g_builtins[-p->bltin_status]->name);
 	ft_putstr(": ");
 	ft_putendl(g_builtins[-p->bltin_status]->usage);
@@ -60,10 +79,9 @@ static int	s_exec(t_proc *p)
 int			builtin_help(t_builtin const *builtin, int callback, t_sh *sh, t_proc *p)
 {
 	(void)sh;
-	(void)builtin;
 	if (callback == BLTIN_CB_BEFORE)
 		return (s_before(p));
 	if (callback == BLTIN_CB_EXEC)
-		exit(s_exec(p));
+		exit(s_exec(builtin, p));
 	return (ST_OK);
 }
