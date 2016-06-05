@@ -24,7 +24,7 @@ int					stdin_loop(t_sh *sh)
 		{
 			if (ret == ST_EXIT)
 				return (ST_OK);
-			log_status(ret, NULL);
+			display_status(ret, NULL, NULL);
 			return (-1);
 		}
 		ft_strdel(&input);
