@@ -51,6 +51,7 @@ int					job_launch(t_sh *sh, t_job *j)
 	log_info("launching job `%s`", j->command);
 	if (j->foreground == 1 && sh->is_interactive == 1)
 	{
+		log_info("setting termios structure");
 		if (tcsetattr(sh->fd, TCSADRAIN, &sh->termios_old) == -1)
 			return (job_kill(sh, j, ST_TCSETATTR));
 	}
@@ -88,21 +89,15 @@ int					job_launch(t_sh *sh, t_job *j)
 		//	break ;
 	}
 	if (sh->is_interactive == 0)
-	{
 		job_wait(j);
-	//	after callback built-in
-	}
 	else if (j->foreground == 1)
 	{
 		ret = job_foreground(sh, j, 0);
 		if (ret != ST_OK)
 		  return (ret);
-	//	put job to foreground
-	//	after callback built-in
 	}
-	//else
-	//	put job to background
-	//	return here to avoid builtin callback
+	else
+		return (job_background(j, 0));
 
 	if ((pos = list_nth(head, -1)) != head)
 	{

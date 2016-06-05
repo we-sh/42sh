@@ -47,6 +47,8 @@ SRCS		=	\
 				init/shell_language.c			\
 				job/job_alloc.c					\
 				job/job_available_id.c			\
+				job/job_background.c			\
+				job/job_background_nth.c		\
 				job/job_by_id.c					\
 				job/job_by_name.c				\
 				job/job_foreground.c			\

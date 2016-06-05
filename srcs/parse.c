@@ -26,6 +26,17 @@ t_job *s_job_create(char **array, char const *input)
 		list_push_back(p_node, &j->proc_head);
 		i++;
 	}
+
+	// temporary to test background jobs
+	char **tmp = ft_strsplit(input, ' ');
+	i = 0;
+	while (tmp[i])
+	{
+		if (ft_strcmp(tmp[i], "&") == 0)
+			j->foreground = 0;
+		i++;
+	}
+	ft_memdel_tab((void ***)&tmp);
 	return (j);
 }
 
