@@ -35,7 +35,7 @@ int	env_unset(char ***envp, char *argv)
 	int		ret;
 
 	if ((ret = env_index_value(*envp, argv)) == -1)
-		return (ST_OK); //I don't care Bro
+		return (ST_OK);
 	else
 	{
 		if ((*envp = s_env_unset(*envp, ret)) == NULL)
