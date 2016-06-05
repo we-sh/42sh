@@ -39,6 +39,7 @@ t_job	*s_job_with_position(int const position)
 	size_t	j_total;
 	t_list	*j_pos;
 
+	// todo look for background jobs only
 	j_total = list_size(&g_current_jobs_list_head);
 	if (j_total == 0 || (position == -2 && j_total == 1))
 		return (NULL);
