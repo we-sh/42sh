@@ -8,7 +8,7 @@
 ** back to foreground, letting the user enter a new command.
 */
 
-int	s_bask_to_shell(t_sh *sh)
+static int	s_bask_to_shell(t_sh *sh)
 {
 	int	ret;
 
@@ -27,7 +27,7 @@ int	s_bask_to_shell(t_sh *sh)
 	return (ST_OK);
 }
 
-int	job_foreground(t_sh *sh, t_job *j, int sigcont)
+int			job_foreground(t_sh *sh, t_job *j, int const sigcont)
 {
 	log_debug("put job to foreground (id: %d, pgid: %d)", j->id, j->pgid);
 

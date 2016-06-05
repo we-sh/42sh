@@ -100,7 +100,8 @@ int				shell_language(int lang);
 ** job/
 */
 int				job_available_id(void);
-int				job_foreground(t_sh *sh, t_job *j, int sigcont);
+int				job_foreground(t_sh *sh, t_job *j, int const sigcont);
+int				job_background(t_job *j, int const sigcont);
 int				job_is_completed(t_job *j);
 int				job_is_stopped(t_job *j);
 int				job_launch(t_sh *sh, t_job *j);
@@ -116,6 +117,7 @@ void			job_free(t_job **j);
 void			proc_free(t_proc **p);
 t_job			*job_by_name(char const *name);
 t_job			*job_by_id(int const id);
+t_job			*job_background_nth(const t_list *head, const int index);
 
 /*
 ** options/
