@@ -6,7 +6,7 @@
 #    By: mleconte <mleconte@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/04/30 13:39:33 by anouvel           #+#    #+#              #
-#    Updated: 2016/06/05 17:37:47 by gkuma            ###   ########.fr        #
+#    Updated: 2016/06/05 17:22:25 by gkuma            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,6 @@ SRCS		=	\
 				env/env_set.c					\
 				env/env_unset.c					\
 				env/env_index_value.c			\
-				log_status/log_status.c			\
 				display/display_status.c		\
 				i18n/i18n_translate.c			\
 				init/shell_init.c				\
