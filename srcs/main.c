@@ -33,33 +33,6 @@ static const t_option		*g_sh_options[] = {
 	[2] = NULL
 };
 
-
-
-/* TO BE EXPORTED TO LIBFT */
-static char **ft_array_dup(char **array)
-{
-	size_t	size;
-	char	**new_array;
-
-	size = 0;
-	while (array[size])
-		size++;
-	if ((new_array = (char **)malloc(sizeof(char *) * (size + 1))) == NULL)
-		return (NULL);
-	size = 0;
-	while (array[size])
-	{
-		if ((new_array[size] = ft_strdup(array[size])) == NULL)
-			return (NULL);
-		size++;
-	}
-	new_array[size] = NULL;
-	return (new_array);
-}
-/* TO BE EXPORTED TO LIBFT */
-
-
-
 static int	s_usage(int status)
 {
 	int	fd;
