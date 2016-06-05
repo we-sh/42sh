@@ -2,6 +2,7 @@
 # define SHELL_H
 # define TTY_DEVICE "/dev/tty"
 # define PROGRAM_NAME "42sh"
+# define PATH_MAX 4096
 
 /*
 ** Extern headers and structures
@@ -9,7 +10,6 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <pwd.h>
-# include <linux/limits.h>
 # include <unistd.h>
 # include <signal.h>
 # include <termios.h>
@@ -58,9 +58,7 @@ int				environment_init(t_sh *sh, char **envp);
 ** builtins/
 */
 int				builtin_callback(int callback, t_sh *sh, t_proc *p);
-int				setenv_set_variable_and_value(t_sh *sh, t_proc *p);
 int				setenv_argv_is_valid(t_proc *p);
-int				env_index_value(t_sh *sh, char *variable);
 void			builtin_usage(t_builtin const *bltin, int status);
 
 /*
@@ -71,6 +69,9 @@ char 			*env_get_path(char **envp);
 char 			*env_get_user(char **envp);
 char 			*env_get_home(char **envp);
 char 			*env_get_term(char **envp);
+int				env_set(char ***envp, char *key, char *value);
+int				env_unset(char ***envp, char *argv);
+int				env_index_value(char **envp, char *variable);
 
 /*
 ** log_status /

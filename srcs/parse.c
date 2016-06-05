@@ -40,7 +40,7 @@ int	parse(t_sh *sh, char const *input)
 	job_list_clean(1);
 	j = NULL;
 	cleaned = ft_strser(input);
-	lexer(cleaned, &l);
+	lexer(cleaned, &l);	
 	if (ft_strlen(cleaned) > 0 && (array = ft_strsplit(cleaned, '|')) != NULL)
 	{
 		if ((j = s_job_create(array, input)) == NULL)

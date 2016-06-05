@@ -27,6 +27,7 @@ SRCS		=	\
 				builtins/exit/builtin_exit.c	\
 				builtins/help/builtin_help.c	\
 				builtins/jobs/builtin_jobs.c	\
+				builtins/env/builtin_env.c		\
 				builtins/setenv/builtin_setenv.c\
 				builtins/setenv/builtin_setenv_argv_is_valid.c\
 				builtins/unsetenv/builtin_unsetenv.c\
@@ -39,6 +40,7 @@ SRCS		=	\
 				env/env_get_term.c				\
 				env/env_set.c					\
 				env/env_unset.c					\
+				env/env_index_value.c			\
 				log_status/log_status.c			\
 				i18n/i18n_translate.c			\
 				init/shell_init.c				\
@@ -338,8 +340,8 @@ $(DIROBJ)builtin_help.o: srcs/builtins/help/builtin_help.c incs/shell.h \
   libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtins/builtin.h \
   incs/builtins/builtin_struct.h incs/builtins/builtin_cd.h \
   incs/builtins/builtin_exit.h incs/builtins/builtin_help.h \
-  incs/builtins/builtin_jobs.h incs/builtins/builtin_setenv.h \
-  incs/builtins/builtin_unsetenv.h
+  incs/builtins/builtin_jobs.h incs/builtins/builtin_env.h \
+  incs/builtins/builtin_setenv.h incs/builtins/builtin_unsetenv.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/builtins/help/builtin_help.c\n"
 		@$(CC) -c ./srcs/builtins/help/builtin_help.c -o ./.objs/builtin_help.o $(CPPFLAGS) $(CFLAGS) 
@@ -356,6 +358,19 @@ $(DIROBJ)builtin_jobs.o: srcs/builtins/jobs/builtin_jobs.c incs/shell.h \
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/builtins/jobs/builtin_jobs.c\n"
 		@$(CC) -c ./srcs/builtins/jobs/builtin_jobs.c -o ./.objs/builtin_jobs.o $(CPPFLAGS) $(CFLAGS) 
+
+$(DIROBJ)builtin_env.o: srcs/builtins/env/builtin_env.c incs/shell.h \
+  libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h \
+  libs/libft/./incs/list.h libs/logger/./incs/logger.h \
+  libs/logger/./incs/logger_utils.h incs/statuses.h incs/option.h \
+  incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
+  libs/libcaps/./incs/types.h incs/termcaps/log.h \
+  incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtins/builtin.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/builtins/env/builtin_env.c\n"
+		@$(CC) -c ./srcs/builtins/env/builtin_env.c -o ./.objs/builtin_env.o $(CPPFLAGS) $(CFLAGS) 
 
 $(DIROBJ)builtin_setenv.o: srcs/builtins/setenv/builtin_setenv.c incs/shell.h \
   libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h \
@@ -408,8 +423,8 @@ $(DIROBJ)builtin_callback.o: srcs/builtins/builtin_callback.c incs/shell.h \
   libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtins/builtin.h \
   incs/builtins/builtin_struct.h incs/builtins/builtin_cd.h \
   incs/builtins/builtin_exit.h incs/builtins/builtin_help.h \
-  incs/builtins/builtin_jobs.h incs/builtins/builtin_setenv.h \
-  incs/builtins/builtin_unsetenv.h
+  incs/builtins/builtin_jobs.h incs/builtins/builtin_env.h \
+  incs/builtins/builtin_setenv.h incs/builtins/builtin_unsetenv.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/builtins/builtin_callback.c\n"
 		@$(CC) -c ./srcs/builtins/builtin_callback.c -o ./.objs/builtin_callback.o $(CPPFLAGS) $(CFLAGS) 
@@ -517,6 +532,19 @@ $(DIROBJ)env_unset.o: srcs/env/env_unset.c incs/shell.h libs/libft/./incs/libft.
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/env/env_unset.c\n"
 		@$(CC) -c ./srcs/env/env_unset.c -o ./.objs/env_unset.o $(CPPFLAGS) $(CFLAGS) 
+
+$(DIROBJ)env_index_value.o: srcs/env/env_index_value.c incs/shell.h \
+  libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h \
+  libs/libft/./incs/list.h libs/logger/./incs/logger.h \
+  libs/logger/./incs/logger_utils.h incs/statuses.h incs/option.h \
+  incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
+  libs/libcaps/./incs/types.h incs/termcaps/log.h \
+  incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtins/builtin.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/env/env_index_value.c\n"
+		@$(CC) -c ./srcs/env/env_index_value.c -o ./.objs/env_index_value.o $(CPPFLAGS) $(CFLAGS) 
 
 $(DIROBJ)log_status.o: srcs/log_status/log_status.c incs/shell.h \
   libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h \

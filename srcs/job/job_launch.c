@@ -111,5 +111,6 @@ int					job_launch(t_sh *sh, t_job *j)
 		if ((ret = builtin_callback(BLTIN_CB_AFTER, sh, p)) != ST_OK)
 			return (ret);
 	}
+
 	return (ST_OK);
 }

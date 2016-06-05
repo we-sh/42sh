@@ -1,6 +1,5 @@
 #include "shell.h"
 
-
 static int	s_before(t_proc *p)
 {
 	int		ret;
@@ -8,15 +7,10 @@ static int	s_before(t_proc *p)
 	ret = 0;
 	if (p->bltin_status == ST_OK)
 	{
-		if (p->argc > 1)
-		{
-			if (p->argc > 3)
-				p->bltin_status = ST_E2BIG;
-			else if (((ret  = setenv_argv_is_valid(p)) != ST_OK))
-				p->bltin_status = ret;
-			else 
-				p->bltin_status = ST_BLTIN_SETENV;
-		}
+		if (p->argc == 0)
+			p->bltin_status = ST_OK;
+		if ((ret = option_is_set(&p->bltin_opt_head, ST_BLTIN_ENV_OPT_I)) == 1)
+			p->bltin_status = ST_BLTIN_ENV_OPT_I;
 	}
 	return (ST_OK);
 }
@@ -34,7 +28,14 @@ static int	s_exec(t_builtin const *builtin, t_proc *p, t_sh *sh)
 			i++;
 		}
 	}
-	else if (p->bltin_status != ST_OK && p->argc > 2)
+	else if (p->bltin_status == ST_BLTIN_ENV_OPT_I)
+	{
+		ft_memdel_tab((void ***)&sh->envp);
+		sh->envp = NULL;
+		ft_array_pop(&p->argv, 0, 1);
+		execve(p->argv[0], p->argv, sh->envp);
+	}
+	else if (p->bltin_status != ST_OK && p->bltin_status != ST_BLTIN_ENV_OPT_I)
 	{
 		ft_putendl_fd(i18n_translate(p->bltin_status), STDERR_FILENO);
 		if (p->bltin_status == ST_EINVAL)
@@ -48,22 +49,19 @@ static int	s_exec(t_builtin const *builtin, t_proc *p, t_sh *sh)
 	return (EXIT_SUCCESS);
 }
 
-static int	s_after(t_sh *sh, t_proc *p)
+static int	s_after(t_proc *p)
 {
-
-	if (p->argc == 2)
-		env_set(&sh->envp, p->argv[1], p->argv[2]);
-	p->bltin_status = ST_OK;
+	(void)p;
 	return (ST_OK);
 }
 
-int			builtin_setenv(t_builtin const *builtin, int callback, t_sh *sh, t_proc *p)
+int			builtin_env(t_builtin const *builtin, int callback, t_sh *sh, t_proc *p)
 {
 	if (callback == BLTIN_CB_BEFORE)
 		return (s_before(p));
 	if (callback == BLTIN_CB_EXEC)
-		exit(s_exec(builtin, p, sh));
+		return(s_exec(builtin, p, sh));
 	if (callback == BLTIN_CB_AFTER)
-		return (s_after(sh, p));
+		return (s_after(p));
 	return (ST_OK);
 }

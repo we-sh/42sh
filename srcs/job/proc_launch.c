@@ -44,7 +44,9 @@ void		proc_launch(t_sh *sh, t_job *j, t_proc *p)
 	}
 
 	builtin_callback(BLTIN_CB_EXEC, sh, p);
-	execvp(p->argv[0], p->argv); // Use execve instead
+	
+//	execvp(p->argv[0], p->argv); // Use execve instead
 	// show error
+	execve(p->argv[0], p->argv, sh->envp);
 	exit(EXIT_FAILURE);
 }

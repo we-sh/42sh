@@ -5,6 +5,7 @@
 # include "builtin_exit.h"
 # include "builtin_help.h"
 # include "builtin_jobs.h"
+# include "builtin_env.h"
 # include "builtin_setenv.h"
 # include "builtin_unsetenv.h"
 
@@ -18,6 +19,7 @@ static const t_builtin		*g_builtins[] = {
 	[BLTIN_EXIT] = &g_builtin_exit,
 	[BLTIN_HELP] = &g_builtin_help,
 	[BLTIN_JOBS] = &g_builtin_jobs,
+	[BLTIN_ENV] = &g_builtin_env,
 	[BLTIN_SETENV] = &g_builtin_setenv,
 	[BLTIN_UNSETENV] = &g_builtin_unsetenv,
 	[BLTIN_TOTAL] = NULL
