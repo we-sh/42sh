@@ -90,7 +90,10 @@ static int		s_print_first_prompt(t_internal_context *context)
 											   PROMPT,
 											   &context->command_line));
 		ASSERT(termcaps_display_command_line(&context->command_line));
+<<<<<<< HEAD
 		ft_putstr("$>");
+=======
+>>>>>>> 5aa227db854c3fc9e3fe1f1fc3e21527dee174d5
 	}
 	else if (context->state == STATE_CONTINUE)
 	{

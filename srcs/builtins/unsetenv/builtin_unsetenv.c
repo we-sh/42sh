@@ -1,5 +1,45 @@
 #include "shell.h"
 
+<<<<<<< HEAD
+=======
+static char	**s_unsetenv_unset(t_sh *sh, int pos)
+{
+	char		**tmp;
+	int			i;
+	int			j;
+	int			size;
+//CHECK DES RETURN ST_MALLOC
+	i = 0;
+	j = 0;
+	size = 0;
+	tmp = NULL;
+	while (sh->envp[size])
+		size++;
+	tmp = (char **)malloc(sizeof(char *) * size);
+	while (sh->envp[i])
+	{
+		if (i != pos)
+			tmp[j++] = ft_strdup(sh->envp[i++]);
+		else
+			i++;
+	}
+	tmp[j] = NULL;
+	ft_memdel_tab((void ***)&sh->envp);
+	return (tmp);
+}
+
+static int	s_env_check_if_unset(t_sh *sh, char *argv)
+{
+	int		ret;
+
+	if ((ret = env_index_value(sh, argv)) == -1)
+		return (ST_OK); //I don't care Bro
+	else
+		sh->envp = s_unsetenv_unset(sh, ret);
+	return (ST_OK);
+}
+
+>>>>>>> 5aa227db854c3fc9e3fe1f1fc3e21527dee174d5
 static int	s_before(t_proc *p)
 {
 	int		ret;
@@ -34,7 +74,12 @@ static int	s_after(t_sh *sh, t_proc *p)
 	{
 		while (p->argv[i])
 		{
+<<<<<<< HEAD
 			env_unset(&sh->envp, p->argv[i]);
+=======
+			log_info("p->argv[%d] : %s", i, p->argv[i]);
+			s_env_check_if_unset(sh, p->argv[i]);
+>>>>>>> 5aa227db854c3fc9e3fe1f1fc3e21527dee174d5
 			i++;
 		}
 	}

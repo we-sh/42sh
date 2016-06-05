@@ -33,6 +33,7 @@ SRCS		=	\
 				builtins/unsetenv/builtin_unsetenv.c\
 				builtins/builtin_callback.c		\
 				builtins/builtin_usage.c		\
+<<<<<<< HEAD
 				env/env_get.c					\
 				env/env_get_path.c				\
 				env/env_get_user.c				\
@@ -41,6 +42,8 @@ SRCS		=	\
 				env/env_set.c					\
 				env/env_unset.c					\
 				env/env_index_value.c			\
+=======
+>>>>>>> 5aa227db854c3fc9e3fe1f1fc3e21527dee174d5
 				display/display_status.c		\
 				i18n/i18n_translate.c			\
 				init/shell_init.c				\
@@ -360,7 +363,11 @@ $(DIROBJ)builtin_jobs.o: srcs/builtins/jobs/builtin_jobs.c incs/shell.h \
 		@printf "compiling ./srcs/builtins/jobs/builtin_jobs.c\n"
 		@$(CC) -c ./srcs/builtins/jobs/builtin_jobs.c -o ./.objs/builtin_jobs.o $(CPPFLAGS) $(CFLAGS) 
 
+<<<<<<< HEAD
 $(DIROBJ)builtin_env.o: srcs/builtins/env/builtin_env.c incs/shell.h \
+=======
+$(DIROBJ)builtin_setenv.o: srcs/builtins/setenv/builtin_setenv.c incs/shell.h \
+>>>>>>> 5aa227db854c3fc9e3fe1f1fc3e21527dee174d5
   libs/libft/./incs/list.h libs/libft/./incs/libft.h \
   libs/libft/./incs/libftprintf.h libs/logger/./incs/logger.h \
   libs/logger/./incs/logger_utils.h incs/statuses.h incs/option.h \
@@ -373,8 +380,13 @@ $(DIROBJ)builtin_env.o: srcs/builtins/env/builtin_env.c incs/shell.h \
 		@printf "compiling ./srcs/builtins/env/builtin_env.c\n"
 		@$(CC) -c ./srcs/builtins/env/builtin_env.c -o ./.objs/builtin_env.o $(CPPFLAGS) $(CFLAGS) 
 
+<<<<<<< HEAD
 $(DIROBJ)builtin_setenv.o: srcs/builtins/setenv/builtin_setenv.c incs/shell.h \
   libs/libft/./incs/list.h libs/libft/./incs/libft.h \
+=======
+$(DIROBJ)builtin_setenv_funct.o: srcs/builtins/setenv/builtin_setenv_funct.c \
+  incs/shell.h libs/libft/./incs/list.h libs/libft/./incs/libft.h \
+>>>>>>> 5aa227db854c3fc9e3fe1f1fc3e21527dee174d5
   libs/libft/./incs/libftprintf.h libs/logger/./incs/logger.h \
   libs/logger/./incs/logger_utils.h incs/statuses.h incs/option.h \
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
@@ -443,6 +455,7 @@ $(DIROBJ)builtin_usage.o: srcs/builtins/builtin_usage.c incs/shell.h \
 		@printf "compiling ./srcs/builtins/builtin_usage.c\n"
 		@$(CC) -c ./srcs/builtins/builtin_usage.c -o ./.objs/builtin_usage.o $(CPPFLAGS) $(CFLAGS) 
 
+<<<<<<< HEAD
 $(DIROBJ)env_get.o: srcs/env/env_get.c incs/shell.h libs/libft/./incs/list.h \
   libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h \
   libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
@@ -457,6 +470,9 @@ $(DIROBJ)env_get.o: srcs/env/env_get.c incs/shell.h libs/libft/./incs/list.h \
 		@$(CC) -c ./srcs/env/env_get.c -o ./.objs/env_get.o $(CPPFLAGS) $(CFLAGS) 
 
 $(DIROBJ)env_get_path.o: srcs/env/env_get_path.c incs/shell.h \
+=======
+$(DIROBJ)display_status.o: srcs/display/display_status.c incs/shell.h \
+>>>>>>> 5aa227db854c3fc9e3fe1f1fc3e21527dee174d5
   libs/libft/./incs/list.h libs/libft/./incs/libft.h \
   libs/libft/./incs/libftprintf.h libs/logger/./incs/logger.h \
   libs/logger/./incs/logger_utils.h incs/statuses.h incs/option.h \
@@ -466,6 +482,7 @@ $(DIROBJ)env_get_path.o: srcs/env/env_get_path.c incs/shell.h \
   libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h incs/i18n.h \
   libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtins/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+<<<<<<< HEAD
 		@printf "compiling ./srcs/env/env_get_path.c\n"
 		@$(CC) -c ./srcs/env/env_get_path.c -o ./.objs/env_get_path.o $(CPPFLAGS) $(CFLAGS) 
 
@@ -560,6 +577,11 @@ $(DIROBJ)display_status.o: srcs/display/display_status.c incs/shell.h \
 		@printf "compiling ./srcs/display/display_status.c\n"
 		@$(CC) -c ./srcs/display/display_status.c -o ./.objs/display_status.o $(CPPFLAGS) $(CFLAGS) 
 
+=======
+		@printf "compiling ./srcs/display/display_status.c\n"
+		@$(CC) -c ./srcs/display/display_status.c -o ./.objs/display_status.o $(CPPFLAGS) $(CFLAGS) 
+
+>>>>>>> 5aa227db854c3fc9e3fe1f1fc3e21527dee174d5
 $(DIROBJ)i18n_translate.o: srcs/i18n/i18n_translate.c incs/shell.h \
   libs/libft/./incs/list.h libs/libft/./incs/libft.h \
   libs/libft/./incs/libftprintf.h libs/logger/./incs/logger.h \
