@@ -629,8 +629,34 @@ $(DIROBJ)job_available_id.o: srcs/job/job_available_id.c incs/shell.h \
 		@printf "compiling ./srcs/job/job_available_id.c\n"
 		@$(CC) -c ./srcs/job/job_available_id.c -o ./.objs/job_available_id.o $(CPPFLAGS) $(CFLAGS) 
 
-$(DIROBJ)job_by_id.o: srcs/job/job_by_id.c incs/shell.h libs/libft/./incs/libft.h \
-  libs/libft/./incs/libftprintf.h libs/libft/./incs/list.h \
+$(DIROBJ)job_background.o: srcs/job/job_background.c incs/shell.h \
+  libs/libft/./incs/list.h libs/libft/./incs/libft.h \
+  libs/libft/./incs/libftprintf.h libs/logger/./incs/logger.h \
+  libs/logger/./incs/logger_utils.h incs/statuses.h incs/option.h \
+  incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
+  libs/libcaps/./incs/types.h incs/termcaps/log.h \
+  incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtins/builtin.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/job/job_background.c\n"
+		@$(CC) -c ./srcs/job/job_background.c -o ./.objs/job_background.o $(CPPFLAGS) $(CFLAGS) 
+
+$(DIROBJ)job_background_nth.o: srcs/job/job_background_nth.c incs/shell.h \
+  libs/libft/./incs/list.h libs/libft/./incs/libft.h \
+  libs/libft/./incs/libftprintf.h libs/logger/./incs/logger.h \
+  libs/logger/./incs/logger_utils.h incs/statuses.h incs/option.h \
+  incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
+  libs/libcaps/./incs/types.h incs/termcaps/log.h \
+  incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtins/builtin.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/job/job_background_nth.c\n"
+		@$(CC) -c ./srcs/job/job_background_nth.c -o ./.objs/job_background_nth.o $(CPPFLAGS) $(CFLAGS) 
+
+$(DIROBJ)job_by_id.o: srcs/job/job_by_id.c incs/shell.h libs/libft/./incs/list.h \
+  libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h \
   libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
   incs/statuses.h incs/option.h incs/job.h incs/termcaps/termcaps.h \
   incs/termcaps/list_head.h libs/libcaps/./incs/types.h \
@@ -643,8 +669,8 @@ $(DIROBJ)job_by_id.o: srcs/job/job_by_id.c incs/shell.h libs/libft/./incs/libft.
 		@$(CC) -c ./srcs/job/job_by_id.c -o ./.objs/job_by_id.o $(CPPFLAGS) $(CFLAGS) 
 
 $(DIROBJ)job_by_name.o: srcs/job/job_by_name.c incs/shell.h \
-  libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h \
-  libs/libft/./incs/list.h libs/logger/./incs/logger.h \
+  libs/libft/./incs/list.h libs/libft/./incs/libft.h \
+  libs/libft/./incs/libftprintf.h libs/logger/./incs/logger.h \
   libs/logger/./incs/logger_utils.h incs/statuses.h incs/option.h \
   incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
