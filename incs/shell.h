@@ -116,6 +116,8 @@ int				job_kill(t_sh *sh, t_job *j, int status);
 void			job_list_clean(int notified);
 void			job_free(t_job **j);
 void			proc_free(t_proc **p);
+t_job			*job_by_name(char const *name);
+t_job			*job_by_id(int const id);
 
 /*
 ** options/
