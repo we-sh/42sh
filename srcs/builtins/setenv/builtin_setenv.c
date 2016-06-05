@@ -14,8 +14,6 @@ static int	s_before(t_proc *p)
 				p->bltin_status = ST_E2BIG;
 			else if (((ret  = setenv_argv_is_valid(p)) != ST_OK))
 				p->bltin_status = ret;
-			else 
-				p->bltin_status = ST_BLTIN_SETENV;
 		}
 	}
 	return (ST_OK);
@@ -26,7 +24,7 @@ static int	s_exec(t_builtin const *builtin, t_proc *p, t_sh *sh)
 	int		i;
 
 	i = 0;
-	if (p->bltin_status == ST_OK)
+	if (p->bltin_status == ST_OK  && p->argc == 1)
 	{
 		while (sh->envp[i])
 		{
@@ -34,15 +32,9 @@ static int	s_exec(t_builtin const *builtin, t_proc *p, t_sh *sh)
 			i++;
 		}
 	}
-	else if (p->bltin_status != ST_OK && p->argc > 2)
+	else if (p->bltin_status != ST_OK)
 	{
-		ft_putendl_fd(i18n_translate(p->bltin_status), STDERR_FILENO);
-		if (p->bltin_status == ST_EINVAL)
-		{
-			ft_putstr_fd(i18n_translate(ST_USAGE), STDERR_FILENO);
-			ft_putstr_fd(": ", STDERR_FILENO);
-			ft_putendl_fd(builtin->usage, STDERR_FILENO);
-		}
+		builtin_usage(builtin, p->bltin_status);
 		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
@@ -51,9 +43,8 @@ static int	s_exec(t_builtin const *builtin, t_proc *p, t_sh *sh)
 static int	s_after(t_sh *sh, t_proc *p)
 {
 
-	if (p->argc == 2)
+	if (p->bltin_status == ST_OK && (p->argc == 2 || p->argc == 3))
 		env_set(&sh->envp, p->argv[1], p->argv[2]);
-	p->bltin_status = ST_OK;
 	return (ST_OK);
 }
 

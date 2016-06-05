@@ -15,9 +15,9 @@ char 			*env_get_path(char **envp)
 	{
 		uid = getuid();
 		if (uid == 0)
-			return ("/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin");
+			return (PATH_ROOT);
 		else
-			return ("/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games");
+			return (PATH_STD);
 	}
 	return (tmp);
 }

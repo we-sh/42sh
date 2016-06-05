@@ -4,18 +4,22 @@ static	int		s_concat_variable(char **str, int pos, char *key, char *value)
 {
 	char		*tmp;
 	char		*tmp2;
-//CHECK DES RETURN ST_MALLOC
-	tmp = ft_strjoin(key, "=");
+
+	if ((tmp = ft_strjoin(key, "=")) == NULL)
+		return (ST_MALLOC);
 	if (!value)
 	{
-		str[pos] = ft_strdup(tmp);
+		if ((str[pos] = ft_strdup(tmp)) == NULL)
+			return (ST_MALLOC);
 		free(tmp);	
 	}
 	else if (value)
 	{
-		tmp2 = ft_strjoin(tmp, value);
+		if ((tmp2 = ft_strjoin(tmp, value)) == NULL)
+			return (ST_MALLOC);
 		free(tmp);
-		str[pos] = ft_strdup(tmp2);
+		if ((str[pos] = ft_strdup(tmp2)) == NULL)
+			return (ST_MALLOC);
 		free(tmp2);
 	}
 	return (ST_OK);
@@ -26,18 +30,21 @@ static	char	**s_env_set_new_variable(char **envp, char *variable, char *value)
 	char		**tmp;
 	int			i;
 	int			size;
-//CHECK DES RETURN ST_MALLOC
+
 	i = 0;
 	size = 0;
 	while (envp[size])
 		size++;
-	tmp = (char **)malloc(sizeof(char *) * (size + 2));
+	if ((tmp = (char **)malloc(sizeof(char *) * (size + 2))) == NULL)
+		return (NULL);
 	while (envp[i] != NULL)
 	{
-		tmp[i] = ft_strdup(envp[i]);
+		if ((tmp[i] = ft_strdup(envp[i])) == NULL)
+			return (NULL);
 		i++;
 	}
-	s_concat_variable(tmp, i, variable, value);
+	if (s_concat_variable(tmp, i, variable, value) != ST_OK)
+		return (NULL);
 	i++;
 	tmp[i] = NULL;
 	ft_memdel_tab((void ***)&envp);
@@ -50,14 +57,29 @@ int				env_set(char ***envp, char *key, char *value)
 	int			ret;
 
 	i = 0;
+	if (!*envp)
+	{
+		if ((*envp = (char **)malloc(sizeof(char *) * 1)) == NULL)
+			return (ST_MALLOC);
+		*envp[0] = NULL; 
+	}
 	if ((ret = env_index_value(*envp, key)) == -1)
-		*envp = s_env_set_new_variable(*envp, key, value);
+	{
+		if ((*envp = s_env_set_new_variable(*envp, key, value)) == NULL)
+			return (ST_MALLOC);
+	}
 	else
 	{
 		if (!value)
-			s_concat_variable(*envp, ret, key, NULL);
+		{
+			if (s_concat_variable(*envp, ret, key, NULL) != ST_OK)
+				return (ST_MALLOC);
+		}
 		else if (value)
-			s_concat_variable(*envp, ret, key, value);
+		{
+			if (s_concat_variable(*envp, ret, key, value) != ST_OK)
+				return (ST_MALLOC);
+		}
 	}
-	return (ST_OK); //check other function return
+	return (ST_OK);
 }

@@ -7,20 +7,21 @@ static char		**s_env_unset(char **envp, int pos)
 	int			i;
 	int			j;
 	int			size;
-//CHECK DES RETURN ST_MALLOC
+
 	i = 0;
 	j = 0;
 	size = 0;
 	while (envp[size])
 		size++;
-	//	printf("yo \n");
-	//printf("key: %s value: %s\n", key, value);//debug
-
-	tmp = (char **)malloc(sizeof(char *) * size);
+	if ((tmp = (char **)malloc(sizeof(char *) * size)) == NULL)
+		return (NULL);
 	while (envp[i])
 	{
 		if (i != pos)
-			tmp[j++] = ft_strdup(envp[i++]);
+		{
+			if ((tmp[j++] = ft_strdup(envp[i++])) == NULL)
+				return (NULL);
+		}
 		else
 			i++;
 	}
@@ -36,6 +37,9 @@ int	env_unset(char ***envp, char *argv)
 	if ((ret = env_index_value(*envp, argv)) == -1)
 		return (ST_OK); //I don't care Bro
 	else
-		*envp = s_env_unset(*envp, ret);
+	{
+		if ((*envp = s_env_unset(*envp, ret)) == NULL)
+			return (ST_MALLOC);
+	}
 	return (ST_OK);
 }

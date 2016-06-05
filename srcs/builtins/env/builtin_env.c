@@ -2,49 +2,40 @@
 
 static int	s_before(t_proc *p)
 {
-	int		ret;
-
-	ret = 0;
-	if (p->bltin_status == ST_OK)
-	{
-		if (p->argc == 0)
-			p->bltin_status = ST_OK;
-		if ((ret = option_is_set(&p->bltin_opt_head, ST_BLTIN_ENV_OPT_I)) == 1)
-			p->bltin_status = ST_BLTIN_ENV_OPT_I;
-	}
+	(void)p;
 	return (ST_OK);
 }
 
 static int	s_exec(t_builtin const *builtin, t_proc *p, t_sh *sh)
 {
 	int		i;
+	int		ret;
 
+	ret = 0;
 	i = 0;
 	if (p->bltin_status == ST_OK)
 	{
-		while (sh->envp[i])
-		{
-			ft_putendl_fd(sh->envp[i], STDOUT_FILENO);
-			i++;
+		if ((ret = option_is_set(&p->bltin_opt_head, ST_BLTIN_ENV_OPT_I)) == 1)
+		{	
+			ft_memdel_tab((void ***)&sh->envp);
+			sh->envp = NULL;
 		}
-	}
-	else if (p->bltin_status == ST_BLTIN_ENV_OPT_I)
-	{
-		ft_memdel_tab((void ***)&sh->envp);
-		sh->envp = NULL;
-		ft_array_pop(&p->argv, 0, 1);
-		execve(p->argv[0], p->argv, sh->envp);
-	}
-	else if (p->bltin_status != ST_OK && p->bltin_status != ST_BLTIN_ENV_OPT_I)
-	{
-		ft_putendl_fd(i18n_translate(p->bltin_status), STDERR_FILENO);
-		if (p->bltin_status == ST_EINVAL)
+		// USE JM FUNCTION TO POP ENV VARIABLE TEST=TOTO
+		if (p->argc == 1)
 		{
-			ft_putstr_fd(i18n_translate(ST_USAGE), STDERR_FILENO);
-			ft_putstr_fd(": ", STDERR_FILENO);
-			ft_putendl_fd(builtin->usage, STDERR_FILENO);
+			while (sh->envp[i])
+			{
+				ft_putendl_fd(sh->envp[i], STDOUT_FILENO);
+				i++;
+			}			
 		}
-		return (EXIT_FAILURE);
+		else
+			ft_array_pop(&p->argv, 0, 1);
+	}
+	else if (p->bltin_status != ST_OK)
+	{
+		builtin_usage(builtin, p->bltin_status);
+		exit(EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
 }

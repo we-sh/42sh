@@ -19,13 +19,7 @@ static int	s_exec(t_builtin const *builtin, t_proc *p)
 {
 	if (p->bltin_status != ST_OK)
 	{
-		ft_putendl_fd(i18n_translate(p->bltin_status), STDERR_FILENO);
-		if (p->bltin_status == ST_EINVAL)
-		{
-			ft_putstr_fd(i18n_translate(ST_USAGE), STDERR_FILENO);
-			ft_putstr_fd(": ", STDERR_FILENO);
-			ft_putendl_fd(builtin->usage, STDERR_FILENO);
-		}
+		builtin_usage(builtin, p->bltin_status);
 		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
@@ -40,12 +34,10 @@ static int	s_after(t_sh *sh, t_proc *p)
 	{
 		while (p->argv[i])
 		{
-			log_info("p->argv[%d] : %s", i, p->argv[i]);
 			env_unset(&sh->envp, p->argv[i]);
 			i++;
 		}
 	}
-	p->bltin_status = ST_OK;
 	return (ST_OK);
 }
 
