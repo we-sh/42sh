@@ -16,7 +16,7 @@ int	job_is_stopped(t_job *j)
 	while ((pos = pos->next) && pos != head)
 	{
 		p = CONTAINER_OF(pos, t_proc, list_proc);
-		if (p->stopped == 0)
+		if (p->stopped == 0 && p->completed == 0)
 			return (0);
 	}
 	return (1);

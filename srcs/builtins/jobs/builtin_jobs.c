@@ -11,42 +11,6 @@ static int	s_before(t_proc *p)
 	return (ST_OK);
 }
 
-static int	s_display_proc_info(t_job *j, int show_pid)
-{
-	t_list	*p_pos;
-	t_proc	*p;
-	t_job	*j_tmp;
-	char	c;
-
-	c = ' ';
-
-	// todo create a `list_nth_background_job` because we want to retrieve only background jobs from list
-	if ((j_tmp = job_background_nth(&g_current_jobs_list_head, -1)) == j)
-		c = '+';
-	else if ((j_tmp = job_background_nth(&g_current_jobs_list_head, -2)) == j)
-		c = '-';
-
-	LIST_FOREACH(&j->proc_head, p_pos)
-	{
-		p = CONTAINER_OF(p_pos, t_proc, list_proc);
-		if (j->pgid == p->pid)
-			ft_printf("[%d]\t%c ", j->id, c);
-		else
-			ft_putstr("   \t  ");
-		if (show_pid > 0)
-		{
-			if (show_pid == 1 || (show_pid == 2 && j->pgid == p->pid))
-				ft_printf("%d\t", p->pid);
-			else
-				ft_putstr(" \t");
-		}
-		ft_printf("%-10s %s\n",
-			i18n_translate(p->completed == 1 ? ST_DONE : ST_RUNNING),
-			p->command);
-	}
-	return (ST_OK);
-}
-
 static int	s_exec(t_proc *p)
 {
 	t_list	*j_pos;
@@ -67,7 +31,7 @@ static int	s_exec(t_proc *p)
 	if (p->argc == 2)
 	{
 		if ((j = job_by_name(p->argv[1])) != NULL)
-			s_display_proc_info(j, show_pid);
+			job_display_status(j, show_pid);
 		return (EXIT_SUCCESS);
 	}
 	j_total = list_size(&g_current_jobs_list_head);
@@ -75,7 +39,7 @@ static int	s_exec(t_proc *p)
 	{
 		j = CONTAINER_OF(j_pos, t_job, list_job);
 		if (j->foreground == 0)
-			s_display_proc_info(j, show_pid);
+			job_display_status(j, show_pid);
 	}
 	return (EXIT_SUCCESS);
 }

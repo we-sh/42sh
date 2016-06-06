@@ -95,8 +95,8 @@ static int termcaps_termios_init(t_sh *sh)
 	sh->termios_new.c_lflag &= ~(ECHO | ECHONL | ICANON | ISIG | IEXTEN);
 	sh->termios_new.c_cflag &= ~(CSIZE | PARENB);
 	sh->termios_new.c_cflag |= CS8;
-	sh->termios_new.c_cc[VMIN] = 1;
-	sh->termios_new.c_cc[VTIME] = 232;
+	sh->termios_new.c_cc[VMIN] = 0;
+	sh->termios_new.c_cc[VTIME] = 10;
 
 	return (1);
 }

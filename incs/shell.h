@@ -121,6 +121,8 @@ t_job			*job_by_name(char const *name);
 t_job			*job_by_id(int const id);
 t_job			*job_background_nth(const t_list *head, const int index);
 int				job_background_update_status(void);
+int				job_display_status(t_job *j, int show_pid);
+void			job_set_stopped(t_job *j, int const stopped);
 
 /*
 ** options/

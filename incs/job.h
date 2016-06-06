@@ -12,6 +12,7 @@ typedef struct				s_proc
 	pid_t					pid;
 	char					completed;
 	char					stopped;
+	char					signaled;
 	int						stdin;
 	int						stdout;
 	int						stderr;

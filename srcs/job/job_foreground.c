@@ -31,6 +31,7 @@ int			job_foreground(t_sh *sh, t_job *j, int const sigcont)
 {
 	log_debug("put job to foreground (id: %d, pgid: %d)", j->id, j->pgid);
 
+	job_set_stopped(j, 0);
 	j->notified = 1;
 
 	// make the job controlling the terminal

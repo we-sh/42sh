@@ -8,5 +8,8 @@ int		job_background(t_job *j, int const sigcont)
 			perror ("kill (SIGCONT)");
 			// todo
 		}
+	job_set_stopped(j, 0);
+	j->notified = 0;
+	job_display_status(j, 1);
 	return (ST_OK);
 }

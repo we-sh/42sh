@@ -52,6 +52,7 @@ SRCS		=	\
 				job/job_background_update_status.c\
 				job/job_by_id.c					\
 				job/job_by_name.c				\
+				job/job_display_status.c		\
 				job/job_foreground.c			\
 				job/job_free.c					\
 				job/job_is_completed.c			\
@@ -59,6 +60,7 @@ SRCS		=	\
 				job/job_kill.c					\
 				job/job_launch.c				\
 				job/job_list_clean.c			\
+				job/job_set_stopped.c			\
 				job/job_wait.c					\
 				job/proc_find.c					\
 				job/proc_free.c					\
