@@ -9,7 +9,6 @@ int	proc_update_status(pid_t pid, int status)
 {
 	t_proc		*p;
 
-	log_debug("update status %d, status: %d", pid, status);
 	if (pid == 0 || errno == ECHILD)
 	{
 		errno = 0;
@@ -25,11 +24,16 @@ int	proc_update_status(pid_t pid, int status)
 			p->stopped = 1;
 		else
 		{
-			p->completed = 1;
-			if (WIFSIGNALED(status))
+			p->stopped = 0;
+			if (WIFEXITED(status) || WIFSIGNALED(status))
 			{
-				log_debug("proc %d signal recieved: %d", pid, WTERMSIG(status));
-				// notify user about signal (segfault, sigabort...)
+				p->completed = 1;
+				if (WIFSIGNALED(status))
+				{
+					p->signaled = WTERMSIG(status);
+					log_debug("proc %d signal recieved: %d", pid, WTERMSIG(status));
+					// notify user about signal (segfault, sigabort...)
+				}
 			}
 		}
 		log_debug("proc %d status: stopped %d, completed %d", pid, p->stopped, p->completed);

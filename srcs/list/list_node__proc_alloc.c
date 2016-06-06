@@ -23,6 +23,7 @@ t_list			*list_node__proc_alloc(char *command, char **argv)
 	p->pid = 0;
 	p->completed = 0;
 	p->stopped = 0;
+	p->signaled = 0;
 	p->stdin = STDIN_FILENO;
 	p->stdout = STDOUT_FILENO;
 	p->stderr = STDERR_FILENO;
