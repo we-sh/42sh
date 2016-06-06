@@ -120,6 +120,7 @@ void			proc_free(t_proc **p);
 t_job			*job_by_name(char const *name);
 t_job			*job_by_id(int const id);
 t_job			*job_background_nth(const t_list *head, const int index);
+int				job_background_update_status(void);
 
 /*
 ** options/
