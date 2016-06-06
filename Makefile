@@ -697,6 +697,19 @@ $(DIROBJ)job_by_name.o: srcs/job/job_by_name.c incs/shell.h \
 		@printf "compiling ./srcs/job/job_by_name.c\n"
 		@$(CC) -c ./srcs/job/job_by_name.c -o ./.objs/job_by_name.o $(CPPFLAGS) $(CFLAGS) 
 
+$(DIROBJ)job_display_status.o: srcs/job/job_display_status.c incs/shell.h \
+  libs/libft/./incs/list.h libs/libft/./incs/libft.h \
+  libs/libft/./incs/libftprintf.h libs/logger/./incs/logger.h \
+  libs/logger/./incs/logger_utils.h incs/statuses.h incs/option.h \
+  incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
+  libs/libcaps/./incs/types.h incs/termcaps/log.h \
+  incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtins/builtin.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/job/job_display_status.c\n"
+		@$(CC) -c ./srcs/job/job_display_status.c -o ./.objs/job_display_status.o $(CPPFLAGS) $(CFLAGS) 
+
 $(DIROBJ)job_foreground.o: srcs/job/job_foreground.c incs/shell.h \
   libs/libft/./incs/list.h libs/libft/./incs/libft.h \
   libs/libft/./incs/libftprintf.h libs/logger/./incs/logger.h \
@@ -787,6 +800,19 @@ $(DIROBJ)job_list_clean.o: srcs/job/job_list_clean.c incs/shell.h \
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/job/job_list_clean.c\n"
 		@$(CC) -c ./srcs/job/job_list_clean.c -o ./.objs/job_list_clean.o $(CPPFLAGS) $(CFLAGS) 
+
+$(DIROBJ)job_set_stopped.o: srcs/job/job_set_stopped.c incs/shell.h \
+  libs/libft/./incs/list.h libs/libft/./incs/libft.h \
+  libs/libft/./incs/libftprintf.h libs/logger/./incs/logger.h \
+  libs/logger/./incs/logger_utils.h incs/statuses.h incs/option.h \
+  incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
+  libs/libcaps/./incs/types.h incs/termcaps/log.h \
+  incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtins/builtin.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/job/job_set_stopped.c\n"
+		@$(CC) -c ./srcs/job/job_set_stopped.c -o ./.objs/job_set_stopped.o $(CPPFLAGS) $(CFLAGS) 
 
 $(DIROBJ)job_wait.o: srcs/job/job_wait.c incs/shell.h libs/libft/./incs/list.h \
   libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h \
