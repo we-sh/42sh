@@ -6,7 +6,7 @@ int			key__backspace(t_internal_context *in_context)
 
 	if (in_context->state == STATE_REGULAR)
 	{
-		if (in_context->command_line.offset <= PROMPT_SIZE)
+		if (in_context->command_line.offset <= in_context->prompt.size)
 			return (1);
 		entry = list_nth(&in_context->command_line.list,
 				in_context->command_line.offset);

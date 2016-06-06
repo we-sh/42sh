@@ -31,10 +31,11 @@ int						key__cursor_to_next_command(t_internal_context *context)
 		context->history.offset += 1;
 		if (context->history.offset == context->history.size)
 		{
-			if (!termcaps_string_to_command_line(PROMPT_SIZE, PROMPT,
-						&context->command_line))
+			if (!termcaps_string_to_command_line(context->prompt.size,
+												context->prompt.bytes,
+												&context->command_line))
 			{
-				log_error("minishell__string_to_command_line() failed %s", PROMPT);
+				log_error("minishell__string_to_command_line() failed %s", context->prompt.bytes);
 				return (0);
 			}
 		}

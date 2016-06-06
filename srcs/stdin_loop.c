@@ -11,7 +11,7 @@ int					stdin_loop(t_sh *sh)
 	while (1)
 	{
 		if (sh->is_interactive == true)
-			input = termcaps_read_input(sh->fd);
+			input = termcaps_read_input(sh);
 		else
 			end_of_file = get_next_line(sh->fd, &input);
 		if (input == NULL || end_of_file == 0)

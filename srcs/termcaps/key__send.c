@@ -2,7 +2,7 @@
 
 static int		s_fill_context_buffer(t_internal_context *context, char *buffer)
 {
-	if (!ft_strcmp(buffer + PROMPT_SIZE, "exit"))
+	if (!ft_strcmp(buffer + context->prompt.size, "exit"))
 	{
 		context->state = STATE_EXIT;
 		context->buffer = ft_strdup("exit");
@@ -10,7 +10,7 @@ static int		s_fill_context_buffer(t_internal_context *context, char *buffer)
 	else
 	{
 		context->state = STATE_CONTINUE;
-		context->buffer = ft_strdup(buffer + PROMPT_SIZE);
+		context->buffer = ft_strdup(buffer + context->prompt.size);
 	}
 	if (!context->buffer)
 		return (0);
@@ -47,30 +47,27 @@ int				key__send(t_internal_context *context)
 {
 	if (context->state == STATE_REGULAR)
 	{
-		if (context->fd != 0)
+		if (!termcaps_display_command_line(context->fd, &context->command_line))
 		{
-			if (!termcaps_display_command_line(&context->command_line))
-			{
-				log_error("minishell__display_command_line() failed");
-				return (0);
-			}
-			caps__print_cap(CAPS__DOWN, 0);
-			caps__print_cap(CAPS__CARRIAGE_RETURN, 0);
+			log_error("minishell__display_command_line() failed");
+			return (0);
 		}
-		if (context->command_line.size > PROMPT_SIZE)
+		caps__print_cap(CAPS__DOWN, 0);
+		caps__print_cap(CAPS__CARRIAGE_RETURN, 0);
+		if (context->command_line.size > context->prompt.size)
 		{
 			if (!s_bufferize_input(context))
 			{
 				log_error("s_bufferize_input() failed");
 				return (0);
 			}
-			if (context->fd != 0)
-				if (!termcaps_string_to_command_line(PROMPT_SIZE, PROMPT,
-													 &context->command_line))
-				{
-					log_error("minishell__string_to_command_line() failed", PROMPT);
-					return (0);
-				}
+			if (!termcaps_string_to_command_line(context->prompt.size,
+												context->prompt.bytes,
+												&context->command_line))
+			{
+				log_error("minishell__string_to_command_line() failed", context->prompt.bytes);
+				return (0);
+			}
 		}
 	}
 	return (1);

@@ -11,10 +11,11 @@ int				key__delete_command_line(t_internal_context *context)
 		list_head__command_line_destroy(&context->command_line);
 		list_head__init(&context->command_line);
 		context->command_line.offset = 0;
-		if (!termcaps_string_to_command_line(PROMPT_SIZE, PROMPT,
+		if (!termcaps_string_to_command_line(context->prompt.size,
+											context->prompt.bytes,
 											&context->command_line))
 		{
-			log_error("minishell__string_to_command_line() failed %s", PROMPT);
+			log_error("minishell__string_to_command_line() failed %.*s", (int)context->prompt.size, context->prompt.bytes);
 			return (0);
 		}
 		context->history.offset = context->history.size;

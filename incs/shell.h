@@ -27,12 +27,12 @@
 typedef struct		e_sh
 {
 	pid_t			pgid;
-	bool 			is_interactive;
-	int 			fd;
+	bool			is_interactive;
+	int				fd;
 	char			**argv;
 	char			**envp;
-	struct termios 	termios_old;
-	struct termios 	termios_new;
+	struct termios	termios_old;
+	struct termios	termios_new;
 	int				last_exit_status;
 	t_list			opt_head;
 }					t_sh;
@@ -70,10 +70,10 @@ void			builtin_usage(t_builtin const *bltin, int status);
 ** env /
 */
 char			*env_get(char **envp, char *key);
-char 			*env_get_path(char **envp);
-char 			*env_get_user(char **envp);
-char 			*env_get_home(char **envp);
-char 			*env_get_term(char **envp);
+char			*env_get_path(char **envp);
+char			*env_get_user(char **envp);
+char			*env_get_home(char **envp);
+char			*env_get_term(char **envp);
 int				env_set(char ***envp, char *key, char *value);
 int				env_unset(char ***envp, char *argv);
 int				env_index_value(char **envp, char *variable);
@@ -146,13 +146,13 @@ int			tokenize(const char *s, t_lexer *lexer);
 int				termcaps_character_to_command_line(const size_t character_bytes_count,
 											 const char *character_bytes,
 											 t_list_head *command_line);
-int				termcaps_display_command_line(const t_list_head *command_line);
+int				termcaps_display_command_line(const int fd, const t_list_head *command_line);
 size_t			termcaps_get_character_bytes_count(const size_t input_bytes_count,
 								  const char *input_bytes,
 								  size_t *out_missing_bytes_count);
 int				termcaps_init(t_sh *sh);
 int				termcaps_isunicode(const char c, size_t *out_character_bytes_count);
-char			*termcaps_read_input(const int fd);
+char			*termcaps_read_input(const t_sh *sh);
 int				termcaps_string_to_command_line(const size_t input_buffer_size,
 										  const char *input_buffer,
 										  t_list_head *command_line);

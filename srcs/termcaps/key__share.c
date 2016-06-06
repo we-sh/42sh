@@ -10,7 +10,7 @@ int		key__share__command_line_to_history(t_internal_context *in_context)
 	new = list_node__history_create(&in_context->command_line);
 	if (!new)
 	{
-		log_error("node__history_create() failed %s\n", "");
+		log_error("node__history_create() failed %s", "");
 		return (0);
 	}
 	list_head__insert(&in_context->history,
@@ -30,7 +30,7 @@ int		key__share__selection_get(t_internal_context *in_context,
 	if (in_context->selection_offset_start ==
 			MINISHELL_KEY__SHARE__SELECTION_OFFSET_UNDEFINED)
 	{
-		log_error("selection offset start is undefined %s\r", "");
+		log_error("selection offset start is undefined %s", "");
 		return (0);
 	}
 	if (in_context->selection_offset_start < in_context->command_line.offset)
@@ -69,7 +69,7 @@ int			key__share__copy_build_copy(t_list_head *command_line,
 											node->character);
 		if (!new)
 		{
-			log_error("list_node__command_line_create() failed %s\r", "");
+			log_error("list_node__command_line_create() failed %s", "");
 			return (0);
 		}
 		list_head__insert(out_copy, copy_offset, &new->list);

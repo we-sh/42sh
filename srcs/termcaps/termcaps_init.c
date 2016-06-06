@@ -86,27 +86,18 @@ static int termcaps_termios_init(t_sh *sh)
 		log_fatal("tcgetattr() failed");
 		return (0);
 	}
+	sh->termios_new = sh->termios_old;
+
 	sh->termios_new.c_iflag &= ~(IGNBRK | BRKINT | PARMRK | ISTRIP | IXON
 							 | INLCR | IGNCR | ICRNL);
-	sh->termios_new.c_oflag &= ~OPOST;
+	sh->termios_new.c_oflag &= ~(OPOST | ONLCR);
+	sh->termios_new.c_oflag |= (OPOST | ONLCR);
 	sh->termios_new.c_lflag &= ~(ECHO | ECHONL | ICANON | ISIG | IEXTEN);
 	sh->termios_new.c_cflag &= ~(CSIZE | PARENB);
 	sh->termios_new.c_cflag |= CS8;
 	sh->termios_new.c_cc[VMIN] = 1;
 	sh->termios_new.c_cc[VTIME] = 232;
 
-	//TEMP
-	//long termios_ospeed = cfgetospeed(&sh->termios_old);
-	//if (termios_ospeed > SHRT_MAX)
-	//	ospeed = SHRT_MAX;
-	//else
-	//	ospeed = termios_ospeed;
-
-	if (tcsetattr(sh->fd, TCSADRAIN, &sh->termios_new) != 0)
-	{
-		log_fatal("tcsetattr() failed");
-		return (0);
-	}
 	return (1);
 }
 
@@ -149,23 +140,23 @@ static int termcaps_initialize_key_map_meta(void)
 
 static int termcaps_initialize_key_map_cursor(void)
 {
-	ASSERT(caps__init_func(DELETE_UNDER_CURSOR_KEY, &key__delete_under_cursor));
-	ASSERT(caps__init_func(CURSOR_LEFT_KEY, &key__cursor_to_prev_character));
-	ASSERT(caps__init_func(CURSOR_RIGHT_KEY, &key__cursor_to_next_character));
-	ASSERT(caps__init_func(CURSOR_UP_KEY, &key__cursor_to_prev_command));
-	ASSERT(caps__init_func(CURSOR_DOWN_KEY, &key__cursor_to_next_command));
-	ASSERT(caps__init_func(SHIFTED_CURSOR_LEFT_KEY, &key__cursor_to_prev_word));
-	ASSERT(caps__init_func(SHIFTED_CURSOR_RIGHT_KEY, &key__cursor_to_next_word));
-	ASSERT(caps__init_func(SCROLLING_BACKWARD_KEY, &key__cursor_to_prev_line));
-	ASSERT(caps__init_func(SCROLLING_FORWARD_KEY, &key__cursor_to_next_line));
-	ASSERT(caps__init_func(CURSOR_HOME_KEY, &key__cursor_to_begin_of_line));
-	ASSERT(caps__init_func(CURSOR_HOME_DOWN_KEY, &key__cursor_to_end_of_line));
-	ASSERT(caps__init_func(BEGIN_KEY, &key__cursor_to_begin_of_line));
-	ASSERT(caps__init_func(END_KEY, &key__cursor_to_end_of_line));
-	ASSERT(caps__init_func(MARK_KEY, &key__select));
-	ASSERT(caps__init_func(SELECT_KEY, &key__select));
-	ASSERT(caps__init_func(COPY_KEY, &key__copy));
-	ASSERT(caps__init_func(ENTER_KEY, &key__send));
+	caps__init_func(DELETE_UNDER_CURSOR_KEY, &key__delete_under_cursor);
+	caps__init_func(CURSOR_LEFT_KEY, &key__cursor_to_prev_character);
+	caps__init_func(CURSOR_RIGHT_KEY, &key__cursor_to_next_character);
+	caps__init_func(CURSOR_UP_KEY, &key__cursor_to_prev_command);
+	caps__init_func(CURSOR_DOWN_KEY, &key__cursor_to_next_command);
+	caps__init_func(SHIFTED_CURSOR_LEFT_KEY, &key__cursor_to_prev_word);
+	caps__init_func(SHIFTED_CURSOR_RIGHT_KEY, &key__cursor_to_next_word);
+	caps__init_func(SCROLLING_BACKWARD_KEY, &key__cursor_to_prev_line);
+	caps__init_func(SCROLLING_FORWARD_KEY, &key__cursor_to_next_line);
+	caps__init_func(CURSOR_HOME_KEY, &key__cursor_to_begin_of_line);
+	caps__init_func(CURSOR_HOME_DOWN_KEY, &key__cursor_to_end_of_line);
+	caps__init_func(BEGIN_KEY, &key__cursor_to_begin_of_line);
+	caps__init_func(END_KEY, &key__cursor_to_end_of_line);
+	caps__init_func(MARK_KEY, &key__select);
+	caps__init_func(SELECT_KEY, &key__select);
+	caps__init_func(COPY_KEY, &key__copy);
+	caps__init_func(ENTER_KEY, &key__send);
 	return (1);
 }
 
@@ -176,7 +167,7 @@ int			termcaps_init(t_sh *sh)
 		log_fatal("termcaps_termios_init() failed");
 		return (0); //udpate return
 	}
-	if (!caps__initialize())
+	if (!caps__initialize(sh->fd))
 	{
 		log_fatal("caps__initialize() failed");
 		return (0); //udpate return

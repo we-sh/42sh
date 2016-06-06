@@ -23,7 +23,7 @@ int	key__share__selection_get(t_internal_context *in_context, size_t *out_select
 /*
 ** PREV / NEXT word offset
 */
-void	key__share__prev_word_offset(const t_list_head *command_line, size_t current_offset, size_t *out_offset);
+void	key__share__prev_word_offset(const t_list_head *command_line, size_t current_offset, size_t prompt_size, size_t *out_offset);
 void	key__share__next_word_offset(const t_list_head *command_line, size_t current_offset, size_t *out_offset);
 
 /*

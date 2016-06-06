@@ -9,6 +9,7 @@ int				key__cut(t_internal_context *in_context)
 	{
 		key__share__prev_word_offset(&in_context->command_line,
 									in_context->command_line.offset,
+									in_context->prompt.size,
 									&selection_start);
 		selection_size = in_context->command_line.offset - selection_start;
 	}

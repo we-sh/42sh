@@ -7,6 +7,7 @@
 
 void		key__share__prev_word_offset(const t_list_head *command_line,
 										size_t current_offset,
+										size_t prompt_size,
 										size_t *out_offset)
 {
 	t_list				*pos;
@@ -18,7 +19,7 @@ void		key__share__prev_word_offset(const t_list_head *command_line,
 
 	pos = list_nth(&command_line->list, current_offset);
 	state = STATE_UNDEFINED;
-	while (current_offset > PROMPT_SIZE)
+	while (current_offset > prompt_size)
 	{
 		node_cmd = CONTAINER_OF(pos, t_list_node_cmd, list);
 		if (state == STATE_UNDEFINED && !ISSPACE(node_cmd))

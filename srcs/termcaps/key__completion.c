@@ -116,6 +116,9 @@ void	s_get_path_and_match(size_t cmd_size,
 	out_match->size = ft_strlen(match);
 }
 
+#define ENDL_SIZE	(sizeof("\n") - 1)
+#define ENDL				"\n"
+
 int		key__completion(t_internal_context *context)
 {
 	size_t		cmd_size;
@@ -172,7 +175,7 @@ int		key__completion(t_internal_context *context)
 	}
 	else
 	{
-		size_t	buffer_size_max = (ref_size + sizeof("\n\r") - 1) * caps__win(WIN_LINE);
+		size_t	buffer_size_max = (ref_size + ENDL_SIZE) * caps__win(WIN_LINE);
 		char	*buffer = malloc(buffer_size_max);
 		if (!buffer)
 		{
@@ -198,8 +201,8 @@ int		key__completion(t_internal_context *context)
 			}
 			if (filename_count++ % filename_by_line == 0)
 			{
-				ft_memcpy(buffer + buffer_offset, "\n\r", sizeof("\n\r") - 1);
-				buffer_offset += sizeof("\n\r") - 1;
+				ft_memcpy(buffer + buffer_offset, ENDL, ENDL_SIZE);
+				buffer_offset += ENDL_SIZE;
 				y_diff++;
 			}
 			ft_memcpy(buffer + buffer_offset, node_dir->filename.bytes, node_dir->filename.size);
@@ -207,7 +210,7 @@ int		key__completion(t_internal_context *context)
 			ft_memset(buffer + buffer_offset, ' ', ref_size - node_dir->filename.size);
 			buffer_offset += ref_size - node_dir->filename.size;
 		}
-		write(1, buffer, buffer_offset);
+		write(context->fd, buffer, buffer_offset);
 		free(buffer);
 		while (y_diff)
 		{

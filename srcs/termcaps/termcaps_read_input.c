@@ -4,7 +4,10 @@ static t_internal_context g_context = {
 	.state = STATE_REGULAR,
 
 	.fd = -1,
+
 	.buffer = NULL,
+
+	/* .prompt */
 
 	.command_line = {
 		.size = 0,
@@ -82,23 +85,6 @@ static int		s_termcaps_treat_input(const t_input_type input_type,
 	return (1);
 }
 
-static int		s_print_first_prompt(t_internal_context *context)
-{
-	if (context->state == STATE_REGULAR)
-	{
-		ASSERT(termcaps_string_to_command_line(PROMPT_SIZE,
-											   PROMPT,
-											   &context->command_line));
-		ASSERT(termcaps_display_command_line(&context->command_line));
-	}
-	else if (context->state == STATE_CONTINUE)
-	{
-		caps__print_cap(CAPS__CARRIAGE_RETURN, 0);
-		ASSERT(termcaps_display_command_line(&context->command_line));
-	}
-	return (1);
-}
-
 static int		s_termcaps_read_loop(const int fd)
 {
 	size_t			input_buffer_size;
@@ -125,7 +111,7 @@ static int		s_termcaps_read_loop(const int fd)
 								&g_context);
 		if (g_context.state == STATE_REGULAR || g_context.state == STATE_SELECTION)
 		{
-			ASSERT(termcaps_display_command_line(&g_context.command_line));
+			ASSERT(termcaps_display_command_line(fd, &g_context.command_line));
 			caps__cursor_to_offset(g_context.command_line.offset,
 									g_context.command_line.size);
 		}
@@ -133,21 +119,55 @@ static int		s_termcaps_read_loop(const int fd)
 	return (1);
 }
 
-char			*termcaps_read_input(const int fd)
+static int		s_print_first_prompt(t_internal_context *context)
 {
-	if (fd <= 0)
+	int		x;
+
+	if (context->state == STATE_REGULAR)
 	{
-		log_fatal("Invalid fd %d", fd);
+		ASSERT(termcaps_string_to_command_line(context->prompt.size,
+											   context->prompt.bytes,
+											   &context->command_line));
+		ASSERT(termcaps_display_command_line(context->fd, &context->command_line));
+	}
+	else if (context->state == STATE_CONTINUE)
+	{
+		ASSERT(caps__cursor_getxy(&x, NULL));
+		if (x != 1)
+			(void)write(context->fd, "$\n", 2);//TEMP
+		ASSERT(termcaps_display_command_line(context->fd, &context->command_line));
+	}
+	return (1);
+}
+
+char			*termcaps_read_input(const t_sh *sh)
+{
+	g_context.fd = sh->fd;
+	if (tcsetattr(sh->fd, TCSADRAIN, &sh->termios_new) != 0)
+	{
+		log_fatal("tcsetattr() failed to set the terminal fd %d", sh->fd);
 		return (NULL);
 	}
-	g_context.fd = fd;
-	s_print_first_prompt(&g_context);
+
+	g_context.prompt.bytes = ft_strdup(PROMPT);
+	g_context.prompt.size = ft_strlen(g_context.prompt.bytes);
+
+	ASSERT(s_print_first_prompt(&g_context));
+
 	g_context.state = STATE_REGULAR;
 	g_context.buffer = NULL;
-	if (!s_termcaps_read_loop(fd))
+
+	if (!s_termcaps_read_loop(sh->fd))
 	{
 		g_context.buffer = NULL;
 		g_context.state = STATE_EXIT;
+	}
+
+	free(g_context.prompt.bytes);
+	if (tcsetattr(sh->fd, TCSAFLUSH, &sh->termios_old) != 0)
+	{
+		log_fatal("tcsetattr() failed to restore the terminal");
+		return (NULL);
 	}
 	if (g_context.state == STATE_EXIT)
 	{

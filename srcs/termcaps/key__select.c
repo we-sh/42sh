@@ -12,7 +12,13 @@ int		key__select(t_internal_context *in_context)
 	else if (in_context->state == STATE_SELECTION)
 	{
 		in_context->state = STATE_REGULAR;
-		in_context->selection_offset_end = in_context->command_line.offset;
+		if (in_context->command_line.offset > in_context->selection_offset_start)
+			in_context->selection_offset_end = in_context->command_line.offset;
+		else
+		{
+			in_context->selection_offset_end = in_context->selection_offset_start;
+			in_context->selection_offset_start = in_context->command_line.offset;
+		}
 	}
 	return (1);
 }

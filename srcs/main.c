@@ -92,10 +92,9 @@ int		main(int argc, char *argv[], char *envp[])
 	{
 		if ((ret = stdin_loop(&sh)) != ST_END_OF_INPUT)
 			log_fatal("get_next_line failed (%d)", ret);
-
-		// temp ? arthur wants to move it in termcaps
-		if (tcsetattr(0, TCSANOW, &sh.termios_old) == -1)
-			log_fatal("tcsetattr() failed to restore the terminal");
+	}
+	if (sh.is_interactive == true)
+	{
 		if (close(sh.fd) != 0)
 			log_error("close() failed");
 	}
