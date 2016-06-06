@@ -94,6 +94,7 @@ static int		s_termcaps_read_loop(const int fd)
 
 	while (g_context.state != STATE_EXIT && g_context.state != STATE_CONTINUE)
 	{
+		job_background_update_status();
 		input_buffer_size = read(fd, input_buffer, 1);
 		ASSERT(input_buffer_size == 1);
 		s_termcaps_identify_input(input_buffer[0],

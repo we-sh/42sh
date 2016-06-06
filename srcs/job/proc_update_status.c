@@ -9,6 +9,7 @@ int	proc_update_status(pid_t pid, int status)
 {
 	t_proc		*p;
 
+	log_debug("update status %d, status: %d", pid, status);
 	if (pid == 0 || errno == ECHILD)
 	{
 		errno = 0;
