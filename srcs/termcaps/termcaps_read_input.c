@@ -96,8 +96,13 @@ static int		s_termcaps_read_loop(const int fd)
 	{
 		input_buffer_size = read(fd, input_buffer, 1);
 		if (input_buffer_size == 0)
+		{
+			// place it here because we do not want to check for background statuses
+			// on each key down event (but only when nothing is typed)
 			job_background_update_status();
-		ASSERT(input_buffer_size >= 0);
+			continue ;
+		}
+		ASSERT(input_buffer_size == 1);
 		s_termcaps_identify_input(input_buffer[0],
 								&input_type,
 								&input_size_missing);
