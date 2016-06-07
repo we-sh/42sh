@@ -157,7 +157,8 @@ int		key__completion(t_internal_context *context)
 	ref_size += 1;
 	log_debug("ref_size %d", ref_size);
 
-	if (list_size(&head) == 1)
+	size_t list_dir_size = list_size(&head);
+	if (list_dir_size == 1)
 	{
 		t_list *node = list_nth(&head, 1);
 		if (node == &head)
@@ -175,7 +176,7 @@ int		key__completion(t_internal_context *context)
 	}
 	else
 	{
-		size_t	buffer_size_max = (ref_size + ENDL_SIZE) * caps__win(WIN_LINE);
+		size_t	buffer_size_max = (ref_size + ENDL_SIZE) * list_dir_size;
 		char	*buffer = malloc(buffer_size_max);
 		if (!buffer)
 		{
