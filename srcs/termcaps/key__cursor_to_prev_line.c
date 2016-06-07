@@ -1,6 +1,6 @@
 #include "shell.h"
 
-int		key__cursor_to_prev_line(t_internal_context *context)
+int		key__cursor_to_prev_line(t_termcaps_context *context)
 {
 	int	distance;
 

@@ -1,6 +1,6 @@
 #include "shell.h"
 
-int				key__paste(t_internal_context *in_context)
+int				key__paste(t_termcaps_context *in_context)
 {
 	t_list		*pos;
 	t_list_head	dup;

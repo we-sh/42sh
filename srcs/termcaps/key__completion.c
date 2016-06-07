@@ -50,34 +50,27 @@ size_t	s_list_dir(const char *path,
 	size_t			ref_size;
 
 	INIT_LIST_HEAD(head);
+	if ((dp = opendir(path)) == NULL)
+		return (0);
 	ref_size = 0;
-	dp = opendir(path);
-	if (dp != NULL)
+	while ((ep = readdir(dp)) != NULL)
 	{
-		while ((ep = readdir(dp)) != NULL)
+		if ((match_size > 0 && match[0] == '.') ||
+			!ft_memcmp(ep->d_name, ".", sizeof(".") - 1))
+			continue ;
+		if (!ft_memcmp(ep->d_name, match, match_size))
 		{
-			if ((match_size > 0 && match[0] == '.') ||
-				!ft_memcmp(ep->d_name, ".", sizeof(".") - 1))
-				continue ;
-			if (!ft_memcmp(ep->d_name, match, match_size))
+			new = node_dir__create(ep->d_name);
+			if (new)
 			{
-				new = node_dir__create(ep->d_name);
-				if (!new)
-				{
-					log_error("node_dir__create() failed");
-					list_dir__destroy(head);
-					if (closedir(dp) != 0)
-						log_error("closedir() failed");
-					return (0);
-				}
+				list_push_back(&new->list, head);
 				if (new->filename.size > ref_size)
 					ref_size = new->filename.size;
-				list_push_back(&new->list, head);
 			}
 		}
-		if (closedir(dp) != 0)
-			log_error("closedir() failed");
 	}
+	if (closedir(dp) != 0)
+		log_error("closedir() failed");
 	return (ref_size);
 }
 
@@ -86,7 +79,6 @@ void	s_get_path_and_match(size_t cmd_size,
 		char **out_path,
 		t_buffer *out_match)
 {
-	char		*path;
 	char		*match;
 
 	while (--cmd_size > 0)
@@ -100,18 +92,16 @@ void	s_get_path_and_match(size_t cmd_size,
 	match = ft_strrchr(cmd + cmd_size, '/');
 	if (match == NULL)
 	{
-		path = "./";
+		*out_path = "./";
 		match = cmd + cmd_size;
 	}
 	else
 	{
-		path = cmd + cmd_size;
-		match++;
-		ft_memmove(match + 1, match, ft_strlen(match) + 1);
-		*match = 0;
-		match++;
+		*out_path = cmd + cmd_size;
+		ft_memmove(match + 2, match + 1, ft_strlen(match + 1) + 1);
+		match[1] = 0;
+		match += 2;
 	}
-	*out_path = path;
 	out_match->bytes = match;
 	out_match->size = ft_strlen(match);
 }
@@ -119,7 +109,7 @@ void	s_get_path_and_match(size_t cmd_size,
 #define ENDL_SIZE	(sizeof("\n") - 1)
 #define ENDL				"\n"
 
-int		key__completion(t_internal_context *context)
+int		key__completion(t_termcaps_context *context)
 {
 	size_t		cmd_size;
 	char		cmd[1024];
@@ -161,11 +151,7 @@ int		key__completion(t_internal_context *context)
 	if (list_dir_size == 1)
 	{
 		t_list *node = list_nth(&head, 1);
-		if (node == &head)
-			log_fatal("node == head");
-
 		t_node_dir *node_dir = CONTAINER_OF(node, t_node_dir, list);
-		log_debug("node_dir->filename %.*s", node_dir->filename.size, node_dir->filename.bytes);
 
 		if (!termcaps_string_to_command_line(node_dir->filename.size - match.size,
 											 node_dir->filename.bytes + match.size,

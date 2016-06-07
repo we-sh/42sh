@@ -1,6 +1,6 @@
 #include "shell.h"
 
-int		key__delete_under_cursor(t_internal_context *context)
+int		key__delete_under_cursor(t_termcaps_context *context)
 {
 	t_list *entry;
 

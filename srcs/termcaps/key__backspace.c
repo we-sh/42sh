@@ -1,6 +1,6 @@
 #include "shell.h"
 
-int			key__backspace(t_internal_context *in_context)
+int			key__backspace(t_termcaps_context *in_context)
 {
 	t_list *entry;
 

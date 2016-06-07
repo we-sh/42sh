@@ -3,7 +3,7 @@
 /*
 ** Add command_line to history
 */
-int		key__share__command_line_to_history(t_internal_context *in_context)
+int		key__share__command_line_to_history(t_termcaps_context *in_context)
 {
 	t_list_node_history	*new;
 
@@ -23,7 +23,7 @@ int		key__share__command_line_to_history(t_internal_context *in_context)
 /*
 ** Get the selection
 */
-int		key__share__selection_get(t_internal_context *in_context,
+int		key__share__selection_get(t_termcaps_context *in_context,
 										size_t *out_selection_start,
 										size_t *out_selection_size)
 {
@@ -79,7 +79,7 @@ int			key__share__copy_build_copy(t_list_head *command_line,
 	return (1);
 }
 
-void		key__share__cut_build_copy(t_internal_context *in_context,
+void		key__share__cut_build_copy(t_termcaps_context *in_context,
 											size_t selection_start,
 											size_t selection_size)
 {

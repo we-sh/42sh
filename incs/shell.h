@@ -25,18 +25,18 @@
 
 # include "list.h"
 # include "htabl.h"
+# include "termcaps.h"
 
 typedef struct		e_sh
 {
-	pid_t			pgid;
-	bool			is_interactive;
-	int				fd;
-	char			**argv;
-	char			**envp;
-	struct termios	termios_old;
-	struct termios	termios_new;
-	int				last_exit_status;
-	t_list			opt_head;
+	pid_t				pgid;
+	bool				is_interactive;
+	int					fd;
+	char				**argv;
+	char				**envp;
+	t_termcaps_context	termcaps_context;
+	int					last_exit_status;
+	t_list				opt_head;
 }					t_sh;
 
 # include "libft.h"
@@ -45,7 +45,6 @@ typedef struct		e_sh
 # include "statuses.h"
 # include "option.h"
 # include "job.h"
-# include "termcaps.h"
 # include "caps.h"
 # include "i18n.h"
 # include "get_next_line.h"
@@ -146,7 +145,6 @@ int				path_init_hasht(t_sh *sh);
 int				path_hash_finder(t_sh *sh, char **commande);
 int				path_add_folder_content_to_hasht(char *name, char *dirname);
 
-
 /*
 ** signal/
 */
@@ -164,6 +162,8 @@ int			tokenize(const char *s, t_lexer *lexer);
 /*
 ** termcaps/
 */
+int				termcaps_initialize(const int fd, const char *prompt, t_termcaps_context *context);
+int				termcaps_finalize(t_termcaps_context *context);
 int				termcaps_character_to_command_line(const size_t character_bytes_count,
 											 const char *character_bytes,
 											 t_list_head *command_line);
@@ -171,9 +171,8 @@ int				termcaps_display_command_line(const int fd, const t_list_head *command_li
 size_t			termcaps_get_character_bytes_count(const size_t input_bytes_count,
 								  const char *input_bytes,
 								  size_t *out_missing_bytes_count);
-int				termcaps_init(t_sh *sh);
 int				termcaps_isunicode(const char c, size_t *out_character_bytes_count);
-char			*termcaps_read_input(const t_sh *sh);
+char			*termcaps_read_input(t_termcaps_context *context);
 int				termcaps_string_to_command_line(const size_t input_buffer_size,
 										  const char *input_buffer,
 										  t_list_head *command_line);

@@ -21,7 +21,9 @@ static int			s_fork_it(t_sh *sh, t_job *j, t_proc *p)
 		return (job_kill(sh, j, ST_FORK));
 	}
 	else if (p->pid == 0)
+	{
 		proc_launch(sh, j, p);
+	}
 	else
 	{
 		if (sh->is_interactive == 1)
@@ -41,55 +43,81 @@ static int			s_fork_it(t_sh *sh, t_job *j, t_proc *p)
 	return (ST_OK);
 }
 
-int					job_launch(t_sh *sh, t_job *j)
+static int			s_job_setup(t_sh *sh, t_job *job)
 {
-	int				ret;
-	t_list			*pos;
-	t_list			*head;
-	t_proc			*p;
-	int				job_pipe[2];
-	int				outputs[3];
+	t_list	*head;
+	t_list	*pos;
+	t_proc	*proc;
+	int		job_pipe[2];
+	int		ret;
 
-	log_info("launching job `%s`", j->command);
-	if (j->foreground == 1 && sh->is_interactive == 1)
-	{
-		log_info("setting termios structure");
-		if (tcsetattr(sh->fd, TCSADRAIN, &sh->termios_old) == -1)
-			return (job_kill(sh, j, ST_TCSETATTR));
-	}
-	job_pipe[0] = -1;
-	outputs[STDIN_FILENO] = j->stdin;
-	outputs[STDERR_FILENO] = j->stderr;
-	head = &j->proc_head;
-	pos = head;
+	int in = job->stdin;
+	int out = job->stdout;
+	int err = job->stderr;
+	(void)err;
+
+	head = &job->proc_head;
 	LIST_FOREACH(head, pos)
 	{
-		p = CONTAINER_OF(pos, t_proc, list_proc);
+		proc = CONTAINER_OF(pos, t_proc, list_proc);
+
 		if (pos->next != head)
 		{
 			if (pipe(job_pipe) < 0)
-				return (job_kill(sh, j, ST_PIPE));
-			outputs[STDOUT_FILENO] = job_pipe[STDOUT_FILENO];
+				return (job_kill(sh, job, ST_PIPE));
+			out = job_pipe[1];
 		}
 		else
-			outputs[STDOUT_FILENO] = j->stdout;
+			out = job->stdout;
 
-		p->stdin = outputs[STDIN_FILENO];
-		p->stdout = outputs[STDOUT_FILENO];
-		p->stderr = outputs[STDERR_FILENO];
-		if ((ret = s_fork_it(sh, j, p)) != ST_OK)
-			return(job_kill(sh, j, ret));
+		if (proc->stdin == job->stdin)
+		{
+			proc->stdin = in;
+		}
 
-		if (outputs[STDIN_FILENO] != j->stdin)
-			close(outputs[STDIN_FILENO]);
-		if (outputs[STDOUT_FILENO] != j->stdout)
-			close(outputs[STDOUT_FILENO]);
-		outputs[STDIN_FILENO] = job_pipe[0];
+		if (proc->stdout == job->stdout)
+		{
+			proc->stdout = out;
+		}
+
+		if (proc->stderr == job->stderr)
+		{
+			proc->stderr = err;
+		}
+
+		ret = s_fork_it(sh, job, proc);
+		if (ret != ST_OK)
+			return (job_kill(sh, job, ret));
+
+		if (in != job->stdin)
+			close(in);
+		if (out != job->stdout)
+			close(out);
+		if (err != job->stderr)
+			close(err);
+		in = job_pipe[0];
 
 		// useful if we need to keep last process alive:
 		//if (p->next == NULL)
 		//	break ;
 	}
+
+	return (ST_OK);
+}
+
+int					job_launch(t_sh *sh, t_job *j)
+{
+	int		ret;
+	t_list	*head;
+	t_list	*pos;
+	t_proc	*p;
+
+	log_info("launching job `%s`", j->command);
+
+	ret = s_job_setup(sh, j);
+	if (ret != ST_OK)
+		return (ret);
+
 	if (sh->is_interactive == 0)
 		job_wait(j);
 	else if (j->foreground == 1)
@@ -101,6 +129,7 @@ int					job_launch(t_sh *sh, t_job *j)
 	else
 		return (job_background(j, 0));
 
+	head = &j->proc_head;
 	if ((pos = list_nth(head, -1)) != head)
 	{
 		p = CONTAINER_OF(pos, t_proc, list_proc);

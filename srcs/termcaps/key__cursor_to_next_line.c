@@ -1,6 +1,6 @@
 #include "shell.h"
 
-int		key__cursor_to_next_line(t_internal_context *in_context)
+int		key__cursor_to_next_line(t_termcaps_context *in_context)
 {
 	int	distance;
 

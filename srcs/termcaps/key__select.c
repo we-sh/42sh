@@ -1,6 +1,6 @@
 #include "shell.h"
 
-int		key__select(t_internal_context *in_context)
+int		key__select(t_termcaps_context *in_context)
 {
 	if (in_context->state == STATE_REGULAR)
 	{

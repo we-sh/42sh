@@ -28,6 +28,7 @@ void		proc_launch(t_sh *sh, t_job *j, t_proc *p)
 		}
 	}
 
+
 	if (p->stdin != STDIN_FILENO)
 	{
 		dup2(p->stdin, STDIN_FILENO);

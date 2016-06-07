@@ -18,12 +18,6 @@ static int	s_bask_to_shell(t_sh *sh)
 		log_fatal("s_bask_to_shell: tcsetpgrp failed");
 		ret = ST_TCSETPGRP;
 	}
-	if (tcsetattr(sh->fd, TCSADRAIN, &sh->termios_new) == -1)
-	{
-		log_fatal("s_bask_to_shell: tcsetattr failed");
-		if (ret == ST_OK)
-			ret = ST_TCSETATTR;
-	}
 	return (ST_OK);
 }
 

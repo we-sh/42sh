@@ -1,6 +1,6 @@
 #include "shell.h"
 
-int		key__cursor_to_next_character(t_internal_context *in_context)
+int		key__cursor_to_next_character(t_termcaps_context *in_context)
 {
 	if (in_context->command_line.offset == in_context->command_line.size)
 		return (1);

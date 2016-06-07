@@ -1,6 +1,6 @@
 #include "shell.h"
 
-int			key__cursor_to_prev_command(t_internal_context *in_context)
+int			key__cursor_to_prev_command(t_termcaps_context *in_context)
 {
 	t_list				*history_entry;
 	t_list_node_history	*history_node;

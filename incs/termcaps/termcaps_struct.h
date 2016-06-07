@@ -2,10 +2,12 @@
 # define TERMCAPS_STRUCT_H
 
 /*
-** Internal context
+** termcaps context
 */
-typedef struct	s_internal_context
+typedef struct	s_termcaps_context
 {
+	int										is_initialized;
+
 	enum {
 		STATE_REGULAR,
 		STATE_SELECTION,
@@ -13,10 +15,12 @@ typedef struct	s_internal_context
 		STATE_EXIT
 	}										state;
 
-	int										fd;
-	t_buffer								prompt;
+	struct termios							termios_old;
+	struct termios							termios_new;
 
-	char									*buffer;
+	int										fd;
+
+	t_buffer								prompt;
 
 	t_list_head								command_line;
 
@@ -26,7 +30,9 @@ typedef struct	s_internal_context
 	t_list_head								copy;
 
 	t_list_head								history;
-}				t_internal_context;
+
+	char									*buffer;
+}				t_termcaps_context;
 
 
 #endif /* TERMCAPS_STRUCT_H */

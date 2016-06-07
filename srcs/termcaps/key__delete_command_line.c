@@ -1,6 +1,6 @@
 #include "shell.h"
 
-int				key__delete_command_line(t_internal_context *context)
+int				key__delete_command_line(t_termcaps_context *context)
 {
 	t_list_head	head;
 	size_t		selection_start;

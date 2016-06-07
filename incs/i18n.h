@@ -68,6 +68,7 @@ static const char		*g_i18n_fr[] = {
 	[ST_TERMINATED] = "interrompu",
 	[ST_USAGE] = "mode d'emploi",
 	[ST_TERMCAPS_INIT] = "erreur lors de l'initialisation des termcaps",
+	[ST_UNEXPECTED_TOKEN] = "Invalid token pres de ",
 	[ST_OPTIONS] = "options"
 };
 
@@ -115,6 +116,7 @@ static const char		*g_i18n_en[] = {
 	[ST_TERMINATED] = "terminated",
 	[ST_USAGE] = "usage",
 	[ST_TERMCAPS_INIT] = "failed to initialize termcaps",
+	[ST_UNEXPECTED_TOKEN] = "Unexpected token near ",
 	[ST_OPTIONS] = "options"
 };
 

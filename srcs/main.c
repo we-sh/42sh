@@ -92,6 +92,8 @@ int		main(int argc, char *argv[], char *envp[])
 	}
 	if (sh.is_interactive == true)
 	{
+		if (!termcaps_finalize(&sh.termcaps_context))
+			log_error("termcaps_finalize() failed");
 		if (close(sh.fd) != 0)
 			log_error("close() failed");
 	}

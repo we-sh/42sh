@@ -1,6 +1,6 @@
 #include "shell.h"
 
-static int				s_get_next_command(t_internal_context *context)
+static int				s_get_next_command(t_termcaps_context *context)
 {
 	t_list				*history_entry;
 	t_list_node_history	*history_node;
@@ -19,7 +19,7 @@ static int				s_get_next_command(t_internal_context *context)
 	return (1);
 }
 
-int						key__cursor_to_next_command(t_internal_context *context)
+int						key__cursor_to_next_command(t_termcaps_context *context)
 {
 	if (context->state == STATE_REGULAR)
 	{

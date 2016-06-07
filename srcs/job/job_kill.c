@@ -13,10 +13,5 @@ int	job_kill(t_sh *sh, t_job *j, int status)
 		if (status != ST_OK)
 		 	status = ST_TCSETPGRP;
 	}
-	if (tcsetattr(sh->fd, TCSADRAIN, &sh->termios_new) == -1)
-	{
-		if (status != ST_OK)
-			status = ST_TCSETATTR;
-	}
 	return (status);
 }

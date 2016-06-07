@@ -1,6 +1,6 @@
 #include "shell.h"
 
-int			key__copy(t_internal_context *in_context)
+int			key__copy(t_termcaps_context *in_context)
 {
 	size_t	copy_start;
 	size_t	copy_size;

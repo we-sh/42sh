@@ -68,7 +68,7 @@ int		shell_init(t_sh *sh, char *envp[])
 			return (ST_TCSETPGRP);
 
 		/* termcaps */
-		if (!termcaps_init(sh))
+		if (!termcaps_initialize(sh->fd, "$> ", &sh->termcaps_context))
 			return (ST_TERMCAPS_INIT);
 	}
 	return (ST_OK);

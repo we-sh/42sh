@@ -1,6 +1,6 @@
 #include "shell.h"
 
-int				key__cut(t_internal_context *in_context)
+int				key__cut(t_termcaps_context *in_context)
 {
 	size_t		selection_start;
 	size_t		selection_size;
