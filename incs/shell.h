@@ -17,6 +17,7 @@
 # include <termios.h>
 # include <errno.h>
 # include <curses.h>
+# include <dirent.h>
 
 /*
 ** Shell structure
@@ -54,6 +55,7 @@ typedef struct		e_sh
 ** List of current jobs
 */
 t_list		g_current_jobs_list_head;
+typedef struct dirent	*t_dirent;
 
 int				stdin_loop(t_sh *sh);
 int				parse(t_sh *sh, char const *input);
@@ -125,6 +127,12 @@ int				option_parse(t_list *list_head,
 					char ***argv, size_t start);
 t_list			*list_node__option_alloc(t_option const *option_ref, char **argv, size_t i);
 void			option_free(t_option **opt);
+
+/*
+** path
+*/
+
+char 			*path_finder(t_sh *sh, char *commande);
 
 /*
 ** signal/

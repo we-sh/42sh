@@ -6,9 +6,9 @@
 
 void		proc_launch(t_sh *sh, t_job *j, t_proc *p)
 {
-	char	*path;
+	char	*absolute_path;
 
-	path = NULL;
+	absolute_path = NULL;
 	p->pid = getpid();
 	if (sh->is_interactive == 1)
 	{
@@ -50,7 +50,7 @@ void		proc_launch(t_sh *sh, t_job *j, t_proc *p)
 	
 //	execvp(p->argv[0], p->argv); // Use execve instead
 	// show error
-	//path = path_finder(p->argv[0]);
-	execve(p->argv[0], p->argv, sh->envp);
+	absolute_path = path_finder(sh, p->argv[0]);
+	execve(absolute_path, p->argv, sh->envp);
 	exit(EXIT_FAILURE);
 }

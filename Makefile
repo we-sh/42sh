@@ -6,7 +6,7 @@
 #    By: mleconte <mleconte@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/04/30 13:39:33 by anouvel           #+#    #+#              #
-#    Updated: 2016/06/05 18:41:10 by gkuma            ###   ########.fr        #
+#    Updated: 2016/06/07 15:49:41 by gkuma            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -65,6 +65,7 @@ SRCS		=	\
 				options/list_node__option_alloc.c\
 				options/option_free.c			\
 				options/option_parse.c			\
+				path/path_finder.c				\
 				signal/signal_sigchld.c			\
 				signal/signal_to_default.c		\
 				signal/signal_to_ignore.c		\
@@ -858,6 +859,19 @@ $(DIROBJ)option_parse.o: srcs/options/option_parse.c incs/shell.h \
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/options/option_parse.c\n"
 		@$(CC) -c ./srcs/options/option_parse.c -o ./.objs/option_parse.o $(CPPFLAGS) $(CFLAGS) 
+
+$(DIROBJ)path_finder.o: srcs/path/path_finder.c incs/shell.h \
+  libs/libft/./incs/list.h libs/libft/./incs/libft.h \
+  libs/libft/./incs/libftprintf.h libs/logger/./incs/logger.h \
+  libs/logger/./incs/logger_utils.h incs/statuses.h incs/option.h \
+  incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
+  libs/libcaps/./incs/types.h incs/termcaps/log.h \
+  incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtins/builtin.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/path/path_finder.c\n"
+		@$(CC) -c ./srcs/path/path_finder.c -o ./.objs/path_finder.o $(CPPFLAGS) $(CFLAGS) 
 
 $(DIROBJ)signal_sigchld.o: srcs/signal/signal_sigchld.c incs/shell.h \
   libs/libft/./incs/list.h libs/libft/./incs/libft.h \
