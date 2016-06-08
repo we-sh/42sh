@@ -33,13 +33,16 @@ static int	s_shell_fd_init(t_sh *sh)
 	return (ST_OK);
 }
 
-int		shell_init(t_sh *sh)
+int		shell_init(t_sh *sh, char *envp[])
 {
 	int		ret;
 
 	INIT_LIST_HEAD(&g_current_jobs_list_head);
 	sh->last_exit_status = 0;
 	sh->pgid = getpid();
+	/* env */
+	environment_init(sh, envp);
+	path_init_hasht(sh);
 	if ((ret = shell_language(LANG_EN)) < 0)
 		return (-ret);
 	if ((ret = s_shell_fd_init(sh)) != ST_OK)

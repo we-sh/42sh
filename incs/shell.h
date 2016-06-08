@@ -95,7 +95,7 @@ char const		*i18n_translate(int status);
 ** init/
 */
 //int				shell_fd(void);
-int				shell_init(t_sh *sh);
+int				shell_init(t_sh *sh, char *envp[]);
 int				shell_is_interactive(void);
 int				shell_language(int lang);
 
@@ -141,6 +141,7 @@ void			option_free(t_option **opt);
 */
 
 char 			*path_finder(t_sh *sh, char *commande);
+int				path_init_hasht(t_sh *sh);
 
 /*
 ** signal/
