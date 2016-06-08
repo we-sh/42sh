@@ -74,16 +74,13 @@ int		main(int argc, char *argv[], char *envp[])
 	if (option_is_set(&sh.opt_head, ST_OPTION_HELP) == 1)
 		return (s_usage(ST_OK));
 
-	// why not place it in `shell_init()` ?
-	environment_init(&sh, envp);
-
 	if (option_is_set(&sh.opt_head, ST_OPTION_C) == 1)
 		sh.is_interactive = 0;
 	else
 		sh.is_interactive = isatty(STDIN_FILENO);
 
 	// we need to initialize the shell structure and co even if we are in `-c` mode
-	if ((ret = shell_init(&sh)) != ST_OK)
+	if ((ret = shell_init(&sh, envp)) != ST_OK)
 		log_fatal("shell initialization failed (%d)", ret);
 
 	if (option_is_set(&sh.opt_head, ST_OPTION_C) == 1)
