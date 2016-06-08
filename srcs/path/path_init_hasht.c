@@ -110,44 +110,65 @@ Fnv32_t fnv_32_str(char *str, Fnv32_t hval)
     return hval;
 }
 
+
+#define n 50
+
+
 typedef struct			e_hasht{
 	char				*path;
 	t_list				*next;
 }						t_hasht;
 
+struct body
+{
+	t_hasht 			*head;
+};
+
+struct body bodies[n];
+
 int						path_init_hasht(t_sh *sh)
 {
 	Fnv32_t 			hval;
-	char				**tabl;
+//	char				**tabl;
 	unsigned long 		index;
-	int					size_tab;
 
 	(void)sh;
 	hval = 0;
-	size_tab = 50;
-	tabl = (char **)malloc(sizeof(char *) * size_tab);
-
-	index = (fnv_32_str("ls", FNV0_32_INIT)%FNV_32_PRIME)%size_tab;
+//	tabl = (char **)malloc(sizeof(char *) * n);
 
 
+	index = (fnv_32_str("ls", FNV0_32_INIT)%FNV_32_PRIME)%n;
 	log_info("index = %d", index);
-	tabl[index] = ft_strdup(ft_strjoin("/bin/usr", "/ls"));
-	log_info("value = %s", tabl[index]);
+		if (!bodies[index].head)
+		{
+			log_info("Empty");
+			bodies[index].head = (t_hasht *)malloc(sizeof(t_hasht));
+			bodies[index].head->path = ft_strdup(ft_strjoin("/bin/usr", "/ls"));
+		}
 
-	index = (fnv_32_str("ok", FNV0_32_INIT)%FNV_32_PRIME)%size_tab;
-	log_info("ok = %d", index);
-	tabl[index] = ft_strdup(ft_strjoin("/bin/usr", "/ok"));
-	log_info("value = %s", tabl[index]);
+	log_info("value = %s", bodies[index].head->path);
 
-	index = (fnv_32_str("op", FNV0_32_INIT)%FNV_32_PRIME)%size_tab;
-	log_info("op = %d", index);
-	tabl[index] = ft_strdup(ft_strjoin("/bin/usr", "/op"));
-	log_info("value = %s", tabl[index]);
 
-	index = (fnv_32_str("aweaweaweawe aw q12 23rq 3q2r q", FNV0_32_INIT)%FNV_32_PRIME)%size_tab;
-	log_info("aweaweaweawe aw q12 23rq 3q2r q = %d", index);
-	tabl[index] = ft_strdup(ft_strjoin("/bin/usr", "/aweaweaweawe aw q12 23rq 3q2r q"));
-	log_info("value = %s", tabl[index]);
+
+	// index = (fnv_32_str("ok", FNV0_32_INIT)%FNV_32_PRIME)%n;
+	// log_info("ok = %d", index);
+	// bodies[index].path = ft_strdup(ft_strjoin("/bin/usr", "/ok"));
+	// log_info("value = %s", bodies[index].path);
+
+	// index = (fnv_32_str("op", FNV0_32_INIT)%FNV_32_PRIME)%n;
+	// log_info("op = %d", index);
+	// bodies[index].path = ft_strdup(ft_strjoin("/bin/usr", "/op"));
+	// log_info("value = %s", bodies[index].path);
+
+	// index = (fnv_32_str("aweaweaweawe aw q12 23rq 3q2r q", FNV0_32_INIT)%FNV_32_PRIME)%n;
+	// log_info("aweaweaweawe aw q12 23rq 3q2r q = %d", index);
+	// bodies[index].path = ft_strdup(ft_strjoin("/bin/usr", "/aweaweaweawe aw q12 23rq 3q2r q"));
+	// log_info("value = %s", bodies[index].path);
+
+
+
+
+
 
 	//log_info("ls = %s", tabl[(fnv_32_str("ls", FNV0_32_INIT)%FNV_32_PRIME)%50]);
 	// log_info("FNV_32 valeur = %lu", FNV0_32_INIT);
