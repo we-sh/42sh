@@ -111,12 +111,13 @@ Fnv32_t fnv_32_str(char *str, Fnv32_t hval)
 }
 
 
-#define n 50
+#define n 2000
 
 
 typedef struct			e_hasht{
 	char				*path;
-	t_list				*next;
+	char				*name;
+	t_hasht				*next;
 }						t_hasht;
 
 struct body
@@ -129,26 +130,65 @@ struct body bodies[n];
 int						path_init_hasht(t_sh *sh)
 {
 	Fnv32_t 			hval;
-//	char				**tabl;
 	unsigned long 		index;
+	DIR					*directory;
+	char				*value;
+	char				**folders;
+	int					i;
+	int 				nbr;
+	int					collision;
+	int					total;
 
-	(void)sh;
+
+	t_dirent	content;
 	hval = 0;
-//	tabl = (char **)malloc(sizeof(char *) * n);
-
-
-	index = (fnv_32_str("ls", FNV0_32_INIT)%FNV_32_PRIME)%n;
-	log_info("index = %d", index);
-		if (!bodies[index].head)
+	nbr = 0;
+	total = 0;
+	collision = 0;
+	folders = ft_strsplit(env_get_path(sh->envp), ':');
+	i = 0;
+	value = NULL;
+	while (folders[i] != NULL)
+	{
+		if ((directory = opendir(folders[i])) != NULL)
 		{
-			log_info("Empty");
-			bodies[index].head = (t_hasht *)malloc(sizeof(t_hasht));
-			bodies[index].head->path = ft_strdup(ft_strjoin("/bin/usr", "/ls"));
+			while ((content = readdir(directory)) != NULL)
+			{
+				total++;
+				index = (fnv_32_str(content->d_name, FNV0_32_INIT)%FNV_32_PRIME)%n;
+				log_info("index = %d", index);
+				log_info("name = %s", content->d_name);
+				if (!bodies[index].head)
+				{
+					log_info("Empty");
+					bodies[index].head = (t_hasht *)malloc(sizeof(t_hasht));
+					bodies[index].head->path = ft_strdup(folders[i]);
+					bodies[index].head->name = ft_strdup(content->d_name);
+				}
+				else
+				{
+					t_hasht		*ptr;
+
+					ptr = bodies[index].head;
+					while (ptr)
+						ptr = ptr->next;
+					ptr->path = ft_strdup(folders[i]);
+					ptr->name = ft_strdup(content->d_name);
+					log_info("collision at index %d, hashing ->", index );
+					collision++;
+				}
+			}
+			closedir(directory);
 		}
+		i++;
+	}
 
-	log_info("value = %s", bodies[index].head->path);
+	log_info("Nbr of collision  %d", collision);
+	log_info("Nbr total de bianry  %d", total);
 
 
+
+	//log_info("value = %s", bodies[index].head->path);
 
 	// index = (fnv_32_str("ok", FNV0_32_INIT)%FNV_32_PRIME)%n;
 	// log_info("ok = %d", index);
