@@ -114,10 +114,10 @@ Fnv32_t fnv_32_str(char *str, Fnv32_t hval)
 #define n 2000
 
 
-typedef struct			e_hasht{
+typedef struct			s_hasht{
 	char				*path;
 	char				*name;
-	t_hasht				*next;
+	struct s_hasht		*next;
 }						t_hasht;
 
 struct body
@@ -138,9 +138,10 @@ int						path_init_hasht(t_sh *sh)
 	int 				nbr;
 	int					collision;
 	int					total;
-
-
+	t_hasht				*ptr;
+	t_hasht				*newm;
 	t_dirent	content;
+
 	hval = 0;
 	nbr = 0;
 	total = 0;
@@ -155,6 +156,8 @@ int						path_init_hasht(t_sh *sh)
 			while ((content = readdir(directory)) != NULL)
 			{
 				total++;
+			log_info("Nbr total de bianry  %d", total);
+
 				index = (fnv_32_str(content->d_name, FNV0_32_INIT)%FNV_32_PRIME)%n;
 				log_info("index = %d", index);
 				log_info("name = %s", content->d_name);
@@ -164,27 +167,38 @@ int						path_init_hasht(t_sh *sh)
 					bodies[index].head = (t_hasht *)malloc(sizeof(t_hasht));
 					bodies[index].head->path = ft_strdup(folders[i]);
 					bodies[index].head->name = ft_strdup(content->d_name);
+					bodies[index].head->next = NULL;
 				}
 				else
 				{
-					t_hasht		*ptr;
-
+					// (void)ptr;
+					// (void)newm;
 					ptr = bodies[index].head;
-					while (ptr)
+					newm = (t_hasht *)malloc(sizeof(t_hasht));
+					while (ptr->next)
 						ptr = ptr->next;
-					ptr->path = ft_strdup(folders[i]);
-					ptr->name = ft_strdup(content->d_name);
+					ptr->next = newm;
+					newm->path = ft_strdup(folders[i]);
+					newm->name = ft_strdup(content->d_name);
+					newm->next = NULL;
 					log_info("collision at index %d, hashing ->", index );
 					collision++;
 				}
 			}
-			closedir(directory);
+			log_info("OUTTTT");
 		}
+			closedir(directory);
 		i++;
 	}
 
 	log_info("Nbr of collision  %d", collision);
 	log_info("Nbr total de bianry  %d", total);
+
+
+	// log_info("index 732  %s %s", bodies[732].head->path, bodies[732].head->name);
+	// log_info("index 732 next %s %s", bodies[732].head->next->path, bodies[732].head->next->name);
+	// log_info("index 732 next %s %s", bodies[732].head->next->next->path, bodies[732].head->next->next->name);
+	// log_info("index 732 next %s %s", bodies[732].head->next->next->next->path, bodies[732].head->next->next->next->name);
 
 
 
