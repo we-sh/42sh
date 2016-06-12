@@ -1,54 +1,31 @@
 #include "shell.h"
-#include "fnv.h"
-
-/*
-*   Struct related to path_init_hasht.c
-*/
-
-#define HASH_TABLE_SIZE 5000
-
-
-typedef struct          s_hasht{
-    char                *path;
-    char                *name;
-    struct s_hasht      *next;
-}                       t_hasht;
-
-
-
-struct body
-{
-    t_hasht             *head;
-};
-
-struct body bodies[HASH_TABLE_SIZE];
-
-/*
-*   Struct related to path_init_hasht.c
-*/
 
 static int 	s_add_new_node(t_dirent content, char *dirname, int *collisionmax, int *collision, int index)
 {
 	t_hasht				*ptr;
 	t_hasht				*newm;
-	int					tmpcol;
+	int					tmpcol;//debug
 
 	tmpcol = 0;//debug
 	ptr = bodies[index].head;
-	newm = (t_hasht *)malloc(sizeof(t_hasht));
+
+	if ((newm = (t_hasht *)malloc(sizeof(t_hasht))) == NULL)
+		return (ST_MALLOC);
 	while (ptr->next)
 	{
 		tmpcol++;//debug
 		ptr = ptr->next;
 	}
 	if (tmpcol > *collisionmax)//debug
-		*collisionmax = tmpcol;
+		*collisionmax = tmpcol;//debug
 	ptr->next = newm;
-	newm->path = ft_strdup(dirname);
-	newm->name = ft_strdup(content->d_name);
+	if ((newm->path = ft_strdup(dirname)) == NULL)
+		return (ST_MALLOC);
+	if ((newm->name = ft_strdup(content->d_name)) == NULL)
+		return (ST_MALLOC);
 	newm->next = NULL;
-	*collision = *collision + 1;
-	return (0);
+	*collision = *collision + 1;//debug
+	return (ST_OK);
 }
 
 static int				s_path_add_folder_content_to_hast(Fnv64_t *hval, t_dirent content, char *dirname, int *collisionmax, int *collision)
@@ -59,26 +36,40 @@ static int				s_path_add_folder_content_to_hast(Fnv64_t *hval, t_dirent content,
 	nbr = 0;
 	if (ft_strcmp(content->d_name, "..") != 0 &&
 		content->d_name[0] != '.')
-	{				
-		*hval = fnv_64a_str(content->d_name, *hval);
-		index = (*hval%FNV_64_PRIME)%HASH_TABLE_SIZE;
+	{
+		/*
+		*
+		*		Better dispersion
+		*
+		*		*hval = fnv_64a_str(content->d_name, *hval);
+		*		index = (*hval%FNV_64_PRIME)%HASH_TABLE_SIZE;
+		*
+		*/
+		
+		index = fnv_64a_str(content->d_name, *hval);
+		index = (index%FNV_64_PRIME)%HASH_TABLE_SIZE;
+		log_info("Hval value = %lu", *hval);
 		log_info("index = %d", index);
 		log_info("name = %s", content->d_name);
 		if (!bodies[index].head)
 		{
 			log_info("Empty");
-			bodies[index].head = (t_hasht *)malloc(sizeof(t_hasht));
-			bodies[index].head->path = ft_strdup(dirname);
-			bodies[index].head->name = ft_strdup(content->d_name);
+			if ((bodies[index].head = (t_hasht *)malloc(sizeof(t_hasht))) == NULL)
+				return (ST_MALLOC);
+			if ((bodies[index].head->path = ft_strdup(dirname)) == NULL)
+				return (ST_MALLOC);
+			if ((bodies[index].head->name = ft_strdup(content->d_name)) == NULL)
+				return (ST_MALLOC);
 			bodies[index].head->next = NULL;
 		}
 		else
 		{
 			log_warn("Collision");
-			s_add_new_node(content, dirname, collisionmax, collision, index);
+			if (s_add_new_node(content, dirname, collisionmax, collision, index) == ST_MALLOC)
+				return (ST_MALLOC);
 		}
 	}
-	return (0);
+	return (ST_OK);
 }
 
 int						path_init_hasht(t_sh *sh)
@@ -114,17 +105,20 @@ int						path_init_hasht(t_sh *sh)
 		{
 			while (((content = readdir(directory)) != NULL))
 			{
-				s_path_add_folder_content_to_hast(&hval, content, folders[i], &collisionmax, &collision);
+				if ((s_path_add_folder_content_to_hast(&hval,
+													content,
+													folders[i],
+													&collisionmax, 
+													&collision)) == ST_MALLOC)
+					return (ST_MALLOC);
 				total++;
-				log_info("Nbr of collision for the folder %s, %d", folders[i], collision);
+				log_info("Actual nbr of collision %s, %d", folders[i], collision);
 			}	
-				
 		}
 		closedir(directory);
 		i++;
 	}
-
 	log_info("collisionmax :  %d", collisionmax);
 	log_info("Nbr total de bianry  %d", total);
-	return (0);
+	return (ST_OK);
 }
