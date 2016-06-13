@@ -72,7 +72,6 @@ SRCS		=	\
 				options/list_node__option_alloc.c\
 				options/option_free.c			\
 				options/option_parse.c			\
-				path/path_finder.c				\
 				path/path_init_hasht.c			\
 				path/path_fnv_64a_str.c			\
 				path/path_hash_finder.c			\

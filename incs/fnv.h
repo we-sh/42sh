@@ -136,10 +136,6 @@ extern const Fnv64_t fnv1a_64_init;
 #define FNV1A_64_INIT (fnv1a_64_init)
 #endif /* HAVE_64BIT_LONG_LONG */
 
-extern Fnv64_t fnv_64a_str(char *buf, Fnv64_t hashval);
-
-
-
-
+extern Fnv64_t fnv_64a_str(char *buf);
 
 #endif /* __FNV_H__ */
