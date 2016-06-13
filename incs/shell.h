@@ -142,7 +142,8 @@ void			option_free(t_option **opt);
 
 char 			*path_finder(t_sh *sh, char *commande);
 int				path_init_hasht(t_sh *sh);
-int				path_hash_finder(t_sh *sh, char *commande);
+int				path_hash_finder(t_sh *sh, char **commande);
+int				path_add_folder_content_to_hasht(Fnv64_t *hval, char *name, char *dirname, int *collisionmax, int *collision);
 
 
 /*

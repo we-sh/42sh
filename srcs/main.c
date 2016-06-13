@@ -64,7 +64,7 @@ int		main(int argc, char *argv[], char *envp[])
 	t_sh	sh;
 
 	(void)argc;
-	logger_init(D_TRACE, "out.log");
+	logger_init(D_TRACE, "/tmp/out.log");
 
 	// shell options
 	if ((sh.argv = ft_array_dup(argv)) == NULL)
