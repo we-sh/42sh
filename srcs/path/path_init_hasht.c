@@ -9,19 +9,6 @@ int						path_init_hasht(t_sh *sh)
 	char				*value;
 	int					i;
 
-/*
-*	debug
-*/
-	int					total;
-	int 				collision;
-	int					collisionmax;
-
-	total = 0;
-	collision = 0;
-	collisionmax = 0;
-/*
-*	debug
-*/ 
 	hval = FNV1A_64_INIT;
 	i = 0;
 	value = NULL;
@@ -32,20 +19,13 @@ int						path_init_hasht(t_sh *sh)
 		{
 			while (((content = readdir(directory)) != NULL))
 			{
-				if ((path_add_folder_content_to_hasht(&hval,
-													content->d_name,
-													folders[i],
-													&collisionmax, 
-													&collision)) == ST_MALLOC)
+				if ((path_add_folder_content_to_hasht(&hval, content->d_name, folders[i])) == ST_MALLOC)
 					return (ST_MALLOC);
-				total++;
-				log_info("Actual nbr of collision %s, %d", folders[i], collision);
 			}	
 		}
 		closedir(directory);
 		i++;
 	}
-	log_info("collisionmax :  %d", collisionmax);
-	log_info("Nbr total de bianry  %d", total);
+	ft_memdel_tab((void ***)&folders);
 	return (ST_OK);
 }

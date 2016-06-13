@@ -36,11 +36,15 @@ static char		*path_fill_folder_into_array(char *env_path, char *commande)
 		if ((directory = opendir(folders[i])) != NULL)
 		{
 			if ((value = path_fill(directory, commande, folders[i])) != NULL)
+			{
+				ft_memdel_tab((void ***)&folders);
 				return (value);
+			}
 			closedir(directory);
 		}
 		i++;
 	}
+	ft_memdel_tab((void ***)&folders);
 	return (NULL);
 }
 
