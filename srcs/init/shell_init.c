@@ -60,7 +60,6 @@ int		shell_init(t_sh *sh, char *envp[])
 		}
 		if ((ret = signal_to_ignore()) != ST_OK)
 			return (ret);
-
 		if (setpgid(sh->pgid, sh->pgid) < 0)
 			return (ST_SETPGID);
 		log_info("pgid: %d", sh->pgid);

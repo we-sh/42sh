@@ -1,9 +1,9 @@
 #include "shell.h"
 
-static int 	s_add_new_node(char *name, char *dirname, int index)
+static int		s_add_new_node(char *name, char *dirname, int index)
 {
-	t_hasht				*ptr;
-	t_hasht				*newm;
+	t_hasht		*ptr;
+	t_hasht		*newm;
 
 	ptr = bodies[index].head;
 	if ((newm = (t_hasht *)malloc(sizeof(t_hasht))) == NULL)
@@ -19,19 +19,19 @@ static int 	s_add_new_node(char *name, char *dirname, int index)
 	return (ST_OK);
 }
 
-int				path_add_folder_content_to_hasht(Fnv64_t *hval, char *name, char *dirname)
+int				path_add_folder_content_to_hasht(char *name, char *dirname)
 {
-	unsigned long 		index;
-	int 				nbr;
+	int			nbr;
+	int			index;
 
 	nbr = 0;
 	if (ft_strcmp(name, "..") != 0 && name[0] != '.')
 	{
-		index = fnv_64a_str(name, *hval);
-		index = (index%FNV_64_PRIME)%HASH_TABLE_SIZE;
+		index = fnv_64a_str(name) % HASH_TABLE_SIZE;
 		if (!bodies[index].head)
 		{
-			if ((bodies[index].head = (t_hasht *)malloc(sizeof(t_hasht))) == NULL)
+			if ((bodies[index].head =
+				(t_hasht *)malloc(sizeof(t_hasht))) == NULL)
 				return (ST_MALLOC);
 			if ((bodies[index].head->path = ft_strdup(dirname)) == NULL)
 				return (ST_MALLOC);
