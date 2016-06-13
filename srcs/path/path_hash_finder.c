@@ -39,7 +39,7 @@ static int	s_path_check_if_cmd_match_with_folder(char **cmd, char *dirname)
 			free(tmpcmd);
 		tmpcmd = NULL;
 	}
-	return (-1);
+	return (ST_PATH_NOT_FOUND);
 }
 
 static int	s_path_commande_not_found_in_hasht(t_sh *sh, char **cmd)
