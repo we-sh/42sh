@@ -77,6 +77,7 @@ SRCS		=	\
 				path/path_init_hasht.c			\
 				path/path_fnv_64a_str.c			\
 				path/path_hash_finder.c			\
+				path/path_add_folder_content_to_hasht.c	\
 				signal/signal_sigchld.c			\
 				signal/signal_to_default.c		\
 				signal/signal_to_ignore.c		\
@@ -263,6 +264,5 @@ depend		:
 # ---------------------------------------------------------------------------- #
 
 #start
-
 
 #end
