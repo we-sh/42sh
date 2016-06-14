@@ -556,6 +556,19 @@ $(DIROBJ)env_index_value.o: srcs/env/env_index_value.c incs/shell.h \
 		@printf "compiling ./srcs/env/env_index_value.c\n"
 		@$(CC) -c ./srcs/env/env_index_value.c -o ./.objs/env_index_value.o $(CPPFLAGS) $(CFLAGS) 
 
+$(DIROBJ)env_update_from_cmd_line.o: srcs/env/env_update_from_cmd_line.c \
+  incs/shell.h libs/libft/./incs/list.h libs/libft/./incs/libft.h \
+  libs/libft/./incs/libftprintf.h libs/logger/./incs/logger.h \
+  libs/logger/./incs/logger_utils.h incs/statuses.h incs/option.h \
+  incs/job.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
+  libs/libcaps/./incs/types.h incs/termcaps/log.h \
+  incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtins/builtin.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/env/env_update_from_cmd_line.c\n"
+		@$(CC) -c ./srcs/env/env_update_from_cmd_line.c -o ./.objs/env_update_from_cmd_line.o $(CPPFLAGS) $(CFLAGS) 
+
 $(DIROBJ)display_status.o: srcs/display/display_status.c incs/shell.h \
   libs/libft/./incs/list.h libs/libft/./incs/libft.h \
   libs/libft/./incs/libftprintf.h libs/logger/./incs/logger.h \
