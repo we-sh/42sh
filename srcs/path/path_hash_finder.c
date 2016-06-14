@@ -29,7 +29,7 @@ static int	s_path_check_if_cmd_match_with_folder(char **cmd, char *dirname)
 			path_add_folder_content_to_hasht(*cmd, dirname);
 			if (*cmd)
 				free(*cmd);
-			if ((*cmd = ft_strdup(tmpcmd) == NULL)
+			if ((*cmd = ft_strdup(tmpcmd)) == NULL)
 				return (ST_MALLOC);
 			if (tmpcmd)
 				free(tmpcmd);
