@@ -17,7 +17,7 @@ static int	s_get_new_cmd(char **commande, char *name, char *path)
 	return (ST_OK);
 }
 
-static int	s_path_check_if_cmd_match_with_folder(char **cmd, char *dirname)
+static int	s_path_cmd_match_folder(char **cmd, char *dirname)
 {
 	char	*tmpcmd;
 
@@ -46,24 +46,20 @@ static int	s_path_check_if_cmd_match_with_folder(char **cmd, char *dirname)
 static int	s_path_commande_not_found_in_hasht(t_sh *sh, char **cmd)
 {
 	char	**folders;
-	char	*tmpcmd;
 	int		i;
+	int		ret;
 
 	i = 0;
-	tmpcmd = NULL;
 	folders = ft_strsplit(env_get_path(sh->envp), ':');
 	while (folders[i] != NULL)
 	{
-		if (s_path_check_if_cmd_match_with_folder(cmd, folders[i]) != ST_OK)
-			tmpcmd = NULL;
+		if ((ret = s_path_cmd_match_folder(cmd, folders[i])) == ST_OK)
+			return (ST_OK);
+		else if (ret == ST_MALLOC)
+			return (ST_MALLOC);
 		i++;
 	}
 	ft_memdel_tab((void ***)&folders);
-	if (tmpcmd == NULL)
-	{
-		if (access(*cmd, X_OK) != -1)
-			return (ST_OK);
-	}
 	return (ST_PATH_NOT_FOUND);
 }
 
@@ -85,20 +81,24 @@ static int	s_path_iter_in_list(t_hasht *ptr, char **cmd)
 int			path_hash_finder(t_sh *sh, char **cmd)
 {
 	int		index;
+	int		ret;
 
+	ret = ST_PATH_NOT_FOUND;
 	index = fnv_64a_str(*cmd) % HASH_TABLE_SIZE;
 	if (bodies[index].head != NULL && !bodies[index].head->next)
 	{
-		if (s_get_new_cmd(cmd, bodies[index].head->name,
+		if ((ft_strcmp(bodies[index].head->name, *cmd) != 0))
+			ret = ST_PATH_NOT_FOUND;
+		else if (s_get_new_cmd(cmd, bodies[index].head->name,
 			bodies[index].head->path) == ST_MALLOC)
 			return (ST_MALLOC);
 	}
 	else if (bodies[index].head != NULL && bodies[index].head->next)
 	{
-		if (s_path_iter_in_list(bodies[index].head, cmd) == ST_MALLOC)
+		if ((ret = s_path_iter_in_list(bodies[index].head, cmd)) == ST_MALLOC)
 			return (ST_MALLOC);
 	}
-	else
+	if (ret == ST_PATH_NOT_FOUND)
 	{
 		if (s_path_commande_not_found_in_hasht(sh, cmd) == ST_PATH_NOT_FOUND)
 		{
@@ -106,6 +106,13 @@ int			path_hash_finder(t_sh *sh, char **cmd)
 			ft_putendl_fd(" : Command not found", sh->fd);
 			return (ST_OK);
 		}
+	}
+	if (access(*cmd, X_OK) != -1)
+		return (ST_OK);
+	else
+	{
+		ft_putstr_fd(*cmd, sh->fd);
+		ft_putendl_fd(" : Permission denied", sh->fd);
 	}
 	return (ST_OK);
 }
