@@ -8,7 +8,6 @@ int		key__delete_under_cursor(t_termcaps_context *context)
 	{
 		if (context->command_line.size == context->prompt.size)
 		{
-			context->state = STATE_EXIT;
 			context->buffer = ft_strdup("exit");
 			return (1);
 		}

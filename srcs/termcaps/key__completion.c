@@ -9,18 +9,18 @@ typedef struct	s_node_dir
 
 static t_node_dir	*node_dir__create(const char *filename)
 {
+	void		*addr;
 	t_node_dir	*new;
+	size_t		filename_size;
 
-	new = malloc(sizeof(t_node_dir));
-	if (!new)
+	filename_size = ft_strlen(filename);
+	addr = malloc(sizeof(t_node_dir) + filename_size + 1);
+	if (!addr)
 		return (NULL);
-	new->filename.size = ft_strlen(filename);
-	new->filename.bytes = ft_strdup(filename);
-	if (!new->filename.bytes)
-	{
-		free(new);
-		return (NULL);
-	}
+	new = addr;
+	new->filename.bytes = addr + sizeof(t_node_dir);
+	new->filename.size = filename_size;
+	ft_memcpy(new->filename.bytes, filename, filename_size + 1);
 	return (new);
 }
 
@@ -35,7 +35,6 @@ static void		list_dir__destroy(t_list *head)
 	{
 		node_dir = CONTAINER_OF(pos, t_node_dir, list);
 		free(node_dir->filename.bytes);
-		free(node_dir);
 	}
 }
 
@@ -55,19 +54,18 @@ size_t	s_list_dir(const char *path,
 	ref_size = 0;
 	while ((ep = readdir(dp)) != NULL)
 	{
-		if ((match_size > 0 && match[0] == '.') ||
-			!ft_memcmp(ep->d_name, ".", sizeof(".") - 1))
+		if ((!match_size && ep->d_name[0] == '.') ||
+			ft_memcmp(ep->d_name, match, match_size))
 			continue ;
-		if (!ft_memcmp(ep->d_name, match, match_size))
+		new = node_dir__create(ep->d_name);
+		if (!new)
 		{
-			new = node_dir__create(ep->d_name);
-			if (new)
-			{
-				list_push_back(&new->list, head);
-				if (new->filename.size > ref_size)
-					ref_size = new->filename.size;
-			}
+			list_dir__destroy(head);
+			return (0);
 		}
+		list_push_back(&new->list, head);
+		if (new->filename.size > ref_size)
+			ref_size = new->filename.size;
 	}
 	if (closedir(dp) != 0)
 		log_error("closedir() failed");
@@ -81,6 +79,13 @@ void	s_get_path_and_match(size_t cmd_size,
 {
 	char		*match;
 
+	if (cmd_size == 0 || cmd[cmd_size - 1] == ' ')
+	{
+		*out_path = "./";
+		out_match->bytes = NULL;
+		out_match->size = 0;
+		return ;
+	}
 	while (--cmd_size > 0)
 	{
 		if (ft_isspace(cmd[cmd_size]))
@@ -127,16 +132,7 @@ int		key__completion(t_termcaps_context *context)
 	}
 	cmd[cmd_size] = 0;
 
-	if (cmd_size == 0 || cmd[cmd_size - 1] == ' ')
-	{
-		path = "./";
-		match.bytes = NULL;
-		match.size = 0;
-	}
-	else
-	{
-		s_get_path_and_match(cmd_size, cmd, &path, &match);
-	}
+	s_get_path_and_match(cmd_size, cmd, &path, &match);
 
 	size_t	ref_size = s_list_dir(path, match.size, match.bytes, &head);
 	if (!ref_size)
