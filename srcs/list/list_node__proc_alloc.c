@@ -10,7 +10,7 @@ static int		s_argc(char **argv)
 	return (i);
 }
 
-t_list			*list_node__proc_alloc(char *command, char **argv)
+t_list			*list_node__proc_alloc(char *command, char **argv, char **envp)
 {
 	t_proc		*p;
 
@@ -20,6 +20,8 @@ t_list			*list_node__proc_alloc(char *command, char **argv)
 	if ((p->command = ft_strdup(command)) == NULL)
 		return (NULL);
 	p->argc = s_argc(argv);
+	if ((p->envp = ft_array_dup(envp)) == NULL)
+		return (NULL);
 	p->pid = 0;
 	p->completed = 0;
 	p->stopped = 0;

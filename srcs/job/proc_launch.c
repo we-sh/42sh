@@ -47,12 +47,11 @@ void		proc_launch(t_sh *sh, t_job *j, t_proc *p)
 		close(p->stderr);
 	}
 
-	env_update_from_cmd_line(&p->argv, &p->argc, &sh->envp);
 	builtin_callback(BLTIN_CB_EXEC, sh, p);
 	
 //	execvp(p->argv[0], p->argv); // Use execve instead
 	// show error
 	absolute_path = path_finder(sh, p->argv[0]);
-	execve(absolute_path, p->argv, sh->envp);
+	execve(absolute_path, p->argv, p->envp);
 	exit(EXIT_FAILURE);
 }

@@ -10,6 +10,8 @@ static int			s_fork_it(t_sh *sh, t_job *j, t_proc *p)
 {
 	int	ret;
 
+	if ((ret = env_update_from_cmd_line(&p->argv, &p->argc, &p->envp)) != ST_OK)
+		return (job_kill(sh, j, ret));
 	if ((ret = builtin_callback(BLTIN_CB_BEFORE, sh, p)) != ST_OK)
 		return (job_kill(sh, j, ret));
 	p->pid = fork();

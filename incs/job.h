@@ -7,6 +7,7 @@ typedef struct				s_proc
 {
 	t_list					list_proc;
 	char					**argv;
+	char					**envp;
 	char					*command;
 	int						argc;
 	pid_t					pid;

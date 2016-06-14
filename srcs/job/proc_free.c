@@ -16,6 +16,7 @@ void	proc_free(t_proc **p)
 		option_free(&opt);
 	}
 	ft_memdel_tab((void ***)&(*p)->argv);
+	ft_memdel_tab((void ***)&(*p)->envp);
 	ft_memdel((void **)&(*p)->command);
 	ft_memdel((void **)&(*p));
 	*p = NULL;

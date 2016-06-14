@@ -111,7 +111,7 @@ int				job_launch(t_sh *sh, t_job *j);
 t_proc			*proc_find(pid_t pid);
 void			proc_launch(t_sh *sh, t_job *j, t_proc *p);
 int				proc_update_status(pid_t pid, int status);
-t_list			*list_node__proc_alloc(char *command, char **argv);
+t_list			*list_node__proc_alloc(char *command, char **argv, char **envp);
 t_job			*job_alloc(char const *command);
 int				job_wait(t_job *j);
 int				job_kill(t_sh *sh, t_job *j, int status);

@@ -7,7 +7,7 @@
 ** WARNING: ft_strsplit return array even if input length == 0
 */
 
-t_job *s_job_create(char **array, char const *input)
+t_job *s_job_create(char **array, char const *input, char **envp)
 {
 	int		i;
 	t_job	*j;
@@ -21,7 +21,7 @@ t_job *s_job_create(char **array, char const *input)
 	while (array[i] != NULL)
 	{
 		p_array = ft_strsplit(array[i], ' ');
-		if ((p_node = list_node__proc_alloc(array[i], p_array)) == NULL)
+		if ((p_node = list_node__proc_alloc(array[i], p_array, envp)) == NULL)
 			return (NULL);
 		list_push_back(p_node, &j->proc_head);
 		i++;
@@ -54,7 +54,7 @@ int	parse(t_sh *sh, char const *input)
 	lexer(cleaned, &l);	
 	if (ft_strlen(cleaned) > 0 && (array = ft_strsplit(cleaned, '|')) != NULL)
 	{
-		if ((j = s_job_create(array, input)) == NULL)
+		if ((j = s_job_create(array, input, sh->envp)) == NULL)
 		{
 			log_fatal("parse job");
 			return (-1);
