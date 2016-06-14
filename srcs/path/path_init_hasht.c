@@ -21,8 +21,8 @@ int						path_init_hasht(t_sh *sh)
 					folders[i])) == ST_MALLOC)
 					return (ST_MALLOC);
 			}
+			closedir(directory);
 		}
-		closedir(directory);
 		i++;
 	}
 	ft_memdel_tab((void ***)&folders);

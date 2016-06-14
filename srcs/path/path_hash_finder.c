@@ -83,6 +83,8 @@ int			path_hash_finder(t_sh *sh, char **cmd)
 	int		index;
 	int		ret;
 
+	if (*cmd == NULL)
+		return (ST_OK);
 	ret = ST_PATH_NOT_FOUND;
 	index = fnv_64a_str(*cmd) % HASH_TABLE_SIZE;
 	if (bodies[index].head != NULL && !bodies[index].head->next)
@@ -98,7 +100,9 @@ int			path_hash_finder(t_sh *sh, char **cmd)
 		if ((ret = s_path_iter_in_list(bodies[index].head, cmd)) == ST_MALLOC)
 			return (ST_MALLOC);
 	}
-	if (ret == ST_PATH_NOT_FOUND)
+	log_info("%s",*cmd);
+	if (ret == ST_PATH_NOT_FOUND &&
+		ft_strncmp(*cmd, "/", 1) != 0 && ft_strncmp(*cmd, ".", 1) != 0)
 	{
 		if (s_path_commande_not_found_in_hasht(sh, cmd) == ST_PATH_NOT_FOUND)
 		{
@@ -107,9 +111,13 @@ int			path_hash_finder(t_sh *sh, char **cmd)
 			return (ST_OK);
 		}
 	}
-	if (access(*cmd, X_OK) != -1)
-		return (ST_OK);
-	else
+	if (access(*cmd, F_OK) == -1)
+	{
+		ft_putstr_fd(*cmd, sh->fd);
+		ft_putendl_fd(" : Command not found", sh->fd);
+		return (ST_OK);		
+	}
+	if (access(*cmd, X_OK) == -1)
 	{
 		ft_putstr_fd(*cmd, sh->fd);
 		ft_putendl_fd(" : Permission denied", sh->fd);
