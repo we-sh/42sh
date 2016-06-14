@@ -12,7 +12,7 @@ static int	s_before(t_proc *p)
 		{
 			if (p->argc > 3)
 				p->bltin_status = ST_E2BIG;
-			else if (((ret  = setenv_argv_is_valid(p)) != ST_OK))
+			else if (((ret  = setenv_argv_is_valid(p->argv[1])) != ST_OK))
 				p->bltin_status = ret;
 		}
 	}

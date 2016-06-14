@@ -27,12 +27,14 @@ static int	s_exec(t_builtin const *builtin, t_proc *p, t_sh *sh)
 			{
 				ft_putendl_fd(sh->envp[i], STDOUT_FILENO);
 				i++;
-			}			
+			}
+			exit(EXIT_SUCCESS);
 		}
-		else
-			ft_array_pop(&p->argv, 0, 1);
+		p->argc--;
+		ft_array_pop(&p->argv, 0, 1);
+		env_update_from_cmd_line(&p->argv, &p->argc, &sh->envp);
 	}
-	else if (p->bltin_status != ST_OK)
+	else
 	{
 		builtin_usage(builtin, p->bltin_status);
 		exit(EXIT_FAILURE);

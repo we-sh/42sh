@@ -1,15 +1,15 @@
 #include "shell.h"
 
-static	int s_check_if_alphanum(t_proc *p)
+static	int s_check_if_alphanum(char const *arg)
 {
 	int		i;
 
 	i = 0;
-	while (p->argv[1][i])
+	while (arg[i])
 	{
-		if ((ft_isalnum(p->argv[1][i]) == 1)
-			|| (ft_isalpha(p->argv[1][i]) == 1)
-			|| (p->argv[1][i] == '_'))
+		if ((ft_isalnum(arg[i]) == 1)
+			|| (ft_isalpha(arg[i]) == 1)
+			|| (arg[i] == '_'))
 			i++;
 		else
 			return (ST_BLTIN_SETENV_ALPHA_NUM);
@@ -17,21 +17,21 @@ static	int s_check_if_alphanum(t_proc *p)
 	return (ST_OK);
 }
 
-static	int	s_check_if_start_with_letter(t_proc *p)
+static	int	s_check_if_start_with_letter(char const *arg)
 {
-	if (p->argv[1])
+	if (arg)
 	{
-		if (ft_isalpha(p->argv[1][0]) == 0 && p->argv[1][0] != '_')
+		if (ft_isalpha(arg[0]) == 0 && arg[0] != '_')
 			return (ST_BLTIN_SETENV_FIRST_CHAR);
 	}
 	return (ST_OK);
 }
 
-int			setenv_argv_is_valid(t_proc *p)
+int			setenv_argv_is_valid(char const *arg)
 {
-	if (s_check_if_start_with_letter(p) == ST_BLTIN_SETENV_FIRST_CHAR)
+	if (s_check_if_start_with_letter(arg) == ST_BLTIN_SETENV_FIRST_CHAR)
 		return (ST_BLTIN_SETENV_FIRST_CHAR);
-	if (s_check_if_alphanum(p) == ST_BLTIN_SETENV_ALPHA_NUM)
+	if (s_check_if_alphanum(arg) == ST_BLTIN_SETENV_ALPHA_NUM)
 		return (ST_BLTIN_SETENV_ALPHA_NUM);
 	return (ST_OK);
 }

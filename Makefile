@@ -41,6 +41,7 @@ SRCS		=	\
 				env/env_set.c					\
 				env/env_unset.c					\
 				env/env_index_value.c			\
+				env/env_update_from_cmd_line.c	\
 				display/display_status.c		\
 				i18n/i18n_translate.c			\
 				init/shell_init.c				\

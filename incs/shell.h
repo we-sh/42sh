@@ -65,7 +65,7 @@ int				environment_init(t_sh *sh, char **envp);
 ** builtins/
 */
 int				builtin_callback(int callback, t_sh *sh, t_proc *p);
-int				setenv_argv_is_valid(t_proc *p);
+int				setenv_argv_is_valid(char const *arg);
 void			builtin_usage(t_builtin const *bltin, int status);
 
 /*
@@ -79,6 +79,7 @@ char			*env_get_term(char **envp);
 int				env_set(char ***envp, char *key, char *value);
 int				env_unset(char ***envp, char *argv);
 int				env_index_value(char **envp, char *variable);
+int				env_update_from_cmd_line(char ***argv, int *argc, char ***envp);
 
 /*
 ** log_status /
