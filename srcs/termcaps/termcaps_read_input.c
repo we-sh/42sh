@@ -91,13 +91,13 @@ static int		s_print_first_prompt(t_termcaps_context *context)
 {
 	int		x;
 
-		ASSERT(caps__cursor_getxy(&x, NULL));
-		if (x != 1)
-			(void)write(context->fd, "$\n", 2);//TEMP
-		ASSERT(termcaps_string_to_command_line(context->prompt.size,
-											   context->prompt.bytes,
-											   &context->command_line));
-		ASSERT(termcaps_display_command_line(context->fd, &context->command_line));
+	ASSERT(caps__cursor_getxy(&x, NULL));
+	if (x != 1)
+		(void)write(context->fd, "%\n", sizeof("%\n") - 1);
+	ASSERT(termcaps_string_to_command_line(context->prompt.size,
+										   context->prompt.bytes,
+										   &context->command_line));
+	ASSERT(termcaps_display_command_line(context->fd, &context->command_line));
 	return (1);
 }
 
@@ -125,8 +125,8 @@ char			*termcaps_read_input(t_termcaps_context *context)
 	context->buffer = NULL;
 	if (!s_termcaps_read_loop(context))
 	{
+		log_error("s_termcaps_read_loop() failed");
 		context->buffer = NULL;
-		context->state = STATE_EXIT;
 	}
 
 	if (tcsetattr(context->fd, TCSAFLUSH, &context->termios_old) != 0)

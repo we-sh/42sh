@@ -11,8 +11,6 @@ typedef struct	s_termcaps_context
 	enum {
 		STATE_REGULAR,
 		STATE_SELECTION,
-		STATE_CONTINUE,
-		STATE_EXIT
 	}										state;
 
 	struct termios							termios_old;

@@ -207,5 +207,6 @@ int		termcaps_finalize(t_termcaps_context *context)
 	list_head__command_line_destroy(&context->copy);
 	free(context->prompt.bytes);
 	context->is_initialized = 0;
+	caps__finalize();
 	return (1);
 }
