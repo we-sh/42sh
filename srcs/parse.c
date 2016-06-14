@@ -178,7 +178,7 @@ static int	s_get_cmd(char *s, char **cmd, char **left)
 	{
 		if (s[i] == '>' || s[i] == '<')
 		{
-			ft_memmove(&s[i + 1], &s[i], ft_strlen(&s[i]));
+			ft_memmove(&s[i + 1], &s[i], ft_strlen(&s[i]) + 1);
 			*left = &s[i + 1];
 			s[i] = '\0';
 			break ;
