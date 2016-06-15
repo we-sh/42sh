@@ -16,10 +16,12 @@ int					stdin_loop(t_sh *sh)
 			end_of_file = get_next_line(sh->fd, &input);
 		if (input == NULL || end_of_file == 0)
 		{
-			log_info("termcqps_reqd_input() returned NULL");
+			log_info("termcaps_read_input() returned NULL");
 			break ;
 		}
-		ret = parser(sh, input);
+		// FIX
+		if ((ret = parser(sh, input)) < 0)
+			ret = 1;
 		if (ret != ST_OK)
 		{
 			if (ret == ST_EXIT)

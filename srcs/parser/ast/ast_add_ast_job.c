@@ -4,7 +4,7 @@
 ** Create a new root node to the AST.
 */
 
-int	ast_add_ast_job(t_list *ast_head, t_node_job *job)
+int	ast_add_ast_job(t_list *ast_head, t_job *job)
 {
 	log_info("adding the root to the ast...");
 	if (!ast || !job)
