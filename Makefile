@@ -6,7 +6,7 @@
 #    By: mleconte <mleconte@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/04/30 13:39:33 by anouvel           #+#    #+#              #
-#    Updated: 2016/06/14 17:55:43 by abombard         ###   ########.fr        #
+#    Updated: 2016/06/16 14:18:24 by anouvel          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,17 @@ NAME		=	42sh
 SRCS		=	\
 				main.c							\
 				stdin_loop.c					\
-				parse.c							\
+				parser/parser.c								\
+				parser/parser_new.c							\
+				parser/parser_process_ast.c					\
+				parser/ast/ast_unstack_lexer.c				\
+				parser/lexer/parser_process_lexer.c			\
+				parser/lexer/token_list.c					\
+				parser/lexer/tokenize.c						\
+				parser/token/token_parse_none.c				\
+				parser/token/token_parse_semi.c				\
+				parser/token/token_parse_dbl_and.c			\
+				parser/token/token_parse_dbl_or.c			\
 				environment_init.c				\
 				builtins/bg/builtin_bg.c		\
 				builtins/cd/builtin_cd.c		\
@@ -267,47 +277,61 @@ depend		:
 
 #start
 
-$(DIROBJ)main.o: srcs/main.c incs/shell.h libs/libft/./incs/list.h incs/htabl.h \
-  incs/fnv.h incs/longlong.h incs/termcaps/termcaps.h \
-  incs/termcaps/list_head.h libs/libcaps/./incs/types.h \
-  incs/termcaps/log.h incs/termcaps/termcaps_struct.h \
-  incs/termcaps/key.h libs/libft/./incs/libft.h \
-  libs/libft/./incs/libftprintf.h libs/logger/./incs/logger.h \
-  libs/logger/./incs/logger_utils.h incs/statuses.h incs/option.h \
-  incs/job.h libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
-  incs/i18n.h libs/libft/./incs/get_next_line.h incs/lexer.h \
-  incs/builtins/builtin.h
+$(DIROBJ)token_parse_none.o: srcs/parser/token/token_parse_none.c incs/parser.h \
+  libs/libft/./incs/libft.h libs/logger/./incs/logger.h \
+  libs/logger/./incs/logger_utils.h incs/statuses.h incs/shell.h \
+  libs/libft/./incs/list.h incs/htabl.h incs/fnv.h incs/longlong.h \
+  incs/termcaps/termcaps.h incs/termcaps/list_head.h \
+  libs/libcaps/./incs/types.h incs/termcaps/log.h \
+  incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
+  libs/libft/./incs/libftprintf.h incs/option.h incs/job.h \
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtins/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
-		@printf "compiling ./srcs/main.c\n"
-		@$(CC) -c ./srcs/main.c -o ./.objs/main.o $(CPPFLAGS) $(CFLAGS) 
+		@printf "compiling ./srcs/parser/token/token_parse_none.c\n"
+		@$(CC) -c ./srcs/parser/token/token_parse_none.c -o ./.objs/token_parse_none.o $(CPPFLAGS) $(CFLAGS) 
 
-$(DIROBJ)stdin_loop.o: srcs/stdin_loop.c incs/shell.h libs/libft/./incs/list.h \
-  incs/htabl.h incs/fnv.h incs/longlong.h incs/termcaps/termcaps.h \
-  incs/termcaps/list_head.h libs/libcaps/./incs/types.h \
-  incs/termcaps/log.h incs/termcaps/termcaps_struct.h \
-  incs/termcaps/key.h libs/libft/./incs/libft.h \
-  libs/libft/./incs/libftprintf.h libs/logger/./incs/logger.h \
-  libs/logger/./incs/logger_utils.h incs/statuses.h incs/option.h \
-  incs/job.h libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
-  incs/i18n.h libs/libft/./incs/get_next_line.h incs/lexer.h \
-  incs/builtins/builtin.h
+$(DIROBJ)token_parse_semi.o: srcs/parser/token/token_parse_semi.c incs/parser.h \
+  libs/libft/./incs/libft.h libs/logger/./incs/logger.h \
+  libs/logger/./incs/logger_utils.h incs/statuses.h incs/shell.h \
+  libs/libft/./incs/list.h incs/htabl.h incs/fnv.h incs/longlong.h \
+  incs/termcaps/termcaps.h incs/termcaps/list_head.h \
+  libs/libcaps/./incs/types.h incs/termcaps/log.h \
+  incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
+  libs/libft/./incs/libftprintf.h incs/option.h incs/job.h \
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtins/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
-		@printf "compiling ./srcs/stdin_loop.c\n"
-		@$(CC) -c ./srcs/stdin_loop.c -o ./.objs/stdin_loop.o $(CPPFLAGS) $(CFLAGS) 
+		@printf "compiling ./srcs/parser/token/token_parse_semi.c\n"
+		@$(CC) -c ./srcs/parser/token/token_parse_semi.c -o ./.objs/token_parse_semi.o $(CPPFLAGS) $(CFLAGS) 
 
-$(DIROBJ)parse.o: srcs/parse.c incs/shell.h libs/libft/./incs/list.h incs/htabl.h \
-  incs/fnv.h incs/longlong.h incs/termcaps/termcaps.h \
-  incs/termcaps/list_head.h libs/libcaps/./incs/types.h \
-  incs/termcaps/log.h incs/termcaps/termcaps_struct.h \
-  incs/termcaps/key.h libs/libft/./incs/libft.h \
-  libs/libft/./incs/libftprintf.h libs/logger/./incs/logger.h \
-  libs/logger/./incs/logger_utils.h incs/statuses.h incs/option.h \
-  incs/job.h libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
-  incs/i18n.h libs/libft/./incs/get_next_line.h incs/lexer.h \
-  incs/builtins/builtin.h
+$(DIROBJ)token_parse_dbl_and.o: srcs/parser/token/token_parse_dbl_and.c \
+  incs/parser.h libs/libft/./incs/libft.h libs/logger/./incs/logger.h \
+  libs/logger/./incs/logger_utils.h incs/statuses.h incs/shell.h \
+  libs/libft/./incs/list.h incs/htabl.h incs/fnv.h incs/longlong.h \
+  incs/termcaps/termcaps.h incs/termcaps/list_head.h \
+  libs/libcaps/./incs/types.h incs/termcaps/log.h \
+  incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
+  libs/libft/./incs/libftprintf.h incs/option.h incs/job.h \
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtins/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
-		@printf "compiling ./srcs/parse.c\n"
-		@$(CC) -c ./srcs/parse.c -o ./.objs/parse.o $(CPPFLAGS) $(CFLAGS) 
+		@printf "compiling ./srcs/parser/token/token_parse_dbl_and.c\n"
+		@$(CC) -c ./srcs/parser/token/token_parse_dbl_and.c -o ./.objs/token_parse_dbl_and.o $(CPPFLAGS) $(CFLAGS) 
+
+$(DIROBJ)token_parse_dbl_or.o: srcs/parser/token/token_parse_dbl_or.c \
+  incs/parser.h libs/libft/./incs/libft.h libs/logger/./incs/logger.h \
+  libs/logger/./incs/logger_utils.h incs/statuses.h incs/shell.h \
+  libs/libft/./incs/list.h incs/htabl.h incs/fnv.h incs/longlong.h \
+  incs/termcaps/termcaps.h incs/termcaps/list_head.h \
+  libs/libcaps/./incs/types.h incs/termcaps/log.h \
+  incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
+  libs/libft/./incs/libftprintf.h incs/option.h incs/job.h \
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtins/builtin.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/parser/token/token_parse_dbl_or.c\n"
+		@$(CC) -c ./srcs/parser/token/token_parse_dbl_or.c -o ./.objs/token_parse_dbl_or.o $(CPPFLAGS) $(CFLAGS) 
 
 $(DIROBJ)environment_init.o: srcs/environment_init.c incs/shell.h \
   libs/libft/./incs/list.h incs/htabl.h incs/fnv.h incs/longlong.h \

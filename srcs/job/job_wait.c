@@ -31,6 +31,7 @@ int	job_wait(t_job *j_orig)
 	{
 		LIST_FOREACH(&g_current_jobs_list_head, j_pos)
 		{
+		//	log_debug("loop 2");
 			j = CONTAINER_OF(j_pos, t_job, list_job);
 			if (j->launched == 1 && j->foreground == 1)
 				LIST_FOREACH(&j->proc_head, p_pos)
