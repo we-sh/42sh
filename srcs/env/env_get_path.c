@@ -11,7 +11,8 @@ char 			*env_get_path(char **envp)
 	char			*tmp;
 	uid_t			uid;
 
-	if ((tmp = env_get(envp, "PATH")) == NULL)
+	tmp = env_get(envp, "PATH");
+	if (!tmp || !tmp[0])
 	{
 		uid = getuid();
 		if (uid == 0)

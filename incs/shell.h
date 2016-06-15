@@ -140,10 +140,10 @@ void			option_free(t_option **opt);
 ** path
 */
 
-char 			*path_finder(t_sh *sh, char *commande);
-int				path_init_hasht(t_sh *sh);
-int				path_hash_finder(t_sh *sh, char **commande);
+int				path_init_hasht(char **envp);
+int				path_hash_finder(char **envp, char **commande);
 int				path_add_folder_content_to_hasht(char *name, char *dirname);
+void			path_free_hasht();
 
 /*
 ** signal/

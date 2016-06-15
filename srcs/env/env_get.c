@@ -6,7 +6,7 @@ char		*env_get(char **envp, char *key)
 	int			size;
 
 	i = 0;
-	if (!envp || !key)
+	if (!*envp || !key)
 		return (NULL);
 	size = ft_strlen(key);
 	while (envp[i])
