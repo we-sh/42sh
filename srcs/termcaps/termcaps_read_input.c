@@ -63,6 +63,11 @@ static int		s_termcaps_read_loop(t_termcaps_context *context)
 			job_background_update_status();
 			continue ;
 		}
+		if (input_buffer_size != 1)
+		{
+			log_error("input_buffer_size %zu input_buffer %.*s", input_buffer_size, (int)sizeof(input_buffer), input_buffer);
+		}
+
 		ASSERT(input_buffer_size == 1);
 		s_termcaps_identify_input(input_buffer[0],
 								&input_type,
