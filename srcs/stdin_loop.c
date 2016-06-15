@@ -19,7 +19,7 @@ int					stdin_loop(t_sh *sh)
 			log_info("termcqps_reqd_input() returned NULL");
 			break ;
 		}
-		ret = parse(sh, input);
+		ret = parser(sh, input);
 		if (ret != ST_OK)
 		{
 			if (ret == ST_EXIT)
