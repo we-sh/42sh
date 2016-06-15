@@ -31,6 +31,7 @@ int			job_foreground(t_sh *sh, t_job *j, int const sigcont)
 	// make the job controlling the terminal
 	if (tcsetpgrp(sh->fd, j->pgid) == -1)
 	{
+		log_trace("1");
 		if (errno != EINVAL)
 		{
 			// todo notify the user a problem occured
@@ -40,6 +41,7 @@ int			job_foreground(t_sh *sh, t_job *j, int const sigcont)
 	}
 	else if (sigcont == 1)
 	{
+		log_trace("2");
 		if (kill(-j->pgid, SIGCONT) < 0)
 		{
 			// todo notify the user a problem occured
@@ -52,9 +54,12 @@ int			job_foreground(t_sh *sh, t_job *j, int const sigcont)
 			return (job_kill(sh, j, ST_SIGCONT));
 		}
 	}
+		log_trace("3");
 	job_wait(j);
+		log_trace("4");
 	if (job_is_completed(j) == 0 && tcgetattr(sh->fd, &j->tmodes) != 0)
 	{
+		log_trace("5");
 		// todo notify user a problem occured
 		log_error("failed to save termios structure a the job %d", j->pgid);
 	}

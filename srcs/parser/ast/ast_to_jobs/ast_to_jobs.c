@@ -44,7 +44,7 @@ int				ast_to_jobs(t_list *ast_head, t_job *jobs, t_sh *sh)
 	pos = ast_head;
 	while ((pos = pos->next) && pos != ast_head)
 	{
-		job = CONTAINER_OF(pos, t_node_job, list);
+		job = CONTAINER_OF(pos, t_job, list);
 		log_info("job %d : %s", i, job->cmd);
 		cleaned = ft_strser(job->cmd);
 		if (ft_strlen(cleaned) > 0 && (array = ft_strsplit(cleaned, '|')) != NULL)

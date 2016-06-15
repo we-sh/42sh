@@ -12,8 +12,6 @@ SRCS		=	\
 				parser/parser.c								\
 				parser/parser_new.c							\
 				parser/parser_process_ast.c					\
-				parser/ast/ast_job_new.c					\
-				parser/ast/ast_to_jobs/ast_to_jobs.c		\
 				parser/ast/ast_unstack_lexer.c				\
 				parser/lexer/parser_process_lexer.c			\
 				parser/lexer/token_list.c					\
@@ -329,34 +327,6 @@ $(DIROBJ)parser_process_ast.o: srcs/parser/parser_process_ast.c incs/parser.h \
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/parser/parser_process_ast.c\n"
 		@$(CC) -c ./srcs/parser/parser_process_ast.c -o ./.objs/parser_process_ast.o $(CPPFLAGS) $(CFLAGS) 
-
-$(DIROBJ)ast_job_new.o: srcs/parser/ast/ast_job_new.c incs/parser.h \
-  libs/libft/./incs/libft.h libs/logger/./incs/logger.h \
-  libs/logger/./incs/logger_utils.h incs/statuses.h incs/shell.h \
-  libs/libft/./incs/list.h incs/htabl.h incs/fnv.h incs/longlong.h \
-  incs/termcaps/termcaps.h incs/termcaps/list_head.h \
-  libs/libcaps/./incs/types.h incs/termcaps/log.h \
-  incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libft/./incs/libftprintf.h incs/option.h incs/job.h \
-  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/builtins/builtin.h
-		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
-		@printf "compiling ./srcs/parser/ast/ast_job_new.c\n"
-		@$(CC) -c ./srcs/parser/ast/ast_job_new.c -o ./.objs/ast_job_new.o $(CPPFLAGS) $(CFLAGS) 
-
-$(DIROBJ)ast_to_jobs.o: srcs/parser/ast/ast_to_jobs/ast_to_jobs.c incs/parser.h \
-  libs/libft/./incs/libft.h libs/logger/./incs/logger.h \
-  libs/logger/./incs/logger_utils.h incs/statuses.h incs/shell.h \
-  libs/libft/./incs/list.h incs/htabl.h incs/fnv.h incs/longlong.h \
-  incs/termcaps/termcaps.h incs/termcaps/list_head.h \
-  libs/libcaps/./incs/types.h incs/termcaps/log.h \
-  incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libft/./incs/libftprintf.h incs/option.h incs/job.h \
-  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/builtins/builtin.h
-		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
-		@printf "compiling ./srcs/parser/ast/ast_to_jobs/ast_to_jobs.c\n"
-		@$(CC) -c ./srcs/parser/ast/ast_to_jobs/ast_to_jobs.c -o ./.objs/ast_to_jobs.o $(CPPFLAGS) $(CFLAGS) 
 
 $(DIROBJ)ast_unstack_lexer.o: srcs/parser/ast/ast_unstack_lexer.c incs/parser.h \
   libs/libft/./incs/libft.h libs/logger/./incs/logger.h \

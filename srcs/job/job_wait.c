@@ -13,15 +13,20 @@ int	job_wait(t_job *j_orig)
 	t_list	*p_pos;
 	t_proc	*p;
 
+	log_info("a");
+	log_info("job list size : %zu", list_size(&g_current_jobs_list_head));
+	log_info("b");
 	while (1)
 	{
 		LIST_FOREACH(&g_current_jobs_list_head, j_pos)
 		{
+		//	log_debug("loop 2");
 			j = CONTAINER_OF(j_pos, t_job, list_job);
 			if (j->foreground == 1)
 			{
 				LIST_FOREACH(&j->proc_head, p_pos)
 				{
+		//	log_debug("loop 3");
 					p = CONTAINER_OF(p_pos, t_proc, list_proc);
 					if (p->completed == 0 && p->stopped == 0)
 					{

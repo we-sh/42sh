@@ -8,18 +8,20 @@
 ** WQRNING : this is one file per token...
 */
 
-int	token_parse_none(t_node_job *job, char *token)
+int	token_parse_none(t_proc *proc, t_lexer *lexer, int *i)
 {
+	log_trace("entering token_parse_none");
+
 	char	*tmp;
 
-	log_trace("entering token_parse_none");
-	if (!(job->cmd))
-		job->cmd = ft_strdup(token);
+	// replace with array push in argv
+	if (!(proc->command))
+		proc->command = ft_strdup(lexer->tokens[*i].content );
 	else
 	{
-		tmp = ft_strjoin(job->cmd, token);
-		free(job->cmd);
-		job->cmd = tmp;
+		tmp = ft_strjoin(proc->command, lexer->tokens[*i].content);
+		free(proc->command);
+		proc->command = tmp;
 	}
 	return (0);
 }
