@@ -13,8 +13,6 @@ int	parser(t_sh *sh, const char *in)
 	t_job		*job;
 	t_list		*pos;
 
-	log_info("entering parser with input >%s<\n", in);
-
 	job_list_clean(1);
 	job = NULL;
 	if ((ret = parser_new(&parser, in)) != 0)
@@ -23,8 +21,6 @@ int	parser(t_sh *sh, const char *in)
 		return (ret);
 	if ((ret = parser_process_ast(&g_current_jobs_list_head, parser->lexer, sh->envp)) != 0)
 		return (ret);
-
-	log_warn("execution loop launched into the parser");
 	LIST_FOREACH(&g_current_jobs_list_head, pos)
 	{
 		int	exit_status;
