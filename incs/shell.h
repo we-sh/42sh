@@ -69,7 +69,7 @@ typedef struct		e_sh
 # include "caps.h"
 # include "i18n.h"
 # include "get_next_line.h"
-# include "lexer.h"
+# include "parser.h"
 # include "builtin.h"
 # include "quoting.h"
 
@@ -80,7 +80,7 @@ t_list		g_current_jobs_list_head;
 typedef struct dirent	*t_dirent;
 
 int				stdin_loop(t_sh *sh);
-int				parse(t_sh *sh, char const *input);
+int				parser(t_sh *sh, char const *input);
 int				environment_init(t_sh *sh, char **envp);
 
 /*
@@ -182,13 +182,6 @@ int				quoting_new_context(t_termcaps_context *context);
 */
 int				signal_to_ignore(void);
 int				signal_to_default(void);
-
-/*
-** lexer/
-*/
-int			lexer(char const *input, t_lexer *lexer);
-t_token		*token_list(void);
-int			tokenize(const char *s, t_lexer *lexer);
 
 /*
 ** termcaps/
