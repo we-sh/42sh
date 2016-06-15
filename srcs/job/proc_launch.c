@@ -46,7 +46,7 @@ void		proc_launch(t_sh *sh, t_job *j, t_proc *p)
 	}
 
 	builtin_callback(BLTIN_CB_EXEC, sh, p);
-	if (path_hash_finder(sh, &p->argv[0]) == ST_OK)
-		execve(p->argv[0], p->argv, sh->envp);
+	if (path_hash_finder(sh->envp, &p->argv[0]) == ST_OK)
+		execve(p->argv[0], p->argv, p->envp);
 	exit(EXIT_FAILURE);
 }

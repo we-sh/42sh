@@ -44,7 +44,15 @@ static int	s_after(t_sh *sh, t_proc *p)
 {
 
 	if (p->bltin_status == ST_OK && (p->argc == 2 || p->argc == 3))
+	{
 		env_set(&sh->envp, p->argv[1], p->argv[2]);
+		log_info(p->argv[1]);
+		if (ft_strcmp(p->argv[1], "PATH") == 0)
+		{
+			path_free_hasht();
+			path_init_hasht(sh->envp);
+		}
+	}
 	return (ST_OK);
 }
 

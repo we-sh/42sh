@@ -38,6 +38,20 @@ int				key__send(t_termcaps_context *context)
 {
 	if (context->state == STATE_REGULAR)
 	{
+		//GAB TODO
+		// if (!quoting_ok(&context->command_line))
+		// {
+		// 	t_termcaps_context	termcaps_context;
+
+		// 	termcaps_initialize(context->fd, "> ", &termcaps_context);
+		// 	while (!quoting_ok(&context->command_line))
+		// 	{	
+		// 		char *buffer = termcaps_read_input(&termcaps_context);
+		// 		string_to_command_line(&context->command_line);
+		// 		free(buffer);
+		// 	}
+		// 	termcaps_finalize(&termcaps_context);
+		// }
 		if (!termcaps_display_command_line(context->fd, &context->command_line))
 		{
 			log_error("minishell__display_command_line() failed");

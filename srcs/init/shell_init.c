@@ -42,7 +42,7 @@ int		shell_init(t_sh *sh, char *envp[])
 	sh->pgid = getpid();
 	/* env */
 	environment_init(sh, envp);
-	path_init_hasht(sh);
+	path_init_hasht(sh->envp);
 	if ((ret = shell_language(LANG_EN)) < 0)
 		return (-ret);
 	if ((ret = s_shell_fd_init(sh)) != ST_OK)

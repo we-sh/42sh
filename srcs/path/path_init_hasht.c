@@ -1,6 +1,6 @@
 #include "shell.h"
 
-int						path_init_hasht(t_sh *sh)
+int						path_init_hasht(char **envp)
 {
 	DIR					*directory;
 	t_dirent			content;
@@ -10,7 +10,7 @@ int						path_init_hasht(t_sh *sh)
 
 	i = 0;
 	value = NULL;
-	folders = ft_strsplit(env_get_path(sh->envp), ':');
+	folders = ft_strsplit(env_get_path(envp), ':');
 	while (folders[i] != NULL)
 	{
 		if ((directory = opendir(folders[i])) != NULL)
