@@ -27,6 +27,8 @@ int	parser(t_sh *sh, const char *in)
 	log_warn("execution loop launched into the parser");
 	LIST_FOREACH(&g_current_jobs_list_head, pos)
 	{
+		log_trace("%p", &g_current_jobs_list_head);
+		log_trace("%p", CONTAINER_OF(&g_current_jobs_list_head, t_job, list_job));
 		int	exit_status;
 		job = CONTAINER_OF(pos, t_job, list_job);
 		exit_status = job_launch(sh, job);

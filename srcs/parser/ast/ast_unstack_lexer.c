@@ -14,8 +14,12 @@ t_proc	*proc_alloc(char **envp)
 {
 	t_proc	*p;
 
-	if (!(p = ft_memalloc(sizeof(t_proc))))
+//	if (!(p = ft_memalloc(sizeof(t_proc))))
+//		return (NULL);
+	if (!(p = (t_proc *)malloc(sizeof(t_proc))))
 		return (NULL);
+	// TODO see how to alloc
+	p->command = NULL;
 	if ((p->envp = ft_array_dup(envp)) == NULL)
 		return (NULL);
 	p->pid = 0;
@@ -26,6 +30,7 @@ t_proc	*proc_alloc(char **envp)
 	p->stdout = STDOUT_FILENO;
 	p->stderr = STDERR_FILENO;
 	p->exit_status = EXIT_SUCCESS;
+	p->bltin_char = NULL;
 	p->bltin_status = ST_OK;
 	INIT_LIST_HEAD(&p->bltin_opt_head);
 	return (p);
@@ -83,7 +88,8 @@ static t_job	*ast_unstack_job_from_lexer(t_lexer *lexer, int *i, char **envp)
 
 	if (!(job = job_alloc("")))
 		return (NULL);
-	INIT_LIST_HEAD(&job->proc_head);
+	// already done on job_alloc
+	//INIT_LIST_HEAD(&job->proc_head);
 	while (*i < lexer->size)
 	{
 		if (!(proc = ast_unstack_proc_from_lexer(lexer, i, envp)))
@@ -112,14 +118,17 @@ int				ast_unstack_lexer(t_list *job_head, t_lexer *lexer, char **envp)
 	t_job	*job;
 
 	i = 0;
-	INIT_LIST_HEAD(job_head);
+	// do not re-init (see init list head)
+	//INIT_LIST_HEAD(job_head);
 	while (i < lexer->size)
 	{
 		log_info("remaining tokens : %d / %d", lexer->size - i, lexer->size);
 		if (!(job = ast_unstack_job_from_lexer(lexer, &i, envp)))
 			return (-1);
-		list_push_back(&job->list_job, job_head);
+		//list_push_back(&job->list_job, job_head);
+		list_push_back(&job->list_job, &g_current_jobs_list_head);
 	}
-	log_info("job list size : %zu", list_size(job_head));
+	(void)job_head;
+	//log_info("job list size : %zu", list_size(job_head));
 	return (0);
 }
