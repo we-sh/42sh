@@ -112,8 +112,8 @@ int					option_parse(t_list *list_head,
 	INIT_LIST_HEAD(list_head);
 	while ((*argv)[i])
 	{
-		if ((*argv)[i][0] != '-' || ((*argv)[i][0] == '-' && (*argv)[i][1] == '\0')
-			|| ft_strcmp((*argv)[i], "--") == 0)
+		if (((*argv)[i][0] == '-' && (*argv)[i][1] == '\0')
+			|| (*argv)[i][0] != '-' || ft_strcmp((*argv)[i], "--") == 0)
 			break ;
 		if ((*argv)[i][0] == '-' && (*argv)[i][1] != '-')
 		{
