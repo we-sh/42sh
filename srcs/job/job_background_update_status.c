@@ -27,12 +27,27 @@ static void	s_iterate_on_proc(t_job *j)
 	}
 }
 
+static int	s_status_has_changed(t_job *j)
+{
+	int		old_completed;
+	int		old_stopped;
+
+	// todo make it more precise: should tell if one of the proc status has changed, and not the entire job
+	// todo try `sleep 50 | sleep 52 | sleep 54` and stop one of this job
+	// is that useful?? test in bash...
+	old_completed = job_is_completed(j);
+	old_stopped = job_is_stopped(j);
+	s_iterate_on_proc(j);
+	if (old_completed != job_is_completed(j) == 1
+		|| old_stopped != job_is_stopped(j) == 1)
+		return (1);
+	return (0);
+}
+
 int			job_background_update_status(void)
 {
 	t_list	*j_pos;
 	t_job	*j;
-	int		old_completed;
-	int		old_stopped;
 	int		total;
 
 	total = 0;
@@ -41,14 +56,7 @@ int			job_background_update_status(void)
 		j = CONTAINER_OF(j_pos, t_job, list_job);
 		if (j->foreground == 0)
 		{
-			// todo make it more precise: should tell if one of the proc status has changed, and not the entire job
-			// todo try `sleep 50 | sleep 52 | sleep 54` and stop one of this job
-			// is that useful?? test in bash...
-			old_completed = job_is_completed(j);
-			old_stopped = job_is_stopped(j);
-			s_iterate_on_proc(j);
-			if (old_completed != job_is_completed(j) == 1
-				|| old_stopped != job_is_stopped(j) == 1)
+			if (s_status_has_changed(j) == 1)
 			{
 				total++;
 				ft_putchar('\n');
