@@ -1,6 +1,5 @@
 #include "shell.h"
 
-
 static char		**s_env_unset(char **envp, int pos)
 {
 	char		**tmp;
@@ -29,10 +28,10 @@ static char		**s_env_unset(char **envp, int pos)
 	ft_memdel_tab((void ***)&envp);
 	return (tmp);
 }
- 
-int	env_unset(char ***envp, char *argv)
+
+int				env_unset(char ***envp, char *argv)
 {
-	int		ret;
+	int			ret;
 
 	if ((ret = env_index_value(*envp, argv)) == -1)
 		return (ST_OK);

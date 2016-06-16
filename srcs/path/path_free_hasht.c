@@ -1,7 +1,6 @@
 #include "shell.h"
 
-
-void			path_free_hasht()
+void			path_free_hasht(void)
 {
 	int			i;
 	t_hasht		*tmp;
@@ -16,7 +15,7 @@ void			path_free_hasht()
 			free(bodies[i].head->path);
 			free(bodies[i].head->name);
 			free(bodies[i].head);
-			bodies[i].head = tmp;			
+			bodies[i].head = tmp;
 		}
 		i++;
 	}

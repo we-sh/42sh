@@ -1,6 +1,6 @@
 #include "shell.h"
 
-char 			*env_get_user(char **envp)
+char				*env_get_user(char **envp)
 {
 	char			*tmp;
 	uid_t			uid;
@@ -9,8 +9,8 @@ char 			*env_get_user(char **envp)
 	if ((tmp = env_get(envp, "USER")) == NULL)
 	{
 		uid = getuid();
-		passwd =  getpwuid(uid);
-		return (passwd->pw_name);		
+		passwd = getpwuid(uid);
+		return (passwd->pw_name);
 	}
 	return (tmp);
 }
