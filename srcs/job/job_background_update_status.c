@@ -33,7 +33,9 @@ int			job_background_update_status(void)
 	t_job	*j;
 	int		old_completed;
 	int		old_stopped;
+	int		total;
 
+	total = 0;
 	LIST_FOREACH(&g_current_jobs_list_head, j_pos)
 	{
 		j = CONTAINER_OF(j_pos, t_job, list_job);
@@ -41,12 +43,14 @@ int			job_background_update_status(void)
 		{
 			// todo make it more precise: should tell if one of the proc status has changed, and not the entire job
 			// todo try `sleep 50 | sleep 52 | sleep 54` and stop one of this job
+			// is that useful?? test in bash...
 			old_completed = job_is_completed(j);
 			old_stopped = job_is_stopped(j);
 			s_iterate_on_proc(j);
 			if (old_completed != job_is_completed(j) == 1
 				|| old_stopped != job_is_stopped(j) == 1)
 			{
+				total++;
 				ft_putchar('\n');
 				job_display_status(j, 1);
 				if (job_is_completed(j) == 1)
@@ -54,5 +58,5 @@ int			job_background_update_status(void)
 			}
 		}
 	}
-	return (ST_OK);
+	return (total);
 }
