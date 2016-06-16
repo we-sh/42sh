@@ -24,40 +24,26 @@ static int	s_bask_to_shell(t_sh *sh)
 int			job_foreground(t_sh *sh, t_job *j, int const sigcont)
 {
 	log_debug("put job to foreground (id: %d, pgid: %d)", j->id, j->pgid);
-
 	job_set_stopped(j, 0);
 	j->notified = 1;
 	j->foreground = 1;
-
 	if (sigcont == 1)
 	{
 		log_debug("sending SIGCONT to job %i", j->pgid);
 		if (kill(-j->pgid, SIGCONT) < 0)
 		{
-			// todo notify the user a problem occured
 			log_error("failed to continue the stopped job %d", j->pgid);
 			return (job_kill(sh, j, ST_SIGCONT));
 		}
-		/*if (tcsetattr(sh->fd, &j->tmodes) == -1)
-		{
-			log_error("failed to set terminal structure");
-			return (job_kill(sh, j, ST_SIGCONT));
-		}*/
 	}
-	// make the job controlling the terminal
-	if (tcsetpgrp(sh->fd, j->pgid) == -1)
+	if (tcsetpgrp(sh->fd, j->pgid) == -1 && errno != EINVAL)
 	{
-		if (errno != EINVAL)
-		{
-			// todo notify the user a problem occured
-			log_error("failed to make the job %d controlling terminal", j->pgid);
-			return (job_kill(sh, j, ST_TCSETPGRP));
-		}
+		log_error("failed to make the job %d to control terminal", j->pgid);
+		return (job_kill(sh, j, ST_TCSETPGRP));
 	}
 	job_wait(j);
 	if (job_is_completed(j) == 0 && tcgetattr(sh->fd, &j->tmodes) != 0)
 	{
-		// todo notify user a problem occured
 		log_error("failed to save termios structure a the job %d", j->pgid);
 	}
 	return (s_bask_to_shell(sh));
