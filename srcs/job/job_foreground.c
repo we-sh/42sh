@@ -27,7 +27,23 @@ int			job_foreground(t_sh *sh, t_job *j, int const sigcont)
 
 	job_set_stopped(j, 0);
 	j->notified = 1;
+	j->foreground = 1;
 
+	if (sigcont == 1)
+	{
+		log_debug("sending SIGCONT to job %i", j->pgid);
+		if (kill(-j->pgid, SIGCONT) < 0)
+		{
+			// todo notify the user a problem occured
+			log_error("failed to continue the stopped job %d", j->pgid);
+			return (job_kill(sh, j, ST_SIGCONT));
+		}
+		/*if (tcsetattr(sh->fd, &j->tmodes) == -1)
+		{
+			log_error("failed to set terminal structure");
+			return (job_kill(sh, j, ST_SIGCONT));
+		}*/
+	}
 	// make the job controlling the terminal
 	if (tcsetpgrp(sh->fd, j->pgid) == -1)
 	{
@@ -36,20 +52,6 @@ int			job_foreground(t_sh *sh, t_job *j, int const sigcont)
 			// todo notify the user a problem occured
 			log_error("failed to make the job %d controlling terminal", j->pgid);
 			return (job_kill(sh, j, ST_TCSETPGRP));
-		}
-	}
-	else if (sigcont == 1)
-	{
-		if (kill(-j->pgid, SIGCONT) < 0)
-		{
-			// todo notify the user a problem occured
-			log_error("failed to continue the stopped job %d", j->pgid);
-			return (job_kill(sh, j, ST_SIGCONT));
-		}
-		if (tcgetattr(sh->fd, &j->tmodes) == -1)
-		{
-			log_error("failed to set terminal structure");
-			return (job_kill(sh, j, ST_SIGCONT));
 		}
 	}
 	job_wait(j);

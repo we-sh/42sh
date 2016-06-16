@@ -5,23 +5,22 @@ static int	s_before(t_proc *p)
 	if (p->bltin_status == ST_OK)
 	{
 		if (p->argc == 2)
-			if (job_by_name(p->argv[1]) == NULL)
+			if (job_by_name(p->argv[1], 0) == NULL)
 				p->bltin_status = ST_EINVAL;
 	}
 	return (ST_OK);
 }
 
-static int	s_exec(t_proc *p)
+static int	s_exec(t_builtin const *builtin, t_proc *p)
 {
 	t_list	*j_pos;
 	t_job	*j;
 	int		show_pid;
 	size_t	j_total;
 
-	if (p->bltin_status != ST_OK)
+	if (p->bltin_status > ST_OK)
 	{
-		// todo use `log_status()` instead
-		ft_putendl_fd(i18n_translate(p->bltin_status), STDERR_FILENO);
+		builtin_usage(builtin, p->bltin_status);
 		return (EXIT_FAILURE);
 	}
 	show_pid = option_is_set(&p->bltin_opt_head, ST_BLTIN_JOBS_OPT_L);
@@ -30,7 +29,7 @@ static int	s_exec(t_proc *p)
 		show_pid = 2;
 	if (p->argc == 2)
 	{
-		if ((j = job_by_name(p->argv[1])) != NULL)
+		if ((j = job_by_name(p->argv[1], 0)) != NULL)
 			job_display_status(j, show_pid);
 		return (EXIT_SUCCESS);
 	}
@@ -46,11 +45,10 @@ static int	s_exec(t_proc *p)
 
 int			builtin_jobs(t_builtin const *builtin, int callback, t_sh *sh, t_proc *p)
 {
-	(void)builtin;
 	(void)sh;
 	if (callback == BLTIN_CB_BEFORE)
 		return (s_before(p));
 	if (callback == BLTIN_CB_EXEC)
-		exit(s_exec(p));
+		exit(s_exec(builtin, p));
 	return (ST_OK);
 }
