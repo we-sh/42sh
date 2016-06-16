@@ -56,20 +56,18 @@ static int	s_exec(t_builtin const *builtin, t_proc *p)
 	}
 	if (p->argc == 1)
 		return (s_display_help(builtin));
-	ft_putstr(g_builtins[-p->bltin_status]->name);
-	ft_putstr(": ");
-	ft_putendl(g_builtins[-p->bltin_status]->usage);
-	ft_putendl(i18n_translate(g_builtins[-p->bltin_status]->description));
+	ft_printf("%s: %s\n%s\n",
+		g_builtins[-p->bltin_status]->name, g_builtins[-p->bltin_status]->usage,
+		i18n_translate(g_builtins[-p->bltin_status]->description));
 	if (g_builtins[-p->bltin_status]->options != NULL)
 	{
-		ft_putendl("options:");
+		ft_printf("%s:\n", i18n_translate(ST_OPTIONS));
 		i = 0;
 		while (g_builtins[-p->bltin_status]->options[i])
 		{
-			ft_putstr(" `");
-			ft_putstr(g_builtins[-p->bltin_status]->options[i]->name);
-			ft_putstr("` ");
-			ft_putendl(i18n_translate(g_builtins[-p->bltin_status]->options[i]->index));
+			ft_printf(" `%s`%s\n",
+				g_builtins[-p->bltin_status]->options[i]->name,
+				i18n_translate(g_builtins[-p->bltin_status]->options[i]->index));
 			i++;
 		}
 	}
