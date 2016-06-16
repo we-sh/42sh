@@ -5,7 +5,7 @@
 ** the function `waitpid`.
 */
 
-int	proc_update_status(pid_t pid, int status)
+int	proc_update_status(t_job *j, pid_t pid, int status)
 {
 	t_proc		*p;
 
@@ -23,8 +23,8 @@ int	proc_update_status(pid_t pid, int status)
 		if (WIFSTOPPED(status))
 		{
 			p->stopped = 1;
-			((t_job *)p->j)->foreground = 0;
-			((t_job *)p->j)->notified = 0;
+			j->foreground = 0;
+			j->notified = 0;
 		}
 		else
 		{

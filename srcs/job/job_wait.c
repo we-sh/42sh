@@ -5,7 +5,7 @@
 ** marked as `stopped` or `completed`.
 */
 
-static void	s_proc_status(t_proc *p)
+static void	s_proc_status(t_job *j, t_proc *p)
 {
 	int		status;
 	pid_t	pid;
@@ -17,7 +17,7 @@ static void	s_proc_status(t_proc *p)
 		if (pid < 0 && errno == ECHILD)
 			p->completed = 1;
 		else
-			proc_update_status(pid, status);
+			proc_update_status(j, pid, status);
 	}
 }
 
@@ -35,7 +35,7 @@ int	job_wait(t_job *j_orig)
 			if (j->launched == 1 && j->foreground == 1)
 				LIST_FOREACH(&j->proc_head, p_pos)
 				{
-					s_proc_status(CONTAINER_OF(p_pos, t_proc, list_proc));
+					s_proc_status(j, CONTAINER_OF(p_pos, t_proc, list_proc));
 				}
 		}
 		if (job_is_completed(j_orig) == 1 || job_is_stopped(j_orig) == 1)

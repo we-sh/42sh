@@ -22,7 +22,7 @@ static void	s_iterate_on_proc(t_job *j)
 			if (pid < 0 && errno == ECHILD)
 				p->completed = 1;
 			else
-				proc_update_status(pid, status);
+				proc_update_status(j, pid, status);
 		}
 	}
 }
