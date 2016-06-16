@@ -3,6 +3,9 @@
 
 # include "builtin.h"
 
+int							builtin_cd_chk_path(char **path, int follow_lnk);
+char						*builtin_cd_remove_dotdot(char *path);
+
 static t_option				g_builtin_cd_option_p2 = {
 	.name = "P",
 	.index = ST_BLTIN_CD_OPT_P2,
