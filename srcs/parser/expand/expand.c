@@ -10,39 +10,6 @@
 ** 4. Escape character `\`
 */
 
-
-// ----------------------------------------------------------------
-// todo: to be exported to libft submodule
-static int			ft_array_push_back(char ***array, char const *value)
-{
-	char	**new_array;
-	size_t	total;
-
-	if (!value || !array)
-		return (-1);
-	total = 0;
-	if (*array)
-		while ((*array)[total])
-			total++;
-	if ((new_array = (char **)malloc(sizeof(char *) * (total + 2))) == NULL)
-		return (-1);
-	total = 0;
-	if (*array)
-		while ((*array)[total])
-		{
-			if ((new_array[total] = ft_strdup((*array)[total])) == NULL)
-				return (-1);
-			total++;
-		}
-	if ((new_array[total] = ft_strdup(value)) == NULL)
-		return (-1);
-	new_array[total + 1] = NULL;
-	ft_memdel_tab((void ***)&(*array));
-	*array = new_array;
-	return (total);
-}
-// ----------------------------------------------------------------
-
 static char	*s_expand_escape_char_not_inhibited(char *str)
 {
 	size_t	i;

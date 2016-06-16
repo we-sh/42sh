@@ -30,7 +30,7 @@ static	int	s_path_control_access(char **cmd, char **envp, int ret)
 	}
 	if (access(*cmd, X_OK) == -1)
 	{
-		display_status(ST_PERMISSION_DENIED, *cmd, NULL);
+		display_status(ST_EACCES, *cmd, NULL);
 		return (ST_OK);
 	}
 	return (ret);

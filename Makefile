@@ -505,7 +505,8 @@ $(DIROBJ)token_parse_and.o: srcs/parser/token/token_parse_and.c incs/parser.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
   libs/libft/./incs/libftprintf.h incs/option.h incs/job.h \
   libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/builtins/builtin.h
+  libs/libft/./incs/get_next_line.h incs/builtins/builtin.h \
+  incs/quoting.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/parser/token/token_parse_and.c\n"
 		@$(CC) -c ./srcs/parser/token/token_parse_and.c -o ./.objs/token_parse_and.o $(CPPFLAGS) $(CFLAGS) 
@@ -658,7 +659,7 @@ $(DIROBJ)token_parse_utils_get_full_word.o: \
   incs/statuses.h incs/option.h incs/job.h libs/libcaps/./incs/caps.h \
   libs/libcaps/./incs/logger.h incs/i18n.h \
   libs/libft/./incs/get_next_line.h incs/parser.h \
-  incs/builtins/builtin.h
+  incs/builtins/builtin.h incs/quoting.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/parser/token/utils/token_parse_utils_get_full_word.c\n"
 		@$(CC) -c ./srcs/parser/token/utils/token_parse_utils_get_full_word.c -o ./.objs/token_parse_utils_get_full_word.o $(CPPFLAGS) $(CFLAGS) 
@@ -672,7 +673,8 @@ $(DIROBJ)open_new_fd.o: srcs/parser/token/utils/open_new_fd.c incs/parser.h \
   incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
   libs/libft/./incs/libftprintf.h incs/option.h incs/job.h \
   libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/builtins/builtin.h
+  libs/libft/./incs/get_next_line.h incs/builtins/builtin.h \
+  incs/quoting.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/parser/token/utils/open_new_fd.c\n"
 		@$(CC) -c ./srcs/parser/token/utils/open_new_fd.c -o ./.objs/open_new_fd.o $(CPPFLAGS) $(CFLAGS) 
