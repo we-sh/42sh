@@ -37,19 +37,19 @@ static int		g_buf_index;
 
 /*
 ** Fill buffer char by char in order to catch TT_NAME.
+** TODO: add strncat function to libft (WHAAAAAAAAAAATT CEST PAS DEDANS???)
+** TODO: handle this case correctly
 */
 
 static void		s_bufferize(const char *str, size_t len)
 {
-	/* TODO: add this function to libft */
-	strncat(g_buf, str, len);
-	g_buf_index += len;
-	/* TODO: handle this case correctly */
-	if (g_buf_index >= TOKEN_BUF_SIZE)
+	if (g_buf_index + len >= TOKEN_BUF_SIZE - 1)
 	{
 		log_error("Buffer overflow.\n");
 		exit(ST_BUFFER);
 	}
+	strncat(g_buf, str, len);
+	g_buf_index += len;
 }
 
 /*
@@ -77,22 +77,25 @@ int				s_is_escaped(t_token *token)
 	return (token && token->code == TC_BACKSLASH) ? 1 : 0;
 }
 
+/*
+** Will returns true the next call otherwise token inhib himself.
+*/
+
+static int		g_inhibitor_code;
+
 int				s_is_inhibited(t_token *token)
 {
-	static int	inhibitor_code;
-
 	if (token != NULL && token->type == TT_INHIBITOR)
 	{
-		if (token->code == inhibitor_code) /* Remove */
-			inhibitor_code = 0;
-		else if (inhibitor_code == 0) /* Add */
+		if (token->code == g_inhibitor_code)
+			g_inhibitor_code = 0;
+		else if (g_inhibitor_code == 0)
 		{
-			inhibitor_code = token->code;
-			/* Will returns true the next call otherwise token inhib himself. */
+			g_inhibitor_code = token->code;
 			return (0);
 		}
 	}
-	return (inhibitor_code > 0) ? 1 : 0;
+	return (g_inhibitor_code > 0) ? 1 : 0;
 }
 
 /*
@@ -105,6 +108,7 @@ int				tokenize(const char *s, t_lexer *lexer)
 	t_token	*token_found;
 	int		is_inhibited;
 	int		i;
+	int 	ret;
 
 	i = 0;
 	is_inhibited = 0;
@@ -133,5 +137,7 @@ int				tokenize(const char *s, t_lexer *lexer)
 			s_bufferize(&s[i++], 1);
 	}
 	s_buffer_dump(lexer);
-	return (s_is_inhibited(NULL)) ? ST_LEXER : ST_OK;
+	ret = (s_is_inhibited(NULL)) ? ST_LEXER : ST_OK;
+	g_inhibitor_code = 0;
+	return (ret);
 }
