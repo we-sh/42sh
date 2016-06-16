@@ -14,11 +14,8 @@ t_proc	*proc_alloc(char **envp)
 {
 	t_proc	*p;
 
-//	if (!(p = ft_memalloc(sizeof(t_proc))))
-//		return (NULL);
-	if (!(p = (t_proc *)malloc(sizeof(t_proc))))
+	if (!(p = ft_memalloc(sizeof(t_proc))))
 		return (NULL);
-	// TODO see how to alloc
 	p->command = NULL;
 	if ((p->envp = ft_array_dup(envp)) == NULL)
 		return (NULL);
@@ -38,74 +35,67 @@ t_proc	*proc_alloc(char **envp)
 
 static t_proc	*ast_unstack_proc_from_lexer(t_lexer *lexer, int *i, char **envp)
 {
-	t_proc	*proc;
+	t_proc	*p;
 	int		ret;
 
-	if ((proc = proc_alloc(envp)) == NULL)
-	{
-		log_warn("TO IMPLEMENT display status");
+	if ((p = proc_alloc(envp)) == NULL)
 		return (NULL);
-	}
 
 	while (*i < lexer->size)
 	{
-		log_debug("parsing token \"%s\"...", lexer->tokens[*i].content);
+		log_debug("unstacking token : %d / %d : \"%s\"", *i, lexer->size, lexer->tokens[*i].content);
 
+		// detect a TT_NONE, followed by a TT_REDIR (eg 2<...)
 		if (lexer->tokens[*i].type == TT_NONE && *i + 1 < lexer->size && lexer->tokens[(*i) + 1].type == TT_REDIR)
 		{
-			// tt_redir func get tt_none before
-			ret = g_tokens[lexer->tokens[(*i) + 1].code].parse(proc, lexer, i);
+			ret = g_tokens[lexer->tokens[(*i) + 1].code].parse(p, lexer, i);
 		}
-		else
-			ret = g_tokens[lexer->tokens[*i].code].parse(proc, lexer, i);
+		else // TT_NONE standard (... ls ...)
+		{
+			ret = g_tokens[lexer->tokens[*i].code].parse(p, lexer, i);
+		}
 
+		// detect and of job or process (see job_build_unstack_job_from_lexer)
 		if (lexer->tokens[*i].type == TT_JOBS || lexer->tokens[*i].code == TC_PIPE)
 		{
-			log_info("end of job encountered, finish");
 			break;
 		}
 		if (ret != ST_OK)
 		{
 			log_error("error on token parsing");
-			log_warn("TO IMPLEMENT display status");
 			return (NULL);
 		}
 		(*i)++;
 	}
-	log_info("new proc parsed : %s", proc->command);
-
-	if (!(proc->argv = ft_strsplit(proc->command, ' ')))
+	if (!(p->argv = ft_strsplit(p->command, ' ')))
 		return (NULL);
-	proc->argc = s_argc(proc->argv);
-
-	return (proc);
+	p->argc = s_argc(p->argv);
+	return (p);
 }
 
 static t_job	*job_build_unstack_job_from_lexer(t_lexer *lexer, int *i, char **envp)
 {
-	t_job	*job;
-	t_proc	*proc;
+	t_job	*j;
+	t_proc	*p;
 
-	if (!(job = job_alloc("")))
+	if (!(j = job_alloc("")))
 		return (NULL);
-	// already done on job_alloc
-	//INIT_LIST_HEAD(&job->proc_head);
 	while (*i < lexer->size)
 	{
-		if (!(proc = ast_unstack_proc_from_lexer(lexer, i, envp)))
+		log_info("remaining tokens : %d / %d", lexer->size - *i, lexer->size);
+		if (!(p = ast_unstack_proc_from_lexer(lexer, i, envp)))
 			return (NULL);
-		list_push_back(&proc->list_proc, &job->proc_head);
+		list_push_back(&p->list_proc, &j->proc_head);
 		if (lexer->tokens[*i].type == TT_JOBS)
 		{
-			log_warn("set flag for ; && or ||");
+			log_info("end of job encountered, finish");
+			log_warn("TO IMPLEMENT : set flag for ; && or ||");
 			(*i)++;
 			break;
 		}
+		log_info("remaining tokens : %d / %d", lexer->size - *i, lexer->size);
 	}
-
-	
-	log_info("finished to parse job");
-	return (job);
+	return (j);
 }
 
 /*
@@ -121,7 +111,6 @@ int				job_build_unstack_lexer(t_lexer *lexer, char **envp)
 	i = 0;
 	while (i < lexer->size)
 	{
-		log_info("remaining tokens : %d / %d", lexer->size - i, lexer->size);
 		if (!(j = job_build_unstack_job_from_lexer(lexer, &i, envp)))
 			return (ST_PARSER);
 		list_push_back(&j->list_job, &g_current_jobs_list_head);
