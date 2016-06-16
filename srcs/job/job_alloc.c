@@ -10,6 +10,7 @@ t_job	*job_alloc(char const *command)
 	if ((j->command = ft_strdup(command)) == NULL)
 		return (NULL);
 	j->foreground = 1;
+	j->launched = 0;
 	j->stdin = STDIN_FILENO;
 	j->stdout = STDOUT_FILENO;
 	j->stderr = STDERR_FILENO;
