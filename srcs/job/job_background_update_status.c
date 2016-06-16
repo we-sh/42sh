@@ -5,7 +5,6 @@
 ** and display a notification to the user if their status changed.
 */
 
-
 static void	s_iterate_on_proc(t_job *j)
 {
 	int		status;
