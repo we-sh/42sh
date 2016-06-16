@@ -7,11 +7,11 @@
 
 int	parser_process_build(t_list *ast_head, t_lexer *lexer, char **envp)
 {
-	int		ret;
+	int	st;
 
 	if (!lexer || !ast_head)
-		return (-1);
-	if ((ret = ast_unstack_lexer(ast_head, lexer, envp)) != 0)
-		return (ret);
-	return (0);
+		return (ST_EINVAL);
+	if ((st = job_build_unstack_lexer(ast_head, lexer, envp)) != ST_OK)
+		return (st);
+	return (ST_OK);
 }
