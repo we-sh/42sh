@@ -89,7 +89,7 @@ struct				s_lexer
 	int				size;
 };
 
-int			parser_process_lexer(t_lexer *lexer, const char *in_c);
+int			parser_process_lexer(t_lexer *lexer, const char *in);
 t_token		*token_list(void);
 int			tokenize(const char *s, t_lexer *lexer);
 
@@ -116,7 +116,7 @@ struct				s_parser
 };
 
 int	parser_new(t_parser **parser, const char *in);
-int	parser_process_ast(t_list *ast_head, t_lexer *lexer, char **envp);
+int	parser_process_build(t_list *ast_head, t_lexer *lexer, char **envp);
 
 /*
 ** Tokenizer/parser definition.

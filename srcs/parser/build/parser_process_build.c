@@ -5,7 +5,7 @@
 ** to build an Abstract Syntaxic Tree.
 */
 
-int	parser_process_ast(t_list *ast_head, t_lexer *lexer, char **envp)
+int	parser_process_build(t_list *ast_head, t_lexer *lexer, char **envp)
 {
 	int		ret;
 

@@ -10,6 +10,11 @@ static void	s_job_list_set_default(t_job **j)
 	*j = NULL;
 }
 
+/*
+** Entry point of the parser.
+** This function aims to build a list of shell jobs according to a string.
+*/
+
 int			parser(t_sh *sh, const char *in)
 {
 	int			st;
@@ -17,16 +22,19 @@ int			parser(t_sh *sh, const char *in)
 	t_job		*j;
 	t_list		*pos;
 
-	log_info("parser receives input : \"%s\"\n", in);
+	log_success("parser receives input : \"%s\"", in);
 
 	s_job_list_set_default(&j);
+	if (!sh || !in || j)
+		return (ST_EINVAL);
 	if ((st = parser_new(&parser, in)) != ST_OK)
 		return (st);
 	if ((st = parser_process_lexer(parser->lexer, parser->in)) != ST_OK)
 		return (st);
-	if ((st = parser_process_ast(&g_current_jobs_list_head, parser->lexer, sh->envp)) != ST_OK)
+	if ((st = parser_process_build(&g_current_jobs_list_head, parser->lexer, sh->envp)) != ST_OK)
 		return (st);
 
+	// TODO move it
 	log_warn("execution loop launched into the parser");
 	LIST_FOREACH(&g_current_jobs_list_head, pos)
 	{
@@ -40,7 +48,6 @@ int			parser(t_sh *sh, const char *in)
 			log_fatal("job launch error: %s", i18n_translate(exit_status));
 			return (exit_status);
 		}
-
 	}
 	return (ST_OK);
 }

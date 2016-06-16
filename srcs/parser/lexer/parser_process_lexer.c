@@ -1,5 +1,9 @@
 #include "shell.h"
 
+/*
+** Display the token list on the logger.
+*/
+
 static void	s_print(const t_lexer *lexer)
 {
 	int i;
@@ -14,15 +18,27 @@ static void	s_print(const t_lexer *lexer)
 	}
 }
 
-int			parser_process_lexer(t_lexer *lexer, char const *input)
+/*
+** Convert an input string into a token list.
+*/
+
+int			parser_process_lexer(t_lexer *lexer, const char *in)
 {
-	log_info("receiving input : \"%s\"", input);
+	if (!lexer || !in)
+		return (ST_EINVAL);
+
+	log_info("lexer receives input : \"%s\"", in);
+	
 	lexer->size = 0;
-	if (tokenize(input, lexer) != ST_OK)
+	if (tokenize(in, lexer) != ST_OK)
 	{
 		log_error("tokenization failed (incomplete inhibition)");
 		return (ST_LEXER);
 	}
-	s_print(lexer);
+	else
+	{
+		log_success("tokenization succeded, extract %d tokens", lexer->size);
+		s_print(lexer);
+	}
 	return (ST_OK);
 }
