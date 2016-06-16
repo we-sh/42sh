@@ -149,7 +149,6 @@ int				path_add_folder_content_to_hasht(char *name, char *dirname);
 /*
 ** signal/
 */
-void			signal_sigchld(int sig);
 int				signal_to_ignore(void);
 int				signal_to_default(void);
 
