@@ -23,8 +23,10 @@ SRCS		=	\
 				stdin_loop.c					\
 				parse.c							\
 				environment_init.c				\
+				builtins/bg/builtin_bg.c		\
 				builtins/cd/builtin_cd.c		\
 				builtins/exit/builtin_exit.c	\
+				builtins/fg/builtin_fg.c		\
 				builtins/help/builtin_help.c	\
 				builtins/jobs/builtin_jobs.c	\
 				builtins/env/builtin_env.c		\
@@ -57,6 +59,7 @@ SRCS		=	\
 				job/job_foreground.c			\
 				job/job_free.c					\
 				job/job_is_completed.c			\
+				job/job_is_signaled.c			\
 				job/job_is_stopped.c			\
 				job/job_kill.c					\
 				job/job_launch.c				\

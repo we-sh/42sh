@@ -42,5 +42,10 @@ int	job_wait(t_job *j_orig)
 		if (job_is_completed(j_orig) == 1 || job_is_stopped(j_orig) == 1)
 			break;
 	}
+	if (job_is_signaled(j_orig))
+	{
+		ft_putchar('\n');
+		job_display_status(j_orig, 1);
+	}
 	return (ST_OK);
 }

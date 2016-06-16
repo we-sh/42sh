@@ -19,7 +19,9 @@ typedef struct				s_proc
 	int						stderr;
 	int						exit_status;
 	int						bltin_status;
+	char					*bltin_char;
 	t_list					bltin_opt_head;
+	void					*j;
 }							t_proc;
 
 typedef struct				s_job
