@@ -149,7 +149,6 @@ void			path_free_hasht();
 /*
 ** signal/
 */
-void			signal_sigchld(int sig);
 int				signal_to_ignore(void);
 int				signal_to_default(void);
 
