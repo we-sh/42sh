@@ -33,6 +33,7 @@ typedef struct				s_job
 	int						notified;
 	t_termios				tmodes;
 	int						foreground;
+	int						launched;
 	int						stdin;
 	int						stdout;
 	int						stderr;
