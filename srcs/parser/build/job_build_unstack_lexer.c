@@ -112,7 +112,7 @@ static t_job	*ast_unstack_job_from_lexer(t_lexer *lexer, int *i, char **envp)
 ** For each token of the lexer, apply a function and build an AST.
 */
 
-int				ast_unstack_lexer(t_list *job_head, t_lexer *lexer, char **envp)
+int				job_build_unstack_lexer(t_list *job_head, t_lexer *lexer, char **envp)
 {
 	int		i;
 	t_job	*job;

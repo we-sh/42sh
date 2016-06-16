@@ -12,7 +12,7 @@ SRCS		=	\
 				parser/parser.c								\
 				parser/alloc/parser_new.c					\
 				parser/build/parser_process_build.c			\
-				parser/build/ast_unstack_lexer.c			\
+				parser/build/job_build_unstack_lexer.c		\
 				parser/lexer/parser_process_lexer.c			\
 				parser/lexer/token_list.c					\
 				parser/lexer/tokenize.c						\
@@ -331,8 +331,8 @@ $(DIROBJ)parser_process_build.o: srcs/parser/build/parser_process_build.c \
 		@printf "compiling ./srcs/parser/build/parser_process_build.c\n"
 		@$(CC) -c ./srcs/parser/build/parser_process_build.c -o ./.objs/parser_process_build.o $(CPPFLAGS) $(CFLAGS) 
 
-$(DIROBJ)ast_unstack_lexer.o: srcs/parser/build/ast_unstack_lexer.c incs/parser.h \
-  libs/libft/./incs/libft.h libs/logger/./incs/logger.h \
+$(DIROBJ)job_build_unstack_lexer.o: srcs/parser/build/job_build_unstack_lexer.c \
+  incs/parser.h libs/libft/./incs/libft.h libs/logger/./incs/logger.h \
   libs/logger/./incs/logger_utils.h incs/statuses.h incs/shell.h \
   libs/libft/./incs/list.h incs/htabl.h incs/fnv.h incs/longlong.h \
   incs/termcaps/termcaps.h incs/termcaps/list_head.h \
@@ -342,8 +342,8 @@ $(DIROBJ)ast_unstack_lexer.o: srcs/parser/build/ast_unstack_lexer.c incs/parser.
   libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h incs/i18n.h \
   libs/libft/./incs/get_next_line.h incs/builtins/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
-		@printf "compiling ./srcs/parser/build/ast_unstack_lexer.c\n"
-		@$(CC) -c ./srcs/parser/build/ast_unstack_lexer.c -o ./.objs/ast_unstack_lexer.o $(CPPFLAGS) $(CFLAGS) 
+		@printf "compiling ./srcs/parser/build/job_build_unstack_lexer.c\n"
+		@$(CC) -c ./srcs/parser/build/job_build_unstack_lexer.c -o ./.objs/job_build_unstack_lexer.o $(CPPFLAGS) $(CFLAGS) 
 
 $(DIROBJ)parser_process_lexer.o: srcs/parser/lexer/parser_process_lexer.c \
   incs/shell.h libs/libft/./incs/list.h incs/htabl.h incs/fnv.h \
