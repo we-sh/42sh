@@ -214,7 +214,7 @@ t_job *s_job_create(char **array, char const *input, char **envp)
 		log_debug("cmd {%s} left {%s}", cmd, left);
 
 		p_array = ft_strsplit(cmd, ' ');
-		if ((p_node = list_node__proc_alloc(cmd, p_array, envp)) == NULL)
+		if ((p_node = list_node__proc_alloc(j, cmd, p_array, envp)) == NULL)
 			return (NULL);
 		if (left)
 		{
