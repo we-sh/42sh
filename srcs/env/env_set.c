@@ -5,6 +5,7 @@ static	int		s_concat_variable(char **str, int pos, char *key, char *value)
 	char		*tmp;
 	char		*tmp2;
 
+	free(str[pos]);
 	if ((tmp = ft_strjoin(key, "=")) == NULL)
 		return (ST_MALLOC);
 	if (!value)
