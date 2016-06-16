@@ -14,7 +14,7 @@ char		*env_get(char **envp, char *key)
 		if (ft_strncmp(envp[i], key, size) == 0)
 		{
 			if (envp[i][size] == '=')
-				break;
+				break ;
 		}
 		i++;
 	}
