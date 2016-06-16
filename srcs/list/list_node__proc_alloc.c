@@ -10,7 +10,7 @@ static int		s_argc(char **argv)
 	return (i);
 }
 
-t_list			*list_node__proc_alloc(char *command, char **argv, char **envp)
+t_list			*list_node__proc_alloc(t_job *j, char *command, char **argv, char **envp)
 {
 	t_proc		*p;
 
@@ -33,5 +33,6 @@ t_list			*list_node__proc_alloc(char *command, char **argv, char **envp)
 	p->bltin_char = NULL;
 	p->bltin_status = ST_OK;
 	INIT_LIST_HEAD(&p->bltin_opt_head);
+	p->j = (void *)j;
 	return (&p->list_proc);
 }
