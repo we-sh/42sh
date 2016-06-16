@@ -37,6 +37,7 @@ typedef struct		e_sh
 	t_termcaps_context	termcaps_context;
 	int					last_exit_status;
 	t_list				opt_head;
+	char				*pwd;
 }					t_sh;
 
 # include "libft.h"

@@ -25,6 +25,8 @@ SRCS		=	\
 				environment_init.c				\
 				builtins/bg/builtin_bg.c		\
 				builtins/cd/builtin_cd.c		\
+				builtins/cd/builtin_cd_chk_path.c\
+				builtins/cd/builtin_cd_remove_dotdot.c\
 				builtins/exit/builtin_exit.c	\
 				builtins/fg/builtin_fg.c		\
 				builtins/help/builtin_help.c	\
@@ -348,10 +350,41 @@ $(DIROBJ)builtin_cd.o: srcs/builtins/cd/builtin_cd.c incs/shell.h \
   libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
   incs/statuses.h incs/option.h incs/job.h libs/libcaps/./incs/caps.h \
   libs/libcaps/./incs/logger.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtins/builtin.h
+  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtins/builtin.h \
+  incs/builtins/builtin_cd.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/builtins/cd/builtin_cd.c\n"
 		@$(CC) -c ./srcs/builtins/cd/builtin_cd.c -o ./.objs/builtin_cd.o $(CPPFLAGS) $(CFLAGS) 
+
+$(DIROBJ)builtin_cd_chk_path.o: srcs/builtins/cd/builtin_cd_chk_path.c \
+  incs/shell.h libs/libft/./incs/list.h incs/htabl.h incs/fnv.h \
+  incs/longlong.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
+  libs/libcaps/./incs/types.h incs/termcaps/log.h \
+  incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
+  libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h \
+  libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
+  incs/statuses.h incs/option.h incs/job.h libs/libcaps/./incs/caps.h \
+  libs/libcaps/./incs/logger.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtins/builtin.h \
+  incs/builtins/builtin_cd.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/builtins/cd/builtin_cd_chk_path.c\n"
+		@$(CC) -c ./srcs/builtins/cd/builtin_cd_chk_path.c -o ./.objs/builtin_cd_chk_path.o $(CPPFLAGS) $(CFLAGS) 
+
+$(DIROBJ)builtin_cd_remove_dotdot.o: srcs/builtins/cd/builtin_cd_remove_dotdot.c \
+  incs/shell.h libs/libft/./incs/list.h incs/htabl.h incs/fnv.h \
+  incs/longlong.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
+  libs/libcaps/./incs/types.h incs/termcaps/log.h \
+  incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
+  libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h \
+  libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
+  incs/statuses.h incs/option.h incs/job.h libs/libcaps/./incs/caps.h \
+  libs/libcaps/./incs/logger.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtins/builtin.h \
+  incs/builtins/builtin_cd.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/builtins/cd/builtin_cd_remove_dotdot.c\n"
+		@$(CC) -c ./srcs/builtins/cd/builtin_cd_remove_dotdot.c -o ./.objs/builtin_cd_remove_dotdot.o $(CPPFLAGS) $(CFLAGS) 
 
 $(DIROBJ)builtin_exit.o: srcs/builtins/exit/builtin_exit.c incs/shell.h \
   libs/libft/./incs/list.h incs/htabl.h incs/fnv.h incs/longlong.h \

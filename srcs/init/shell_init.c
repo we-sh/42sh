@@ -43,6 +43,10 @@ int		shell_init(t_sh *sh, char *envp[])
 	/* env */
 	environment_init(sh, envp);
 	path_init_hasht(sh->envp);
+
+	if ((sh->pwd = getcwd(NULL, 0)) == NULL)
+		return (ST_MALLOC);
+
 	if ((ret = shell_language(LANG_EN)) < 0)
 		return (-ret);
 	if ((ret = s_shell_fd_init(sh)) != ST_OK)
@@ -50,7 +54,7 @@ int		shell_init(t_sh *sh, char *envp[])
 		log_error("s_shell_fd_init() failed");
 		return (ret);
 	}
-	if (sh->is_interactive == true)
+	if (sh->is_interactive == 1)
 	{
 		/* jobs */
 		while (tcgetpgrp(STDIN_FILENO) != (sh->pgid = getpgrp()))
