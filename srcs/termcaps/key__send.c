@@ -34,24 +34,71 @@ static int		s_bufferize_input(t_termcaps_context *context)
 	return (1);
 }
 
+static int		s_is_quoting(t_termcaps_context *context)
+{
+	t_list_node_cmd *node_cmd;
+	t_list *pos;
+
+
+	log_info("INSIDE KEY SEND");
+
+	LIST_FOREACH(&context->command_line.list, pos)
+	{
+		node_cmd = CONTAINER_OF(pos, t_list_node_cmd, list);
+		if (node_cmd->character[0] == '\'')
+		{
+			return (1);
+		}
+		log_info("value 1 : %c", node_cmd->character[0]);
+	}
+	return (0);
+}
+
 int				key__send(t_termcaps_context *context)
 {
 	if (context->state == STATE_REGULAR)
 	{
 		//GAB TODO
-		// if (!quoting_ok(&context->command_line))
-		// {
-		// 	t_termcaps_context	termcaps_context;
 
-		// 	termcaps_initialize(context->fd, "> ", &termcaps_context);
-		// 	while (!quoting_ok(&context->command_line))
-		// 	{	
-		// 		char *buffer = termcaps_read_input(&termcaps_context);
-		// 		string_to_command_line(&context->command_line);
-		// 		free(buffer);
-		// 	}
-		// 	termcaps_finalize(&termcaps_context);
-		// }
+
+
+
+		if (s_is_quoting(context) == 1)
+			log_info("quoting !!!!!!!!!!");
+		else
+			log_info(" NO quoting !!!!!!!!!!");
+		// log_info("value 1 : %s", &context->command_line);
+		// log_info("value 2 : %zu", &context->command_line.size);
+		// log_info("value 2 : %zu", &context->command_line.offset);
+		// log_info("diff : %zu", (&context->command_line.size - &context->command_line.offset));
+
+		if (s_is_quoting(context) == 1)
+		{
+			t_termcaps_context	termcaps_context;
+
+			termcaps_display_command_line(context->fd, &context->command_line);
+			caps__print_cap(CAPS__DOWN, 0);
+			termcaps_initialize(context->fd, "> ", &termcaps_context);
+			while (s_is_quoting(context) == 1)
+			{	
+ 		//	write(context->fd, "\n", 1);
+				context->buffer = termcaps_read_input(&termcaps_context);
+/*				termcaps_string_to_command_line(context->prompt.size,
+  												context->prompt.bytes,
+  												&context->command_line);
+				string_to_command_line(&context->command_line);
+*/			log_info(" %s", &context->buffer);
+		//		&context->buffer
+				free(context->buffer);
+			}
+ 			termcaps_finalize(context);
+		}
+
+
+
+
+
+
 		if (!termcaps_display_command_line(context->fd, &context->command_line))
 		{
 			log_error("minishell__display_command_line() failed");

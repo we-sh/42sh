@@ -20,10 +20,10 @@ static	int	s_path_control_access(char **cmd, char **envp, int ret)
 	if (ret == ST_CMD_NOT_FOUND &&
 		ft_strncmp(*cmd, "/", 1) != 0 && ft_strncmp(*cmd, ".", 1) != 0)
 	{
-		if ((ret = path_commande_not_found_in_hasht(envp, cmd)) == ST_OK)
-			return (ST_OK);
+		if ((ret = path_commande_not_found_in_hasht(envp, cmd)) != ST_OK)
+			return (ret);
 	}
-	if (access(*cmd, F_OK) == -1)
+	if (access(*cmd, F_OK) == -1 && ret != ST_OK)
 	{
 		display_status(ST_CMD_NOT_FOUND, *cmd, NULL);
 		return (ST_OK);

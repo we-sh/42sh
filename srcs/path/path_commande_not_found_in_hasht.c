@@ -7,7 +7,7 @@ static int	s_path_cmd_match_folder(char **cmd, char *dirname)
 	tmpcmd = NULL;
 	if (path_get_new_cmd(&tmpcmd, *cmd, dirname) == ST_OK)
 	{
-		if (access(tmpcmd, X_OK) != -1)
+		if (access(tmpcmd, F_OK) != -1)
 		{
 			path_add_folder_content_to_hasht(*cmd, dirname);
 			if (*cmd)
