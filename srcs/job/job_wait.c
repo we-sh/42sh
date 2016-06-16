@@ -5,6 +5,7 @@
 ** marked as `stopped` or `completed`.
 */
 
+
 static void	s_proc_status(t_job *j, t_proc *p)
 {
 	int		status;
