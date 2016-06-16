@@ -21,7 +21,11 @@ int	proc_update_status(pid_t pid, int status)
 		p->exit_status = WEXITSTATUS(status);
 		log_debug("proc %d exited with %d", pid, p->exit_status);
 		if (WIFSTOPPED(status))
+		{
 			p->stopped = 1;
+			((t_job *)p->j)->foreground = 0;
+			((t_job *)p->j)->notified = 0;
+		}
 		else
 		{
 			p->stopped = 0;
