@@ -24,8 +24,7 @@ static int	parser_process(t_sh *sh, t_parser *parser)
 	s_job_list_set_default(&j);
 	if ((st = parser_process_lexer(parser->lexer, parser->in)) != ST_OK)
 		return (st);
-	if ((st = parser_process_build(&g_current_jobs_list_head,
-					parser->lexer, sh->envp)) != ST_OK)
+	if ((st = parser_process_build(parser->lexer, sh->envp)) != ST_OK)
 		return (st);
 
 	// TODO move it
