@@ -93,6 +93,11 @@ static t_job	*job_build_unstack_job_from_lexer(t_lexer *lexer, int *i, char **en
 			(*i)++;
 			break;
 		}
+		else if (lexer->tokens[*i].code == TC_PIPE)
+		{
+			log_info("pipe detected");
+			(*i)++;
+		}
 		log_info("remaining tokens : %d / %d", lexer->size - *i, lexer->size);
 	}
 	return (j);

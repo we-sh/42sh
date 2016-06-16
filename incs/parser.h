@@ -127,6 +127,7 @@ int	token_parse_none(t_proc *proc, t_lexer *lexer, int *i);
 int	token_parse_semi(t_proc *proc, t_lexer *lexer, int *i);
 int	token_parse_dbl_and(t_proc *proc, t_lexer *lexer, int *i);
 int	token_parse_dbl_or(t_proc *proc, t_lexer *lexer, int *i);
+int	token_parse_pipe(t_proc *proc, t_lexer *lexer, int *i);
 
 /*
 ** The array representing each tokens definitions.
@@ -144,7 +145,7 @@ static const t_token g_tokens[] = {
 	{";",	1,	TT_JOBS,		TC_SEMI,			token_parse_semi},
 	{">",	1,	TT_REDIR,		TC_CHEV_RIGHT,		token_parse_none},
 	{"<",	1,	TT_REDIR,		TC_CHEV_LEFT,		token_parse_none},
-	{"|",	1,	TT_REDIR,		TC_PIPE,			token_parse_none},
+	{"|",	1,	TT_REDIR,		TC_PIPE,			token_parse_pipe},
 	{"&",	1,	TT_SPECIAL,		TC_AND,				token_parse_none},
 	{"\\",	1,	TT_ESCAPE,		TC_BACKSLASH,		token_parse_none},
 	{"\"",	1,	TT_INHIBITOR,	TC_DBL_QUOTE,		token_parse_none},
