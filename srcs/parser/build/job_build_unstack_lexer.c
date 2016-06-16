@@ -81,7 +81,7 @@ static t_proc	*ast_unstack_proc_from_lexer(t_lexer *lexer, int *i, char **envp)
 	return (proc);
 }
 
-static t_job	*ast_unstack_job_from_lexer(t_lexer *lexer, int *i, char **envp)
+static t_job	*job_build_unstack_job_from_lexer(t_lexer *lexer, int *i, char **envp)
 {
 	t_job	*job;
 	t_proc	*proc;
@@ -109,26 +109,23 @@ static t_job	*ast_unstack_job_from_lexer(t_lexer *lexer, int *i, char **envp)
 }
 
 /*
-** For each token of the lexer, apply a function and build an AST.
+** For each token of the lexer, apply a function and build a 'job-tree' into the
+** global variable g_current_jobs_list_head.
 */
 
-int				job_build_unstack_lexer(t_list *job_head, t_lexer *lexer, char **envp)
+int				job_build_unstack_lexer(t_lexer *lexer, char **envp)
 {
 	int		i;
-	t_job	*job;
+	t_job	*j;
 
 	i = 0;
-	// do not re-init (see init list head)
-	//INIT_LIST_HEAD(job_head);
 	while (i < lexer->size)
 	{
 		log_info("remaining tokens : %d / %d", lexer->size - i, lexer->size);
-		if (!(job = ast_unstack_job_from_lexer(lexer, &i, envp)))
-			return (-1);
-		//list_push_back(&job->list_job, job_head);
-		list_push_back(&job->list_job, &g_current_jobs_list_head);
+		if (!(j = job_build_unstack_job_from_lexer(lexer, &i, envp)))
+			return (ST_PARSER);
+		list_push_back(&j->list_job, &g_current_jobs_list_head);
 	}
-	(void)job_head;
-	//log_info("job list size : %zu", list_size(job_head));
+	log_success("parsing lexer into %zu jobs", list_size(&g_current_jobs_list_head));
 	return (0);
 }
