@@ -60,11 +60,13 @@ static int		s_termcaps_read_loop(t_termcaps_context *context)
 			// place it here because we do not want to check for background statuses
 		{
 			// on each key down event (but only when nothing is typed)
-			job_background_update_status();
-			caps__delete_line(context->command_line.offset);
-			ASSERT(termcaps_display_command_line(context->fd, &context->command_line));
-			caps__cursor_to_offset(context->command_line.offset,
-									context->command_line.size);
+			if (job_background_update_status() > 0)
+			{
+				caps__delete_line(context->command_line.offset);
+				ASSERT(termcaps_display_command_line(context->fd, &context->command_line));
+				caps__cursor_to_offset(context->command_line.offset,
+										context->command_line.size);
+			}
 			continue ;
 		}
 		ASSERT(input_buffer_size == 1);
