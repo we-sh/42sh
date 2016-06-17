@@ -2,9 +2,13 @@
 # define BUILTIN_CD_H
 
 # include "builtin.h"
+# include <sys/stat.h>
+
+typedef struct stat			t_stat;
 
 int							builtin_cd_chk_path(char **path, int follow_lnk);
-char						*builtin_cd_remove_dotdot(char *path);
+char						*builtin_cd_rm_dotdot(char *path);
+int							builtin_cd_readlink(char const *path, char **buf);
 
 static t_option				g_builtin_cd_option_p2 = {
 	.name = "P",

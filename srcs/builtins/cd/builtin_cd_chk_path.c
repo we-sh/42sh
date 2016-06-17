@@ -1,15 +1,11 @@
 #include "shell.h"
 #include "builtin_cd.h"
 
-// todo
-#include <sys/stat.h>
-typedef struct stat					t_stat;
-
-static int			builtin_cd_checkpath_element(char *path, char **t,
+static int			s_builtin_cd_checkpath_element(char *path, char **t,
 						int i, int follow_lnk)
 {
-	t_stat				stat;
-	int					status;
+	t_stat			stat;
+	int				status;
 
 	if (i > 0)
 		path = ft_strcat(path, "/");
@@ -35,23 +31,12 @@ static int			builtin_cd_checkpath_element(char *path, char **t,
 	return (status);
 }
 
-static int			do_not_follow_links(char **path, char **path_orig, char ***t,
-						int i)
+static int			s_do_not_follow_links(char **path, char **path_orig,
+						char ***t, int i)
 {
-	char			buf[PATH_MAX];
-	ssize_t			s;
-
-	if ((s = readlink(*path, buf, PATH_MAX)) == -1)
+	if (builtin_cd_readlink(*path, path_orig) != ST_OK)
 		return (ST_READLINK);
-	buf[s] = '\0';
-	ft_memdel((void **)&(*path_orig));
-	if (buf[0] == '/')
-		*path_orig = ft_strdup(buf);
-	else
-		*path_orig = ft_strjoin3(*path, "/../", buf);
-	if (*path_orig == NULL)
-		return (ST_MALLOC);
-	if ((*path_orig = builtin_cd_remove_dotdot(*path_orig)) == NULL)
+	if ((*path_orig = builtin_cd_rm_dotdot(*path_orig)) == NULL)
 		return (ST_MALLOC);
 	ft_memdel((void **)&(*path));
 	i++;
@@ -67,17 +52,17 @@ static int			do_not_follow_links(char **path, char **path_orig, char ***t,
 	return (builtin_cd_chk_path(path_orig, 1));
 }
 
-int			builtin_cd_chk_path(char **path_orig, int follow_lnk)
+int					builtin_cd_chk_path(char **path_orig, int follow_lnk)
 {
-	char				*path;
-	char				**t;
-	int					i;
-	int					status;
+	char			*path;
+	char			**t;
+	int				i;
+	int				status;
 
 	if (!(t = ft_strsplit(*path_orig, '/')))
-		exit(ST_MALLOC);
+		return (ST_MALLOC);
 	if (!(path = ft_strnew(ft_strlen(*path_orig))))
-		exit(ST_MALLOC);
+		return (ST_MALLOC);
 	if (*path_orig[0] == '/')
 	{
 		path[0] = '/';
@@ -88,11 +73,10 @@ int			builtin_cd_chk_path(char **path_orig, int follow_lnk)
 	status = ST_OK;
 	i = -1;
 	while (status == ST_OK && t[++i] != NULL)
-		status = builtin_cd_checkpath_element(path, t, i, follow_lnk);
+		status = s_builtin_cd_checkpath_element(path, t, i, follow_lnk);
 	if (status == ST_ISLNK)
-		return (do_not_follow_links(&path, path_orig, &t, i));
+		return (s_do_not_follow_links(&path, path_orig, &t, i));
 	ft_memdel((void **)&path);
 	ft_memdel_tab((void ***)&t);
-	log_debug("leaving builtin_cd_chk_path");
 	return (status);
 }
