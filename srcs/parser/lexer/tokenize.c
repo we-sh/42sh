@@ -10,7 +10,6 @@ static void		s_lexer_add(t_lexer *lexer, const char *str, t_token token)
 {
 	t_lexer_token item;
 
-
 	ft_strncpy(item.content, str, token.len);
 	item.content[token.len] = '\0';
 	item.len = token.len;
@@ -120,6 +119,7 @@ int				tokenize(const char *s, t_lexer *lexer)
 		token_found = s_token_recognizer(&s[i]);
 		if (s_is_escaped(token_found))
 		{
+			s_lexer_add(lexer, &s[i], *token_found);
 			s_bufferize(&s[++i], 1);
 			i++;
 			continue ;

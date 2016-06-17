@@ -138,6 +138,9 @@ int	token_parse_dbl_chev_right(t_proc *proc, t_lexer *lexer, int *i);
 char	*expand(t_proc *p, t_lexer_token *token, t_lexer_token *prev_token);
 char	*expand_tilde(t_proc *p, char *buf);
 
+// INHIBITORS
+int	token_parse_inhib(t_proc *proc, t_lexer *lexer, int *i);
+
 /*
 ** The array representing each tokens definitions.
 ** /!\ WARNING: you should put the longest tokens first. /!\
@@ -157,9 +160,9 @@ static const t_token g_tokens[] = {
 	{"<",	1,	TT_REDIR,		TC_CHEV_LEFT,		token_parse_chev_left},
 	{"|",	1,	TT_REDIR,		TC_PIPE,			token_parse_pipe},
 	{"&",	1,	TT_SPECIAL,		TC_AND,				token_parse_none},
-	{"\\",	1,	TT_ESCAPE,		TC_BACKSLASH,		token_parse_none},
-	{"\"",	1,	TT_INHIBITOR,	TC_DBL_QUOTE,		token_parse_none},
-	{"'",	1,	TT_INHIBITOR,	TC_QUOTE,			token_parse_none},
+	{"\\",	1,	TT_INHIBITOR,	TC_BACKSLASH,		token_parse_inhib},
+	{"\"",	1,	TT_INHIBITOR,	TC_DBL_QUOTE,		token_parse_inhib},
+	{"'",	1,	TT_INHIBITOR,	TC_QUOTE,			token_parse_inhib},
 	{" ",	1,	TT_SEPARATOR,	TC_SPACE,			token_parse_none},
 	{"\t",	1,	TT_SEPARATOR,	TC_TAB,				token_parse_none},
 	{"\n",	1,	TT_SEPARATOR,	TC_NEWLINE,			token_parse_none},
