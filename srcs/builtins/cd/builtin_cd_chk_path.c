@@ -7,6 +7,7 @@ static int			s_builtin_cd_checkpath_element(char *path, char **t,
 	t_stat			stat;
 	int				status;
 
+	errno = 0;
 	if (i > 0)
 		path = ft_strcat(path, "/");
 	path = ft_strcat(path, t[i]);
@@ -17,9 +18,8 @@ static int			s_builtin_cd_checkpath_element(char *path, char **t,
 		status = ST_EACCES;
 	if (lstat(path, &stat) == 0)
 	{
-		if (S_ISLNK(stat.st_mode)
-			&& (status == ST_ENOENT || follow_lnk != 0))
-			return (follow_lnk != 0 ? ST_ISLNK : ST_ELOOP);
+		if (S_ISLNK(stat.st_mode) && (status == ST_ENOENT || follow_lnk != 0))
+			return (errno == ELOOP ? ST_ELOOP : ST_ISLNK);
 		if (!S_ISLNK(stat.st_mode) && status != ST_OK)
 		{
 			if (!S_ISDIR(stat.st_mode))
@@ -34,8 +34,10 @@ static int			s_builtin_cd_checkpath_element(char *path, char **t,
 static int			s_do_not_follow_links(char **path, char **path_orig,
 						char ***t, int i)
 {
-	if (builtin_cd_readlink(*path, path_orig) != ST_OK)
-		return (ST_READLINK);
+	int				ret;
+
+	if ((ret = builtin_cd_readlink(*path, path_orig)) != ST_OK)
+		return (ret);
 	if ((*path_orig = builtin_cd_rm_dotdot(*path_orig)) == NULL)
 		return (ST_MALLOC);
 	ft_memdel((void **)&(*path));
