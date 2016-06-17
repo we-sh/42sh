@@ -30,11 +30,9 @@ int	token_parse_chev_right(t_proc *proc, t_lexer *lexer, int *i)
 			log_error("bad file descriptor");
 		(*i)++;
 	}
-	log_debug("%d", left_fd);
+	log_debug("left fd %d", left_fd);
+
 	(*i)++;
-
-	
-
 
 	if (lexer->tokens[*i].type == TT_SEPARATOR)
 		(*i)++;
@@ -55,7 +53,19 @@ int	token_parse_chev_right(t_proc *proc, t_lexer *lexer, int *i)
 	
 	log_debug("fd to redirect : %d", right_fd);
 
-	proc->stdout = right_fd;
+
+	if (left_fd == 0)
+		proc->stdin = right_fd;
+	if (left_fd == 1)
+		proc->stdout = right_fd;
+	if (left_fd == 2)
+	{
+		proc->stderr = right_fd;
+	}
+
+
+
+
 
 	(*i)++;
 
