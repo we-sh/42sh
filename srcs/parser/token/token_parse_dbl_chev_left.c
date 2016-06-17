@@ -1,8 +1,8 @@
 #include "parser.h"
 
-int	token_parse_chev_right(t_proc *proc, t_lexer *lexer, int *i)
+int	token_parse_dbl_chev_left(t_proc *proc, t_lexer *lexer, int *i)
 {
-	log_trace("entering parsing token %-12s '>'", "TT_REDIR");
+	log_trace("entering parsing token %-12s '<<'", "TT_REDIR");
 
 	char *left = lexer->tokens[*i].content;
 	(*i)++;

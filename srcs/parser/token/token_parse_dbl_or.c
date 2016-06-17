@@ -5,10 +5,10 @@
 */
 int	token_parse_dbl_or(t_proc *proc, t_lexer *lexer, int *i)
 {
+	log_trace("entering parsing token %-12s '||'", "TT_JOBS");
 	(void)proc;
 	(void)lexer;
 	(void)i;
-	log_trace("entering token parsing of ||");
 //	job->wait = F_WAIT_ERROR;
 //	(void)token;
 	return (0);

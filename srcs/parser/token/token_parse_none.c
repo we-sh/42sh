@@ -10,7 +10,7 @@
 
 int	token_parse_none(t_proc *proc, t_lexer *lexer, int *i)
 {
-	log_trace("entering token_parse_none");
+	log_trace("entering parsing token %-12s", "TT_NONE");
 
 	char	*tmp;
 
