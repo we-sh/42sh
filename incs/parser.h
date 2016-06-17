@@ -122,12 +122,18 @@ int	parser_process_build(t_lexer *lexer, char **envp);
 ** Tokenizer/parser definition.
 */
 
-/* per token parsing functions */
 int	token_parse_none(t_proc *proc, t_lexer *lexer, int *i);
+
+// JOBS
 int	token_parse_semi(t_proc *proc, t_lexer *lexer, int *i);
 int	token_parse_dbl_and(t_proc *proc, t_lexer *lexer, int *i);
 int	token_parse_dbl_or(t_proc *proc, t_lexer *lexer, int *i);
+
+// PIPE
 int	token_parse_pipe(t_proc *proc, t_lexer *lexer, int *i);
+
+// REDIR
+int	token_parse_chev_right(t_proc *proc, t_lexer *lexer, int *i);
 
 /*
 ** The array representing each tokens definitions.
@@ -143,7 +149,7 @@ static const t_token g_tokens[] = {
 	{"&&",	2,	TT_JOBS,		TC_DBL_AND,			token_parse_dbl_and},
 	{";;",	2,	TT_ERROR,		TC_DBL_SEMI,		token_parse_none},
 	{";",	1,	TT_JOBS,		TC_SEMI,			token_parse_semi},
-	{">",	1,	TT_REDIR,		TC_CHEV_RIGHT,		token_parse_none},
+	{">",	1,	TT_REDIR,		TC_CHEV_RIGHT,		token_parse_chev_right},
 	{"<",	1,	TT_REDIR,		TC_CHEV_LEFT,		token_parse_none},
 	{"|",	1,	TT_REDIR,		TC_PIPE,			token_parse_pipe},
 	{"&",	1,	TT_SPECIAL,		TC_AND,				token_parse_none},
