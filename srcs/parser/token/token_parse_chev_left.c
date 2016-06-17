@@ -1,5 +1,9 @@
 #include "parser.h"
 
+/*
+** Case : cat < README
+*/
+
 int	token_parse_chev_left(t_proc *proc, t_lexer *lexer, int *i)
 {
 	log_trace("entering parsing token %-12s '<'", "TT_REDIR");
