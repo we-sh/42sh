@@ -44,6 +44,21 @@ static int	parser_process(t_sh *sh, t_parser *parser)
 	return (ST_OK);
 }
 
+static void	s_parser_callback(t_parser **parser)
+{
+	if (!(*parser))
+		return ;
+	if ((*parser)->in)
+		ft_strdel(&((*parser)->in));
+	if ((*parser)->lexer)
+	{
+		free((*parser)->lexer);
+		(*parser)->lexer = NULL;
+	}
+	free(*parser);
+	*parser = NULL;
+}
+
 /*
 ** Entry point of the parser.
 ** This function aims to build a list of shell jobs according to a string.
@@ -64,7 +79,6 @@ int			parser(t_sh *sh, const char *in)
 
 	st = parser_process(sh, parser);
 	
-	log_warn("run parser callback before exit");
-
+	s_parser_callback(&parser);
 	return (st);
 }
