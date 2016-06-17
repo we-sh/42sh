@@ -93,16 +93,7 @@ int			parser_process_lexer(t_lexer *lexer, const char *in);
 t_token		*token_list(void);
 int			tokenize(const char *s, t_lexer *lexer);
 
-/*
-** AST definition.
-*/
-
-int	ast_new(t_list *ast_head);
-int	ast_job_new(t_node_job **job);
-int	ast_add_ast_job(t_list *ast_head, t_node_job *job);
 int	job_build_unstack_lexer(t_lexer *lexer, char **envp);
-
-int	ast_to_jobs(t_list *ast_head, t_job *jobs, t_sh *sh);
 
 /*
 ** Parser definition.
