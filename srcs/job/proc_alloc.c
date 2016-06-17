@@ -11,6 +11,15 @@ t_proc	*proc_alloc(char **envp)
 	if (!(p = ft_memalloc(sizeof(t_proc))))
 		return (NULL);
 	p->command = NULL;
+	p->argv = NULL;
+
+	// todo: is that acceptable?
+	// waiting for a process to not be launched when a command is empty
+	// then we can remove this allocation
+	// (@jgigault)
+	p->argv = (char **)malloc(sizeof(char *) * 1);
+	p->argv[0] = NULL;
+
 	if ((p->envp = ft_array_dup(envp)) == NULL)
 		return (NULL);
 	p->pid = 0;

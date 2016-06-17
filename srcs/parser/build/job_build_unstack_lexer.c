@@ -41,8 +41,8 @@ static t_proc	*ast_unstack_proc_from_lexer(t_lexer *lexer, int *i, char **envp)
 		(*i)++;
 	}
 	// replace with array push
-	if (!(p->argv = ft_strsplit(p->command, ' ')))
-		return (NULL);
+	//if (!(p->argv = ft_strsplit(p->command, ' ')))
+	//	return (NULL);
 	p->argc = s_argc(p->argv);
 	return (p);
 }
