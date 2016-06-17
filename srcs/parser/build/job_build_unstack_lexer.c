@@ -44,13 +44,12 @@ static t_proc	*ast_unstack_proc_from_lexer(t_lexer *lexer, int *i, char **envp)
 	while (*i < lexer->size)
 	{
 		log_debug("unstacking token : %d / %d : \"%s\"", *i, lexer->size, lexer->tokens[*i].content);
-
-		// detect a TT_NONE, followed by a TT_REDIR (eg 2<...)
-		if (lexer->tokens[*i].type == TT_NONE && *i + 1 < lexer->size && lexer->tokens[(*i) + 1].type == TT_REDIR)
+		if (lexer->tokens[*i].code == TC_NONE && *i + 1 < lexer->size && lexer->tokens[*i + 1].type == TT_REDIR)
 		{
+			log_debug("entering complex redirection");
 			ret = g_tokens[lexer->tokens[(*i) + 1].code].parse(p, lexer, i);
 		}
-		else // TT_NONE standard (... ls ...)
+		else // TT_* standard (... ls ...)
 		{
 			ret = g_tokens[lexer->tokens[*i].code].parse(p, lexer, i);
 		}
