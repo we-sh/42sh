@@ -10,33 +10,14 @@ static int		s_argc(char **argv)
 	return (i);
 }
 
-t_proc	*proc_alloc(char **envp)
-{
-	t_proc	*p;
-
-	if (!(p = ft_memalloc(sizeof(t_proc))))
-		return (NULL);
-	p->command = NULL;
-	if ((p->envp = ft_array_dup(envp)) == NULL)
-		return (NULL);
-	p->pid = 0;
-	p->completed = 0;
-	p->stopped = 0;
-	p->signaled = 0;
-	p->stdin = STDIN_FILENO;
-	p->stdout = STDOUT_FILENO;
-	p->stderr = STDERR_FILENO;
-	p->exit_status = EXIT_SUCCESS;
-	p->bltin_char = NULL;
-	p->bltin_status = ST_OK;
-	INIT_LIST_HEAD(&p->bltin_opt_head);
-	return (p);
-}
+/*
+** Unstack processus from the stack of tokens.
+*/
 
 static t_proc	*ast_unstack_proc_from_lexer(t_lexer *lexer, int *i, char **envp)
 {
+	int		st;
 	t_proc	*p;
-	int		ret;
 
 	if ((p = proc_alloc(envp)) == NULL)
 		return (NULL);
@@ -47,11 +28,11 @@ static t_proc	*ast_unstack_proc_from_lexer(t_lexer *lexer, int *i, char **envp)
 		if (lexer->tokens[*i].code == TC_NONE && *i + 1 < lexer->size && lexer->tokens[*i + 1].type == TT_REDIR)
 		{
 			log_debug("entering complex redirection");
-			ret = g_tokens[lexer->tokens[(*i) + 1].code].parse(p, lexer, i);
+			st = g_tokens[lexer->tokens[(*i) + 1].code].parse(p, lexer, i);
 		}
 		else // TT_* standard (... ls ...)
 		{
-			ret = g_tokens[lexer->tokens[*i].code].parse(p, lexer, i);
+			st = g_tokens[lexer->tokens[*i].code].parse(p, lexer, i);
 		}
 
 		// detect and of job or process (see job_build_unstack_job_from_lexer)
@@ -59,7 +40,7 @@ static t_proc	*ast_unstack_proc_from_lexer(t_lexer *lexer, int *i, char **envp)
 		{
 			break;
 		}
-		if (ret != ST_OK)
+		if (st != ST_OK)
 		{
 			log_error("error on token parsing");
 			return (NULL);
