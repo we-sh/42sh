@@ -30,7 +30,7 @@ int			env_update_from_cmd_line(char ***argv, int *argc, char ***envp)
 	{
 		if (envp != NULL)
 			if ((ret = env_set(envp, (*argv)[0], value)) != ST_OK)
-				return (ST_MALLOC);
+				return (ret);
 		*argc -= 1;
 		ft_array_pop(argv, 0, 1);
 	}
