@@ -49,6 +49,7 @@ SRCS		=	\
 				init/shell_init.c				\
 				init/shell_language.c			\
 				job/job_alloc.c					\
+				job/proc_alloc.c				\
 				job/job_available_id.c			\
 				job/job_background.c			\
 				job/job_background_nth.c		\
@@ -887,6 +888,20 @@ $(DIROBJ)job_alloc.o: srcs/job/job_alloc.c incs/shell.h libs/libft/./incs/list.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/job/job_alloc.c\n"
 		@$(CC) -c ./srcs/job/job_alloc.c -o ./.objs/job_alloc.o $(CPPFLAGS) $(CFLAGS) 
+
+$(DIROBJ)proc_alloc.o: srcs/job/proc_alloc.c incs/shell.h libs/libft/./incs/list.h \
+  incs/htabl.h incs/fnv.h incs/longlong.h incs/termcaps/termcaps.h \
+  incs/termcaps/list_head.h libs/libcaps/./incs/types.h \
+  incs/termcaps/log.h incs/termcaps/termcaps_struct.h \
+  incs/termcaps/key.h libs/libft/./incs/libft.h \
+  libs/libft/./incs/libftprintf.h libs/logger/./incs/logger.h \
+  libs/logger/./incs/logger_utils.h incs/statuses.h incs/option.h \
+  incs/job.h libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/i18n.h libs/libft/./incs/get_next_line.h incs/parser.h \
+  incs/builtins/builtin.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/job/proc_alloc.c\n"
+		@$(CC) -c ./srcs/job/proc_alloc.c -o ./.objs/proc_alloc.o $(CPPFLAGS) $(CFLAGS) 
 
 $(DIROBJ)job_available_id.o: srcs/job/job_available_id.c incs/shell.h \
   libs/libft/./incs/list.h incs/htabl.h incs/fnv.h incs/longlong.h \
