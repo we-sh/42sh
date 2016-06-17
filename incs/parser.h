@@ -153,6 +153,7 @@ static const t_token g_tokens[] = {
 	{";;",	2,	TT_ERROR,		TC_DBL_SEMI,		token_parse_none},
 	{">|",	2,	TT_REDIR,		TC_CHEV_RIGHT,		token_parse_chev_right},
 	{";",	1,	TT_JOBS,		TC_SEMI,			token_parse_semi},
+	{">|",	1,	TT_REDIR,		TC_CHEV_RIGHT,		token_parse_chev_right},
 	{">",	1,	TT_REDIR,		TC_CHEV_RIGHT,		token_parse_chev_right},
 	{"<",	1,	TT_REDIR,		TC_CHEV_LEFT,		token_parse_chev_left},
 	{"|",	1,	TT_REDIR,		TC_PIPE,			token_parse_pipe},
