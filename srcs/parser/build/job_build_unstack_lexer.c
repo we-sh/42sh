@@ -72,6 +72,10 @@ static t_proc	*ast_unstack_proc_from_lexer(t_lexer *lexer, int *i, char **envp)
 	return (p);
 }
 
+/*
+** Unstack the list of tokens to build a list of jobs.
+*/
+
 static t_job	*job_build_unstack_job_from_lexer(t_lexer *lexer, int *i, char **envp)
 {
 	t_job	*j;
@@ -82,22 +86,23 @@ static t_job	*job_build_unstack_job_from_lexer(t_lexer *lexer, int *i, char **en
 	while (*i < lexer->size)
 	{
 		log_info("remaining tokens : %d / %d", lexer->size - *i, lexer->size);
+
 		if (!(p = ast_unstack_proc_from_lexer(lexer, i, envp)))
 			return (NULL);
 		list_push_back(&p->list_proc, &j->proc_head);
 		if (lexer->tokens[*i].type == TT_JOBS)
 		{
-			log_info("end of job encountered, finish");
-			log_warn("TO IMPLEMENT : set flag for ; && or ||");
+			log_info("end of job encountered ('%s')", lexer->tokens[*i].content);
 			(*i)++;
 			break;
 		}
 		else if (lexer->tokens[*i].code == TC_PIPE)
 		{
-			log_info("pipe detected");
+			log_info("end of processus encountered ('%s')", lexer->tokens[*i].content);
 			(*i)++;
 		}
-		log_info("remaining tokens : %d / %d", lexer->size - *i, lexer->size);
+		else
+			log_info("remaining tokens : %d / %d", lexer->size - *i, lexer->size);
 	}
 	return (j);
 }
