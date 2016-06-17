@@ -139,6 +139,7 @@ t_list			*list_node__proc_alloc(char *command, char **argv, char **envp);
 t_proc			*proc_alloc(char **envp);
 
 t_job			*job_alloc(char const *command);
+t_proc			*proc_alloc(char **envp);
 int				job_wait(t_job *j);
 int				job_kill(t_sh *sh, t_job *j, int status);
 void			job_list_clean(int notified);
