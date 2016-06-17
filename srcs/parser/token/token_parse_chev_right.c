@@ -39,7 +39,20 @@ int	token_parse_chev_right(t_proc *proc, t_lexer *lexer, int *i)
 	if (lexer->tokens[*i].type == TT_SEPARATOR)
 		(*i)++;
 
-	right_fd = open(lexer->tokens[*i].content, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (lexer->tokens[*i].code == TC_AND)
+	{
+		(*i)++;
+
+		int right = ft_atoi(lexer->tokens[*i].content);
+		if (right == 0 || right == 1 || right == 2)
+			right_fd = right;
+		else
+			log_error("bad file descriptor");
+
+	}
+	else
+		right_fd = open(lexer->tokens[*i].content, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	
 	log_debug("fd to redirect : %d", right_fd);
 
 	proc->stdout = right_fd;
