@@ -50,6 +50,7 @@ typedef struct		e_sh
 # include "get_next_line.h"
 # include "lexer.h"
 # include "builtin.h"
+# include "quoting.h"
 
 /*
 ** List of current jobs
