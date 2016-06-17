@@ -5,11 +5,11 @@
 */
 int	token_parse_pipe(t_proc *proc, t_lexer *lexer, int *i)
 {
+	log_trace("entering parsing token %-12s '|'", "TT_REDIR");
 	(void)proc;
 	(void)lexer;
 	(void)i;
 	
-	log_trace("entering token parsing of |");
 //	job->wait = F_WAIT_NO;
 //	(void)token;
 	return (0);
