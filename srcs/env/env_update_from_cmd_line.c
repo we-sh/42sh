@@ -21,6 +21,7 @@ static char	*s_get_value_and_remove_equal_sign(char *arg)
 int			env_update_from_cmd_line(char ***argv, int *argc, char ***envp)
 {
 	char	*value;
+	int ret;
 
 	if (!argv)
 		return (ST_OK);
@@ -28,7 +29,7 @@ int			env_update_from_cmd_line(char ***argv, int *argc, char ***envp)
 		&& (value = s_get_value_and_remove_equal_sign((*argv)[0])) != NULL)
 	{
 		if (envp != NULL)
-			if (env_set(envp, (*argv)[0], value) != ST_OK)
+			if ((ret = env_set(envp, (*argv)[0], value)) != ST_OK)
 				return (ST_MALLOC);
 		*argc -= 1;
 		ft_array_pop(argv, 0, 1);
