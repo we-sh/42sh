@@ -45,8 +45,6 @@ static int	s_before(t_sh *sh, t_proc *p)
 				return (ST_MALLOC);
 			p->bltin_status = builtin_cd_chk_path(&p->bltin_char,
 				option_is_set(&p->bltin_opt_head, ST_BLTIN_CD_OPT_P2));
-			if (p->bltin_status == ST_MALLOC || p->bltin_status == ST_READLINK)
-				return (p->bltin_status);
 		}
 	}
 	return (ST_OK);
