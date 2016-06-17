@@ -31,13 +31,14 @@ static int	parser_process(t_sh *sh, t_parser *parser)
 	log_warn("execution loop launched into the parser");
 	LIST_FOREACH(&g_current_jobs_list_head, j_ptr)
 	{
-		int	exit_status;
+		int	st;
 		j = CONTAINER_OF(j_ptr, t_job, list_job);
-		exit_status = job_launch(sh, j);
-		if (exit_status != ST_OK)
+		// check for &&, || or ;
+		st = job_launch(sh, j);
+		if (st != ST_OK)
 		{
-			log_fatal("job launch error: %s", i18n_translate(exit_status));
-			return (exit_status);
+			log_fatal("job launch error: %s", i18n_translate(st));
+			return (st);
 		}
 	}
 	return (ST_OK);
