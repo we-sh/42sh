@@ -62,6 +62,10 @@ enum				e_token_code
 	TC_NONE
 };
 
+/*
+** This structure is used into token recognition
+*/
+
 struct				s_token
 {
 	const char		*op;
@@ -72,7 +76,7 @@ struct				s_token
 };
 
 /*
-** Lexer definitiion.
+** This structure is used to fill lexer.
 */
 
 struct				s_lexer_token
@@ -81,6 +85,7 @@ struct				s_lexer_token
 	size_t			len;
 	t_token_type	type;
 	t_token_code	code;
+	int				(*parse)(t_proc *, t_lexer *, int *);
 };
 
 struct				s_lexer
@@ -146,6 +151,7 @@ static const t_token g_tokens[] = {
 	{"||",	2,	TT_JOBS,		TC_DBL_OR,			token_parse_dbl_or},
 	{"&&",	2,	TT_JOBS,		TC_DBL_AND,			token_parse_dbl_and},
 	{";;",	2,	TT_ERROR,		TC_DBL_SEMI,		token_parse_none},
+	{">|",	2,	TT_REDIR,		TC_CHEV_RIGHT,		token_parse_chev_right},
 	{";",	1,	TT_JOBS,		TC_SEMI,			token_parse_semi},
 	{">",	1,	TT_REDIR,		TC_CHEV_RIGHT,		token_parse_chev_right},
 	{"<",	1,	TT_REDIR,		TC_CHEV_LEFT,		token_parse_chev_left},

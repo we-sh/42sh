@@ -10,11 +10,13 @@ static void		s_lexer_add(t_lexer *lexer, const char *str, t_token token)
 {
 	t_lexer_token item;
 
+
 	ft_strncpy(item.content, str, token.len);
 	item.content[token.len] = '\0';
 	item.len = token.len;
 	item.type = token.type;
 	item.code = token.code;
+	item.parse = token.parse;
 	lexer->tokens[lexer->size] = item;
 	(lexer->size)++;
 }
@@ -66,6 +68,7 @@ static void		s_buffer_dump(t_lexer *lexer)
 		t.len = g_buf_index;
 		t.type = TT_NAME;
 		t.code = TC_NONE;
+		t.parse = token_parse_none;
 		s_lexer_add(lexer, g_buf, t);
 		ft_bzero(g_buf, TOKEN_BUF_SIZE);
 		g_buf_index = 0;

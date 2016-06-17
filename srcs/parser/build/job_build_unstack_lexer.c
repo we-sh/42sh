@@ -27,9 +27,9 @@ static t_proc	*ast_unstack_proc_from_lexer(t_lexer *lexer, int *i, char **envp)
 		log_debug("unstacking token : %d / %d : \"%s\"", *i, lexer->size, lexer->tokens[*i].content);
 
 		if (lexer->tokens[*i].code == TC_NONE && *i + 1 < lexer->size && lexer->tokens[*i + 1].type == TT_REDIR)
-			st = g_tokens[lexer->tokens[(*i) + 1].code].parse(p, lexer, i);
+			st = lexer->tokens[(*i) + 1].parse(p, lexer, i);
 		else // TT_* standard (... ls ...)
-			st = g_tokens[lexer->tokens[*i].code].parse(p, lexer, i);
+			st = lexer->tokens[*i].parse(p, lexer, i);
 		// detect and of job or process (see job_build_unstack_job_from_lexer)
 		if (lexer->tokens[*i].type == TT_JOBS || lexer->tokens[*i].code == TC_PIPE)
 			break;
