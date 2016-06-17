@@ -10,6 +10,7 @@
 
 
 
+// ----------------------------------------------------------------
 // todo: to be exported to libft submodule
 static int			ft_array_push_back(char ***array, char const *value)
 {
@@ -39,11 +40,12 @@ static int			ft_array_push_back(char ***array, char const *value)
 	*array = new_array;
 	return (total);
 }
+// ----------------------------------------------------------------
 
 
 
 
-int	token_parse_none(t_proc *proc, t_lexer *lexer, int *i)
+int	token_parse_none(t_proc *p, t_lexer *lexer, int *i)
 {
 	log_trace("entering parsing token %-12s", "TT_NONE");
 	log_trace("token type %d token code %d", lexer->tokens[*i].type, lexer->tokens[*i].code);
@@ -52,20 +54,22 @@ int	token_parse_none(t_proc *proc, t_lexer *lexer, int *i)
 
 	if (lexer->tokens[*i].type == TT_NAME && lexer->tokens[*i].code == TC_NONE)
 	{
-		if (ft_array_push_back(&proc->argv, lexer->tokens[*i].content) < 0)
+		tmp = expand(p, &lexer->tokens[*i], *i > 0 ? &lexer->tokens[*i - 1] : NULL);
+		if (ft_array_push_back(&p->argv, tmp) < 0)
 		{
-			log_fatal("failed to push `%s` intro proc->argv", lexer->tokens[*i].content);
+			log_fatal("failed to push `%s` intro p->argv", lexer->tokens[*i].content);
 		}
+		ft_memdel((void **)&tmp);
 	}
 
 	// replace with array push in argv
-	if (!(proc->command))
-		proc->command = ft_strdup(lexer->tokens[*i].content );
+	if (!(p->command))
+		p->command = ft_strdup(lexer->tokens[*i].content );
 	else
 	{
-		tmp = ft_strjoin(proc->command, lexer->tokens[*i].content);
-		free(proc->command);
-		proc->command = tmp;
+		tmp = ft_strjoin(p->command, lexer->tokens[*i].content);
+		free(p->command);
+		p->command = tmp;
 	}
 	return (0);
 }

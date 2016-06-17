@@ -129,6 +129,10 @@ int	token_parse_chev_right(t_proc *proc, t_lexer *lexer, int *i);
 int	token_parse_dbl_chev_left(t_proc *proc, t_lexer *lexer, int *i);
 int	token_parse_dbl_chev_right(t_proc *proc, t_lexer *lexer, int *i);
 
+// EXPANSIONS
+char	*expand(t_proc *p, t_lexer_token *token, t_lexer_token *prev_token);
+char	*expand_tilde(t_proc *p, char *buf);
+
 /*
 ** The array representing each tokens definitions.
 ** /!\ WARNING: you should put the longest tokens first. /!\
