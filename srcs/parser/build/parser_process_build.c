@@ -2,7 +2,7 @@
 
 /*
 ** The purpose of the function is to unstack a lexer (eg. a stack of tokens)
-** to build an Abstract Syntaxic Tree.
+** to build an job and process tree (see job control).
 */
 
 int	parser_process_build(t_lexer *lexer, char **envp)
