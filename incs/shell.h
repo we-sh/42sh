@@ -159,6 +159,7 @@ int				path_get_new_cmd(char **commande, char *name, char *path);
 */
 int				signal_to_ignore(void);
 int				signal_to_default(void);
+void			signal_sigtstp(int sig);
 
 /*
 ** termcaps/

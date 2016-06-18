@@ -97,6 +97,7 @@ SRCS		=	\
 				path/path_commande_not_found_in_hasht.c\
 				signal/signal_to_default.c		\
 				signal/signal_to_ignore.c		\
+				signal/signal_sigtstp.c			\
 				termcaps/termcaps_context.c		\
 				termcaps/termcaps_read_input.c					\
 				termcaps/termcaps_get_character_bytes_count.c	\
@@ -1515,7 +1516,8 @@ $(DIROBJ)path_get_new_cmd.o: srcs/path/path_get_new_cmd.c incs/shell.h \
   libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
   incs/statuses.h incs/option.h incs/job.h libs/libcaps/./incs/caps.h \
   libs/libcaps/./incs/logger.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtins/builtin.h
+  libs/libft/./incs/get_next_line.h incs/parser.h \
+  incs/builtins/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/path/path_get_new_cmd.c\n"
 		@$(CC) -c ./srcs/path/path_get_new_cmd.c -o ./.objs/path_get_new_cmd.o $(CPPFLAGS) $(CFLAGS) 
@@ -1567,7 +1569,8 @@ $(DIROBJ)path_commande_not_found_in_hasht.o: \
   libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
   incs/statuses.h incs/option.h incs/job.h libs/libcaps/./incs/caps.h \
   libs/libcaps/./incs/logger.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtins/builtin.h
+  libs/libft/./incs/get_next_line.h incs/parser.h \
+  incs/builtins/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/path/path_commande_not_found_in_hasht.c\n"
 		@$(CC) -c ./srcs/path/path_commande_not_found_in_hasht.c -o ./.objs/path_commande_not_found_in_hasht.o $(CPPFLAGS) $(CFLAGS) 
@@ -1601,6 +1604,21 @@ $(DIROBJ)signal_to_ignore.o: srcs/signal/signal_to_ignore.c incs/shell.h \
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/signal/signal_to_ignore.c\n"
 		@$(CC) -c ./srcs/signal/signal_to_ignore.c -o ./.objs/signal_to_ignore.o $(CPPFLAGS) $(CFLAGS) 
+
+$(DIROBJ)signal_sigtstp.o: srcs/signal/signal_sigtstp.c incs/shell.h \
+  libs/libft/./incs/list.h incs/htabl.h incs/fnv.h incs/longlong.h \
+  incs/termcaps/termcaps.h incs/termcaps/list_head.h \
+  libs/libcaps/./incs/types.h incs/termcaps/log.h \
+  incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
+  libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h \
+  libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
+  incs/statuses.h incs/option.h incs/job.h libs/libcaps/./incs/caps.h \
+  libs/libcaps/./incs/logger.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/parser.h \
+  incs/builtins/builtin.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/signal/signal_sigtstp.c\n"
+		@$(CC) -c ./srcs/signal/signal_sigtstp.c -o ./.objs/signal_sigtstp.o $(CPPFLAGS) $(CFLAGS) 
 
 $(DIROBJ)termcaps_context.o: srcs/termcaps/termcaps_context.c incs/shell.h \
   libs/libft/./incs/list.h incs/htabl.h incs/fnv.h incs/longlong.h \
