@@ -61,6 +61,7 @@ int	token_parse_chev_right(t_proc *proc, t_lexer *lexer, int *i)
 
 	log_debug("fd left : %d - fd right : %d", fd_l, fd_r);
 
+	// to implement
 	if (fd_l == 0)
 		proc->stdin = fd_r;
 	if (fd_l == 1)
