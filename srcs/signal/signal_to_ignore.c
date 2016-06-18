@@ -20,5 +20,7 @@ int	signal_to_ignore(void)
 		return (ST_SIGNAL);
 	if (signal(SIGINT, SIG_IGN) == SIG_ERR)
 		return (ST_SIGNAL);
+	if (signal(SIGTSTP, signal_sigtstp) == SIG_ERR)
+		return (ST_SIGNAL);
 	return (ST_OK);
 }
