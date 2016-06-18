@@ -128,6 +128,10 @@ static int s_initialize_key_map_meta(void)
 	&key__backspace));
 	ASSERT(caps__init_func_by_keycode(CAPS__KEYCODE_CTRL_I,
 	&key__completion));
+	ASSERT(caps__init_func_by_keycode(CAPS__KEYCODE_CTRL_C,
+	&key__ctrl_c));
+	//ASSERT(caps__init_func_by_keycode(CAPS__KEYCODE_CTRL_R,
+	//&key__search_history));
 	return (1);
 }
 
