@@ -27,8 +27,6 @@ static int	parser_process(t_sh *sh, t_parser *parser)
 	if ((st = parser_process_build(parser->lexer, sh->envp)) != ST_OK)
 		return (st);
 
-	// TODO move it
-	log_warn("execution loop launched into the parser");
 	LIST_FOREACH(&g_current_jobs_list_head, j_ptr)
 	{
 		int	st;
