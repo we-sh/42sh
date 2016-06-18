@@ -1,15 +1,5 @@
 #include "parser.h"
 
-static int		s_argc(char **argv)
-{
-	int	i;
-
-	i = 0;
-	while (argv[i])
-		i++;
-	return (i);
-}
-
 /*
 ** Unstack processus from the stack of tokens.
 */
@@ -40,15 +30,12 @@ static t_proc	*ast_unstack_proc_from_lexer(t_lexer *lexer, int *i, char **envp)
 		}
 		(*i)++;
 	}
-	// replace with array push
-	//if (!(p->argv = ft_strsplit(p->command, ' ')))
-	//	return (NULL);
-	p->argc = s_argc(p->argv);
 	return (p);
 }
 
 /*
 ** Unstack the list of tokens to build a list of jobs.
+** TODO do not return the job whether it's an empty one
 */
 
 static t_job	*job_build_unstack_job_from_lexer(t_lexer *lexer, int *i, char **envp)
