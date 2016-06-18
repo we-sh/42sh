@@ -42,10 +42,10 @@ static int	parser_process(t_sh *sh, t_parser *parser)
 	return (ST_OK);
 }
 
-static void	s_parser_callback(t_parser **parser)
+static int	s_parser_callback(t_parser **parser)
 {
 	if (!(*parser))
-		return ;
+		return (ST_EINVAL);
 	if ((*parser)->in)
 		ft_strdel(&((*parser)->in));
 	if ((*parser)->lexer)
@@ -55,6 +55,7 @@ static void	s_parser_callback(t_parser **parser)
 	}
 	free(*parser);
 	*parser = NULL;
+	return (0);
 }
 
 /*
@@ -77,6 +78,9 @@ int			parser(t_sh *sh, const char *in)
 
 	st = parser_process(sh, parser);
 	
-	s_parser_callback(&parser);
+	if ((s_parser_callback(&parser)) == ST_OK)
+		log_success("parser deleted with success");
+	else
+		log_error("failed to deleted parser");
 	return (st);
 }
