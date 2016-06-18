@@ -8,6 +8,7 @@ typedef struct			s_quoting
 	int					dbquote;
 	int					bkquote;
 	int					bkslash;
+	int					pipe;
 }						t_quoting;
 
 #endif
