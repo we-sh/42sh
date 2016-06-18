@@ -80,6 +80,7 @@ static int		s_termcaps_read_loop(t_termcaps_context *context)
 		}
 		if (input_size_missing)
 			input_buffer_size += read(context->fd, input_buffer + 1, input_size_missing);
+		
 		caps__delete_line(context->command_line.offset);
 		s_termcaps_treat_input(input_type, input_buffer_size, input_buffer,
 								context);
@@ -126,8 +127,8 @@ char			*termcaps_read_input(t_termcaps_context *context)
 		return (NULL);
 	}
 	ASSERT(s_print_first_prompt(context));
-
 	context->state = STATE_REGULAR;
+
 	context->buffer = NULL;
 	if (!s_termcaps_read_loop(context))
 	{

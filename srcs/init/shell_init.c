@@ -66,8 +66,12 @@ int		shell_init(t_sh *sh, char *envp[])
 
 		if (tcsetpgrp(STDIN_FILENO, sh->pgid) < 0)
 			return (ST_TCSETPGRP);
-
 		/* termcaps */
+		if (!caps__initialize(sh->fd))
+		{
+			log_fatal("caps__initialize() failed");
+			return (ST_TERMCAPS_INIT);
+		}
 		if (!termcaps_initialize(sh->fd, "$> ", &sh->termcaps_context))
 			return (ST_TERMCAPS_INIT);
 	}

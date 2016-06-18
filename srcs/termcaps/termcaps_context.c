@@ -166,11 +166,6 @@ int		termcaps_initialize(const int fd,
 		log_error("fd %d prompt %p context %p", fd, (void *)prompt, (void *)context);
 		return (0);
 	}
-	if (!caps__initialize(fd))
-	{
-		log_fatal("caps__initialize() failed");
-		return (0);
-	}
 	if (!s_initialize_key_map_meta() || !s_initialize_key_map_cursor())
 	{
 		log_fatal("s_initialize_key_map() failed");
@@ -207,6 +202,5 @@ int		termcaps_finalize(t_termcaps_context *context)
 	list_head__command_line_destroy(&context->copy);
 	free(context->prompt.bytes);
 	context->is_initialized = 0;
-	caps__finalize();
 	return (1);
 }

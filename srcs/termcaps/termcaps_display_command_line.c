@@ -35,6 +35,7 @@ int			termcaps_display_command_line(const int fd, const t_list_head *command_lin
 	}
 	if (buffer_size % caps__win(WIN_COLUMNS) == 0)
 	{
+		log_fatal("WHATTTTTTT ???");
 		ft_memcpy(buffer + buffer_size, ENDL, ENDL_SIZE);
 		buffer_size += ENDL_SIZE;
 	}
