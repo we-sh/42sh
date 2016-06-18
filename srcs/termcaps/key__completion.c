@@ -34,7 +34,7 @@ static void		list_dir__destroy(t_list *head)
 	while ((pos = head) && (pos != head) && (safe = safe->next))
 	{
 		node_dir = CONTAINER_OF(pos, t_node_dir, list);
-		free(node_dir->filename.bytes);
+		free(node_dir);
 	}
 }
 
