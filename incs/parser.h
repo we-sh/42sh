@@ -98,7 +98,9 @@ int			parser_process_lexer(t_lexer *lexer, const char *in);
 t_token		*token_list(void);
 int			tokenize(const char *s, t_lexer *lexer);
 
-int	job_build_unstack_lexer(t_lexer *lexer, char **envp);
+int			job_build_unstack_lexer(t_lexer *lexer, char **envp);
+t_job		*job_build_unstack_job_from_lexer(t_lexer *lexer, int *i, char **envp);
+t_proc		*ast_unstack_proc_from_lexer(t_lexer *lexer, int *i, char **envp);
 
 /*
 ** Parser definition.
