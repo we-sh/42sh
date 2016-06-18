@@ -11,8 +11,6 @@ static void	s_set_flags(t_job *j, t_proc *p, int const status)
 	if (WIFSTOPPED(status))
 	{
 		p->stopped = 1;
-		j->foreground = 0;
-		j->notified = 0;
 	}
 	else
 	{
@@ -23,6 +21,11 @@ static void	s_set_flags(t_job *j, t_proc *p, int const status)
 			if (WIFSIGNALED(status))
 				p->signaled = WTERMSIG(status);
 		}
+	}
+	if (job_is_stopped(j) == 1 && job_is_completed(j) == 0)
+	{
+		j->foreground = 0;
+		j->notified = 0;
 	}
 }
 
