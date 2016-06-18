@@ -24,9 +24,7 @@ static t_proc	*ast_unstack_proc_from_lexer(t_lexer *lexer, int *i, char **envp)
 
 	while (*i < lexer->size)
 	{
-		log_success("%d", *i);
 		log_debug("unstacking token : %d / %d : \"%s\"", *i, lexer->size, lexer->tokens[*i].content);
-		log_debug(" %d / %d", lexer->tokens[*i].type, lexer->tokens[*i].code);
 
 		if (lexer->tokens[*i].code == TC_NONE && *i + 1 < lexer->size && lexer->tokens[*i + 1].type == TT_REDIR)
 			st = lexer->tokens[(*i) + 1].parse(p, lexer, i);
