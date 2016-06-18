@@ -11,16 +11,14 @@ static t_proc	*ast_unstack_proc_from_lexer(t_lexer *lexer, int *i, char **envp)
 
 	if ((p = proc_alloc(envp)) == NULL)
 		return (NULL);
-
 	while (*i < lexer->size)
 	{
 		log_debug("unstacking token : %d / %d : \"%s\"", *i, lexer->size, lexer->tokens[*i].content);
 
 		if (lexer->tokens[*i].code == TC_NONE && *i + 1 < lexer->size && lexer->tokens[*i + 1].type == TT_REDIR)
 			st = lexer->tokens[(*i) + 1].parse(p, lexer, i);
-		else // TT_* standard (... ls ...)
+		else // TC_* standard (... ls ...)
 			st = lexer->tokens[*i].parse(p, lexer, i);
-		// detect and of job or process (see job_build_unstack_job_from_lexer)
 		if (lexer->tokens[*i].type == TT_JOBS || lexer->tokens[*i].code == TC_PIPE)
 			break;
 		if (st != ST_OK)
@@ -54,13 +52,13 @@ static t_job	*job_build_unstack_job_from_lexer(t_lexer *lexer, int *i, char **en
 		list_push_back(&p->list_proc, &j->proc_head);
 		if (lexer->tokens[*i].type == TT_JOBS)
 		{
-			log_info("end of job encountered ('%s')", lexer->tokens[*i].content);
+			log_info("end of job encountered     ('%s')", lexer->tokens[*i].content);
 			(*i)++;
 			break;
 		}
 		else if (lexer->tokens[*i].code == TC_PIPE)
 		{
-			log_info("end of processus encountered ('%s')", lexer->tokens[*i].content);
+			log_info("end of process encountered ('%s')", lexer->tokens[*i].content);
 			(*i)++;
 		}
 		else
@@ -79,6 +77,8 @@ int				job_build_unstack_lexer(t_lexer *lexer, char **envp)
 	int		i;
 	t_job	*j;
 
+	if (!lexer || !envp)
+		return (ST_EINVAL);
 	i = 0;
 	while (i < lexer->size)
 	{
@@ -86,6 +86,8 @@ int				job_build_unstack_lexer(t_lexer *lexer, char **envp)
 			return (ST_PARSER);
 		list_push_back(&j->list_job, &g_current_jobs_list_head);
 	}
+
 	log_success("parsing lexer into %zu jobs", list_size(&g_current_jobs_list_head));
-	return (0);
+	
+	return (ST_OK);
 }
