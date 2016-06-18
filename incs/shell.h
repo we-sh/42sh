@@ -187,6 +187,7 @@ int				quoting_new_context(t_termcaps_context *context);
 */
 int				signal_to_ignore(void);
 int				signal_to_default(void);
+void			signal_sigtstp(int sig);
 
 /*
 ** termcaps/

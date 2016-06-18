@@ -37,6 +37,7 @@ int	job_wait(t_job *j_orig)
 	t_job	*j;
 	t_list	*p_pos;
 
+	signal_sigtstp(-j_orig->pgid);
 	while (1)
 	{
 		LIST_FOREACH(&g_current_jobs_list_head, j_pos)
@@ -54,6 +55,7 @@ int	job_wait(t_job *j_orig)
 		if (job_is_completed(j_orig) == 1 || job_is_stopped(j_orig) == 1)
 			break;
 	}
+	signal_sigtstp(0);
 	s_notify(j_orig);
 	return (ST_OK);
 }
