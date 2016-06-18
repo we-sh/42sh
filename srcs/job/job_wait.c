@@ -21,7 +21,17 @@ static void	s_proc_status(t_job *j, t_proc *p)
 	}
 }
 
-int			job_wait(t_job *j_orig)
+static void	s_notify(t_job *j)
+{
+	if (job_is_signaled(j) == 1
+		|| (job_is_stopped(j) == 1 && job_is_completed(j) == 0))
+	{
+		ft_putchar('\n');
+		job_display_status(j, 1);
+	}
+}
+
+int	job_wait(t_job *j_orig)
 {
 	t_list	*j_pos;
 	t_job	*j;
@@ -43,10 +53,6 @@ int			job_wait(t_job *j_orig)
 		if (job_is_completed(j_orig) == 1 || job_is_stopped(j_orig) == 1)
 			break;
 	}
-	if (job_is_signaled(j_orig))
-	{
-		ft_putchar('\n');
-		job_display_status(j_orig, 1);
-	}
+	s_notify(j_orig);
 	return (ST_OK);
 }
