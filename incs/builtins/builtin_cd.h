@@ -23,6 +23,7 @@ static const t_builtin		g_builtin_cd = {
 	.index = BLTIN_CD,
 	.name = "cd",
 	.usage = "cd [-P] [dir]",
+	.usage_multiline = NULL,
 	.description = ST_BLTIN_CD,
 	.exe = &builtin_cd,
 	.options = g_builtin_cd_options

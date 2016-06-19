@@ -3,8 +3,8 @@
 
 static int	s_before(t_proc *p)
 {
-	int	i;
-	int	exists;
+	int		i;
+	int		exists;
 
 	if (p->argc > 2)
 		p->bltin_status = ST_E2BIG;
@@ -29,7 +29,7 @@ static int	s_before(t_proc *p)
 
 static int	s_display_help(t_builtin const *bltin)
 {
-	int	i;
+	int		i;
 
 	ft_printf("%s\n%s: %s\n",
 		i18n_translate(bltin->description),
@@ -45,20 +45,23 @@ static int	s_display_help(t_builtin const *bltin)
 	return (EXIT_SUCCESS);
 }
 
-static int	s_exec(t_builtin const *builtin, t_proc *p)
+static void	s_display_usage_multiline(t_proc *p)
 {
-	int i;
+	size_t	i;
 
-	if (p->bltin_status > ST_OK)
+	if (g_builtins[-p->bltin_status]->usage_multiline)
 	{
-		builtin_usage(builtin, p->bltin_status);
-		return (EXIT_FAILURE);
+		ft_putchar('\n');
+		i = 0;
+		while (g_builtins[-p->bltin_status]->usage_multiline[i])
+			ft_putendl(g_builtins[-p->bltin_status]->usage_multiline[i++]);
 	}
-	if (p->argc == 1)
-		return (s_display_help(builtin));
-	ft_printf("%s: %s\n%s\n",
-		g_builtins[-p->bltin_status]->name, g_builtins[-p->bltin_status]->usage,
-		i18n_translate(g_builtins[-p->bltin_status]->description));
+}
+
+static void	s_display_options(t_proc *p)
+{
+	size_t	i;
+
 	if (g_builtins[-p->bltin_status]->options != NULL)
 	{
 		ft_printf("%s:\n", i18n_translate(ST_OPTIONS));
@@ -71,6 +74,22 @@ static int	s_exec(t_builtin const *builtin, t_proc *p)
 			i++;
 		}
 	}
+}
+
+static int	s_exec(t_builtin const *builtin, t_proc *p)
+{
+	if (p->bltin_status > ST_OK)
+	{
+		builtin_usage(builtin, p->bltin_status);
+		return (EXIT_FAILURE);
+	}
+	if (p->argc == 1)
+		return (s_display_help(builtin));
+	ft_printf("%s: %s\n%s\n",
+		g_builtins[-p->bltin_status]->name, g_builtins[-p->bltin_status]->usage,
+		i18n_translate(g_builtins[-p->bltin_status]->description));
+	s_display_usage_multiline(p);
+	s_display_options(p);
 	return (EXIT_SUCCESS);
 }
 

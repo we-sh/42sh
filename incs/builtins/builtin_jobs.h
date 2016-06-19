@@ -35,6 +35,7 @@ static const t_builtin		g_builtin_jobs = {
 	.index = BLTIN_JOBS,
 	.name = "jobs",
 	.usage = "jobs [-l|-p] [job_id ...]",
+	.usage_multiline = NULL,
 	.description = ST_BLTIN_JOBS,
 	.exe = &builtin_jobs,
 	.options = g_builtin_jobs_options

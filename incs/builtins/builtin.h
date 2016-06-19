@@ -36,6 +36,7 @@ typedef struct				s_builtin
 	int						index;
 	char const				*name;
 	char const				*usage;
+	char const				**usage_multiline;
 	int						description;
 	int						(*exe)(struct s_builtin const *, int, t_sh *, t_proc *);
 	t_option const 			**options;

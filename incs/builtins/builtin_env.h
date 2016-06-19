@@ -23,6 +23,7 @@ static const t_builtin		g_builtin_env = {
 	.index = BLTIN_ENV,
 	.name = "env",
 	.usage = "env [-i] [VAR=[VALUE]]",
+	.usage_multiline = NULL,
 	.description = ST_BLTIN_ENV,
 	.exe = &builtin_env,
 	.options = g_builtin_env_options

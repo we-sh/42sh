@@ -7,6 +7,7 @@ static const t_builtin		g_builtin_bg = {
 	.index = BLTIN_BG,
 	.name = "bg",
 	.usage = "bg [job_id ...]",
+	.usage_multiline = NULL,
 	.description = ST_BLTIN_BG,
 	.exe = &builtin_bg,
 	.options = NULL
