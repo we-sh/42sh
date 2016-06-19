@@ -150,6 +150,14 @@ int				path_commande_not_found_in_hasht(char **envp, char **cmd);
 int				path_get_new_cmd(char **commande, char *name, char *path);
 
 /*
+** quoting
+*/
+
+int				quoting_invalid(t_termcaps_context *context, t_quoting quoting, int action);
+char			*quoting_add_return_front_buff(char *buff_quote);
+int				quoting_new_context(t_termcaps_context *context);
+
+/*
 ** signal/
 */
 int				signal_to_ignore(void);

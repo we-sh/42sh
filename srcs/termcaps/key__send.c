@@ -34,144 +34,18 @@ static int		s_bufferize_input(t_termcaps_context *context)
 	return (1);
 }
 
-static void				s_add_quoting(t_quoting *quoting, int buff)
-{
-	if (buff == 39)
-		quoting->quote += 1;
-	else if (buff == 34)
-		quoting->dbquote += 1;
-	else if (buff == 92)
-		quoting->bkslash += 1;
-	else if (buff == 96)
-		quoting->bkquote += 1;
-	else if (buff == 124)
-		quoting->pipe += 1;
-	// else
-	// 	log_warn("Set_qutoing 0");
-}
-
-
-static int					s_check_quoting_invalid(t_quoting *quoting)
-{
-	if (quoting->quote % 2 != 0)
-		return (1);
-	else if (quoting->dbquote % 2 != 0)
-		return (1);
-	else if (quoting->bkquote % 2 != 0)
-		return (1);
-	if (quoting->bkslash > 0)
-		return (1);
-	if (quoting->pipe > 0)
-		return (1);
-	return (0);
-}
-
-static int		s_quoting_invalid(t_termcaps_context *context, t_quoting quoting, int action)
-{
-	t_list_node_cmd *node_cmd;
-	t_list *pos;
-
-	LIST_FOREACH(&context->command_line.list, pos)
-	{
-		node_cmd = CONTAINER_OF(pos, t_list_node_cmd, list);
-		if (action == 0 && node_cmd->character[0] && quoting.pipe == 1) // check if it works with pipe
-			quoting.pipe = 0;
-		else if (action == 0 && node_cmd->character[0] == '\\')
-			quoting.bkquote = 0;
-		else
-			s_add_quoting(&quoting, node_cmd->character[0]);
-		log_debug("value node_cmd->character[0] : %c", node_cmd->character[0]);
-	}
-		log_info("value quote : %d, value dbquote : %d, value kquote : %d, value bkslash : %d, value pipe : %d",
-		quoting.quote, quoting.dbquote, quoting.bkquote, quoting.bkslash, quoting.pipe);
-	return (s_check_quoting_invalid(&quoting));
-}
-
-static char			*s_add_return_front_buff(char *buff_quote)
-{
-	int 			size;
-	char 			*tmp;
-	int				i;
-	int				j;
-
-	i = 0;
-	j = 1;
-	size = ft_strlen(buff_quote);
-	tmp = ft_strdup(buff_quote);
-	tmp = (char *)malloc(sizeof(char) * (size + 1));
-	tmp[0] = '\n';
-	while (buff_quote[i] != '\0')
-	{
-		tmp[j] = buff_quote[i];
-		i++;
-		j++;
-	}
-	return (tmp);
-}
+int g_child = 0;
+int g_in_child = 0;
 
 int				key__send(t_termcaps_context *context)
 {
-	char 		*tmp;
-	char 		*buff_quote;
-	int 		dontdisplay;
-	int 		action;
-	char 		*test;
-	t_quoting	quoting = {
-	.quote = 0,
-	.dbquote = 0,
-	.bkquote = 0,
-	.bkslash = 0,
-	.pipe = 0
-	};
-
-	test = NULL;
-	tmp = NULL;
-	dontdisplay = 0;
-	buff_quote = NULL;
-	action = 1;
-	log_success("INSIDE KEY SEND");
-
-	static int in_child = 0;
-	static int yoyoy_child = 0;
-
-
 	if (context->state == STATE_REGULAR)
 	{
-		t_termcaps_context	child_context;
-
-		if (in_child == 0 && s_quoting_invalid(context, quoting, action) == 1)
-		{
-				in_child = 1;
-				log_success("quoting NOT CLOSE!!!!!!!!!!");
-
-				termcaps_display_command_line(context->fd, &context->command_line);
-				caps__print_cap(CAPS__DOWN, 0);
-				termcaps_initialize(context->fd, "> ", &child_context);
-				while (s_quoting_invalid(context, quoting, action) == 1)
-				{
-					buff_quote = termcaps_read_input(&child_context);
-					test = s_add_return_front_buff(buff_quote);
-						termcaps_string_to_command_line((ft_strlen(test)),
-													test,
-													&context->command_line);
-					free(test);
-					free(buff_quote);
-					action = 0;
-				}
-				in_child = 0;
-				caps__delete_line(context->command_line.offset);
-				caps__print_cap(CAPS__UP, 0);
-				log_warn("Quoting  CLOSE!!!!!!!!!!");
-			
-				log_info("on a quoi dans context->buff ?? -> %s", child_context.buffer);
-
-				termcaps_finalize(&child_context);
-				yoyoy_child = 1;
-		}
-		if (yoyoy_child == 0)
+		quoting_new_context(context);
+		if (g_child == 0)
 		{
 			termcaps_display_command_line(context->fd, &context->command_line);
-			caps__print_cap(CAPS__CARRIAGE_RETURN, 0);				
+			caps__print_cap(CAPS__CARRIAGE_RETURN, 0);
 		}
 		if (context->command_line.size > context->prompt.size)
 		{
@@ -182,7 +56,6 @@ int				key__send(t_termcaps_context *context)
 			}
 		}
 	}
-	yoyoy_child = 0;
-	log_success("Send input !!!!!!!!!!");
+	g_child = 0;
 	return (1);
 }
