@@ -162,7 +162,7 @@ static const t_token g_tokens[] = {
 	{"<",	1,	TT_REDIR,		TC_CHEV_LEFT,		token_parse_chev_left},
 	{"|",	1,	TT_REDIR,		TC_PIPE,			token_parse_pipe},
 	{"&",	1,	TT_SPECIAL,		TC_AND,				token_parse_none},
-	{"\\",	1,	TT_INHIBITOR,	TC_BACKSLASH,		token_parse_inhib},
+	//{"\\",	1,	TT_INHIBITOR,	TC_BACKSLASH,		token_parse_inhib},
 	{"\"",	1,	TT_INHIBITOR,	TC_DBL_QUOTE,		token_parse_inhib},
 	{"'",	1,	TT_INHIBITOR,	TC_QUOTE,			token_parse_inhib},
 	{" ",	1,	TT_SEPARATOR,	TC_SPACE,			token_parse_none},
