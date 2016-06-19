@@ -97,7 +97,7 @@ SRCS		=	\
 				path/path_commande_not_found_in_hasht.c\
 				signal/signal_to_default.c		\
 				signal/signal_to_ignore.c		\
-				signal/signal_sigtstp.c			\
+				signal/signal_to_pgid.c			\
 				termcaps/termcaps_context.c		\
 				termcaps/termcaps_read_input.c					\
 				termcaps/termcaps_get_character_bytes_count.c	\
@@ -1605,7 +1605,7 @@ $(DIROBJ)signal_to_ignore.o: srcs/signal/signal_to_ignore.c incs/shell.h \
 		@printf "compiling ./srcs/signal/signal_to_ignore.c\n"
 		@$(CC) -c ./srcs/signal/signal_to_ignore.c -o ./.objs/signal_to_ignore.o $(CPPFLAGS) $(CFLAGS) 
 
-$(DIROBJ)signal_sigtstp.o: srcs/signal/signal_sigtstp.c incs/shell.h \
+$(DIROBJ)signal_to_pgid.o: srcs/signal/signal_to_pgid.c incs/shell.h \
   libs/libft/./incs/list.h incs/htabl.h incs/fnv.h incs/longlong.h \
   incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
@@ -1617,8 +1617,8 @@ $(DIROBJ)signal_sigtstp.o: srcs/signal/signal_sigtstp.c incs/shell.h \
   libs/libft/./incs/get_next_line.h incs/parser.h \
   incs/builtins/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
-		@printf "compiling ./srcs/signal/signal_sigtstp.c\n"
-		@$(CC) -c ./srcs/signal/signal_sigtstp.c -o ./.objs/signal_sigtstp.o $(CPPFLAGS) $(CFLAGS) 
+		@printf "compiling ./srcs/signal/signal_to_pgid.c\n"
+		@$(CC) -c ./srcs/signal/signal_to_pgid.c -o ./.objs/signal_to_pgid.o $(CPPFLAGS) $(CFLAGS) 
 
 $(DIROBJ)termcaps_context.o: srcs/termcaps/termcaps_context.c incs/shell.h \
   libs/libft/./incs/list.h incs/htabl.h incs/fnv.h incs/longlong.h \

@@ -16,7 +16,7 @@ int	job_is_signaled(t_job *j)
 	{
 		p = CONTAINER_OF(pos, t_proc, list_proc);
 		if (p->signaled != 0)
-			return (1);
+			return (p->signaled);
 	}
 	return (0);
 }

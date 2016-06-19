@@ -23,11 +23,16 @@ static void	s_proc_status(t_job *j, t_proc *p)
 
 static void	s_notify(t_job *j)
 {
-	if (job_is_signaled(j) == 1
-		|| (job_is_stopped(j) == 1 && job_is_completed(j) == 0))
+	int		sig;
+
+	sig = job_is_signaled(j);
+	if (sig != 0 || (job_is_stopped(j) == 1 && job_is_completed(j) == 0))
 	{
-		ft_putchar('\n');
-		job_display_status(j, 1);
+		if (sig != SIGINT && sig != SIGQUIT)
+		{
+			ft_putchar('\n');
+			job_display_status(j, 1);
+		}
 	}
 }
 
@@ -37,7 +42,6 @@ int	job_wait(t_job *j_orig)
 	t_job	*j;
 	t_list	*p_pos;
 
-	signal_sigtstp(-j_orig->pgid);
 	while (1)
 	{
 		LIST_FOREACH(&g_current_jobs_list_head, j_pos)
@@ -54,7 +58,6 @@ int	job_wait(t_job *j_orig)
 		if (job_is_completed(j_orig) == 1 || job_is_stopped(j_orig) == 1)
 			break;
 	}
-	signal_sigtstp(0);
 	s_notify(j_orig);
 	return (ST_OK);
 }
