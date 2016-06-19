@@ -43,6 +43,24 @@ static int			ft_array_push_back(char ***array, char const *value)
 }
 // ----------------------------------------------------------------
 
+static char	*s_expand_escape_char_not_inhibited(char *str)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	j = 0;
+	while (str[i])
+	{
+		if (str[i] == '\\')
+			j++;
+		str[i] = str[j];
+		i++;
+		j++;
+	}
+	str[i] = '\0';
+	return (str);
+}
 
 static int	s_recursive(t_proc *p, int i, char *(func)(char *))
 {
@@ -65,5 +83,7 @@ int			expand(t_proc *p, t_lexer_token *token, t_lexer_token *prev_token)
 	}
 	if (ft_array_push_back(&p->argv, str) < 0)
 		return (ST_MALLOC);
-	return (s_recursive(p, 0, &expand_escape_char));
+	if (prev_token && prev_token->type == TT_INHIBITOR)
+		return (s_recursive(p, 0, &expand_escape_char));
+	return (s_recursive(p, 0, &s_expand_escape_char_not_inhibited));
 }
