@@ -40,24 +40,26 @@ static int				s_qloop(t_termcaps_context *c, t_quoting q, int a)
 	t_termcaps_context	child_context;
 
 	s_d_init(c, &child_context);
-	while (quoting_invalid(c, q, a) == 1)
+	while (quoting_invalid(c, q, a) == 1 && (a = 0) == 0)
 	{
 		buff_quote = termcaps_read_input(&child_context);
 		if (s_check_pipe_case(c) == 1)
-			termcaps_string_to_command_line((ft_strlen(buff_quote)), 
+			termcaps_string_to_command_line((ft_strlen(buff_quote)),
 											buff_quote,	&c->command_line);
 		else
 		{
-			test = quoting_add_return_front_buff(buff_quote);
+			if ((test = quoting_add_return_front_buff(buff_quote)) == NULL)
+			{
+				free(buff_quote);
+				return (ST_MALLOC);
+			}
 			termcaps_string_to_command_line((ft_strlen(test)),
 											test, &c->command_line);
 			free(test);
 		}
 		free(buff_quote);
-		a = 0;
 	}
-	s_d_end(c, &child_context);
-	return (ST_OK);
+	return (s_d_end(c, &child_context));
 }
 
 int						quoting_new_context(t_termcaps_context *context)
@@ -72,6 +74,9 @@ int						quoting_new_context(t_termcaps_context *context)
 	quoting.pipe = 0;
 	action = 1;
 	if (g_in_child == 0 && quoting_invalid(context, quoting, action) == 1)
-		s_qloop(context, quoting, action);
+	{
+		if ((s_qloop(context, quoting, action)) == ST_MALLOC)
+			return (ST_MALLOC);
+	}
 	return (ST_OK);
 }

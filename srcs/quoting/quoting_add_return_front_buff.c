@@ -13,7 +13,8 @@ char				*quoting_add_return_front_buff(char *buff_quote)
 	j = 1;
 	size = ft_strlen(buff_quote);
 	tmp = ft_strdup(buff_quote);
-	tmp = (char *)malloc(sizeof(char) * (size + 1));
+	if ((tmp = (char *)malloc(sizeof(char) * (size + 1))) == NULL)
+		return (NULL);
 	tmp[0] = '\n';
 	while (buff_quote[i] != '\0')
 	{
