@@ -9,7 +9,5 @@ int	token_parse_dbl_or(t_proc *proc, t_lexer *lexer, int *i)
 	(void)lexer;
 	(void)i;
 	proc->j->separator = F_JSEP_OR_IF;
-//	job->wait = F_WAIT_ERROR;
-//	(void)token;
 	return (0);
 }
