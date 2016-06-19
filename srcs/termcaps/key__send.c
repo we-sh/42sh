@@ -47,7 +47,7 @@ static void				s_add_quoting(t_quoting *quoting, int buff)
 	else if (buff == 124)
 		quoting->pipe += 1;
 	// else
-	// 	log_warn("Set_qutoing 0");
+	//	log_warn("Set_qutoing 0");
 }
 
 
@@ -89,33 +89,19 @@ static int		s_quoting_invalid(t_termcaps_context *context, t_quoting quoting, in
 
 static char			*s_add_return_front_buff(char *buff_quote)
 {
-	int 			size;
-	char 			*tmp;
-	int				i;
-	int				j;
+	int				size;
+	char			*tmp;
 
-	i = 0;
-	j = 1;
 	size = ft_strlen(buff_quote);
-	tmp = ft_strdup(buff_quote);
-	tmp = (char *)malloc(sizeof(char) * (size + 1));
-	tmp[0] = '\n';
-	while (buff_quote[i] != '\0')
-	{
-		tmp[j] = buff_quote[i];
-		i++;
-		j++;
-	}
+	tmp = ft_strjoin("\n", buff_quote);
 	return (tmp);
 }
 
 int				key__send(t_termcaps_context *context)
 {
-	char 		*tmp;
-	char 		*buff_quote;
-	int 		dontdisplay;
-	int 		action;
-	char 		*test;
+	char		*buff_quote;
+	int			action;
+	char		*test;
 	t_quoting	quoting = {
 	.quote = 0,
 	.dbquote = 0,
@@ -125,14 +111,12 @@ int				key__send(t_termcaps_context *context)
 	};
 
 	test = NULL;
-	tmp = NULL;
-	dontdisplay = 0;
 	buff_quote = NULL;
 	action = 1;
 	log_success("INSIDE KEY SEND");
 
 	static int in_child = 0;
-	static int yoyoy_child = 0;
+	int yoyoy_child = 0;
 
 
 	if (context->state == STATE_REGULAR)
@@ -162,7 +146,7 @@ int				key__send(t_termcaps_context *context)
 				caps__delete_line(context->command_line.offset);
 				caps__print_cap(CAPS__UP, 0);
 				log_warn("Quoting  CLOSE!!!!!!!!!!");
-			
+
 				log_info("on a quoi dans context->buff ?? -> %s", child_context.buffer);
 
 				termcaps_finalize(&child_context);
@@ -171,7 +155,7 @@ int				key__send(t_termcaps_context *context)
 		if (yoyoy_child == 0)
 		{
 			termcaps_display_command_line(context->fd, &context->command_line);
-			caps__print_cap(CAPS__CARRIAGE_RETURN, 0);				
+			caps__print_cap(CAPS__CARRIAGE_RETURN, 0);
 		}
 		if (context->command_line.size > context->prompt.size)
 		{
