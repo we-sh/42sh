@@ -17,7 +17,7 @@ void		proc_launch(t_sh *sh, t_job *j, t_proc *p)
 			//exit(EXIT_FAILURE);
 		}
 		if (j->foreground == 1)
-			if (tcsetpgrp(sh->fd, j->pgid) == -1)
+			if (ioctl(sh->fd, TIOCSPGRP, &j->pgid) == -1)
 			{
 
 			}
