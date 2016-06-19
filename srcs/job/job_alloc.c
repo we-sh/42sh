@@ -17,5 +17,7 @@ t_job	*job_alloc(char const *command)
 	j->pgid = 0;
 	j->notified = 0;
 	j->id = job_available_id();
+	j->separator = F_JSEP_SEMI;
+	j->exit_status = EXIT_SUCCESS;
 	return (j);
 }

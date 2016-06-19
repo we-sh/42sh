@@ -6,11 +6,8 @@
 int	token_parse_semi(t_proc *proc, t_lexer *lexer, int *i)
 {
 	log_trace("entering parsing token %-12s ';'", "TT_JOBS");
-	(void)proc;
 	(void)lexer;
 	(void)i;
-	
-//	job->wait = F_WAIT_NO;
-//	(void)token;
+	(void)proc;
 	return (0);
 }

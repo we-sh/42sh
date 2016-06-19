@@ -8,7 +8,6 @@ NAME		=	42sh
 
 SRCS		=	\
 				main.c							\
-				stdin_loop.c					\
 				parser/parser.c										\
 				parser/alloc/parser_new.c							\
 				parser/build/parser_process_build.c					\
@@ -79,7 +78,7 @@ SRCS		=	\
 				job/proc_free.c					\
 				job/proc_launch.c				\
 				job/proc_update_status.c		\
-				list/list_node__proc_alloc.c	\
+				loop/loop_main.c				\
 				options/option_get_value.c		\
 				options/option_is_set.c			\
 				options/list_node__option_alloc.c\
@@ -286,20 +285,6 @@ $(DIROBJ)main.o: srcs/main.c incs/shell.h libs/libft/./incs/list.h incs/htabl.h 
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/main.c\n"
 		@$(CC) -c ./srcs/main.c -o ./.objs/main.o $(CPPFLAGS) $(CFLAGS) 
-
-$(DIROBJ)stdin_loop.o: srcs/stdin_loop.c incs/shell.h libs/libft/./incs/list.h \
-  incs/htabl.h incs/fnv.h incs/longlong.h incs/termcaps/termcaps.h \
-  incs/termcaps/list_head.h libs/libcaps/./incs/types.h \
-  incs/termcaps/log.h incs/termcaps/termcaps_struct.h \
-  incs/termcaps/key.h libs/libft/./incs/libft.h \
-  libs/libft/./incs/libftprintf.h libs/logger/./incs/logger.h \
-  libs/logger/./incs/logger_utils.h incs/statuses.h incs/option.h \
-  incs/job.h libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
-  incs/i18n.h libs/libft/./incs/get_next_line.h incs/parser.h \
-  incs/builtins/builtin.h
-		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
-		@printf "compiling ./srcs/stdin_loop.c\n"
-		@$(CC) -c ./srcs/stdin_loop.c -o ./.objs/stdin_loop.o $(CPPFLAGS) $(CFLAGS) 
 
 $(DIROBJ)parser.o: srcs/parser/parser.c incs/parser.h libs/libft/./incs/libft.h \
   libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
@@ -1337,20 +1322,19 @@ $(DIROBJ)proc_update_status.o: srcs/job/proc_update_status.c incs/shell.h \
 		@printf "compiling ./srcs/job/proc_update_status.c\n"
 		@$(CC) -c ./srcs/job/proc_update_status.c -o ./.objs/proc_update_status.o $(CPPFLAGS) $(CFLAGS) 
 
-$(DIROBJ)list_node__proc_alloc.o: srcs/list/list_node__proc_alloc.c incs/shell.h \
-  libs/libft/./incs/list.h incs/htabl.h incs/fnv.h incs/longlong.h \
-  incs/termcaps/termcaps.h incs/termcaps/list_head.h \
-  libs/libcaps/./incs/types.h incs/termcaps/log.h \
-  incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h \
-  libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
-  incs/statuses.h incs/option.h incs/job.h libs/libcaps/./incs/caps.h \
-  libs/libcaps/./incs/logger.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/parser.h \
+$(DIROBJ)loop_main.o: srcs/loop/loop_main.c incs/shell.h libs/libft/./incs/list.h \
+  incs/htabl.h incs/fnv.h incs/longlong.h incs/termcaps/termcaps.h \
+  incs/termcaps/list_head.h libs/libcaps/./incs/types.h \
+  incs/termcaps/log.h incs/termcaps/termcaps_struct.h \
+  incs/termcaps/key.h libs/libft/./incs/libft.h \
+  libs/libft/./incs/libftprintf.h libs/logger/./incs/logger.h \
+  libs/logger/./incs/logger_utils.h incs/statuses.h incs/option.h \
+  incs/job.h libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/i18n.h libs/libft/./incs/get_next_line.h incs/parser.h \
   incs/builtins/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
-		@printf "compiling ./srcs/list/list_node__proc_alloc.c\n"
-		@$(CC) -c ./srcs/list/list_node__proc_alloc.c -o ./.objs/list_node__proc_alloc.o $(CPPFLAGS) $(CFLAGS) 
+		@printf "compiling ./srcs/loop/loop_main.c\n"
+		@$(CC) -c ./srcs/loop/loop_main.c -o ./.objs/loop_main.o $(CPPFLAGS) $(CFLAGS) 
 
 $(DIROBJ)option_get_value.o: srcs/options/option_get_value.c incs/shell.h \
   libs/libft/./incs/list.h incs/htabl.h incs/fnv.h incs/longlong.h \

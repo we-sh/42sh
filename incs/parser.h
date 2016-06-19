@@ -100,7 +100,7 @@ int			tokenize(const char *s, t_lexer *lexer);
 
 int			job_build_unstack_lexer(t_lexer *lexer, char **envp);
 t_job		*job_build_unstack_job_from_lexer(t_lexer *lexer, int *i, char **envp);
-t_proc		*ast_unstack_proc_from_lexer(t_lexer *lexer, int *i, char **envp);
+t_proc		*ast_unstack_proc_from_lexer(t_lexer *lexer, int *i, char **envp, t_job *j);
 
 /*
 ** Parser definition.

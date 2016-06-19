@@ -57,7 +57,6 @@ typedef struct		e_sh
 t_list		g_current_jobs_list_head;
 typedef struct dirent	*t_dirent;
 
-int				stdin_loop(t_sh *sh);
 int				parser(t_sh *sh, char const *input);
 int				environment_init(t_sh *sh, char **envp);
 
@@ -113,11 +112,8 @@ t_proc			*proc_find(pid_t pid);
 void			proc_launch(t_sh *sh, t_job *j, t_proc *p);
 int				proc_update_status(t_job *j, pid_t pid, int status);
 t_list			*list_node__proc_alloc(char *command, char **argv, char **envp);
-
-t_proc			*proc_alloc(char **envp);
-
 t_job			*job_alloc(char const *command);
-t_proc			*proc_alloc(char **envp);
+t_proc			*proc_alloc(t_job *j, char **envp);
 int				job_wait(t_job *j);
 int				job_kill(t_sh *sh, t_job *j, int status);
 void			job_list_clean(int notified);
@@ -129,6 +125,11 @@ t_job			*job_background_nth(const t_list *head, const int index);
 int				job_background_update_status(void);
 int				job_display_status(t_job *j, int show_pid);
 void			job_set_stopped(t_job *j, int const stopped);
+
+/*
+** loop/
+*/
+int				loop_main(t_sh *sh);
 
 /*
 ** options/
