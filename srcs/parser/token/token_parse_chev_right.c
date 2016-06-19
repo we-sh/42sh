@@ -37,12 +37,23 @@ int	token_parse_chev_right(t_proc *proc, t_lexer *lexer, int *i)
 		(*i)++;
 		// ls >&-
 		if (ft_strcmp(lexer->tokens[*i].content, "-") == 0)
-			log_debug("TO IMPLEMENT");
-
-		// ls >&1
-		fd_r = ft_atoi(lexer->tokens[*i].content);
-		if (fd_r != 0 && fd_r != 1 && fd_r != 2)
-			log_error("bad file descriptor");
+			fd_r = -1;
+		else
+		{
+			// ls >&1
+			log_debug(">&1");
+			if ((ft_strisnumeric(lexer->tokens[*i].content)) == 0)
+			{
+				log_error("bad file descriptor");
+				return (ST_PARSER);
+			}
+			else
+			{
+				fd_r = ft_atoi(lexer->tokens[*i].content);
+				if (fd_r != 0 && fd_r != 1 && fd_r != 2)
+					log_error("bad file descriptor");
+			}
+		}
 	}
 	else
 	{
@@ -57,19 +68,22 @@ int	token_parse_chev_right(t_proc *proc, t_lexer *lexer, int *i)
 		// ls > out
 		fd_r = open(lexer->tokens[*i].content, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	}
-	
+
 
 	log_debug("fd left : %d - fd right : %d", fd_l, fd_r);
 
-	// to implement
-	if (fd_l == 0)
-		proc->stdin = fd_r;
-	if (fd_l == 1)
-		proc->stdout = fd_r;
-	if (fd_l == 2)
-		proc->stderr = fd_r;
+	if (!(fd_r == 0 && (fd_l == STDOUT_FILENO || fd_l == STDERR_FILENO)))
+	{
+		// to implement
+		if (fd_l == 0)
+			proc->stdin = fd_r;
+		if (fd_l == 1)
+			proc->stdout = fd_r;
+		if (fd_l == 2)
+			proc->stderr = fd_r;
+	}
 
 	(*i)++;
-	
+
 	return (0);
 }

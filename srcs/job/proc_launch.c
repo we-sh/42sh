@@ -31,21 +31,35 @@ void		proc_launch(t_sh *sh, t_job *j, t_proc *p)
 
 	if (p->stdin != STDIN_FILENO)
 	{
-		dup2(p->stdin, STDIN_FILENO);
-		close(p->stdin);
+		if (p->stdin == -1)
+			close(STDIN_FILENO);
+		else
+		{
+			dup2(p->stdin, STDIN_FILENO);
+			close(p->stdin);
+		}
 	}
 	if (p->stderr != STDERR_FILENO)
 	{
-
-		dup2(p->stderr, STDERR_FILENO);
-		if (p->stderr != STDOUT_FILENO)
-			close(p->stderr);
+		if (p->stderr == -1)
+			close(STDERR_FILENO);
+		else
+		{
+			dup2(p->stderr, STDERR_FILENO);
+			if (p->stderr != STDOUT_FILENO)
+				close(p->stderr);
+		}
 	}
 	if (p->stdout != STDOUT_FILENO)
 	{
-		dup2(p->stdout, STDOUT_FILENO);
-		if (p->stdout != STDERR_FILENO)
-			close(p->stdout);
+		if (p->stdout == -1)
+			close(STDOUT_FILENO);
+		else
+		{
+			dup2(p->stdout, STDOUT_FILENO);
+			if (p->stdout != STDERR_FILENO)
+				close(p->stdout);
+		}	
 	}
 
 
