@@ -20,10 +20,12 @@ static void		s_lexer_add(t_lexer *lexer, const char *str, t_token token)
 	(lexer->size)++;
 }
 
-static t_token	*s_token_recognizer(const char *s)
+static t_token	*s_token_recognizer(const char *s, int i)
 {
 	const t_token *list = token_list();
 
+	if (i > 0 && *(s - 1) == '\\')
+		return (NULL);
 	while (list && list->op)
 	{
 		if (ft_strncmp(s, list->op, list->len) == 0)
@@ -116,7 +118,7 @@ int				tokenize(const char *s, t_lexer *lexer)
 	is_inhibited = 0;
 	while (s && s[i])
 	{
-		token_found = s_token_recognizer(&s[i]);
+		token_found = s_token_recognizer(&s[i], i);
 		if (s_is_escaped(token_found))
 		{
 			s_lexer_add(lexer, &s[i], *token_found);
