@@ -4,7 +4,7 @@
 ** Allocate a new processus with default values.
 */
 
-t_proc	*proc_alloc(char **envp)
+t_proc	*proc_alloc(t_job *j, char **envp)
 {
 	t_proc	*p;
 
@@ -12,6 +12,7 @@ t_proc	*proc_alloc(char **envp)
 		return (NULL);
 	p->command = NULL;
 	p->argv = NULL;
+	p->j = j;
 
 	// todo: is that acceptable?
 	// waiting for a process to not be launched when a command is empty

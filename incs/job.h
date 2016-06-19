@@ -2,20 +2,23 @@
 # define JOB_H
 
 typedef struct termios		t_termios;
+typedef struct s_job		t_job;
+typedef struct s_proc		t_proc;
 
 /*
 ** A job may expected a success of the one before, an error or nothing.
 */
-typedef enum	e_flag_job_wait
+typedef enum	e_flag_job_separator
 {
-	F_WAIT_NO = 0,
-	F_WAIT_SUCCESS,
-	F_WAIT_ERROR
-}				t_flag_job_wait;
+	F_JSEP_SEMI = 0,
+	F_JSEP_AND_IF,
+	F_JSEP_OR_IF
+}				t_flag_job_separator;
 
 typedef struct				s_proc
 {
 	t_list					list_proc;
+	t_job					*j;
 	char					**argv;
 	char					**envp;
 	char					*command;
@@ -47,8 +50,8 @@ typedef struct				s_job
 	int						stdout;
 	int						stderr;
 	int						id;
-
-	t_flag_job_wait			wait;
+	int						exit_status;
+	t_flag_job_separator	separator;
 }							t_job;
 
 #endif

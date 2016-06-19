@@ -87,7 +87,7 @@ int		main(int argc, char *argv[], char *envp[])
 		ret = parser(&sh, option_get_value(&sh.opt_head, ST_OPTION_C));
 	else
 	{
-		if ((ret = stdin_loop(&sh)) != ST_END_OF_INPUT)
+		if ((ret = loop_main(&sh)) != ST_END_OF_INPUT)
 			log_fatal("get_next_line failed (%d)", ret);
 	}
 	if (sh.is_interactive == true)

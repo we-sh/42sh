@@ -21,7 +21,7 @@ static void	s_proc_status(t_job *j, t_proc *p)
 	}
 }
 
-int	job_wait(t_job *j_orig)
+int			job_wait(t_job *j_orig)
 {
 	t_list	*j_pos;
 	t_job	*j;

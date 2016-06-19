@@ -134,6 +134,7 @@ int					job_launch(t_sh *sh, t_job *j)
 	{
 		p = CONTAINER_OF(pos, t_proc, list_proc);
 		sh->last_exit_status = p->exit_status;
+		j->exit_status = p->exit_status;
 		if ((ret = builtin_callback(BLTIN_CB_AFTER, sh, p)) != ST_OK)
 			return (ret);
 	}
