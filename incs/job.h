@@ -34,6 +34,7 @@ typedef struct				s_proc
 	int						bltin_status;
 	char					*bltin_char;
 	t_list					bltin_opt_head;
+	int						is_valid;
 }							t_proc;
 
 typedef struct				s_job

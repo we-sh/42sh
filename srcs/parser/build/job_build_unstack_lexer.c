@@ -9,14 +9,16 @@ int	job_build_unstack_lexer(t_lexer *lexer, char **envp)
 {
 	int		i;
 	t_job	*j;
+	int		ret;
 
+	j = NULL;
 	if (!lexer || !envp)
 		return (ST_EINVAL);
 	i = 0;
 	while (i < lexer->size)
 	{
-		if (!(j = job_build_unstack_job_from_lexer(lexer, &i, envp)))
-			return (ST_PARSER);
+		if ((ret = job_build_unstack_job_from_lexer(&j, lexer, &i, envp)) != ST_OK)
+			return (ret);
 		list_push_back(&j->list_job, &g_current_jobs_list_head);
 	}
 
