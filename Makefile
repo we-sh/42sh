@@ -32,6 +32,7 @@ SRCS		=	\
 				builtins/env/builtin_env.c		\
 				builtins/setenv/builtin_setenv.c\
 				builtins/setenv/builtin_setenv_argv_is_valid.c\
+				builtins/termcaps/builtin_termcaps.c\
 				builtins/unsetenv/builtin_unsetenv.c\
 				builtins/builtin_callback.c		\
 				builtins/builtin_usage.c		\
@@ -404,7 +405,7 @@ $(DIROBJ)builtin_help.o: srcs/builtins/help/builtin_help.c incs/shell.h \
   incs/builtins/builtin_exit.h incs/builtins/builtin_fg.h \
   incs/builtins/builtin_help.h incs/builtins/builtin_jobs.h \
   incs/builtins/builtin_env.h incs/builtins/builtin_setenv.h \
-  incs/builtins/builtin_unsetenv.h
+  incs/builtins/builtin_termcaps.h incs/builtins/builtin_unsetenv.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/builtins/help/builtin_help.c\n"
 		@$(CC) -c ./srcs/builtins/help/builtin_help.c -o ./.objs/builtin_help.o $(CPPFLAGS) $(CFLAGS) 
@@ -470,6 +471,21 @@ $(DIROBJ)builtin_setenv_argv_is_valid.o: \
 		@printf "compiling ./srcs/builtins/setenv/builtin_setenv_argv_is_valid.c\n"
 		@$(CC) -c ./srcs/builtins/setenv/builtin_setenv_argv_is_valid.c -o ./.objs/builtin_setenv_argv_is_valid.o $(CPPFLAGS) $(CFLAGS) 
 
+$(DIROBJ)builtin_termcaps.o: srcs/builtins/termcaps/builtin_termcaps.c \
+  incs/shell.h libs/libft/./incs/list.h incs/htabl.h incs/fnv.h \
+  incs/longlong.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
+  libs/libcaps/./incs/types.h incs/termcaps/log.h \
+  incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
+  libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h \
+  libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
+  incs/statuses.h incs/option.h incs/job.h libs/libcaps/./incs/caps.h \
+  libs/libcaps/./incs/logger.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtins/builtin.h \
+  incs/quoting.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/builtins/termcaps/builtin_termcaps.c\n"
+		@$(CC) -c ./srcs/builtins/termcaps/builtin_termcaps.c -o ./.objs/builtin_termcaps.o $(CPPFLAGS) $(CFLAGS) 
+
 $(DIROBJ)builtin_unsetenv.o: srcs/builtins/unsetenv/builtin_unsetenv.c \
   incs/shell.h libs/libft/./incs/list.h incs/htabl.h incs/fnv.h \
   incs/longlong.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
@@ -500,7 +516,7 @@ $(DIROBJ)builtin_callback.o: srcs/builtins/builtin_callback.c incs/shell.h \
   incs/builtins/builtin_exit.h incs/builtins/builtin_fg.h \
   incs/builtins/builtin_help.h incs/builtins/builtin_jobs.h \
   incs/builtins/builtin_env.h incs/builtins/builtin_setenv.h \
-  incs/builtins/builtin_unsetenv.h
+  incs/builtins/builtin_termcaps.h incs/builtins/builtin_unsetenv.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/builtins/builtin_callback.c\n"
 		@$(CC) -c ./srcs/builtins/builtin_callback.c -o ./.objs/builtin_callback.o $(CPPFLAGS) $(CFLAGS) 

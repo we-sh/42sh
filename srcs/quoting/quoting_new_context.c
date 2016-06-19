@@ -38,11 +38,13 @@ static int				s_qloop(t_termcaps_context *c, t_quoting q, int a)
 	char				*test;
 	char				*buff_quote;
 	t_termcaps_context	child_context;
+	int passage = 0;//debug
 
 	s_d_init(c, &child_context);
 	while (quoting_invalid(c, q, a) == 1 && (a = 0) == 0)
 	{
 		buff_quote = termcaps_read_input(&child_context);
+
 		if (s_check_pipe_case(c) == 1)
 			termcaps_string_to_command_line((ft_strlen(buff_quote)),
 											buff_quote,	&c->command_line);
@@ -57,9 +59,15 @@ static int				s_qloop(t_termcaps_context *c, t_quoting q, int a)
 											test, &c->command_line);
 			free(test);
 		}
-		free(buff_quote);
+		/* ARTHUR MERCI DE FREE CHILD_CONTEXT C EST AU DESSUS DE MES FORCES */
+		log_fatal("PASSAGE AVANT %s", buff_quote);//debug
+		ft_memdel((void **)&buff_quote); //leaks du child_cntext ou autre i don't knowww
+		log_fatal("PASSAGE APRES %s", buff_quote);//debug
+		passage++;//debug
+		log_fatal("PASSAGE %d", passage);//debug
 	}
-	return (s_d_end(c, &child_context));
+	s_d_end(c, &child_context);
+	return (0);
 }
 
 int						quoting_new_context(t_termcaps_context *context)
