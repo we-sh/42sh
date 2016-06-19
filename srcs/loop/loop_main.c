@@ -37,6 +37,7 @@ int						loop_main(t_sh *sh)
 	input = NULL;
 	while (1)
 	{
+		job_list_clean(1);
 		if (sh->is_interactive == 1)
 			input = termcaps_read_input(&sh->termcaps_context);
 		else
@@ -59,7 +60,6 @@ int						loop_main(t_sh *sh)
 		}
 		else
 		{
-			job_list_clean(1);
 			if ((ret = s_job_launcher(sh)) != ST_OK)
 			{
 				return (ret);

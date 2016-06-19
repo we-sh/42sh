@@ -56,6 +56,6 @@ int			parser(t_sh *sh, const char *in)
 	if ((s_parser_callback(&parser)) == ST_OK)
 		log_success("parser deleted with success");
 	else
-		log_error("failed to deleted parser");
+		log_error("failed to delete parser");
 	return (st);
 }

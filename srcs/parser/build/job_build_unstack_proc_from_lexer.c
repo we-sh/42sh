@@ -4,13 +4,10 @@
 ** Unstack processus from the stack of tokens.
 */
 
-t_proc	*ast_unstack_proc_from_lexer(t_lexer *lexer, int *i, char **envp, t_job *j)
+int		ast_unstack_proc_from_lexer(t_proc *p, t_lexer *lexer, int *i)
 {
 	int		st;
-	t_proc	*p;
 
-	if ((p = proc_alloc(j, envp)) == NULL)
-		return (NULL);
 	while (*i < lexer->size)
 	{
 		log_debug("unstacking token : %d / %d : \"%s\"", *i, lexer->size, lexer->tokens[*i].content);
@@ -24,9 +21,9 @@ t_proc	*ast_unstack_proc_from_lexer(t_lexer *lexer, int *i, char **envp, t_job *
 		if (st != ST_OK)
 		{
 			log_error("error on token parsing");
-			return (NULL);
+			return (st);
 		}
 		(*i)++;
 	}
-	return (p);
+	return (ST_OK);
 }

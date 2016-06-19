@@ -27,6 +27,7 @@ t_proc	*proc_alloc(t_job *j, char **envp)
 	p->completed = 0;
 	p->stopped = 0;
 	p->signaled = 0;
+	p->is_valid = 1;
 	p->stdin = STDIN_FILENO;
 	p->stdout = STDOUT_FILENO;
 	p->stderr = STDERR_FILENO;

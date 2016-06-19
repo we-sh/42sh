@@ -5,20 +5,23 @@
 ** TODO do not return the job whether it's an empty one
 */
 
-t_job	*job_build_unstack_job_from_lexer(t_lexer *lexer, int *i, char **envp)
+int	job_build_unstack_job_from_lexer(t_job **j, t_lexer *lexer, int *i, char **envp)
 {
-	t_job	*j;
+	int		ret;
 	t_proc	*p;
 
-	if (!(j = job_alloc("")))
-		return (NULL);
+	if (!(*j = job_alloc("")))
+		return (ST_MALLOC);
 	while (*i < lexer->size)
 	{
 		log_info("remaining tokens : %d / %d", lexer->size - *i, lexer->size);
 
-		if (!(p = ast_unstack_proc_from_lexer(lexer, i, envp, j)))
-			return (NULL);
-		list_push_back(&p->list_proc, &j->proc_head);
+		if ((p = proc_alloc(*j, envp)) == NULL)
+			return (ST_MALLOC);
+
+		if ((ret = ast_unstack_proc_from_lexer(p, lexer, i)) != ST_OK)
+			return (ret);
+		list_push_back(&p->list_proc, &(*j)->proc_head);
 		if (lexer->tokens[*i].type == TT_JOBS)
 		{
 			log_info("end of job encountered     ('%s')", lexer->tokens[*i].content);
@@ -33,5 +36,5 @@ t_job	*job_build_unstack_job_from_lexer(t_lexer *lexer, int *i, char **envp)
 		else
 			log_info("remaining tokens : %d / %d", lexer->size - *i, lexer->size);
 	}
-	return (j);
+	return (ST_OK);
 }
