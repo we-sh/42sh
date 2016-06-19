@@ -40,6 +40,7 @@
 # include <curses.h>
 # include <dirent.h>
 # include <sys/stat.h>
+# include <sys/ioctl.h>
 
 /*
 ** Shell structure
@@ -187,7 +188,7 @@ int				quoting_new_context(t_termcaps_context *context);
 */
 int				signal_to_ignore(void);
 int				signal_to_default(void);
-void			signal_sigtstp(int sig);
+int				signal_to_pgid(int pgid);
 
 /*
 ** termcaps/

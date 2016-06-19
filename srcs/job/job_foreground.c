@@ -13,16 +13,18 @@ static int	s_bask_to_shell(t_sh *sh)
 	int	ret;
 
 	ret = ST_OK;
-	if (tcsetpgrp(sh->fd, sh->pgid) == -1)
+	if (ioctl(sh->fd, TIOCSPGRP, &sh->pgid) == -1)
 	{
 		log_fatal("s_bask_to_shell: tcsetpgrp failed");
 		ret = ST_TCSETPGRP;
 	}
+	signal_to_pgid(0);
 	return (ST_OK);
 }
 
 int			job_foreground(t_sh *sh, t_job *j, int const sigcont)
 {
+	signal_to_pgid(j->pgid);
 	log_debug("put job to foreground (id: %d, pgid: %d)", j->id, j->pgid);
 	job_set_stopped(j, 0);
 	j->notified = 1;
@@ -36,7 +38,7 @@ int			job_foreground(t_sh *sh, t_job *j, int const sigcont)
 			return (job_kill(sh, j, ST_SIGCONT));
 		}
 	}
-	if (tcsetpgrp(sh->fd, j->pgid) == -1 && errno != EINVAL)
+	if (ioctl(sh->fd, TIOCSPGRP, &j->pgid) == -1 && errno != EINVAL)
 	{
 		log_error("failed to make the job %d to control terminal", j->pgid);
 		return (job_kill(sh, j, ST_TCSETPGRP));

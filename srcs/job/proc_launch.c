@@ -15,7 +15,7 @@ static int	s_interactive_mode_callback(t_sh *sh, t_job *j, t_proc *p)
 			log_warn("setpgid(%d, %d) errno: %d", p->pid, j->pgid, errno);
 		}
 		if (j->foreground == 1)
-			if (tcsetpgrp(sh->fd, j->pgid) == -1)
+			if (ioctl(sh->fd, TIOCSPGRP, &j->pgid) == -1)
 			{
 				log_warn("setpgid(%d, %d) errno: %d", p->pid, j->pgid, errno);
 			}

@@ -53,8 +53,11 @@ int		shell_init(t_sh *sh, char *envp[])
 	if (sh->is_interactive == true)
 	{
 		/* jobs */
-		while (tcgetpgrp(STDIN_FILENO) != (sh->pgid = getpgrp()))
+		while (1)
 		{
+			ioctl(STDIN_FILENO, TIOCGPGRP, &ret);
+			if (ret == (sh->pgid = getpgrp()))
+				break ;
 			if (kill(-sh->pgid, SIGTTIN) != 0)
 			  log_error("kill(-sh->pgid. SIGTTIN) failed");
 		}
@@ -64,7 +67,7 @@ int		shell_init(t_sh *sh, char *envp[])
 			return (ST_SETPGID);
 		log_info("pgid: %d", sh->pgid);
 
-		if (tcsetpgrp(STDIN_FILENO, sh->pgid) < 0)
+		if (ioctl(STDIN_FILENO, TIOCSPGRP, &sh->pgid) < 0)
 			return (ST_TCSETPGRP);
 		/* termcaps */
 		if (!caps__initialize(sh->fd))
