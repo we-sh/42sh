@@ -5,19 +5,65 @@
 ** the following order (as described here: http://pubs.opengroup.org/onlinep
 ** ubs/009604499/utilities/xcu_chap02.html#tag_02_06):
 ** 1. Tilde `~` expansion
+** 2.
+** 3.
+** 4. Escape character `\`
 */
 
-char		*expand(t_proc *p, t_lexer_token *token, t_lexer_token *prev_token)
+
+// ----------------------------------------------------------------
+// todo: to be exported to libft submodule
+static int			ft_array_push_back(char ***array, char const *value)
+{
+	char	**new_array;
+	size_t	total;
+
+	if (!value || !array)
+		return (-1);
+	total = 0;
+	if (*array)
+		while ((*array)[total])
+			total++;
+	if ((new_array = (char **)malloc(sizeof(char *) * (total + 2))) == NULL)
+		return (-1);
+	total = 0;
+	if (*array)
+		while ((*array)[total])
+		{
+			if ((new_array[total] = ft_strdup((*array)[total])) == NULL)
+				return (-1);
+			total++;
+		}
+	if ((new_array[total] = ft_strdup(value)) == NULL)
+		return (-1);
+	new_array[total + 1] = NULL;
+	ft_memdel_tab((void ***)&(*array));
+	*array = new_array;
+	return (total);
+}
+// ----------------------------------------------------------------
+
+
+static int	s_recursive(t_proc *p, int i, char *(func)(char *))
+{
+	if (p->argv[i] == NULL)
+		return (ST_OK);
+	func(p->argv[i]);
+	return (s_recursive(p, i + 1, func));
+}
+
+int			expand(t_proc *p, t_lexer_token *token, t_lexer_token *prev_token)
 {
 	char	*str;
 
 	if ((str = ft_strdup(token->content)) == NULL)
-		return (NULL);
+		return (ST_MALLOC);
 	if (!prev_token || prev_token->type != TT_INHIBITOR)
 	{
 		if ((str = expand_tilde(p, str)) == NULL)
-			return (NULL);
+			return (ST_MALLOC);
 	}
-	// todo: perform here backslash expansion
-	return (str);
+	if (ft_array_push_back(&p->argv, str) < 0)
+		return (ST_MALLOC);
+	return (s_recursive(p, 0, &expand_escape_char));
 }
