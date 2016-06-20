@@ -1,31 +1,16 @@
 #include "parser.h"
 
-/*
- ** Open the file pointed by the arg, return -1 on error and display status.
- */
-
-static int	s_open_new_fd(char *f)
+static int	s_open_new_fd_int(char *f, int *fd)
 {
-	int	ret;
-
-	if ((ret = open(f, O_WRONLY | O_CREAT | O_APPEND, 0644)) < 0)
-		ft_printf("%s: %s: %s\n", "42sh", f, i18n_translate(ST_OPEN));
-	return (ret);
-}
-
-static int	s_open_new_fd_int(char *f)
-{
-	int	ret;
-
 	if ((ft_strisnumeric(f)) == 0)
 		return (ST_PARSER);
 	else
 	{
-		ret = ft_atoi(f);
-		if (ret != 0 && ret != 1 && ret != 2)
-			log_error("bad file descriptor");
+		*fd = ft_atoi(f);
+		if (*fd != STDIN_FILENO && *fd != STDOUT_FILENO && *fd != STDERR_FILENO)
+			return (ST_PARSER);
 	}
-	return (ret);
+	return (ST_OK);
 }
 
 static void	s_set_proc_fds(t_proc *proc, int fd_l, int fd_r)
@@ -41,10 +26,8 @@ static void	s_set_proc_fds(t_proc *proc, int fd_l, int fd_r)
 	}
 }
 
-static int	s_parse_right_redir(t_lexer *lexer, int *i)
+static int	s_parse_right_redir(t_proc *p, t_lexer *lexer, int *i, int *fd)
 {
-	int	fd_r;
-
 	if (lexer->tokens[*i].code == TC_AND)
 		return (ST_PARSER);
 	else
@@ -53,30 +36,31 @@ static int	s_parse_right_redir(t_lexer *lexer, int *i)
 			(*i)++;
 		if (lexer->tokens[*i].code != TC_NONE)
 			return (ST_PARSER);
-		fd_r = s_open_new_fd(lexer->tokens[*i].content);
+		log_info("%s", lexer->tokens[*i].content);
+		open_new_fd(p, lexer->tokens[*i].content, fd, O_WRONLY | O_CREAT | O_APPEND);
+		log_info("%d", *fd);
 	}
-	return (fd_r);
+	return (ST_OK);
 }
 
-int			token_parse_dbl_chev_right(t_proc *proc, t_lexer *lexer, int *i)
+int			token_parse_dbl_chev_right(t_proc *p, t_lexer *lexer, int *i)
 {
 	int	fd_l;
 	int	fd_r;
+	int	ret;
 
 	log_trace("entering parsing token %-12s '>>'", "TT_REDIR");
-	// parse left part of the redirection
-	if (lexer->tokens[*i].code == TC_DBL_CHEV_RIGHT)
-		fd_l = STDOUT_FILENO;
-	else
+	fd_l = STDOUT_FILENO;
+	if (lexer->tokens[*i].code != TC_DBL_CHEV_RIGHT)
 	{
-		if ((fd_l = s_open_new_fd_int(lexer->tokens[*i].content)) == ST_PARSER)
-			return (ST_PARSER);
+		if ((ret = s_open_new_fd_int(lexer->tokens[*i].content, &fd_l)) != ST_OK)
+			return (ret);
 		(*i)++;
 	}
 	(*i)++;
-	if ((fd_r = s_parse_right_redir(lexer, i)) == ST_PARSER)
-		return (ST_PARSER);
-	s_set_proc_fds(proc, fd_l, fd_r);
+	if ((ret = s_parse_right_redir(p, lexer, i, &fd_r)) != ST_OK)
+		return (ret);
+	s_set_proc_fds(p, fd_l, fd_r);
 	(*i)++;
 	return (0);
 }
