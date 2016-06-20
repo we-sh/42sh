@@ -100,7 +100,7 @@ int			tokenize(const char *s, t_lexer *lexer);
 
 int			job_build_unstack_lexer(t_lexer *lexer, char **envp);
 int			job_build_unstack_job_from_lexer(t_job **j, t_lexer *lexer, int *i, char **envp);
-int			ast_unstack_proc_from_lexer(t_proc *p, t_lexer *lexer, int *i);
+int			job_build_unstack_proc_from_lexer(t_proc *p, t_lexer *lexer, int *i);
 
 /*
 ** Parser definition.
@@ -148,6 +148,12 @@ char	*expand_tilde(t_proc *p, char *buf);
 
 // INHIBITORS
 int	token_parse_inhib(t_proc *proc, t_lexer *lexer, int *i);
+
+/*
+** Utils.
+*/
+
+int	open_new_fd(t_proc *p, char *f, int *fd);
 
 /*
 ** The array representing each tokens definitions.
