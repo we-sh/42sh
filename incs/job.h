@@ -15,7 +15,7 @@ typedef enum	e_flag_job_separator
 	F_JSEP_OR_IF
 }				t_flag_job_separator;
 
-typedef struct				s_proc
+struct						s_proc
 {
 	t_list					list_proc;
 	t_job					*j;
@@ -35,9 +35,9 @@ typedef struct				s_proc
 	char					*bltin_char;
 	t_list					bltin_opt_head;
 	int						is_valid;
-}							t_proc;
+};
 
-typedef struct				s_job
+struct						s_job
 {
 	t_list					list_job;
 	t_list					proc_head;
@@ -53,6 +53,6 @@ typedef struct				s_job
 	int						id;
 	int						exit_status;
 	t_flag_job_separator	separator;
-}							t_job;
+};
 
 #endif
