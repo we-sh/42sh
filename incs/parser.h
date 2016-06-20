@@ -130,6 +130,8 @@ int	token_parse_dbl_or(t_proc *proc, t_lexer *lexer, int *i);
 // PIPE
 int	token_parse_pipe(t_proc *proc, t_lexer *lexer, int *i);
 
+int	token_parse_and(t_proc *proc, t_lexer *lexer, int *i);
+
 // REDIR
 int	token_parse_chev_left(t_proc *proc, t_lexer *lexer, int *i);
 int	token_parse_chev_right(t_proc *proc, t_lexer *lexer, int *i);
@@ -162,7 +164,7 @@ static const t_token g_tokens[] = {
 	{">",	1,	TT_REDIR,		TC_CHEV_RIGHT,		token_parse_chev_right},
 	{"<",	1,	TT_REDIR,		TC_CHEV_LEFT,		token_parse_chev_left},
 	{"|",	1,	TT_REDIR,		TC_PIPE,			token_parse_pipe},
-	{"&",	1,	TT_SPECIAL,		TC_AND,				token_parse_none},
+	{"&",	1,	TT_SPECIAL,		TC_AND,				token_parse_and},
 	//{"\\",	1,	TT_INHIBITOR,	TC_BACKSLASH,		token_parse_inhib},
 	{"\"",	1,	TT_INHIBITOR,	TC_DBL_QUOTE,		token_parse_inhib},
 	{"'",	1,	TT_INHIBITOR,	TC_QUOTE,			token_parse_inhib},
