@@ -7,6 +7,7 @@ int			key__copy(t_termcaps_context *in_context)
 
 	if (in_context->state == STATE_SELECTION)
 	{
+		ft_putstr(SELECTBLANC);
 		in_context->state = STATE_REGULAR;
 		if (!key__share__selection_get(in_context, &copy_start, &copy_size))
 		{

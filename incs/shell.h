@@ -6,6 +6,15 @@
 # define PATH_ROOT "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 # define PATH_STD "/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games"
 
+#ifdef __linux__ //A DEPLACER
+#define SELECTBLANC "\e]12;white\a"
+#define SELECTBLEU "\e]12;blue\a"
+#else
+# define SELECTBLANC"\033]Plffffff\033\\"
+#define SELECTBLEU "\033]Pl4040ff\033\\"
+#endif
+
+
 /*
 ** Extern headers and structures
 */

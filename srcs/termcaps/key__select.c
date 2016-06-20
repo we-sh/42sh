@@ -1,11 +1,4 @@
 #include "shell.h"
-#ifdef __linux__ //A DEPLACER
-#define SELECTBLANC "\e]12;white\a"
-#define SELECTBLEU "\e]12;blue\a"
-#else
-# define SELECTBLANC"\033]Plffffff\033\\"
-#define SELECTBLEU "\033]Pl4040ff\033\\"
-#endif
 
 int		key__select(t_termcaps_context *in_context)
 {

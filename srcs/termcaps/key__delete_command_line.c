@@ -22,6 +22,7 @@ int				key__delete_command_line(t_termcaps_context *context)
 	}
 	else if (context->state == STATE_SELECTION)
 	{
+		ft_putstr(SELECTBLANC);
 		context->state = STATE_REGULAR;
 		key__share__selection_get(context, &selection_start, &selection_size);
 		list_head__init(&head);
