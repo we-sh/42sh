@@ -138,6 +138,9 @@ int	token_parse_chev_right(t_proc *proc, t_lexer *lexer, int *i);
 int	token_parse_dbl_chev_left(t_proc *proc, t_lexer *lexer, int *i);
 int	token_parse_dbl_chev_right(t_proc *proc, t_lexer *lexer, int *i);
 
+// UTILS
+int	token_parse_utils_get_full_word(char **content, t_lexer *lexer, int *i);
+
 // EXPANSIONS
 int		expand(t_proc *p, char *content, int is_inhibited);
 char	*expand_escape_char(char *buf);
