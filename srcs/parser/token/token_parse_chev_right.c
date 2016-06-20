@@ -25,7 +25,8 @@ static int	s_open_new_fd_int(char *f, int *fd)
 
 static int	s_parse_right_redir(t_proc *p, t_lexer *lexer, int *i, int *fd)
 {
-	int	ret;
+	int		ret;
+	char	*str;
 
 	if (lexer->tokens[*i].code == TC_AND)
 	{
@@ -42,10 +43,12 @@ static int	s_parse_right_redir(t_proc *p, t_lexer *lexer, int *i, int *fd)
 	{
 		while (lexer->tokens[*i].type == TT_SEPARATOR || lexer->tokens[*i].type == TT_INHIBITOR)
 			(*i)++;
-		if (lexer->tokens[*i].code != TC_NONE)
-			return (ST_PARSER);
-		if ((ret = s_open_new_fd(p, lexer->tokens[*i].content, fd)) != ST_OK)
+		str = NULL;
+		if ((ret = token_parse_utils_get_full_word(&str, lexer, i)) != ST_OK)
 			return (ret);
+		if ((ret = s_open_new_fd(p, str, fd)) != ST_OK)
+			return (ret);
+		free(str);
 	}
 	return (ST_OK);
 }
