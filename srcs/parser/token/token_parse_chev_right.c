@@ -14,13 +14,6 @@ static int	s_open_new_fd(t_proc *p, char *f, int *fd)
 	return (ST_OK);
 }
 
-/*
-** Try to extract a file descriptor according to a string. It will not open
-** it because it is STDIN_FILENO, STDOUT_FILENO or STDERR_FILENO.
-** The function will return ST_PARSER if the string is not "0", "1" or "2".
-** Otherwise, the string converted to an int is set in the fd argument.
-*/
-
 static int	s_open_new_fd_int(char *f, int *fd)
 {
 	if ((ft_strisnumeric(f)) == 0)
@@ -33,15 +26,6 @@ static int	s_open_new_fd_int(char *f, int *fd)
 	}
 	return (ST_OK);
 }
-
-/*
-** Parse the right part of a redirection (>&2), because it is more complicated
-** than the left part.
-** Return the file descriptor opened with the redirection, or -ST_PARSER on
-** error (assert that ST_PARSER != 1).
-** A file descriptor of -1 is not an error, it is considered as a fd closure
-** caused by the '-' token (ls 2>&-).
-*/
 
 static int	s_parse_right_redir(t_proc *p, t_lexer *lexer, int *i, int *fd)
 {
@@ -70,29 +54,20 @@ static int	s_parse_right_redir(t_proc *p, t_lexer *lexer, int *i, int *fd)
 	return (ST_OK);
 }
 
-/*
-** Update the proc after the opening of all the redirections.
-*/
-
-static void	s_set_proc_fds(t_proc *proc, int fd_l, int fd_r)
+static void	s_set_proc_fds(t_proc *p, int fd_l, int fd_r)
 {
 	if (!(fd_r == 0 && (fd_l == STDOUT_FILENO || fd_l == STDERR_FILENO)))
 	{
 		if (fd_l == 0)
-			proc->stdin = fd_r;
+			p->stdin = fd_r;
 		if (fd_l == 1)
-			proc->stdout = fd_r;
+			p->stdout = fd_r;
 		if (fd_l == 2)
-			proc->stderr = fd_r;
+			p->stderr = fd_r;
 	}
 }
 
-/*
-** Parse the simple right redirection such as 'ls 1>&2'.
-** Return ST_OK on success or an error code (from ST_*) on failure.
-*/
-
-int			token_parse_chev_right(t_proc *proc, t_lexer *lexer, int *i)
+int			token_parse_chev_right(t_proc *p, t_lexer *lexer, int *i)
 {
 	int	fd_l;
 	int	fd_r;
@@ -105,15 +80,15 @@ int			token_parse_chev_right(t_proc *proc, t_lexer *lexer, int *i)
 	{
 		if ((ret = s_open_new_fd_int(lexer->tokens[*i].content, &fd_l)) != ST_OK)
 		{
-			if ((ret = token_parse_none(proc, lexer, i)) != ST_OK)
+			if ((ret = token_parse_none(p, lexer, i)) != ST_OK)
 				return (ret);
 		}
 		(*i)++;
 	}
 	(*i)++;
-	if ((ret = s_parse_right_redir(proc, lexer, i, &fd_r)) != ST_OK)
+	if ((ret = s_parse_right_redir(p, lexer, i, &fd_r)) != ST_OK)
 		return (ret);
-	s_set_proc_fds(proc, fd_l, fd_r);
+	s_set_proc_fds(p, fd_l, fd_r);
 	(*i)++;
 	return (ST_OK);
 }
