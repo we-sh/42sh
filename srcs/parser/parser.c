@@ -1,10 +1,5 @@
 #include "parser.h"
 
-/*
-** Proceed to the parser process according to the structure.
-** TODO remove the execution part of the function.
-*/
-
 static int	parser_process(t_sh *sh, t_parser *parser)
 {
 	int			st;
@@ -13,7 +8,6 @@ static int	parser_process(t_sh *sh, t_parser *parser)
 		return (st);
 	if ((st = parser_process_build(parser->lexer, sh->envp)) != ST_OK)
 		return (st);
-
 	return (ST_OK);
 }
 
@@ -45,14 +39,10 @@ int			parser(t_sh *sh, const char *in)
 
 	if (!sh || !in)
 		return (ST_EINVAL);
-
 	log_success("parser receives input : \"%s\"", in);
-
 	if ((st = parser_new(&parser, in)) != ST_OK)
 		return (st);
-
 	st = parser_process(sh, parser);
-
 	if ((s_parser_callback(&parser)) == ST_OK)
 		log_success("parser deleted with success");
 	else
