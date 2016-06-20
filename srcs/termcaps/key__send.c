@@ -52,8 +52,11 @@ static int		s_bufferize_input(t_termcaps_context *context)
 int g_child = 0;
 int g_in_child = 0;
 
-int				key__send(t_termcaps_context *context)
+int key__send(t_termcaps_context *context)
 {
+	t_list				*node;
+	t_list_node_history	*history;
+
 	if (context->state == STATE_REGULAR)
 	{
 		if ((quoting_new_context(context)) == ST_MALLOC)
@@ -71,7 +74,15 @@ int				key__send(t_termcaps_context *context)
 				return (0);
 			}
 		}
+		g_child = 0;
 	}
-	g_child = 0;
+	else if (context->state == STATE_SEARCH_HISTORY)
+	{
+		list_head__command_line_destroy(&context->command_line);
+		node = list_nth(&context->history.list, context->history.offset + 1);
+		history = CONTAINER_OF(node, t_list_node_history, list);
+		ASSERT(list_head__command_line_dup(&context->command_line, &history->command_line));
+		context->state = STATE_REGULAR;
+	}
 	return (1);
 }
