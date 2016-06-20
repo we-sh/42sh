@@ -15,6 +15,18 @@ typedef enum	e_flag_job_separator
 	F_JSEP_OR_IF
 }				t_flag_job_separator;
 
+/*
+** Typedef to help code review in job_launch
+*/
+typedef enum				e_fds_job_launch
+{
+	FD_PIPE_IN = 0,
+	FD_PIPE_OUT,
+	FD_STDIN,
+	FD_STDOUT,
+	FD_STDERR
+}							t_fds_job_launch;
+
 struct						s_proc
 {
 	t_list					list_proc;
