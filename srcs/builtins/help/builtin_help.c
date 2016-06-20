@@ -38,7 +38,7 @@ static int	s_display_help(t_builtin const *bltin)
 	i = BLTIN_NONE;
 	while (++i < BLTIN_TOTAL)
 	{
-		ft_printf(" %-10s: %s\n",
+		ft_printf(" %-20s: %s\n",
 			g_builtins[i]->name,
 			i18n_translate(g_builtins[i]->description));
 	}
