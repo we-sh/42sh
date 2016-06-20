@@ -32,7 +32,7 @@ SRCS		=	\
 				parser/token/token_parse_dbl_chev_right.c			\
 				parser/token/token_parse_inhib.c					\
 				parser/token/utils/token_parse_utils_get_full_word.c\
-				parser/token/utils/open_new_fd.c					\
+				parser/token/utils/token_parse_utils_open_new_fd.c	\
 				builtins/bg/builtin_bg.c		\
 				builtins/cd/builtin_cd.c		\
 				builtins/cd/builtin_cd_chk_path.c\
@@ -643,7 +643,8 @@ $(DIROBJ)token_parse_utils_get_full_word.o: \
 		@printf "compiling ./srcs/parser/token/utils/token_parse_utils_get_full_word.c\n"
 		@$(CC) -c ./srcs/parser/token/utils/token_parse_utils_get_full_word.c -o ./.objs/token_parse_utils_get_full_word.o $(CPPFLAGS) $(CFLAGS) 
 
-$(DIROBJ)open_new_fd.o: srcs/parser/token/utils/open_new_fd.c incs/parser.h \
+$(DIROBJ)token_parse_utils_open_new_fd.o: \
+  srcs/parser/token/utils/token_parse_utils_open_new_fd.c incs/parser.h \
   libs/libft/./incs/libft.h libs/logger/./incs/logger.h \
   libs/logger/./incs/logger_utils.h incs/statuses.h incs/shell.h \
   libs/libft/./incs/list.h incs/htabl.h incs/fnv.h incs/longlong.h \
@@ -654,8 +655,8 @@ $(DIROBJ)open_new_fd.o: srcs/parser/token/utils/open_new_fd.c incs/parser.h \
   libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h incs/i18n.h \
   libs/libft/./incs/get_next_line.h incs/builtins/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
-		@printf "compiling ./srcs/parser/token/utils/open_new_fd.c\n"
-		@$(CC) -c ./srcs/parser/token/utils/open_new_fd.c -o ./.objs/open_new_fd.o $(CPPFLAGS) $(CFLAGS) 
+		@printf "compiling ./srcs/parser/token/utils/token_parse_utils_open_new_fd.c\n"
+		@$(CC) -c ./srcs/parser/token/utils/token_parse_utils_open_new_fd.c -o ./.objs/token_parse_utils_open_new_fd.o $(CPPFLAGS) $(CFLAGS) 
 
 $(DIROBJ)builtin_bg.o: srcs/builtins/bg/builtin_bg.c incs/shell.h \
   libs/libft/./incs/list.h incs/htabl.h incs/fnv.h incs/longlong.h \
