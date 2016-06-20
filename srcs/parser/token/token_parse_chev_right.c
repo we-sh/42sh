@@ -36,7 +36,10 @@ static int	s_parse_right_redir(t_proc *p, t_lexer *lexer, int *i, int *fd)
 		else
 		{
 			if ((ret = s_open_new_fd_int(lexer->tokens[*i].content, fd)) != ST_OK)
+			{
+				display_status(ST_PARSER, lexer->tokens[*i].content, "unexpected member");
 				return (ret);
+			}
 		}
 	}
 	else
@@ -72,7 +75,6 @@ int			token_parse_chev_right(t_proc *p, t_lexer *lexer, int *i)
 	int	fd_r;
 	int	ret;
 
-	log_trace("entering parsing token %-12s '>'", "TT_REDIR");
 	fd_l = STDOUT_FILENO;
 	if (lexer->tokens[*i].code != TC_CHEV_RIGHT)
 	{
