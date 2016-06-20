@@ -1,5 +1,19 @@
 #include "shell.h"
 
+static int		s_replace_endline(t_termcaps_context *context)
+{
+	t_list_node_cmd	*node_cmd;
+	t_list			*pos;
+
+	LIST_FOREACH(&context->command_line.list, pos)
+	{
+		node_cmd = CONTAINER_OF(pos, t_list_node_cmd, list);
+		if (node_cmd->character[0] == '\n')
+			node_cmd->character[0] = ' ';
+	}
+	return (ST_OK);
+}
+
 static int		s_fill_context_buffer(t_termcaps_context *context, char *buffer)
 {
 	context->buffer = ft_strdup(buffer + context->prompt.size);
@@ -25,6 +39,7 @@ static int		s_bufferize_input(t_termcaps_context *context)
 		log_error("(s_fill_context_buffer() failed");
 		return (0);
 	}
+	s_replace_endline(context);
 	if (!key__share__command_line_to_history(context))
 	{
 		log_error("key__share__command_line_to_history() failed");
