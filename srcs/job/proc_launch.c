@@ -60,11 +60,13 @@ void		proc_launch(t_sh *sh, t_job *j, t_proc *p)
 		s_dup2_and_close(STDOUT_FILENO, p->stdout);
 		s_dup2_and_close(STDERR_FILENO, p->stderr);
 	}
-	if (p->is_valid == 1)
-	{
-		builtin_callback(BLTIN_CB_EXEC, sh, p);
-		if (path_hash_finder(sh->envp, &p->argv[0]) == ST_OK)
-			execve(p->argv[0], p->argv, p->envp);
-	}
+	log_debug("argc:%d is_valid:%d", p->argc, p->is_valid);
+	if (p->is_valid == 1 && p->argc == 0)
+		p->is_valid = 0;
+	if (p->is_valid != 1)
+		exit(p->is_valid == 0 ? EXIT_SUCCESS : EXIT_FAILURE);
+	builtin_callback(BLTIN_CB_EXEC, sh, p);
+	if (path_hash_finder(sh->envp, &p->argv[0]) == ST_OK)
+		execve(p->argv[0], p->argv, p->envp);
 	exit(EXIT_FAILURE);
 }
