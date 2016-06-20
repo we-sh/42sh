@@ -41,7 +41,8 @@ int		shell_init(t_sh *sh, char *envp[])
 	sh->last_exit_status = 0;
 	sh->pgid = getpid();
 	/* env */
-	environment_init(sh, envp);
+	if ((ret = shell_environment(sh, envp)) != ST_OK)
+		return (ret);
 	path_init_hasht(sh->envp);
 
 	if ((sh->pwd = getcwd(NULL, 0)) == NULL)

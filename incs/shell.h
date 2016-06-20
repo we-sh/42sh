@@ -83,7 +83,6 @@ t_list		g_current_jobs_list_head;
 typedef struct dirent	*t_dirent;
 
 int				parser(t_sh *sh, char const *input);
-int				environment_init(t_sh *sh, char **envp);
 
 /*
 ** builtins/
@@ -120,8 +119,8 @@ char const		*i18n_translate(int status);
 */
 //int				shell_fd(void);
 int				shell_init(t_sh *sh, char *envp[]);
-int				shell_is_interactive(void);
 int				shell_language(int lang);
+int				shell_environment(t_sh *sh, char **envp);
 
 /*
 ** job/
