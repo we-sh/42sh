@@ -30,7 +30,7 @@ static const char			*g_builtin_termcaps_usage_multiline[] = {
 
 static const t_builtin		g_builtin_termcaps = {
 	.index = BLTIN_TERMCAPS,
-	.name = "Termcaps",
+	.name = "termcaps",
 	.usage = "Here is a list of all termcaps available for the user",
 	.usage_multiline = g_builtin_termcaps_usage_multiline,
 	.description = ST_BLTIN_TERMCAPS,
