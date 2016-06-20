@@ -50,7 +50,7 @@ static int				s_qloop(t_termcaps_context *c, t_quoting q, int a)
 											buff_quote,	&c->command_line);
 		else
 		{
-			if ((test = quoting_add_return_front_buff(buff_quote)) == NULL)
+			if ((test = ft_strjoin("\n", buff_quote)) == NULL)
 			{
 				free(buff_quote);
 				return (ST_MALLOC);
