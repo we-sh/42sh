@@ -752,7 +752,8 @@ $(DIROBJ)builtin_cd_readlink.o: srcs/builtins/cd/builtin_cd_readlink.c \
   libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
   incs/statuses.h incs/option.h incs/job.h libs/libcaps/./incs/caps.h \
   libs/libcaps/./incs/logger.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtins/builtin.h
+  libs/libft/./incs/get_next_line.h incs/parser.h \
+  incs/builtins/builtin.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/builtins/cd/builtin_cd_readlink.c\n"
 		@$(CC) -c ./srcs/builtins/cd/builtin_cd_readlink.c -o ./.objs/builtin_cd_readlink.o $(CPPFLAGS) $(CFLAGS) 
