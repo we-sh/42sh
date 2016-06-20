@@ -70,20 +70,17 @@ static int	s_recursive(t_proc *p, int i, char *(func)(char *))
 	return (s_recursive(p, i + 1, func));
 }
 
-int			expand(t_proc *p, t_lexer_token *token, t_lexer_token *prev_token)
+int			expand(t_proc *p, char *content, int is_inhibited)
 {
-	char	*str;
-
-	if ((str = ft_strdup(token->content)) == NULL)
-		return (ST_MALLOC);
-	if (!prev_token || prev_token->type != TT_INHIBITOR)
+	log_debug("exanding word: `%s`", content);
+	if (is_inhibited == 0)
 	{
-		if ((str = expand_tilde(p, str)) == NULL)
+		if ((content = expand_tilde(p, content)) == NULL)
 			return (ST_MALLOC);
 	}
-	if (ft_array_push_back(&p->argv, str) < 0)
+	if (ft_array_push_back(&p->argv, content) < 0)
 		return (ST_MALLOC);
-	if (prev_token && prev_token->type == TT_INHIBITOR)
+	if (is_inhibited == 1)
 		return (s_recursive(p, 0, &expand_escape_char));
 	return (s_recursive(p, 0, &s_expand_escape_char_not_inhibited));
 }
