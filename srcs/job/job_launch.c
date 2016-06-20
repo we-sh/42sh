@@ -83,25 +83,13 @@ static int			s_job_setup(t_sh *sh, t_job *job)
 	return (ST_OK);
 }
 
-int					job_launch(t_sh *sh, t_job *j)
+static int			s_leave_job_launch(t_sh *sh, t_job *j)
 {
-	log_info("launching job `%s`", j->command);
-
-	int		ret;
 	t_list	*head;
 	t_list	*pos;
 	t_proc	*p;
+	int		ret;
 
-	j->launched = 1;
-	ret = s_job_setup(sh, j);
-	if (ret != ST_OK)
-		return (job_kill(sh, j, ret));
-	if (sh->is_interactive == 0)
-		job_wait(j);
-	else if (j->foreground == 0)
-		return (job_background(j, 0));
-	else if ((ret = job_foreground(sh, j, 0)) != ST_OK)
-		return (ret);
 	head = &j->proc_head;
 	if ((pos = list_nth(head, -1)) != head)
 	{
@@ -112,4 +100,25 @@ int					job_launch(t_sh *sh, t_job *j)
 			return (ret);
 	}
 	return (ST_OK);
+}
+
+int					job_launch(t_sh *sh, t_job *j)
+{
+	int		ret;
+
+	log_info("launching job `%s`", j->command);
+	j->launched = 1;
+	ret = s_job_setup(sh, j);
+	if (ret != ST_OK)
+		return (job_kill(sh, j, ret));
+	if (sh->is_interactive == 0)
+	{
+		j->foreground = 1;
+		job_wait(j);
+	}
+	else if (j->foreground == 0)
+		return (job_background(j, 0));
+	else if ((ret = job_foreground(sh, j, 0)) != ST_OK)
+		return (ret);
+	return (s_leave_job_launch(sh, j));
 }

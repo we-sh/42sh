@@ -66,5 +66,7 @@ int			job_background_update_status(void)
 			}
 		}
 	}
+	if (total > 0)
+		job_list_clean(1);
 	return (total);
 }
