@@ -21,12 +21,12 @@ static const char			*g_builtin_termcaps_usage_multiline[] = {
 	[14] = "|CTR-X : SELECTION MODE Copy your selection",
 	[15] = "|CTR-W : SELECTION MODE Cut your selection",
 	[16] = "|CTR-Q : SELECTION MODE Delete your selection",
-	[16] = "|CTR-Y : Past your selection",
-	[17] = "|TAB : <3 AUTO-completion <3",
-	[18] = "|HOME : Go to the beginning of the command line",
-	[19] = "|END : Go to the end of the command line",
-	[20] = "-----------------------------------------------",
-	[21] = NULL
+	[17] = "|CTR-Y : Past your selection",
+	[18] = "|TAB : <3 AUTO-completion <3",
+	[19] = "|HOME : Go to the beginning of the command line",
+	[20] = "|END : Go to the end of the command line",
+	[21] = "-----------------------------------------------",
+	[22] = NULL
 };
 
 static const t_builtin		g_builtin_termcaps = {
