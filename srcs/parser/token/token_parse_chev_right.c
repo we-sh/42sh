@@ -1,9 +1,5 @@
 #include "parser.h"
 
-/*
- ** Open the file pointed by the arg,display status message on error.
- */
-
 static int	s_open_new_fd(t_proc *p, char *f, int *fd)
 {
 	if ((*fd = open(f, O_WRONLY | O_CREAT | O_TRUNC, 0644)) < 0)
