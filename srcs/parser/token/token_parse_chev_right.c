@@ -18,12 +18,12 @@ static int	s_open_new_fd_int(char *f)
 	int	ret;
 
 	if ((ft_strisnumeric(f)) == 0)
-		return (ST_PARSER);
+		return (-ST_PARSER);
 	else
 	{
 		ret = ft_atoi(f);
 		if (ret != 0 && ret != 1 && ret != 2)
-			log_error("bad file descriptor");
+			return (-ST_PARSER);
 	}
 	return (ret);
 }
@@ -52,8 +52,8 @@ static int	s_parse_right_redir(t_lexer *lexer, int *i)
 			fd_r = -1;
 		else
 		{
-			if ((fd_r = s_open_new_fd_int(lexer->tokens[*i].content)) == ST_PARSER)
-				return (ST_PARSER);
+			if ((fd_r = s_open_new_fd_int(lexer->tokens[*i].content)) == -ST_PARSER)
+				return (-ST_PARSER);
 		}
 	}
 	else
@@ -61,7 +61,7 @@ static int	s_parse_right_redir(t_lexer *lexer, int *i)
 		while (lexer->tokens[*i].type == TT_SEPARATOR)
 			(*i)++;
 		if (lexer->tokens[*i].code != TC_NONE)
-			return (ST_PARSER);
+			return (-ST_PARSER);
 		fd_r = s_open_new_fd(lexer->tokens[*i].content);
 	}
 	return (fd_r);
@@ -73,17 +73,16 @@ int			token_parse_chev_right(t_proc *proc, t_lexer *lexer, int *i)
 	int	fd_r;
 
 	log_trace("entering parsing token %-12s '>'", "TT_REDIR");
-	// parse left part of the redirection
 	if (lexer->tokens[*i].code == TC_CHEV_RIGHT)
 		fd_l = STDOUT_FILENO;
 	else
 	{
-		if ((fd_l = s_open_new_fd_int(lexer->tokens[*i].content)) == ST_PARSER)
+		if ((fd_l = s_open_new_fd_int(lexer->tokens[*i].content)) == -ST_PARSER)
 			return (ST_PARSER);
 		(*i)++;
 	}
 	(*i)++;
-	if ((fd_r = s_parse_right_redir(lexer, i)) == ST_PARSER)
+	if ((fd_r = s_parse_right_redir(lexer, i)) == -ST_PARSER)
 		return (ST_PARSER);
 	s_set_proc_fds(proc, fd_l, fd_r);
 	(*i)++;
