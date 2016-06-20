@@ -50,9 +50,9 @@ static char	*s_expand_escape_char_not_inhibited(char *str)
 
 	i = 0;
 	j = 0;
-	while (str[i])
+	while (str[j])
 	{
-		if (str[i] == '\\')
+		if (str[j] == '\\')
 			j++;
 		str[i] = str[j];
 		i++;

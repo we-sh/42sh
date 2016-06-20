@@ -20,9 +20,18 @@ static void			s_digit(char *str, size_t *i, size_t *j)
 	int				tmp;
 	int				cnt;
 	int				d;
+	char			digit[5];
 	int				rem;
 
-	tmp = ft_atoi(str + *i + 1);
+	d = 0;
+	while (ft_isdigit(*(str + *i + 1 + d)) && d < 4)
+	{
+		digit[d] = *(str + *i + 1 + d);
+		d++;
+	}
+	digit[d] = '\0';
+	*i += d;
+	tmp = ft_atoi(digit);
 	cnt = 0;
 	d = 0;
 	while (tmp > 0)
@@ -33,8 +42,6 @@ static void			s_digit(char *str, size_t *i, size_t *j)
 		cnt++;
 	}
 	str[*j] = d;
-	while (ft_isdigit(str[*i + 1]) == 1)
-		(*i)++;
 }
 
 static void			s_not_digit(char *str, size_t *i, size_t *j)
@@ -77,7 +84,7 @@ char				*expand_escape_char(char *str)
 	{
 		if (str[i] == '\\')
 		{
-			if (ft_isdigit(str[i + 1]) == 1)
+			if (str[i + 1] == '0')
 				s_digit(str, &i, &j);
 			else
 				s_not_digit(str, &i, &j);
