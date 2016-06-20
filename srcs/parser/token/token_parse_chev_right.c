@@ -71,6 +71,7 @@ int			token_parse_chev_right(t_proc *proc, t_lexer *lexer, int *i)
 {
 	int	fd_l;
 	int	fd_r;
+	int	st;
 
 	log_trace("entering parsing token %-12s '>'", "TT_REDIR");
 	if (lexer->tokens[*i].code == TC_CHEV_RIGHT)
@@ -78,7 +79,10 @@ int			token_parse_chev_right(t_proc *proc, t_lexer *lexer, int *i)
 	else
 	{
 		if ((fd_l = s_open_new_fd_int(lexer->tokens[*i].content)) == -ST_PARSER)
-			return (ST_PARSER);
+		{
+			if ((st = token_parse_none(proc, lexer, i)) != ST_OK)
+				return (st);
+		}
 		(*i)++;
 	}
 	(*i)++;
