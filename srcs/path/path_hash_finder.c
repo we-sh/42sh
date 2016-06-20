@@ -113,7 +113,7 @@ int			path_hash_finder(char **envp, char **cmd)
 	}
 	if (access(*cmd, X_OK) == -1)
 	{
-		display_status(ST_PERMISSION_DENIED, *cmd, NULL);
+		display_status(ST_EACCES, *cmd, NULL);
 		return (ST_OK);		
 	}
 	return (ST_OK);
