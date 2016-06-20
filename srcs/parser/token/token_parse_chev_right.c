@@ -13,6 +13,12 @@ static int	s_open_new_fd(char *f)
 	return (ret);
 }
 
+/*
+** Try to open a file descriptor according to a string.
+** The function will return -ST_PARSER if the string is not "0", "1" or "2".
+** Otherwise, the string converted to an int is returned.
+*/
+
 static int	s_open_new_fd_int(char *f)
 {
 	int	ret;
@@ -28,6 +34,10 @@ static int	s_open_new_fd_int(char *f)
 	return (ret);
 }
 
+/*
+** Update the proc after the opening of all the redirections.
+*/
+
 static void	s_set_proc_fds(t_proc *proc, int fd_l, int fd_r)
 {
 	if (!(fd_r == 0 && (fd_l == STDOUT_FILENO || fd_l == STDERR_FILENO)))
@@ -40,6 +50,15 @@ static void	s_set_proc_fds(t_proc *proc, int fd_l, int fd_r)
 			proc->stderr = fd_r;
 	}
 }
+
+/*
+** Parse the right part of a redirection (>&2), because it is more complicated
+** than the left part.
+** Return the file descriptor opened with the redirection, or -ST_PARSER on
+** error (assert that ST_PARSER != 1).
+** A file descriptor of -1 is not an error, it is considered as a fd closure
+** caused by the '-' token (ls 2>&-).
+*/
 
 static int	s_parse_right_redir(t_lexer *lexer, int *i)
 {
@@ -67,6 +86,11 @@ static int	s_parse_right_redir(t_lexer *lexer, int *i)
 	return (fd_r);
 }
 
+/*
+** Parse the simple right redirection such as 'ls 1>&2'.
+** Return ST_OK on success or an error code (from ST_*) on failure.
+*/
+
 int			token_parse_chev_right(t_proc *proc, t_lexer *lexer, int *i)
 {
 	int	fd_l;
@@ -90,5 +114,5 @@ int			token_parse_chev_right(t_proc *proc, t_lexer *lexer, int *i)
 		return (ST_PARSER);
 	s_set_proc_fds(proc, fd_l, fd_r);
 	(*i)++;
-	return (0);
+	return (ST_OK);
 }
