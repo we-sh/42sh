@@ -18,6 +18,7 @@
 # include <errno.h>
 # include <curses.h>
 # include <dirent.h>
+# include <sys/stat.h>
 
 /*
 ** Shell structure

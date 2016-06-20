@@ -1,15 +1,5 @@
 #include "parser.h"
 
-static int	s_open_new_fd(t_proc *p, char *f, int *fd)
-{
-	if ((*fd = open(f, O_WRONLY | O_CREAT | O_TRUNC, 0644)) < 0)
-	{
-		display_status(ST_OPEN, f, NULL);
-		p->is_valid = 0;
-	}
-	return (ST_OK);
-}
-
 static int	s_open_new_fd_int(char *f, int *fd)
 {
 	if ((ft_strisnumeric(f)) == 0)
@@ -49,7 +39,7 @@ static int	s_parse_right_redir(t_proc *p, t_lexer *lexer, int *i, int *fd)
 		str = NULL;
 		if ((ret = token_parse_utils_get_full_word(&str, lexer, i)) != ST_OK)
 			return (ret);
-		if ((ret = s_open_new_fd(p, str, fd)) != ST_OK)
+		if ((ret = open_new_fd(p, str, fd)) != ST_OK)
 			return (ret);
 		free(str);
 	}
