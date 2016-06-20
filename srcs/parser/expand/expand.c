@@ -80,6 +80,7 @@ int			expand(t_proc *p, char *content, int is_inhibited)
 	}
 	if (ft_array_push_back(&p->argv, content) < 0)
 		return (ST_MALLOC);
+	free(content);
 	if (is_inhibited == 1)
 		return (s_recursive(p, 0, &expand_escape_char));
 	return (s_recursive(p, 0, &s_expand_escape_char_not_inhibited));
