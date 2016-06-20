@@ -40,7 +40,7 @@ static int	s_parse_right_redir(t_proc *p, t_lexer *lexer, int *i, int *fd)
 	}
 	else
 	{
-		while (lexer->tokens[*i].type == TT_SEPARATOR)
+		while (lexer->tokens[*i].type == TT_SEPARATOR || lexer->tokens[*i].type == TT_INHIBITOR)
 			(*i)++;
 		if (lexer->tokens[*i].code != TC_NONE)
 			return (ST_PARSER);
