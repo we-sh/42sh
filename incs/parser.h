@@ -137,7 +137,7 @@ int	token_parse_dbl_chev_left(t_proc *proc, t_lexer *lexer, int *i);
 int	token_parse_dbl_chev_right(t_proc *proc, t_lexer *lexer, int *i);
 
 // EXPANSIONS
-int		expand(t_proc *p, t_lexer_token *token, t_lexer_token *prev_token);
+int		expand(t_proc *p, char *content, int is_inhibited);
 char	*expand_escape_char(char *buf);
 char	*expand_tilde(t_proc *p, char *buf);
 
