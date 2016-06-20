@@ -6,7 +6,12 @@ int			token_parse_utils_get_full_word(char **content, t_lexer *lexer,
 	char	*tmp;
 
 	if (lexer->tokens[*i].type != TT_NAME)
+	{
+		if ((*i) - 1 >= 0)
+			display_status(ST_PARSER, lexer->tokens[(*i) - 1].content,
+					"unexpected token");
 		return (ST_PARSER);
+	}
 	if ((*content = ft_strdup(lexer->tokens[*i].content)) == NULL)
 		return (ST_MALLOC);
 	while (lexer->tokens[*i + 1].type == TT_INHIBITOR
