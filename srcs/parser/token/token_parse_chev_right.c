@@ -39,7 +39,7 @@ static int	s_parse_right_redir(t_proc *p, t_lexer *lexer, int *i, int *fd)
 		str = NULL;
 		if ((ret = token_parse_utils_get_full_word(&str, lexer, i)) != ST_OK)
 			return (ret);
-		if ((ret = open_new_fd(p, str, fd, O_WRONLY | O_CREAT | O_TRUNC)) != ST_OK)
+		if ((ret = token_parse_utils_open_new_fd(p, str, fd, O_WRONLY | O_CREAT | O_TRUNC)) != ST_OK)
 			return (ret);
 		free(str);
 	}

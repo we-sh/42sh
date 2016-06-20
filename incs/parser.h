@@ -140,6 +140,7 @@ int	token_parse_dbl_chev_right(t_proc *proc, t_lexer *lexer, int *i);
 
 // UTILS
 int	token_parse_utils_get_full_word(char **content, t_lexer *lexer, int *i);
+int	token_parse_utils_open_new_fd(t_proc *p, char *f, int *fd, int flag);
 
 // EXPANSIONS
 int		expand(t_proc *p, char *content, int is_inhibited);
@@ -148,12 +149,6 @@ char	*expand_tilde(t_proc *p, char *buf);
 
 // INHIBITORS
 int	token_parse_inhib(t_proc *proc, t_lexer *lexer, int *i);
-
-/*
-** Utils.
-*/
-
-int	open_new_fd(t_proc *p, char *f, int *fd, int flag);
 
 /*
 ** The array representing each tokens definitions.

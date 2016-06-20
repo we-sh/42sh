@@ -37,7 +37,7 @@ static int	s_parse_right_redir(t_proc *p, t_lexer *lexer, int *i, int *fd)
 		if (lexer->tokens[*i].code != TC_NONE)
 			return (ST_PARSER);
 		log_info("%s", lexer->tokens[*i].content);
-		open_new_fd(p, lexer->tokens[*i].content, fd, O_WRONLY | O_CREAT | O_APPEND);
+		token_parse_utils_open_new_fd(p, lexer->tokens[*i].content, fd, O_WRONLY | O_CREAT | O_APPEND);
 		log_info("%d", *fd);
 	}
 	return (ST_OK);
