@@ -7,7 +7,7 @@ int		key__share__command_line_to_history(t_termcaps_context *in_context)
 {
 	t_list_node_history	*new;
 
-	new = list_node__history_create(&in_context->command_line);
+	new = list_node__history_create(&in_context->command_line, in_context->prompt.size);
 	if (!new)
 	{
 		log_error("node__history_create() failed %s", "");

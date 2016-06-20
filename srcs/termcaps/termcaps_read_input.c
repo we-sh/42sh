@@ -52,6 +52,7 @@ static int		s_termcaps_read_loop(t_termcaps_context *context)
 	char			input_buffer[INPUT_SIZE_MAX];
 	t_input_type	input_type;
 	size_t			input_size_missing;
+	char			*history_search = NULL;
 
 	while (context->buffer == NULL)
 	{
@@ -80,16 +81,32 @@ static int		s_termcaps_read_loop(t_termcaps_context *context)
 		}
 		if (input_size_missing)
 			input_buffer_size += read(context->fd, input_buffer + 1, input_size_missing);
-		
-		caps__delete_line(context->command_line.offset);
+
+		if (context->state == STATE_REGULAR || context->state == STATE_SELECTION)
+		{
+			caps__delete_line(context->command_line.offset);
+		}
+		else if (context->state == STATE_SEARCH_HISTORY)
+		{
+			caps__delete_line(ft_strlen(history_search));
+			free(history_search);
+		}
+
 		s_termcaps_treat_input(input_type, input_buffer_size, input_buffer,
-								context);
+							   context);
+
 		if (context->state == STATE_REGULAR || context->state == STATE_SELECTION)
 		{
 			ASSERT(termcaps_display_command_line(context->fd, &context->command_line));
 			caps__cursor_to_offset(context->command_line.offset,
 									context->command_line.size);
 		}
+		else if (context->state == STATE_SEARCH_HISTORY)
+		{
+			ASSERT(termcaps_history_search(context, &history_search));
+			(void)write(context->fd, history_search, ft_strlen(history_search));
+		}
+
 	}
 	return (1);
 }

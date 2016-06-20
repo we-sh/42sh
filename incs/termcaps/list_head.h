@@ -91,12 +91,13 @@ typedef struct	s_list_node_history
 {
 	t_list		list;
 	t_list_head	command_line;
+	char		*command_line_c_string;
 }				t_list_node_history;
 
 /*
 ** list node history create
 */
-t_list_node_history	*list_node__history_create(t_list_head *cmd_line);
+t_list_node_history	*list_node__history_create(t_list_head *cmd_line, size_t index);
 
 /*
 ** list head history destroy

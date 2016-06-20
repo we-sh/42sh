@@ -18,5 +18,10 @@ int		key__delete_under_cursor(t_termcaps_context *context)
 		list_head__del(&context->command_line, entry);
 		list_node__command_line_destroy(entry);
 	}
+	else if (context->state == STATE_SEARCH_HISTORY)
+	{
+		context->state = STATE_REGULAR;
+		context->history.offset = context->history.size;
+	}
 	return (1);
 }
