@@ -25,27 +25,6 @@ static int	s_fill_command(t_proc *p, char *content)
 	return (ST_OK);
 }
 
-static int	s_build_content(char **content, t_lexer *lexer, int *i)
-{
-	char	*tmp;
-
-	if ((*content = ft_strdup(lexer->tokens[*i].content)) == NULL)
-		return (ST_MALLOC);
-	while (lexer->tokens[*i + 1].type == TT_INHIBITOR
-		|| lexer->tokens[*i + 1].type == TT_NAME)
-	{
-		if (lexer->tokens[*i + 1].type == TT_NAME
-			&& lexer->tokens[*i + 1].code == TC_NONE)
-		{
-			tmp = ft_strjoin(*content, lexer->tokens[*i + 1].content);
-			free(*content);
-			*content = tmp;
-		}
-		(*i)++;
-	}
-	return (ST_OK);
-}
-
 int	token_parse_none(t_proc *p, t_lexer *lexer, int *i)
 {
 	log_trace("entering parsing token %-12s", "TT_NONE");
@@ -61,7 +40,7 @@ int	token_parse_none(t_proc *p, t_lexer *lexer, int *i)
 	if (!(lexer->tokens[*i].type == TT_NAME
 		&& lexer->tokens[*i].code == TC_NONE))
 		return (ST_OK);
-	if ((ret = s_build_content(&content, lexer, i)) != ST_OK)
+	if ((ret = token_parse_utils_get_full_word(&content, lexer, i)) != ST_OK)
 		return (ret);
 	if ((ret = expand(p, content, is_inhibited)) != ST_OK)
 	{
