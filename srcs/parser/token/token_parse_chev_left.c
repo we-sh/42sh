@@ -9,7 +9,7 @@ static int	s_open_new_fd(t_proc *p, char *f, int *fd)
 	if ((*fd = open(f, O_RDONLY)) < 0)
 	{
 		display_status(ST_ENOENT, f, NULL);
-		p->is_valid = 0;
+		p->is_valid = -1;
 	}
 	return (ST_OK);
 }
