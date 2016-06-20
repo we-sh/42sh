@@ -23,7 +23,10 @@ int					stdin_loop(t_sh *sh)
 		if (ret != ST_OK)
 		{
 			if (ret == ST_EXIT)
+			{
+				free(input);
 				return (ST_OK);
+			}
 			display_status(ret, NULL, NULL);
 		}
 		ft_strdel(&input);
