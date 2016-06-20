@@ -56,7 +56,7 @@ int						loop_main(t_sh *sh)
 		{
 			if (ret == ST_EXIT)
 				return (ST_OK);
-			display_status(ret, NULL, NULL);
+//			display_status(ret, NULL, NULL);
 		}
 		else
 		{
