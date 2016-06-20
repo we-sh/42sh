@@ -10,6 +10,7 @@ int		job_build_unstack_proc_from_lexer(t_proc *p, t_lexer *lexer, int *i)
 
 	while (*i < lexer->size)
 	{
+		st = ST_OK;
 		log_debug("unstacking token : %d / %d : \"%s\"", *i, lexer->size,
 				lexer->tokens[*i].content);
 		if (lexer->tokens[*i].code == TC_NONE && *i + 1 < lexer->size
@@ -27,5 +28,5 @@ int		job_build_unstack_proc_from_lexer(t_proc *p, t_lexer *lexer, int *i)
 		}
 		(*i)++;
 	}
-	return (ST_OK);
+	return (st);
 }
