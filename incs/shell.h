@@ -163,7 +163,6 @@ int				path_get_new_cmd(char **commande, char *name, char *path);
 */
 
 int				quoting_invalid(t_termcaps_context *context, t_quoting quoting, int action);
-char			*quoting_add_return_front_buff(char *buff_quote);
 int				quoting_new_context(t_termcaps_context *context);
 
 /*
@@ -197,5 +196,6 @@ int				termcaps_string_to_command_line(const size_t input_buffer_size,
 										  const char *input_buffer,
 										  t_list_head *command_line);
 int				termcaps_history_search(t_termcaps_context *context, char **out_match);
+int				termcaps_display_command_line_in_color(const int fd, const t_termcaps_context *context);
 
 #endif

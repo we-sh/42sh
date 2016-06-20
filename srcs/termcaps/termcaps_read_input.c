@@ -97,7 +97,7 @@ static int		s_termcaps_read_loop(t_termcaps_context *context)
 
 		if (context->state == STATE_REGULAR || context->state == STATE_SELECTION)
 		{
-			ASSERT(termcaps_display_command_line(context->fd, &context->command_line));
+			ASSERT(termcaps_display_command_line_in_color(context->fd, context));
 			caps__cursor_to_offset(context->command_line.offset,
 									context->command_line.size);
 		}

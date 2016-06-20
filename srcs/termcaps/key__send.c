@@ -74,6 +74,10 @@ int key__send(t_termcaps_context *context)
 				return (0);
 			}
 		}
+		else
+		{
+			(void)write(context->fd, "\n", 1);
+		}
 		g_child = 0;
 	}
 	else if (context->state == STATE_SEARCH_HISTORY)
