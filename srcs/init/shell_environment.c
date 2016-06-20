@@ -48,9 +48,9 @@ int			shell_environment(t_sh *sh, char **envp)
 	i = 0;
 	while (envp[i])
 	{
-		 if ((sh->envp[i] = strdup(envp[i])) == NULL)
-		 	return (ST_MALLOC);
-		 i++;
+		if ((sh->envp[i] = ft_strdup(envp[i])) == NULL)
+			return (ST_MALLOC);
+		i++;
 	}
 	sh->envp[i] = NULL;
 	return (ST_OK);
