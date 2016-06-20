@@ -32,9 +32,6 @@ static int	s_status_has_changed(t_job *j)
 	int		old_completed;
 	int		old_stopped;
 
-	// todo make it more precise: should tell if one of the proc status has changed, and not the entire job
-	// todo try `sleep 50 | sleep 52 | sleep 54` and stop one of this job
-	// is that useful?? test in bash...
 	old_completed = job_is_completed(j);
 	old_stopped = job_is_stopped(j);
 	s_iterate_on_proc(j);
