@@ -17,12 +17,12 @@ int	job_build_unstack_lexer(t_lexer *lexer, char **envp)
 	i = 0;
 	while (i < lexer->size)
 	{
-		if ((ret = job_build_unstack_job_from_lexer(&j, lexer, &i, envp)) != ST_OK)
+		if ((ret = job_build_unstack_job_from_lexer(&j, lexer, &i, envp))
+				!= ST_OK)
 			return (ret);
 		list_push_back(&j->list_job, &g_current_jobs_list_head);
 	}
-
-	log_success("parsing lexer into %zu jobs", list_size(&g_current_jobs_list_head));
-
+	log_success("parsing lexer into %zu jobs",
+			list_size(&g_current_jobs_list_head));
 	return (ST_OK);
 }
