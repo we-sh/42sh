@@ -9,12 +9,13 @@ static int	s_open_new_fd(char *f)
 	int	ret;
 
 	if ((ret = open(f, O_WRONLY | O_CREAT | O_TRUNC, 0644)) < 0)
-		ft_printf("%s: %s: %s\n", "42sh", f, i18n_translate(ST_OPEN));
+		display_status(ST_OPEN, f, NULL);
 	return (ret);
 }
 
 /*
-** Try to open a file descriptor according to a string.
+** Try to extract a file descriptor according to a string. It will not open
+** it because it is STDIN_FILENO, STDOUT_FILENO or STDERR_FILENO.
 ** The function will return -ST_PARSER if the string is not "0", "1" or "2".
 ** Otherwise, the string converted to an int is returned.
 */
@@ -60,7 +61,7 @@ static void	s_set_proc_fds(t_proc *proc, int fd_l, int fd_r)
 ** caused by the '-' token (ls 2>&-).
 */
 
-static int	s_parse_right_redir(t_lexer *lexer, int *i)
+static int	s_parse_right_redir(t_proc *p, t_lexer *lexer, int *i)
 {
 	int	fd_r;
 
@@ -81,7 +82,8 @@ static int	s_parse_right_redir(t_lexer *lexer, int *i)
 			(*i)++;
 		if (lexer->tokens[*i].code != TC_NONE)
 			return (-ST_PARSER);
-		fd_r = s_open_new_fd(lexer->tokens[*i].content);
+		if ((fd_r = s_open_new_fd(lexer->tokens[*i].content)) == -1)
+			p->is_valid = 0;
 	}
 	return (fd_r);
 }
@@ -110,7 +112,7 @@ int			token_parse_chev_right(t_proc *proc, t_lexer *lexer, int *i)
 		(*i)++;
 	}
 	(*i)++;
-	if ((fd_r = s_parse_right_redir(lexer, i)) == -ST_PARSER)
+	if ((fd_r = s_parse_right_redir(proc, lexer, i)) == -ST_PARSER)
 		return (ST_PARSER);
 	s_set_proc_fds(proc, fd_l, fd_r);
 	(*i)++;
