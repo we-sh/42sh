@@ -12,7 +12,8 @@ static void	s_iterate_on_proc(t_job *j)
 	t_list	*p_pos;
 	t_proc	*p;
 
-	LIST_FOREACH(&j->proc_head, p_pos)
+	p_pos = &j->proc_head;
+	while ((p_pos = p_pos->next) && p_pos != &j->proc_head)
 	{
 		p = CONTAINER_OF(p_pos, t_proc, list_proc);
 		if (p->completed == 0)

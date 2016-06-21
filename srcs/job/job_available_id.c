@@ -18,11 +18,11 @@ int	job_available_id(void)
 			if (j->id == id)
 			{
 				exists = 1;
-				break;
+				break ;
 			}
 		}
 		if (exists == 0)
-			break;
+			break ;
 	}
 	return (id);
 }

@@ -33,7 +33,7 @@ static int			s_fork_it(t_sh *sh, t_job *j, t_proc *p)
 	return (ST_OK);
 }
 
-static int			s_proc_setup( t_proc *proc, t_sh *sh, t_list *head,int *fds)
+static int			s_proc_setup(t_proc *proc, t_sh *sh, t_list *head, int *fds)
 {
 	int		ret;
 

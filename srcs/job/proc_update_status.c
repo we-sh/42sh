@@ -43,7 +43,6 @@ int			proc_update_status(t_job *j, pid_t pid, int status)
 	if ((p = proc_find(pid)) != NULL)
 	{
 		s_set_flags(j, p, status);
-		log_debug("proc %d exited with %d status (stopped: %d, completed: %d)", pid, p->exit_status, p->stopped, p->completed);
 		return (0);
 	}
 	return (-1);

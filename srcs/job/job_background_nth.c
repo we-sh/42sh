@@ -5,7 +5,8 @@
 ** background job, or NULL if none is found.
 */
 
-static t_job	*s_reverse(t_list *tmp, int i, const t_list *head, const int index)
+static t_job	*s_reverse(t_list *tmp, int i, const t_list *head,
+					const int index)
 {
 	t_job		*j;
 
