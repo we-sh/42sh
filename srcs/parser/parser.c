@@ -33,11 +33,14 @@ static int	s_parser_process(t_sh *sh, t_parser *parser)
 
 	if (!sh || !parser)
 		return (ST_EINVAL);
-	if ((ret = parser_process_lexer(parser->lexer, parser->in)) != ST_OK)
+
+	if ((ret = parser_process_lexer(parser, parser->in)) != ST_OK)
 		return (ret);
 	if (!(parser->lexer))
 		return (ST_EINVAL);
-	parser->lexer->sh = sh;
+	//if (parser->mode == F_NO_PARSING) // F_PARSING
+	if (parser->mode == 0) // F_PARSING
+		return (ST_OK);
 	if ((ret = job_build_unstack_lexer(parser->lexer)) != ST_OK)
 		return (ret);
 	return (ST_OK);
@@ -48,7 +51,7 @@ static int	s_parser_process(t_sh *sh, t_parser *parser)
 ** This function aims to build a list of shell jobs according to a string.
 */
 
-int			parser(t_sh *sh, const char *in)
+int			parser(t_sh *sh, const char *in, int mode)
 {
 	int			ret;
 	t_parser	*parser;
@@ -56,7 +59,7 @@ int			parser(t_sh *sh, const char *in)
 	if (!sh || !in)
 		return (ST_EINVAL);
 	log_success("parser receives input : \"%s\"", in);
-	if ((ret = parser_new(&parser, in)) != ST_OK)
+	if ((ret = parser_new(&parser, in, sh, mode)) != ST_OK)
 		return (ret);
 	ret = s_parser_process(sh, parser);
 	s_parser_callback(&parser);

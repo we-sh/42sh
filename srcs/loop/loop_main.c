@@ -53,7 +53,7 @@ int				loop_main(t_sh *sh)
 			ret = get_next_line(sh->fd, &input);
 		if (sh->is_interactive == 1 ? input == NULL : ret == 0)
 			break ;
-		ret = parser(sh, input);
+		ret = parser(sh, input, 1);
 		ft_strdel(&input);
 		if (ret != ST_OK)
 		{

@@ -84,7 +84,7 @@ int		main(int argc, char *argv[], char *envp[])
 		log_fatal("shell initialization failed (%d)", ret);
 
 	if (option_is_set(&sh.opt_head, ST_OPTION_C) == 1)
-		ret = parser(&sh, option_get_value(&sh.opt_head, ST_OPTION_C));
+		ret = parser(&sh, option_get_value(&sh.opt_head, ST_OPTION_C), 0);
 	else
 	{
 		if ((ret = loop_main(&sh)) != ST_END_OF_INPUT)

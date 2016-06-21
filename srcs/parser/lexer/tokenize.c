@@ -121,7 +121,7 @@ int				s_is_inhibited(t_token *token)
 ** operators If no operators are detected, current char will be bufferized
 */
 
-int				tokenize(const char *s, t_lexer *lexer)
+int				tokenize(const char *s, t_parser *parser)
 {
 	t_token	*token_found;
 	int		is_inhibited;
@@ -133,9 +133,10 @@ int				tokenize(const char *s, t_lexer *lexer)
 	while (s && s[i])
 	{
 		token_found = s_token_recognizer(s + i, i);
+		// TODO : remove
 		if (s_is_escaped(token_found))
 		{
-			s_lexer_add(lexer, &s[i], *token_found);
+			s_lexer_add(parser->lexer, &s[i], *token_found);
 			s_bufferize(&s[++i], 1);
 			i++;
 			continue ;
@@ -148,14 +149,14 @@ int				tokenize(const char *s, t_lexer *lexer)
 		}
 		else if (token_found != NULL && is_inhibited == 0)
 		{
-			s_buffer_dump(lexer);
-			s_lexer_add(lexer, &s[i], *token_found);
+			s_buffer_dump(parser->lexer);
+			s_lexer_add(parser->lexer, &s[i], *token_found);
 			i += token_found->len;
 		}
 		else
 			s_bufferize(&s[i++], 1);
 	}
-	s_buffer_dump(lexer);
+	s_buffer_dump(parser->lexer);
 	ret = (s_is_inhibited(NULL)) ? ST_LEXER : ST_OK;
 	g_inhibitor_code = 0;
 	return (ret);

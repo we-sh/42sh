@@ -5,7 +5,7 @@
 ** The input string is duplicated and the other are allocated.
 */
 
-int	parser_new(t_parser **parser, const char *in)
+int	parser_new(t_parser **parser, const char *in, t_sh *sh, int mode)
 {
 	if (!in)
 		return (ST_EINVAL);
@@ -15,5 +15,8 @@ int	parser_new(t_parser **parser, const char *in)
 		return (ST_MALLOC);
 	if (!((*parser)->lexer = ft_memalloc(sizeof(t_lexer))))
 		return (ST_MALLOC);
+	(*parser)->lexer->sh = sh;
+	// TODO : make dynamic token list
+	(*parser)->mode = mode;
 	return (ST_OK);
 }
