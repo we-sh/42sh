@@ -1,19 +1,5 @@
 #include "parser.h"
 
-/*
-** Case : cat < README
-*/
-
-static int	s_open_new_fd(t_proc *p, char *f, int *fd)
-{
-	if ((*fd = open(f, O_RDONLY)) < 0)
-	{
-		display_status(ST_ENOENT, f, NULL);
-		p->is_valid = -1;
-	}
-	return (ST_OK);
-}
-
 static int	s_open_new_fd_int(char *f, int *fd)
 {
 	if ((ft_strisnumeric(f)) == 0)
@@ -52,25 +38,13 @@ static int	s_parse_right_redir(t_proc *p, t_lexer *lexer, int *i, int *fd)
 		str = NULL;
 		if ((ret = token_parse_utils_get_full_word(&str, lexer, i)) != ST_OK)
 			return (ret);
-		if ((ret = s_open_new_fd(p, str, fd)) != ST_OK)
+		if ((ret = token_parse_utils_open_new_fd(p, str, fd, O_RDONLY)) != ST_OK)
 			return (ret);
 		free(str);
 	}
 	return (ST_OK);
 }
 
-static void	s_set_proc_fds(t_proc *proc, int fd_l, int fd_r)
-{
-	if (!(fd_r == 0 && (fd_l == STDOUT_FILENO || fd_l == STDERR_FILENO)))
-	{
-		if (fd_l == 0)
-			proc->stdin = fd_r;
-		if (fd_l == 1)
-			proc->stdout = fd_r;
-		if (fd_l == 2)
-			proc->stderr = fd_r;
-	}
-}
 
 int			token_parse_chev_left(t_proc *proc, t_lexer *lexer, int *i)
 {
@@ -78,11 +52,8 @@ int			token_parse_chev_left(t_proc *proc, t_lexer *lexer, int *i)
 	int	fd_r;
 	int	ret;
 
-	log_trace("entering parsing token %-12s '<'", "TT_REDIR");
-	// parse left part of the redirection
-	if (lexer->tokens[*i].code == TC_CHEV_LEFT)
 		fd_l = STDIN_FILENO;
-	else
+	if (lexer->tokens[*i].code != TC_CHEV_LEFT)
 	{
 		if ((ret = s_open_new_fd_int(lexer->tokens[*i].content,
 			&fd_l)) != ST_OK)
@@ -92,7 +63,7 @@ int			token_parse_chev_left(t_proc *proc, t_lexer *lexer, int *i)
 	(*i)++;
 	if ((ret = s_parse_right_redir(proc, lexer, i, &fd_r)) != ST_OK)
 		return (ret);
-	s_set_proc_fds(proc, fd_l, fd_r);
+	token_parse_utils_set_proc_fds(proc, fd_l, fd_r);
 	(*i)++;
 	return (ST_OK);
 }
