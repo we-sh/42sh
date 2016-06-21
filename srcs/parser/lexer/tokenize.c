@@ -20,11 +20,11 @@ static void		s_lexer_add(t_lexer *lexer, const char *str, t_token token)
 	(lexer->size)++;
 }
 
-static t_token	*s_token_recognizer(const char *s, int i)
+static t_token	*s_token_recognizer(t_parser *parser, const char *s, int i)
 {
-	const t_token *list = token_list();
 	int			is_escaped;
 	int			k;
+	int			l;
 
 	if (i > 0)
 	{
@@ -40,11 +40,12 @@ static t_token	*s_token_recognizer(const char *s, int i)
 		if (is_escaped == 1)
 			return (NULL);
 	}
-	while (list && list->op)
+	l = 0;
+	while (parser->token_list[l])
 	{
-		if (ft_strncmp(s, list->op, list->len) == 0)
-			return ((t_token *)list);
-		list++;
+		if (ft_strncmp(s, parser->token_list[l]->op, parser->token_list[l]->len) == 0)
+			return ((t_token *)parser->token_list[l]);
+		l++;
 	}
 	return (NULL);
 }
@@ -132,7 +133,7 @@ int				tokenize(const char *s, t_parser *parser)
 	is_inhibited = 0;
 	while (s && s[i])
 	{
-		token_found = s_token_recognizer(s + i, i);
+		token_found = s_token_recognizer(parser, s + i, i);
 		// TODO : remove
 		if (s_is_escaped(token_found))
 		{
