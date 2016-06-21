@@ -11,9 +11,9 @@ static int		s_key_cut_selection(t_termcaps_context *in_context,
 									&selection_size))
 	{
 		log_error("key__share__selection_get() failed %s\r", "");
-		return (1);
+		return (0);
 	}
-	return (ST_OK);
+	return (1);
 }
 
 int				key__cut(t_termcaps_context *in_context)
@@ -33,9 +33,8 @@ int				key__cut(t_termcaps_context *in_context)
 	}
 	else if (in_context->state == STATE_SELECTION)
 	{
-		if (s_key_cut_selection(in_context,
-								selection_start, selection_size) != ST_OK)
-			return (0);
+		ASSERT(s_key_cut_selection(in_context,
+								selection_start, selection_size));
 	}
 	else
 		return (1);

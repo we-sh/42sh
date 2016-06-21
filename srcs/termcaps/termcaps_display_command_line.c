@@ -14,7 +14,7 @@
 # define SELECTBLEU "\033]Pl4040ff\033\\"
 #endif
 
-#define ANSI_COLOR_RESET_SIZE sizeof("\033[0m") - 1)
+#define ANSI_COLOR_RESET_SIZE (sizeof("\033[0m") - 1)
 #define ANSI_COLOR_RESET "\033[0m"
 #define ANSI_COLOR_LIGHT_BLUE_SIZE (sizeof("\033[94m") - 1)
 #define ANSI_COLOR_LIGHT_BLUE "\033[94m"

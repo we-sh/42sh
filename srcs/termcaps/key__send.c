@@ -63,13 +63,15 @@ static int				s_key__regular(t_termcaps_context *context)
 	}
 	else
 		(void)write(context->fd, "\n", 1);
+	
 	return (ST_OK);
 }
 
-static int				s_key__search_hist(t_list *node,
-										t_termcaps_context *context,
-										t_list_node_history *history)
+static int				s_key__search_hist(t_termcaps_context *context)
 {
+	t_list				*node;
+	t_list_node_history	*history;
+
 	node = list_nth(&context->history.list, context->history.offset);
 	if (node != &context->history.list)
 	{
@@ -83,6 +85,7 @@ static int				s_key__search_hist(t_list *node,
 												history->command_line.bytes,
 												&context->command_line));
 	}
+	context->history.offset = context->history.size;
 	context->state = STATE_REGULAR;
 	return (1);
 }
@@ -92,11 +95,6 @@ int g_in_child = 0;
 
 int						key__send(t_termcaps_context *context)
 {
-	t_list				*node;
-	t_list_node_history	*history;
-
-	node = NULL;
-	history = NULL;
 	if (context->state == STATE_REGULAR)
 	{
 		if ((s_key__regular(context)) != ST_OK)
@@ -104,6 +102,6 @@ int						key__send(t_termcaps_context *context)
 		g_child = 0;
 	}
 	else if (context->state == STATE_SEARCH_HISTORY)
-		s_key__search_hist(node, context, history);
+		s_key__search_hist(context);
 	return (1);
 }

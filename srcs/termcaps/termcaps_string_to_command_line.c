@@ -16,7 +16,7 @@ int		termcaps_string_to_command_line(const size_t input_buff_size,
 	while (input_buffer_index < input_buff_size)
 	{
 		char_b_count =
-		termcaps_get_char_b_count(input_buff_size - input_buffer_index,
+		termcaps_get_character_bytes_count(input_buff_size - input_buffer_index,
 											input_buffer + input_buffer_index,
 											&char_miss_bcnt);
 		if (char_b_count == 0 || char_miss_bcnt > 0)
@@ -30,7 +30,7 @@ int		termcaps_string_to_command_line(const size_t input_buff_size,
 			log_error("minishell__character_to_command_line() failed");
 			return (0);
 		}
-		input_buffer_index += char_miss_bcnt;
+		input_buffer_index += char_b_count;
 	}
 	return (1);
 }

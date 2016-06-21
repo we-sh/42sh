@@ -105,7 +105,7 @@ static int		s_termcaps_read_loop(t_termcaps_context *context)
 		}
 		else if (context->state == STATE_SEARCH_HISTORY)
 		{
-			ASSERT(termcaps_history_search(context, &history_search));
+			termcaps_history_search(context, &history_search);
 			termcaps_write(context->fd, REVERSE_I_SEARCH, REVERSE_I_SEARCH_SIZE);
 			termcaps_write(context->fd, history_search.bytes, history_search.size);
 		}
