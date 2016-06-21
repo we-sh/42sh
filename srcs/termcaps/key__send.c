@@ -46,8 +46,10 @@ static int				s_bufferize_input(t_termcaps_context *context)
 
 static int				s_key__regular(t_termcaps_context *context)
 {
-	if ((quoting_new_context(context)) == ST_MALLOC)
-		return (ST_MALLOC);
+	int					ret;
+
+	if ((ret = (quoting_new_context(context))) == ST_MALLOC)
+		return (ret);
 	if (g_child == 0)
 	{
 		termcaps_display_command_line(context);
@@ -61,9 +63,13 @@ static int				s_key__regular(t_termcaps_context *context)
 			return (-1);
 		}
 	}
+	else if (g_in_child == 2)
+	{
+		context->buffer = ft_strdup(" ");
+		(void)write(context->fd, "\n", 1);
+	}
 	else
 		(void)write(context->fd, "\n", 1);
-	
 	return (ST_OK);
 }
 

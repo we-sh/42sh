@@ -33,21 +33,52 @@ static int				s_check_pipe_case(t_termcaps_context *context)
 	return (ST_OK);
 }
 
-static int				s_qloop(t_termcaps_context *c, t_quoting q, int a)
+static int				s_replace_backslash(t_termcaps_context *context)
+{
+	t_list_node_cmd	*node_cmd;
+	t_list			*pos;
+
+	LIST_FOREACH(&context->command_line.list, pos)
+	{
+		node_cmd = CONTAINER_OF(pos, t_list_node_cmd, list);
+		if (node_cmd->character[0] == '\\')
+		{
+			node_cmd->character[0] = ' ';
+			return (ST_OK);
+		}
+	}
+	return (ST_OK);
+}
+
+static int				s_qloop(t_termcaps_context *c)
 {
 	char				*test;
 	char				*buff_quote;
 	t_termcaps_context	child_context;
+	int 				ret = 0;
 
 	s_d_init(c, &child_context);
-	while (quoting_invalid(c, q, a) == 1 && (a = 0) == 0)
+
+
+	while ((ret = quoting_invalid(c)) != 0)
 	{
+		log_warn("INSIDE QLOOP");
+
+		if (ret == 2)
+		{
+			log_info("TWO TWOT TWO");
+			s_replace_backslash(c);
+			g_in_child = 2;
+		}
+
+
 		buff_quote = termcaps_read_input(&child_context);
 		if (s_check_pipe_case(c) == 1)
 			termcaps_string_to_command_line((ft_strlen(buff_quote)),
 											buff_quote,	&c->command_line);
 		else
 		{
+			log_warn("ret != 2");
 			if ((test = ft_strjoin("\n", buff_quote)) == NULL)
 			{
 				free(buff_quote);
@@ -57,26 +88,23 @@ static int				s_qloop(t_termcaps_context *c, t_quoting q, int a)
 											test, &c->command_line);
 			free(test);
 		}
+
+
 		ft_memdel((void **)&buff_quote); //leaks du child_cntext ou autre i don't knowww
+
 	}
 	return (s_d_end(c, &child_context));
 }
 
 int						quoting_new_context(t_termcaps_context *context)
 {
-	int					action;
-	t_quoting			quoting;
+	int			ret;
 
-	quoting.quote = 0;
-	quoting.dbquote = 0;
-	quoting.bkquote = 0;
-	quoting.bkslash = 0;
-	quoting.pipe = 0;
-	action = 1;
-	if (g_in_child == 0 && quoting_invalid(context, quoting, action) == 1)
+	ret = quoting_invalid(context);
+	if (g_in_child == 0 && (ret != 0))
 	{
-		if ((s_qloop(context, quoting, action)) == ST_MALLOC)
-			return (ST_MALLOC);
+		if ((ret = s_qloop(context)) != ST_OK)
+			return (ret);
 	}
-	return (ST_OK);
+	return (ret);
 }
