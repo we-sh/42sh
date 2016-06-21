@@ -3,6 +3,9 @@
 
 int	key__search_history(t_termcaps_context *context)
 {
-	context->state = STATE_SEARCH_HISTORY;
+	if (context->state == STATE_SEARCH_HISTORY)
+		context->history.offset--;
+	else
+		context->state = STATE_SEARCH_HISTORY;
 	return (1);
 }

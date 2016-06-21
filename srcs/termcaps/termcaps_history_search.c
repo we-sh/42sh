@@ -24,7 +24,6 @@ int	termcaps_history_search(t_termcaps_context *context, char **out_match)
 		while ((pos = pos->prev) && pos != &context->history.list)
 		{
 			history = CONTAINER_OF(pos, t_list_node_history, list);
-			history_offset--;
 			match = history->command_line.bytes;
 			if ((match = ft_strstr(match,
 								   command_line_cur + context->prompt.size)) != NULL)
@@ -39,6 +38,7 @@ int	termcaps_history_search(t_termcaps_context *context, char **out_match)
 				log_success("%s", history->command_line.bytes);
 				return (1);
 			}
+			history_offset--;
 		}
 	}
 	*out_match = ft_strdup(REVERSE_I_SEARCH);
