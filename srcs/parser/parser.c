@@ -1,15 +1,9 @@
 #include "parser.h"
 
-static int	parser_process(t_sh *sh, t_parser *parser)
-{
-	int			st;
-
-	if ((st = parser_process_lexer(parser->lexer, parser->in)) != ST_OK)
-		return (st);
-	if ((st = parser_process_build(parser->lexer, sh->envp)) != ST_OK)
-		return (st);
-	return (ST_OK);
-}
+/*
+** Delete the structure pointed by parser and return ST_OK on success.
+** Otherwise (if the argument doesn't point to anything), it returns other code.
+*/
 
 static int	s_parser_callback(t_parser **parser)
 {
@@ -24,7 +18,26 @@ static int	s_parser_callback(t_parser **parser)
 	}
 	free(*parser);
 	*parser = NULL;
-	return (0);
+	return (ST_OK);
+}
+
+/*
+** Call the main execution of the parser. It returns ST_OK on success (eg the
+** parser/lexer doesn't failed). Otherwise (if the argument doesn't point to
+** anything), it returns other code greater than 0.
+*/
+
+static int	s_parser_process(t_sh *sh, t_parser *parser)
+{
+	int			ret;
+
+	if (!sh || !parser)
+		return (ST_EINVAL);
+	if ((ret = parser_process_lexer(parser->lexer, parser->in)) != ST_OK)
+		return (ret);
+	if ((ret = parser_process_build(parser->lexer, sh->envp)) != ST_OK)
+		return (ret);
+	return (ST_OK);
 }
 
 /*
@@ -34,18 +47,15 @@ static int	s_parser_callback(t_parser **parser)
 
 int			parser(t_sh *sh, const char *in)
 {
-	int			st;
+	int			ret;
 	t_parser	*parser;
 
 	if (!sh || !in)
 		return (ST_EINVAL);
 	log_success("parser receives input : \"%s\"", in);
-	if ((st = parser_new(&parser, in)) != ST_OK)
-		return (st);
-	st = parser_process(sh, parser);
-	if ((s_parser_callback(&parser)) == ST_OK)
-		log_success("parser deleted with success");
-	else
-		log_error("failed to delete parser");
+	if ((ret = parser_new(&parser, in)) != ST_OK)
+		return (ret);
+	ret = s_parser_process(sh, parser);
+	s_parser_callback(&parser);
 	return (st);
 }
