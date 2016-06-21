@@ -8,8 +8,7 @@ int			token_parse_utils_get_full_word(char **content, t_lexer *lexer,
 	if (lexer->tokens[*i].type != TT_NAME)
 	{
 		if ((*i) - 1 >= 0)
-			display_status(ST_PARSER, lexer->tokens[(*i) - 1].content,
-					"unexpected token");
+			display_status(ST_PARSER_TOKEN, NULL, lexer->tokens[(*i)].content);
 		return (ST_PARSER);
 	}
 	if ((*content = ft_strdup(lexer->tokens[*i].content)) == NULL)

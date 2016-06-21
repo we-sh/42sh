@@ -27,7 +27,7 @@ static int	s_parse_right_redir(t_proc *p, t_lexer *lexer, int *i, int *fd)
 		{
 			if ((ret = s_open_new_fd_int(lexer->tokens[*i].content, fd)) != ST_OK)
 			{
-				display_status(ST_PARSER, lexer->tokens[*i].content, "unexpected member");
+				display_status(ST_PARSER_TOKEN, NULL, lexer->tokens[*i].content);
 				return (ret);
 			}
 		}
