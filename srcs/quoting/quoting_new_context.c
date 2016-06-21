@@ -2,7 +2,7 @@
 
 static int				s_d_init(t_termcaps_context *c, t_termcaps_context *ch)
 {
-	termcaps_display_command_line(c->fd, &c->command_line);
+	termcaps_display_command_line(c);
 	caps__print_cap(CAPS__DOWN, 0);
 	termcaps_initialize(c->fd, "> ", ch);
 	g_in_child = 1;

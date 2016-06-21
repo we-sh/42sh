@@ -26,7 +26,7 @@ int				key__cut(t_termcaps_context *in_context)
 		}
 	}
 	else
-		return (0);
+		return (1);
 	key__share__cut_build_copy(in_context, selection_start, selection_size);
 	return (1);
 }

@@ -103,30 +103,3 @@ int				list_head__command_line_to_buffer(const t_list_head *head,
 	*buffer_size = buffer_offset;
 	return (1);
 }
-
-int				list_head__command_line_match(const t_list_head *head,
-											const t_list_head *match)
-{
-	t_list_node_cmd	*cmd1;
-	t_list_node_cmd	*cmd2;
-	t_list			*pos1;
-	t_list			*pos2;
-	size_t			index;
-
-	index = 0;
-	pos1 = (t_list *)&head->list;
-	pos2 = (t_list *)&match->list;
-	while ((pos1 = pos1->next) && pos1 != &head->list &&
-			(pos2 = pos2->next) && pos2 != &match->list)
-	{
-		cmd1 = CONTAINER_OF(pos1, t_list_node_cmd, list);
-		cmd2 = CONTAINER_OF(pos2, t_list_node_cmd, list);
-		if (cmd1->character_size != cmd2->character_size ||
-			ft_memcmp(cmd1->character, cmd2->character, cmd2->character_size))
-		{
-			break ;
-		}
-		index++;
-	}
-	return (index == match->size ? 1 : 0);
-}

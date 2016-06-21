@@ -29,7 +29,7 @@
 #define ENDL_SIZE	(sizeof("\n") - 1)
 #define ENDL				"\n"
 
-int			termcaps_display_command_line_in_color(const int fd, const t_termcaps_context *context)
+int			termcaps_display_command_line(const t_termcaps_context *context)
 {
 	size_t	buffer_size_max;
 	size_t	buffer_size;
@@ -65,7 +65,7 @@ int			termcaps_display_command_line_in_color(const int fd, const t_termcaps_cont
 	nb_write_total = 0;
 	while ((size_t)nb_write_total != buffer_size)
 	{
-		nb_write = write(fd, buffer + nb_write_total, buffer_size - nb_write_total);
+		nb_write = write(context->fd, buffer + nb_write_total, buffer_size - nb_write_total);
 		if (nb_write < 0)
 		{
 			log_fatal("write() failed");
@@ -92,7 +92,7 @@ int			termcaps_display_command_line_in_color(const int fd, const t_termcaps_cont
 	return (1);
 }
 
-
+#if 0
 /*
 ** Display the command line
 */
@@ -146,3 +146,4 @@ int			termcaps_display_command_line(const int fd, const t_list_head *command_lin
 	free(buffer);
 	return (1);
 }
+#endif

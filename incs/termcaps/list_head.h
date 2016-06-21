@@ -80,11 +80,6 @@ void			list_head__command_line_destroy(t_list_head *head);
 int				list_head__command_line_to_buffer(const t_list_head *head, const size_t buffer_size_max, size_t *buffer_size, char *buffer);
 
 /*
-** list head command line match
-*/
-int				list_head__command_line_match(const t_list_head *head, const t_list_head *match);
-
-/*
 ** -- History node structure --
 */
 typedef struct	s_list_node_history

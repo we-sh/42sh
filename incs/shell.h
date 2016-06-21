@@ -186,7 +186,7 @@ int				termcaps_finalize(t_termcaps_context *context);
 int				termcaps_character_to_command_line(const size_t character_bytes_count,
 											 const char *character_bytes,
 											 t_list_head *command_line);
-int				termcaps_display_command_line(const int fd, const t_list_head *command_line);
+int				termcaps_display_command_line(const t_termcaps_context *context);
 size_t			termcaps_get_character_bytes_count(const size_t input_bytes_count,
 								  const char *input_bytes,
 								  size_t *out_missing_bytes_count);
@@ -196,6 +196,5 @@ int				termcaps_string_to_command_line(const size_t input_buffer_size,
 										  const char *input_buffer,
 										  t_list_head *command_line);
 int				termcaps_history_search(t_termcaps_context *context, char **out_match);
-int				termcaps_display_command_line_in_color(const int fd, const t_termcaps_context *context);
 
 #endif

@@ -63,7 +63,7 @@ int key__send(t_termcaps_context *context)
 			return (0);
 		if (g_child == 0)
 		{
-			termcaps_display_command_line(context->fd, &context->command_line);
+			termcaps_display_command_line(context);
 			caps__print_cap(CAPS__CARRIAGE_RETURN, 0);
 		}
 		if (context->command_line.size > context->prompt.size)
