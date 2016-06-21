@@ -46,6 +46,8 @@ static int			s_proc_setup(t_proc *proc, t_sh *sh, t_list *head, int *fds)
 	}
 	else
 		fds[FD_STDOUT] = proc->stdout;
+	if (proc->list_proc.prev == head)
+		fds[FD_STDIN] = proc->stdin;
 	if (proc->stdin == proc->j->stdin)
 		proc->stdin = fds[FD_STDIN];
 	if (proc->stdout == proc->j->stdout)
@@ -64,9 +66,6 @@ static int			s_job_setup(t_sh *sh, t_job *job)
 	int		ret;
 	int		fds[5];
 
-	fds[FD_STDIN] = job->stdin;
-	fds[FD_STDOUT] = job->stdout;
-	fds[FD_STDERR] = job->stderr;
 	head = &job->proc_head;
 	pos = head;
 	while ((pos = pos->next) && pos != head)
