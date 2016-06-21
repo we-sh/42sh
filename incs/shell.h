@@ -6,13 +6,25 @@
 # define PATH_ROOT "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 # define PATH_STD "/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games"
 
-#ifdef __linux__ //A DEPLACER
-#define SELECTBLANC "\e]12;white\a"
-#define SELECTBLEU "\e]12;blue\a"
+/*
+**	 A deplacer
+*/
+
+#ifdef __linux__
+# define SELECTBLANC "\e]12;white\a"
+# define SELECTBLEU "\e]12;blue\a"
 #else
 # define SELECTBLANC "\033]Plffffff\033\\"
-#define SELECTBLEU "\033]Pl4040ff\033\\"
+# define SELECTBLEU "\033]Pl4040ff\033\\"
 #endif
+
+#define ANSI_COLOR_RESET_SIZE (sizeof("\033[0m") - 1)
+#define ANSI_COLOR_RESET "\033[0m"
+#define ANSI_COLOR_LIGHT_BLUE_SIZE (sizeof("\033[94m") - 1)
+#define ANSI_COLOR_LIGHT_BLUE "\033[94m"
+
+#define MIN(x, y) (x < y ? x : y)
+#define MAX(x, y) (x > y ? x : y)
 
 
 /*
