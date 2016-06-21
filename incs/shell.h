@@ -217,4 +217,16 @@ int				termcaps_string_to_command_line(const size_t input_buffer_size,
 int				termcaps_history_search(t_termcaps_context *context, t_buffer *out_match);
 int				termcaps_write(int fd, char *buffer, size_t buffer_size);
 
+/*
+** completion
+*/
+typedef struct	s_node_dir
+{
+	t_buffer		filename;
+	t_list			list;
+}				t_node_dir;
+
+t_node_dir		*node_dir__create(const char *filename);
+void			list_dir__destroy(t_list *head);
+
 #endif
