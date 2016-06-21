@@ -83,14 +83,18 @@ int key__send(t_termcaps_context *context)
 	else if (context->state == STATE_SEARCH_HISTORY)
 	{
 		node = list_nth(&context->history.list, context->history.offset + 1);
-		if (node == &context->history.list)
+		if (node != &context->history.list)
 		{
-			context->state = STATE_REGULAR;
-			return (1);
+			list_head__command_line_destroy(&context->command_line);
+			list_head__init(&context->command_line);
+			history = CONTAINER_OF(node, t_list_node_history, list);
+			ASSERT(termcaps_string_to_command_line(context->prompt.size,
+												   context->prompt.bytes,
+												   &context->command_line));
+			ASSERT(termcaps_string_to_command_line(history->command_line.size,
+												   history->command_line.bytes,
+												   &context->command_line));
 		}
-		list_head__command_line_destroy(&context->command_line);
-		history = CONTAINER_OF(node, t_list_node_history, list);
-		ASSERT(list_head__command_line_dup(&context->command_line, &history->command_line));
 		context->state = STATE_REGULAR;
 	}
 	return (1);

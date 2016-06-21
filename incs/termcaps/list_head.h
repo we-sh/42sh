@@ -90,8 +90,7 @@ int				list_head__command_line_match(const t_list_head *head, const t_list_head 
 typedef struct	s_list_node_history
 {
 	t_list		list;
-	t_list_head	command_line;
-	char		*command_line_c_string;
+	t_buffer	command_line;
 }				t_list_node_history;
 
 /*

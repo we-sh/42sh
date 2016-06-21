@@ -25,18 +25,18 @@ int	termcaps_history_search(t_termcaps_context *context, char **out_match)
 		{
 			history = CONTAINER_OF(pos, t_list_node_history, list);
 			history_offset--;
-			match = history->command_line_c_string;
+			match = history->command_line.bytes;
 			if ((match = ft_strstr(match,
 								   command_line_cur + context->prompt.size)) != NULL)
 			{
 				log_warn("%s", match);
 				*out_match = ft_strjoin(REVERSE_I_SEARCH,
-										history->command_line_c_string);
+										history->command_line.bytes);
 				if (*out_match == NULL)
 					return (0);
 				context->history.offset = history_offset;
 				log_debug("history offset %zu size %zu", context->history.offset, context->history.size);
-				log_success("%s", history->command_line_c_string);
+				log_success("%s", history->command_line.bytes);
 				return (1);
 			}
 		}

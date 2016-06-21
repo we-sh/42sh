@@ -3,20 +3,21 @@
 /*
 ** Add command_line to history
 */
-int		key__share__command_line_to_history(t_termcaps_context *in_context)
+int		key__share__command_line_to_history(t_termcaps_context *context)
 {
 	t_list_node_history	*new;
 
-	new = list_node__history_create(&in_context->command_line, in_context->prompt.size);
+	new = list_node__history_create(&context->command_line, context->prompt.size);
 	if (!new)
 	{
 		log_error("node__history_create() failed %s", "");
 		return (0);
 	}
-	list_head__insert(&in_context->history,
-					in_context->history.size, &new->list);
-	list_head__init(&in_context->command_line);
-	in_context->command_line.offset = 0;
+	list_head__insert(&context->history,
+					  context->history.size,
+					  &new->list);
+	list_head__command_line_destroy(&context->command_line);
+	list_head__init(&context->command_line);
 	return (1);
 }
 
