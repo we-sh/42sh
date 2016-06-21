@@ -18,7 +18,10 @@ int	job_build_unstack_job_from_lexer(t_job **j, t_lexer *lexer, int *i,
 		if ((p = proc_alloc(*j, envp)) == NULL)
 			return (ST_MALLOC);
 		if ((ret = job_build_unstack_proc_from_lexer(p, lexer, i)) != ST_OK)
+		{
+			proc_free(&p);
 			return (ret);
+		}
 		list_push_back(&p->list_proc, &(*j)->proc_head);
 		if (lexer->tokens[*i].type == TT_JOBS)
 		{

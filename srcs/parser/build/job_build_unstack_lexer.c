@@ -19,7 +19,10 @@ int	job_build_unstack_lexer(t_lexer *lexer, char **envp)
 	{
 		if ((ret = job_build_unstack_job_from_lexer(&j, lexer, &i, envp))
 				!= ST_OK)
+		{
+			job_free(&j);
 			return (ret);
+		}
 		list_push_back(&j->list_job, &g_current_jobs_list_head);
 	}
 	log_success("parsing lexer into %zu jobs",
