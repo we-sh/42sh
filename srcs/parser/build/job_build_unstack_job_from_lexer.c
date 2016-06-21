@@ -4,8 +4,7 @@
 ** Unstack the list of tokens to build a list of jobs.
 */
 
-int	job_build_unstack_job_from_lexer(t_job **j, t_lexer *lexer, int *i,
-		char **envp)
+int	job_build_unstack_job_from_lexer(t_job **j, t_lexer *lexer, int *i)
 {
 	int		ret;
 	t_proc	*p;
@@ -15,7 +14,7 @@ int	job_build_unstack_job_from_lexer(t_job **j, t_lexer *lexer, int *i,
 	while (*i < lexer->size)
 	{
 		log_info("remaining tokens : %d / %d", lexer->size - *i, lexer->size);
-		if ((p = proc_alloc(*j, envp)) == NULL)
+		if ((p = proc_alloc(*j, lexer->sh->envp)) == NULL)
 			return (ST_MALLOC);
 		if ((ret = job_build_unstack_proc_from_lexer(p, lexer, i)) != ST_OK)
 		{

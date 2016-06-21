@@ -5,19 +5,19 @@
 ** global variable g_current_jobs_list_head.
 */
 
-int	job_build_unstack_lexer(t_sh *sh, t_lexer *lexer)
+int	job_build_unstack_lexer(t_lexer *lexer)
 {
 	int		i;
 	t_job	*j;
 	int		ret;
 
 	j = NULL;
-	if (!sh || !lexer)
+	if (!lexer)
 		return (ST_EINVAL);
 	i = 0;
 	while (i < lexer->size)
 	{
-		if ((ret = job_build_unstack_job_from_lexer(&j, lexer, &i, sh->envp))
+		if ((ret = job_build_unstack_job_from_lexer(&j, lexer, &i))
 				!= ST_OK)
 		{
 			job_free(&j);
