@@ -1,7 +1,7 @@
 #include "parser.h"
 
 /*
-** Create a new parser structure and initialize its fiels.
+** Create a new parser structure and initialize its fields.
 ** The input string is duplicated and the other are allocated.
 */
 
