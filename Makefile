@@ -10,7 +10,6 @@ SRCS		=	\
 				main.c							\
 				parser/parser.c										\
 				parser/alloc/parser_new.c							\
-				parser/build/parser_process_build.c					\
 				parser/build/job_build_unstack_lexer.c				\
 				parser/build/job_build_unstack_job_from_lexer.c		\
 				parser/build/job_build_unstack_proc_from_lexer.c	\
@@ -333,21 +332,6 @@ $(DIROBJ)parser_new.o: srcs/parser/alloc/parser_new.c incs/parser.h \
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/parser/alloc/parser_new.c\n"
 		@$(CC) -c ./srcs/parser/alloc/parser_new.c -o ./.objs/parser_new.o $(CPPFLAGS) $(CFLAGS) 
-
-$(DIROBJ)parser_process_build.o: srcs/parser/build/parser_process_build.c \
-  incs/parser.h libs/libft/./incs/libft.h libs/logger/./incs/logger.h \
-  libs/logger/./incs/logger_utils.h incs/statuses.h incs/shell.h \
-  libs/libft/./incs/list.h incs/htabl.h incs/fnv.h incs/longlong.h \
-  incs/termcaps/termcaps.h incs/termcaps/list_head.h \
-  libs/libcaps/./incs/types.h incs/termcaps/log.h \
-  incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
-  libs/libft/./incs/libftprintf.h incs/option.h incs/job.h \
-  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/builtins/builtin.h \
-  incs/quoting.h
-		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
-		@printf "compiling ./srcs/parser/build/parser_process_build.c\n"
-		@$(CC) -c ./srcs/parser/build/parser_process_build.c -o ./.objs/parser_process_build.o $(CPPFLAGS) $(CFLAGS) 
 
 $(DIROBJ)job_build_unstack_lexer.o: srcs/parser/build/job_build_unstack_lexer.c \
   incs/parser.h libs/libft/./incs/libft.h libs/logger/./incs/logger.h \

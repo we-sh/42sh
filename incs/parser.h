@@ -98,7 +98,7 @@ int			parser_process_lexer(t_lexer *lexer, const char *in);
 t_token		*token_list(void);
 int			tokenize(const char *s, t_lexer *lexer);
 
-int			job_build_unstack_lexer(t_lexer *lexer, char **envp);
+int			job_build_unstack_lexer(t_sh *sh, t_lexer *lexer);
 int			job_build_unstack_job_from_lexer(t_job **j, t_lexer *lexer, int *i, char **envp);
 int			job_build_unstack_proc_from_lexer(t_proc *p, t_lexer *lexer, int *i);
 
@@ -114,7 +114,6 @@ struct				s_parser
 };
 
 int	parser_new(t_parser **parser, const char *in);
-int	parser_process_build(t_lexer *lexer, char **envp);
 
 /*
 ** Tokenizer/parser definition.
