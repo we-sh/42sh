@@ -37,6 +37,7 @@ static int			s_proc_setup(t_proc *proc, t_sh *sh, t_list *head, int *fds)
 {
 	int		ret;
 
+	fds[FD_STDERR] = proc->stderr;
 	if (proc->list_proc.next != head)
 	{
 		if (pipe(fds) < 0)
@@ -44,7 +45,7 @@ static int			s_proc_setup(t_proc *proc, t_sh *sh, t_list *head, int *fds)
 		fds[FD_STDOUT] = fds[FD_PIPE_OUT];
 	}
 	else
-		fds[FD_STDOUT] = proc->j->stdout;
+		fds[FD_STDOUT] = proc->stdout;
 	if (proc->stdin == proc->j->stdin)
 		proc->stdin = fds[FD_STDIN];
 	if (proc->stdout == proc->j->stdout)
