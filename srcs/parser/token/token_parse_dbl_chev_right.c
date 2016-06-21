@@ -13,16 +13,28 @@ static int	s_open_new_fd_int(char *f, int *fd)
 	return (ST_OK);
 }
 
-static void	s_set_proc_fds(t_proc *proc, int fd_l, int fd_r)
+static void	s_set_proc_fds(t_proc *p, int fd_l, int fd_r)
 {
 	if (!(fd_r == 0 && (fd_l == STDOUT_FILENO || fd_l == STDERR_FILENO)))
 	{
 		if (fd_l == 0)
-			proc->stdin = fd_r;
+		{
+			if (p->stdin != STDIN_FILENO)
+				close(p->stdin);
+			p->stdin = fd_r;
+		}
 		if (fd_l == 1)
-			proc->stdout = fd_r;
+		{
+			if (p->stdout != STDOUT_FILENO)
+				close(p->stdout);
+			p->stdout = fd_r;
+		}
 		if (fd_l == 2)
-			proc->stderr = fd_r;
+		{
+			if (p->stderr != STDERR_FILENO)
+				close(p->stderr);
+			p->stderr = fd_r;
+		}
 	}
 }
 

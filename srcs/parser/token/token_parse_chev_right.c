@@ -51,11 +51,23 @@ static void	s_set_proc_fds(t_proc *p, int fd_l, int fd_r)
 	if (!(fd_r == 0 && (fd_l == STDOUT_FILENO || fd_l == STDERR_FILENO)))
 	{
 		if (fd_l == 0)
+		{
+			if (p->stdin != STDIN_FILENO)
+				close(p->stdin);
 			p->stdin = fd_r;
+		}
 		if (fd_l == 1)
+		{
+			if (p->stdout != STDOUT_FILENO)
+				close(p->stdout);
 			p->stdout = fd_r;
+		}
 		if (fd_l == 2)
+		{
+			if (p->stderr != STDERR_FILENO)
+				close(p->stderr);
 			p->stderr = fd_r;
+		}
 	}
 }
 
