@@ -29,6 +29,7 @@ int				key__delete_command_line(t_termcaps_context *context)
 		list_head__slice(&head, &context->command_line,
 						selection_start, selection_size);
 		list_head__command_line_destroy(&head);
+		context->command_line.offset = selection_start;
 	}
 	return (1);
 }
