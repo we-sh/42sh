@@ -11,8 +11,8 @@ int			key__copy(t_termcaps_context *in_context)
 	in_context->state = STATE_REGULAR;
 	ASSERT(key__share__selection_get(in_context, &copy_start, &copy_size));
 	ASSERT(key__share__copy_build_copy(&in_context->command_line,
-									   copy_start,
-									   copy_size,
-									   &in_context->copy));
+										copy_start,
+										copy_size,
+										&in_context->copy));
 	return (1);
 }

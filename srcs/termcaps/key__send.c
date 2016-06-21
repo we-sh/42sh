@@ -1,28 +1,24 @@
 #include "shell.h"
 
-static int		s_replace_endline(t_termcaps_context *context)
+static int				s_fill_context_buffer(t_termcaps_context *context,
+												char *buffer)
 {
 	t_list_node_cmd	*node_cmd;
 	t_list			*pos;
 
+	context->buffer = ft_strdup(buffer + context->prompt.size);
+	if (!context->buffer)
+		return (0);
 	LIST_FOREACH(&context->command_line.list, pos)
 	{
 		node_cmd = CONTAINER_OF(pos, t_list_node_cmd, list);
 		if (node_cmd->character[0] == '\n')
 			node_cmd->character[0] = ' ';
 	}
-	return (ST_OK);
-}
-
-static int		s_fill_context_buffer(t_termcaps_context *context, char *buffer)
-{
-	context->buffer = ft_strdup(buffer + context->prompt.size);
-	if (!context->buffer)
-		return (0);
 	return (1);
 }
 
-static int		s_bufferize_input(t_termcaps_context *context)
+static int				s_bufferize_input(t_termcaps_context *context)
 {
 	size_t		buffer_size;
 	char		buffer[2048];
@@ -39,7 +35,6 @@ static int		s_bufferize_input(t_termcaps_context *context)
 		log_error("(s_fill_context_buffer() failed");
 		return (0);
 	}
-	s_replace_endline(context);
 	if (!key__share__command_line_to_history(context))
 	{
 		log_error("key__share__command_line_to_history() failed");
@@ -49,53 +44,66 @@ static int		s_bufferize_input(t_termcaps_context *context)
 	return (1);
 }
 
+static int				s_key__regular(t_termcaps_context *context)
+{
+	if ((quoting_new_context(context)) == ST_MALLOC)
+		return (ST_MALLOC);
+	if (g_child == 0)
+	{
+		termcaps_display_command_line(context);
+		caps__print_cap(CAPS__CARRIAGE_RETURN, 0);
+	}
+	if (context->command_line.size > context->prompt.size)
+	{
+		if (!s_bufferize_input(context))
+		{
+			log_error("s_bufferize_input() failed");
+			return (-1);
+		}
+	}
+	else
+		(void)write(context->fd, "\n", 1);
+	return (ST_OK);
+}
+
+static int				s_key__search_hist(t_list *node,
+										t_termcaps_context *context,
+										t_list_node_history *history)
+{
+	node = list_nth(&context->history.list, context->history.offset);
+	if (node != &context->history.list)
+	{
+		list_head__command_line_destroy(&context->command_line);
+		list_head__init(&context->command_line);
+		history = CONTAINER_OF(node, t_list_node_history, list);
+		ASSERT(termcaps_string_to_command_line(context->prompt.size,
+												context->prompt.bytes,
+												&context->command_line));
+		ASSERT(termcaps_string_to_command_line(history->command_line.size,
+												history->command_line.bytes,
+												&context->command_line));
+	}
+	context->state = STATE_REGULAR;
+	return (1);
+}
+
 int g_child = 0;
 int g_in_child = 0;
 
-int key__send(t_termcaps_context *context)
+int						key__send(t_termcaps_context *context)
 {
 	t_list				*node;
 	t_list_node_history	*history;
 
+	node = NULL;
+	history = NULL;
 	if (context->state == STATE_REGULAR)
 	{
-		if ((quoting_new_context(context)) == ST_MALLOC)
+		if ((s_key__regular(context)) != ST_OK)
 			return (0);
-		if (g_child == 0)
-		{
-			termcaps_display_command_line(context);
-			caps__print_cap(CAPS__CARRIAGE_RETURN, 0);
-		}
-		if (context->command_line.size > context->prompt.size)
-		{
-			if (!s_bufferize_input(context))
-			{
-				log_error("s_bufferize_input() failed");
-				return (0);
-			}
-		}
-		else
-		{
-			(void)write(context->fd, "\n", 1);
-		}
 		g_child = 0;
 	}
 	else if (context->state == STATE_SEARCH_HISTORY)
-	{
-		node = list_nth(&context->history.list, context->history.offset);
-		if (node != &context->history.list)
-		{
-			list_head__command_line_destroy(&context->command_line);
-			list_head__init(&context->command_line);
-			history = CONTAINER_OF(node, t_list_node_history, list);
-			ASSERT(termcaps_string_to_command_line(context->prompt.size,
-												   context->prompt.bytes,
-												   &context->command_line));
-			ASSERT(termcaps_string_to_command_line(history->command_line.size,
-												   history->command_line.bytes,
-												   &context->command_line));
-		}
-		context->state = STATE_REGULAR;
-	}
+		s_key__search_hist(node, context, history);
 	return (1);
 }

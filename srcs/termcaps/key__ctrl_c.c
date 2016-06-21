@@ -7,7 +7,7 @@ int		key__ctrl_c(t_termcaps_context *context)
 	list_head__command_line_destroy(&context->command_line);
 	list_head__init(&context->command_line);
 	ASSERT(termcaps_string_to_command_line(context->prompt.size,
-										   context->prompt.bytes,
-										   &context->command_line));
+											context->prompt.bytes,
+											&context->command_line));
 	return (1);
 }

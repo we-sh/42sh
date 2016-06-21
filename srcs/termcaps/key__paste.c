@@ -8,7 +8,7 @@ int				key__paste(t_termcaps_context *in_context)
 	if (in_context->state != STATE_REGULAR)
 		return (1);
 	pos = list_nth(&in_context->command_line.list,
-				   in_context->command_line.offset);
+					in_context->command_line.offset);
 	list_head__command_line_dup(&dup, &in_context->copy);
 	list_splice(&dup.list, pos);
 	in_context->command_line.size += dup.size;

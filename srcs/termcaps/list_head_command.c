@@ -4,13 +4,15 @@
 ** list node command line
 */
 
-t_list_node_cmd	*list_node__command_line_create(const size_t character_size, const char *character)
+t_list_node_cmd		*list_node__command_line_create(const size_t character_size,
+													const char *character)
 {
 	t_list_node_cmd	*new;
 
 	if (!character_size || character_size > CHARACTER_SIZE_MAX || !character)
 	{
-		log_error("character_size %zu size_max %zu character %p", character_size, CHARACTER_SIZE_MAX, (void *)character);
+		log_error("character_size %zu size_max %zu character %p",
+			character_size, CHARACTER_SIZE_MAX, (void *)character);
 		return (NULL);
 	}
 	new = (t_list_node_cmd *)malloc(sizeof(t_list_node_cmd));
@@ -25,7 +27,7 @@ t_list_node_cmd	*list_node__command_line_create(const size_t character_size, con
 	return (new);
 }
 
-void			list_node__command_line_destroy(t_list *entry)
+void				list_node__command_line_destroy(t_list *entry)
 {
 	t_list_node_cmd	*node;
 
@@ -40,7 +42,8 @@ void			list_node__command_line_destroy(t_list *entry)
 ** to buffer
 */
 
-t_list_head		*list_head__command_line_dup(t_list_head *dst, t_list_head *src)
+t_list_head			*list_head__command_line_dup(t_list_head *dst,
+												t_list_head *src)
 {
 	t_list			*pos;
 	t_list_node_cmd	*cur;
@@ -52,7 +55,8 @@ t_list_head		*list_head__command_line_dup(t_list_head *dst, t_list_head *src)
 	LIST_FOREACH(&src->list, pos)
 	{
 		cur = CONTAINER_OF(pos, t_list_node_cmd, list);
-		new = list_node__command_line_create(cur->character_size, cur->character);
+		new = list_node__command_line_create(cur->character_size,
+			cur->character);
 		if (!new)
 		{
 			log_error("list_node__command_line_create() failed");
@@ -64,7 +68,7 @@ t_list_head		*list_head__command_line_dup(t_list_head *dst, t_list_head *src)
 	return (dst);
 }
 
-void			list_head__command_line_destroy(t_list_head *head)
+void				list_head__command_line_destroy(t_list_head *head)
 {
 	t_list			*pos;
 	t_list			*pos_safe;
@@ -79,7 +83,7 @@ void			list_head__command_line_destroy(t_list_head *head)
 	}
 }
 
-int				list_head__command_line_to_buffer(const t_list_head *head,
+int					list_head__command_line_to_buffer(const t_list_head *head,
 												const size_t buffer_size_max,
 												size_t *buffer_size,
 												char *buffer)
@@ -97,7 +101,8 @@ int				list_head__command_line_to_buffer(const t_list_head *head,
 			buffer[buffer_offset - 1] = '$';
 			break ;
 		}
-		ft_memcpy(buffer + buffer_offset, node_cmd->character, node_cmd->character_size);
+		ft_memcpy(buffer + buffer_offset, node_cmd->character,
+			node_cmd->character_size);
 		buffer_offset += node_cmd->character_size;
 	}
 	*buffer_size = buffer_offset;

@@ -14,12 +14,15 @@ int		key__select(t_termcaps_context *in_context)
 	{
 		ft_putstr(SELECTBLANC);
 		in_context->state = STATE_REGULAR;
-		if (in_context->command_line.offset > in_context->selection_offset_start)
+		if (in_context->command_line.offset >
+			in_context->selection_offset_start)
 			in_context->selection_offset_end = in_context->command_line.offset;
 		else
 		{
-			in_context->selection_offset_end = in_context->selection_offset_start;
-			in_context->selection_offset_start = in_context->command_line.offset;
+			in_context->selection_offset_end =
+			in_context->selection_offset_start;
+			in_context->selection_offset_start =
+			in_context->command_line.offset;
 		}
 	}
 	return (1);

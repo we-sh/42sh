@@ -10,7 +10,7 @@
 #define SELECTBLANC "\e]12;white\a"
 #define SELECTBLEU "\e]12;blue\a"
 #else
-# define SELECTBLANC"\033]Plffffff\033\\"
+# define SELECTBLANC "\033]Plffffff\033\\"
 #define SELECTBLEU "\033]Pl4040ff\033\\"
 #endif
 
