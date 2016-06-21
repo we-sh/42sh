@@ -13,10 +13,12 @@ t_proc	*proc_find(pid_t pid)
 	t_list	*p_pos;
 	t_proc	*p;
 
-	LIST_FOREACH(&g_current_jobs_list_head, j_pos)
+	j_pos = &g_current_jobs_list_head;
+	while ((j_pos = j_pos->next) && j_pos != &g_current_jobs_list_head)
 	{
 		j = CONTAINER_OF(j_pos, t_job, list_job);
-		LIST_FOREACH(&j->proc_head, p_pos)
+		p_pos = &j->proc_head;
+		while ((p_pos = p_pos->next) && p_pos != &j->proc_head)
 		{
 			p = CONTAINER_OF(p_pos, t_proc, list_proc);
 			if (p->pid == pid)

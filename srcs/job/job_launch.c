@@ -67,7 +67,8 @@ static int			s_job_setup(t_sh *sh, t_job *job)
 	fds[FD_STDOUT] = job->stdout;
 	fds[FD_STDERR] = job->stderr;
 	head = &job->proc_head;
-	LIST_FOREACH(head, pos)
+	pos = head;
+	while ((pos = pos->next) && pos != head)
 	{
 		if ((ret = s_proc_setup(CONTAINER_OF(pos, t_proc, list_proc),
 			sh, head, fds)) != ST_OK)
@@ -117,7 +118,7 @@ int					job_launch(t_sh *sh, t_job *j)
 		job_wait(j);
 	}
 	else if (j->foreground == 0)
-		return (job_background(j, 0));
+		return (job_background(sh, j, 0));
 	else if ((ret = job_foreground(sh, j, 0)) != ST_OK)
 		return (ret);
 	return (s_leave_job_launch(sh, j));

@@ -105,7 +105,7 @@ int				shell_environment(t_sh *sh, char **envp);
 */
 int				job_available_id(void);
 int				job_foreground(t_sh *sh, t_job *j, int const sigcont);
-int				job_background(t_job *j, int const sigcont);
+int				job_background(t_sh *sh, t_job *j, int const sigcont);
 int				job_is_completed(t_job *j);
 int				job_is_signaled(t_job *j);
 int				job_is_stopped(t_job *j);

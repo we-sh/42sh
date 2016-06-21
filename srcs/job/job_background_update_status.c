@@ -48,7 +48,8 @@ int			job_background_update_status(void)
 	int		total;
 
 	total = 0;
-	LIST_FOREACH(&g_current_jobs_list_head, j_pos)
+	j_pos = &g_current_jobs_list_head;
+	while ((j_pos = j_pos->next) && j_pos != &g_current_jobs_list_head)
 	{
 		j = CONTAINER_OF(j_pos, t_job, list_job);
 		if (j->foreground == 0)
