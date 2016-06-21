@@ -160,6 +160,7 @@ static int			s_initialize_key_map_cursor(void)
 	ASSERT(caps__init_func_by_keycode(CAPS__KEYCODE_CTRL_Y, &key__paste));
 	ASSERT(caps__init_func_by_keycode(CAPS__KEYCODE_CTRL_K,
 	&key__cut_to_end_of_line));
+	ASSERT(caps__init_func_by_keycode(CAPS__KEYCODE_CTRL_L, &key__clear));
 	caps__init_func(DELETE_UNDER_CURSOR_KEY, &key__delete_under_cursor);
 	caps__init_func(CURSOR_LEFT_KEY, &key__cursor_to_prev_character);
 	caps__init_func(CURSOR_RIGHT_KEY, &key__cursor_to_next_character);

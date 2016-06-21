@@ -128,4 +128,9 @@ int key__ctrl_c(t_termcaps_context *in_context);
 */
 int key__search_history(t_termcaps_context *in_context);
 
+/*
+** Clear
+*/
+int	key__clear(t_termcaps_context *in_context);
+
 #endif /* KEY_H */

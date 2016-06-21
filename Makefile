@@ -6,7 +6,7 @@
 #    By: mleconte <mleconte@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/04/30 13:39:33 by anouvel           #+#    #+#              #
-#    Updated: 2016/06/18 15:39:10 by abombard         ###   ########.fr        #
+#    Updated: 2016/06/21 16:38:24 by abombard         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -124,6 +124,7 @@ SRCS		=	\
 				termcaps/key__share_words.c						\
 				termcaps/key__completion.c						\
 				termcaps/key__ctrl_c.c							\
+				termcaps/key__clear.c							\
 				termcaps/key__search_history.c					\
 				termcaps/termcaps_history_search.c				\
 				termcaps/termcaps_write.c						\
@@ -1847,6 +1848,21 @@ $(DIROBJ)key__ctrl_c.o: srcs/termcaps/key__ctrl_c.c incs/shell.h \
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/termcaps/key__ctrl_c.c\n"
 		@$(CC) -c ./srcs/termcaps/key__ctrl_c.c -o ./.objs/key__ctrl_c.o $(CPPFLAGS) $(CFLAGS) 
+
+$(DIROBJ)key__clear.o: srcs/termcaps/key__clear.c incs/shell.h \
+  libs/libft/./incs/list.h incs/htabl.h incs/fnv.h incs/longlong.h \
+  incs/termcaps/termcaps.h incs/termcaps/list_head.h \
+  libs/libcaps/./incs/types.h incs/termcaps/log.h \
+  incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
+  libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h \
+  libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
+  incs/statuses.h incs/option.h incs/job.h libs/libcaps/./incs/caps.h \
+  libs/libcaps/./incs/logger.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/lexer.h incs/builtins/builtin.h \
+  incs/quoting.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/termcaps/key__clear.c\n"
+		@$(CC) -c ./srcs/termcaps/key__clear.c -o ./.objs/key__clear.o $(CPPFLAGS) $(CFLAGS) 
 
 $(DIROBJ)key__search_history.o: srcs/termcaps/key__search_history.c incs/shell.h \
   libs/libft/./incs/list.h incs/htabl.h incs/fnv.h incs/longlong.h \
