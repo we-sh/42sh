@@ -8,19 +8,17 @@
 
 # define TOKEN_BUF_SIZE 256
 
+# define F_NO_PARSING	0x01
+# define F_PARSING		0x02
+
 /*
 ** Typedefs.
 */
 
-typedef enum e_token_type		t_token_type;
-typedef enum e_token_code		t_token_code;
 typedef struct s_token			t_token;
-
+/* TODO " sure we can delete one of t_token or t_lexer_token... */
 typedef struct s_lexer_token	t_lexer_token;
 typedef struct s_lexer			t_lexer;
-
-typedef struct s_node_job		t_node_job;
-typedef struct s_ast			t_ast;
 
 typedef struct s_parser			t_parser;
 
@@ -28,7 +26,7 @@ typedef struct s_parser			t_parser;
 ** Tokens definition.
 */
 
-enum				e_token_type
+typedef enum		e_token_type
 {
 	TT_NONE,
 	TT_SEPARATOR,
@@ -39,9 +37,9 @@ enum				e_token_type
 	TT_SPECIAL,
 	TT_NAME,
 	TT_ERROR
-};
+}					t_token_type;
 
-enum				e_token_code
+typedef enum		e_token_code
 {
 	TC_DBL_CHEV_LEFT,
 	TC_DBL_CHEV_RIGHT,
@@ -60,7 +58,7 @@ enum				e_token_code
 	TC_TAB,
 	TC_NEWLINE,
 	TC_NONE
-};
+}					t_token_code;
 
 /*
 ** This structure is used into token recognition
@@ -95,14 +93,6 @@ struct				s_lexer
 	t_sh			*sh;
 };
 
-int			parser_process_lexer(t_parser *parser, const char *in);
-t_token		*token_list(void);
-int			tokenize(const char *s, t_parser *parser);
-
-int			job_build_unstack_lexer(t_lexer *lexer);
-int			job_build_unstack_job_from_lexer(t_job **j, t_lexer *lexer, int *i);
-int			job_build_unstack_proc_from_lexer(t_proc *p, t_lexer *lexer, int *i);
-
 /*
 ** Parser definition.
 */
@@ -115,46 +105,73 @@ struct				s_parser
 
 	t_token			**token_list;
 
+	/*
+	 * See define at the top of the file
+	 * To enable a flag => mode |= F_NO_PARSING
+	 * To check if the flag is enable => mode & F_NO_PARSING
+	 */
 	// lexer or lexer / parser
 	int				mode;
 };
 
-int	parser_new(t_parser **parser, const char *in, t_sh *sh, int mode);
-
 /*
-** Tokenizer/parser definition.
+** Lexer functions.
 */
 
-int	token_parse_none(t_proc *proc, t_lexer *lexer, int *i);
+t_token	*token_list(void);
+int		tokenize(const char *s, t_parser *parser);
 
-// JOBS
-int	token_parse_semi(t_proc *proc, t_lexer *lexer, int *i);
-int	token_parse_dbl_and(t_proc *proc, t_lexer *lexer, int *i);
-int	token_parse_dbl_or(t_proc *proc, t_lexer *lexer, int *i);
+/*
+** Parser functions.
+*/
 
-// PIPE
-int	token_parse_pipe(t_proc *proc, t_lexer *lexer, int *i);
+int		parser_process_lexer(t_parser *parser, const char *in);
 
-int	token_parse_and(t_proc *proc, t_lexer *lexer, int *i);
+int		parser_new(t_parser **parser, const char *in, t_sh *sh, int mode);
 
-// REDIR
-int	token_parse_chev_left(t_proc *proc, t_lexer *lexer, int *i);
-int	token_parse_chev_right(t_proc *proc, t_lexer *lexer, int *i);
-int	token_parse_dbl_chev_left(t_proc *proc, t_lexer *lexer, int *i);
-int	token_parse_dbl_chev_right(t_proc *proc, t_lexer *lexer, int *i);
+int		job_build_unstack_lexer(t_lexer *lexer);
+int		job_build_unstack_job_from_lexer(t_job **j, t_lexer *lexer, int *i);
+int		job_build_unstack_proc_from_lexer(t_proc *p, t_lexer *lexer, int *i);
 
-// UTILS
-int		token_parse_utils_get_full_word(char **content, t_lexer *lexer, int *i);
-int		token_parse_utils_open_new_fd(t_proc *p, char *f, int *fd, int flag);
-void	token_parse_utils_set_proc_fds(t_proc *p, int fd_l, int fd_r);
+/*
+** Expansion.
+*/
 
-// EXPANSIONS
 int		expand(t_sh *sh, t_proc *p, char *content, int is_inhibited);
 char	*expand_escape_char(char *buf);
 char	*expand_tilde(t_sh *sh, char *buf);
 
-// INHIBITORS
-int	token_parse_inhib(t_proc *proc, t_lexer *lexer, int *i);
+/*
+** Function pointers for the parser.
+*/
+
+// Default function.
+int		token_parse_none(t_proc *proc, t_lexer *lexer, int *i);
+
+// Jobs.
+int		token_parse_semi(t_proc *proc, t_lexer *lexer, int *i);
+int		token_parse_dbl_and(t_proc *proc, t_lexer *lexer, int *i);
+int		token_parse_dbl_or(t_proc *proc, t_lexer *lexer, int *i);
+
+// Pipe,
+int		token_parse_pipe(t_proc *proc, t_lexer *lexer, int *i);
+
+// And.
+int		token_parse_and(t_proc *proc, t_lexer *lexer, int *i);
+
+// Redirections.
+int		token_parse_chev_left(t_proc *proc, t_lexer *lexer, int *i);
+int		token_parse_chev_right(t_proc *proc, t_lexer *lexer, int *i);
+int		token_parse_dbl_chev_left(t_proc *proc, t_lexer *lexer, int *i);
+int		token_parse_dbl_chev_right(t_proc *proc, t_lexer *lexer, int *i);
+
+// Function pointers utils.
+int		token_parse_utils_get_full_word(char **content, t_lexer *lexer, int *i);
+int		token_parse_utils_open_new_fd(t_proc *p, char *f, int *fd, int flag);
+void	token_parse_utils_set_proc_fds(t_proc *p, int fd_l, int fd_r);
+
+// Inhibitors.
+int		token_parse_inhib(t_proc *proc, t_lexer *lexer, int *i);
 
 /*
 ** The array representing each tokens definitions.
