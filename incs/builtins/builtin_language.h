@@ -6,7 +6,7 @@
 static const t_builtin		g_builtin_language = {
 	.index = BLTIN_LANGUAGE,
 	.name = "language",
-	.usage = "language [lang]",
+	.usage = "language [language]",
 	.description = ST_BLTIN_LANGUAGE,
 	.exe = &builtin_language,
 	.options = NULL
