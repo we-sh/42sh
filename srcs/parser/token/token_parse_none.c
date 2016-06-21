@@ -1,13 +1,5 @@
 #include "parser.h"
 
-/*
-** These functions are able to apply an action on a specific token received.
-** For example, the semi-column token, when it is detected, will return 1,
-** which means for the parser that the job is finished.
-** WARNING : the parameters should be unconsistent, or some are missing...
-** WQRNING : this is one file per token...
-*/
-
 static int	s_fill_command(t_proc *p, char *content)
 {
 	char	*tmp;
@@ -28,7 +20,6 @@ static int	s_fill_command(t_proc *p, char *content)
 int	token_parse_none(t_proc *p, t_lexer *lexer, int *i)
 {
 	log_trace("entering parsing token %-12s", "TT_NONE");
-	log_trace("token type %d token code %d", lexer->tokens[*i].type, lexer->tokens[*i].code);
 
 	char	*content;
 	int		ret;
