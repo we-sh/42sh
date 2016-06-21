@@ -24,6 +24,13 @@ typedef enum			e_language
 	LANG_TOTAL
 }						t_language;
 
+static const char		*g_language_identifiers[] = {
+	[LANG_GET] = NULL,
+	[LANG_EN] = "en",
+	[LANG_FR] = "fr",
+	[LANG_TOTAL] = NULL
+};
+
 static const char		*g_i18n_fr[] = {
 	[ST_OK] = "Français",
 	[ST_SETPGID] = "impossible d'associer le PID à un groupe",
@@ -66,6 +73,8 @@ static const char		*g_i18n_fr[] = {
 	[ST_BLTIN_JOBS] = "affiche le status des jobs de la session courante",
 	[ST_BLTIN_JOBS_OPT_L] = "affiche plus d'informations sur les jobs",
 	[ST_BLTIN_JOBS_OPT_P] = "affiche seulement les IDs maîtres",
+	[ST_BLTIN_LANGUAGE] = "modifie la langue du Shell",
+	[ST_BLTIN_LANGUAGE_ERR_NOTFOUND] = "langue non disponible",
 	[ST_BLTIN_SETENV] = "est utilisé pour initialiser ou modifier une variable d'environnement",
 	[ST_BLTIN_ENV] = "est utilisé pour afficher les variables d'environnement",
 	[ST_BLTIN_ENV_OPT_I] = "est utilisé pour envoyer un environnement NULL a un programme",
@@ -164,6 +173,8 @@ static const char		*g_i18n_en[] = {
 	[ST_BLTIN_JOBS_OPT_P] = "display only the leaders process IDs",
 	[ST_BLTIN_ENV] = "is used to display environment variables",
 	[ST_BLTIN_ENV_OPT_I] = "is used to send empties environment variables to a program",
+	[ST_BLTIN_LANGUAGE] = "change the language of the Shell",
+	[ST_BLTIN_LANGUAGE_ERR_NOTFOUND] = "unavailable lang",
 	[ST_BLTIN_SETENV] = "Is used to initialize or modify an environment variable",
 	[ST_BLTIN_SETENV_ALPHA_NUM] = "Variable name must contain alphanumeric characters.",
 	[ST_BLTIN_SETENV_FIRST_CHAR] = "Variable name must begin with a letter.",
