@@ -44,7 +44,8 @@ int	job_wait(t_job *j_orig)
 
 	while (1)
 	{
-		LIST_FOREACH(&g_current_jobs_list_head, j_pos)
+		j_pos = &g_current_jobs_list_head;
+		while ((j_pos = j_pos->next) && j_pos != &g_current_jobs_list_head)
 		{
 		//	log_debug("loop 2");
 			j = CONTAINER_OF(j_pos, t_job, list_job);

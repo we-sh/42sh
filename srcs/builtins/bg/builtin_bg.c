@@ -51,7 +51,7 @@ static int	s_exec(t_builtin const *builtin, t_proc *p)
 	return (EXIT_SUCCESS);
 }
 
-static int	s_after(t_proc *p)
+static int	s_after(t_sh *sh, t_proc *p)
 {
 	int		i;
 	t_job	*j;
@@ -64,12 +64,12 @@ static int	s_after(t_proc *p)
 			while (i < p->argc)
 			{
 				if ((j = job_by_name(p->argv[i], 0)) != NULL)
-					job_background(j, 1);
+					return (job_background(sh, j, 1));
 				i++;
 			}
 		}
 		else if ((j = job_by_name("%%", 0)) != NULL)
-			job_background(j, 1);
+			return (job_background(sh, j, 1));
 	}
 	return (ST_OK);
 }
@@ -82,6 +82,6 @@ int			builtin_bg(t_builtin const *builtin, int callback, t_sh *sh, t_proc *p)
 	if (callback == BLTIN_CB_EXEC)
 		exit(s_exec(builtin, p));
 	if (callback == BLTIN_CB_AFTER)
-		return (s_after(p));
+		return (s_after(sh, p));
 	return (ST_OK);
 }

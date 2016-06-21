@@ -39,7 +39,8 @@ int			job_display_status(t_job *j, int show_pid)
 		c = '+';
 	else if (job_background_nth(&g_current_jobs_list_head, -2) == j)
 		c = '-';
-	LIST_FOREACH(&j->proc_head, p_pos)
+	p_pos = &j->proc_head;
+	while ((p_pos = p_pos->next) && p_pos != &j->proc_head)
 	{
 		p = CONTAINER_OF(p_pos, t_proc, list_proc);
 		s_proc_display_status(j, p, c, show_pid);
