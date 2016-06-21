@@ -131,7 +131,7 @@ int		parser_process_lexer(t_parser *parser, const char *in);
 
 int		parser_new(t_parser **parser, const char *in, t_sh *sh, int mode);
 
-int		job_build_unstack_lexer(t_lexer *lexer);
+int		job_build_unstack_lexer(t_parser *parser);
 int		job_build_unstack_job_from_lexer(t_job **j, t_lexer *lexer, int *i);
 int		job_build_unstack_proc_from_lexer(t_proc *p, t_lexer *lexer, int *i);
 

@@ -5,27 +5,27 @@
 ** global variable g_current_jobs_list_head.
 */
 
-int	job_build_unstack_lexer(t_lexer *lexer)
+int	job_build_unstack_lexer(t_parser *parser)
 {
 	int		i;
 	t_job	*j;
 	int		ret;
 
 	j = NULL;
-	if (!lexer)
+	if (!parser)
 		return (ST_EINVAL);
 	i = 0;
-	while (i < lexer->size)
+	while (i < parser->lexer->size)
 	{
-		if ((ret = job_build_unstack_job_from_lexer(&j, lexer, &i))
+		if ((ret = job_build_unstack_job_from_lexer(&j, parser->lexer, &i))
 				!= ST_OK)
 		{
 			job_free(&j);
 			return (ret);
 		}
-		list_push_back(&j->list_job, &g_current_jobs_list_head);
+		list_push_back(&j->list_job, parser->target_list_head);
 	}
 	log_success("parsing lexer into %zu jobs",
-			list_size(&g_current_jobs_list_head));
+			list_size(parser->target_list_head));
 	return (ST_OK);
 }

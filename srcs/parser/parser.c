@@ -40,7 +40,7 @@ static int	s_parser_process(t_sh *sh, t_parser *parser)
 		return (ST_EINVAL);
 	if (parser->mode == F_PARSING_NONE)
 		return (ST_OK);
-	if ((ret = job_build_unstack_lexer(parser->lexer)) != ST_OK)
+	if ((ret = job_build_unstack_lexer(parser)) != ST_OK)
 		return (ret);
 	return (ST_OK);
 }
