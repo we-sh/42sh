@@ -36,7 +36,7 @@ static void	s_notify(t_job *j)
 	}
 }
 
-int	job_wait(t_job *j_orig)
+int			job_wait(t_job *j_orig)
 {
 	t_list	*j_pos;
 	t_job	*j;
@@ -50,14 +50,15 @@ int	job_wait(t_job *j_orig)
 			j = CONTAINER_OF(j_pos, t_job, list_job);
 			if (j->launched == 1 && j->foreground == 1)
 			{
-				LIST_FOREACH(&j->proc_head, p_pos)
+				p_pos = &j->proc_head;
+				while ((p_pos = p_pos->next) && p_pos != &j->proc_head)
 				{
 					s_proc_status(j, CONTAINER_OF(p_pos, t_proc, list_proc));
 				}
 			}
 		}
 		if (job_is_completed(j_orig) == 1 || job_is_stopped(j_orig) == 1)
-			break;
+			break ;
 	}
 	s_notify(j_orig);
 	return (ST_OK);
