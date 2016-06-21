@@ -33,7 +33,7 @@ int	token_parse_none(t_proc *p, t_lexer *lexer, int *i)
 		return (ST_OK);
 	if ((ret = token_parse_utils_get_full_word(&content, lexer, i)) != ST_OK)
 		return (ret);
-	if ((ret = expand(p, content, is_inhibited)) != ST_OK)
+	if ((ret = expand(lexer->sh, p, content, is_inhibited)) != ST_OK)
 	{
 		log_fatal("failed to push `%s` intro p->argv", lexer->tokens[*i].content);
 		return (ret);

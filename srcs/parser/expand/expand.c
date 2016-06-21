@@ -37,12 +37,12 @@ static int	s_recursive(t_proc *p, int i, char *(func)(char *))
 	return (s_recursive(p, i + 1, func));
 }
 
-int			expand(t_proc *p, char *content, int is_inhibited)
+int			expand(t_sh *sh, t_proc *p, char *content, int is_inhibited)
 {
 	log_debug("exanding word: `%s`", content);
 	if (is_inhibited == 0)
 	{
-		if ((content = expand_tilde(p, content)) == NULL)
+		if ((content = expand_tilde(sh, content)) == NULL)
 			return (ST_MALLOC);
 	}
 	if (ft_array_push_back(&p->argv, content) < 0)

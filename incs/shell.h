@@ -136,7 +136,7 @@ t_proc			*proc_find(pid_t pid);
 void			proc_launch(t_sh *sh, t_job *j, t_proc *p);
 int				proc_update_status(t_job *j, pid_t pid, int status);
 t_job			*job_alloc(char const *command);
-t_proc			*proc_alloc(t_job *j, char **envp);
+t_proc			*proc_alloc(t_job *j);
 int				job_wait(t_job *j);
 int				job_kill(t_sh *sh, t_job *j, int status);
 void			job_list_clean(int notified);

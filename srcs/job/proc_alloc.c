@@ -4,7 +4,7 @@
 ** Allocate a new processus with default values.
 */
 
-t_proc	*proc_alloc(t_job *j, char **envp)
+t_proc	*proc_alloc(t_job *j)
 {
 	t_proc	*p;
 
@@ -16,8 +16,7 @@ t_proc	*proc_alloc(t_job *j, char **envp)
 	if ((p->argv = (char **)malloc(sizeof(char *) * 1)) == NULL)
 		return (NULL);
 	p->argv[0] = NULL;
-	if ((p->envp = ft_array_dup(envp)) == NULL)
-		return (NULL);
+	p->envp = NULL;
 	p->pid = 0;
 	p->completed = 0;
 	p->stopped = 0;

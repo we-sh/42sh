@@ -144,9 +144,9 @@ int		token_parse_utils_open_new_fd(t_proc *p, char *f, int *fd, int flag);
 void	token_parse_utils_set_proc_fds(t_proc *p, int fd_l, int fd_r);
 
 // EXPANSIONS
-int		expand(t_proc *p, char *content, int is_inhibited);
+int		expand(t_sh *sh, t_proc *p, char *content, int is_inhibited);
 char	*expand_escape_char(char *buf);
-char	*expand_tilde(t_proc *p, char *buf);
+char	*expand_tilde(t_sh *sh, char *buf);
 
 // INHIBITORS
 int	token_parse_inhib(t_proc *proc, t_lexer *lexer, int *i);
