@@ -53,15 +53,22 @@ int				loop_main(t_sh *sh)
 			ret = get_next_line(sh->fd, &input);
 		if (sh->is_interactive == 1 ? input == NULL : ret == 0)
 			break ;
-		ret = parser(sh, input, 1);
-		ft_strdel(&input);
+		ret = parser(sh, input, F_PARSING_NONE, NULL);
 		if (ret != ST_OK)
 		{
+			ft_strdel(&input);
 			if (ret == ST_EXIT)
 				return (ST_OK);
 		}
-		else if ((ret = s_job_launcher(sh)) != ST_OK)
-			return (ret);
+		else
+		{
+			ret = parser(sh, input, F_PARSING_JOBS, &g_current_jobs_list_head);
+			ft_strdel(&input);
+			if (ret != ST_OK)
+				return (ret);
+			if ((ret = s_job_launcher(sh)) != ST_OK)
+				return (ret);
+		}
 	}
 	return (ST_END_OF_INPUT);
 }

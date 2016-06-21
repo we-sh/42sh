@@ -74,22 +74,22 @@ int		main(int argc, char *argv[], char *envp[])
 	if (option_is_set(&sh.opt_head, ST_OPTION_HELP) == 1)
 		return (s_usage(ST_OK));
 
-	if (option_is_set(&sh.opt_head, ST_OPTION_C) == 1)
-		sh.is_interactive = 0;
-	else
+	//if (option_is_set(&sh.opt_head, ST_OPTION_C) == 1)
+	//	sh.is_interactive = 0;
+	//else
 		sh.is_interactive = isatty(STDIN_FILENO);
 
 	// we need to initialize the shell structure and co even if we are in `-c` mode
 	if ((ret = shell_init(&sh, envp)) != ST_OK)
 		log_fatal("shell initialization failed (%d)", ret);
 
-	if (option_is_set(&sh.opt_head, ST_OPTION_C) == 1)
-		ret = parser(&sh, option_get_value(&sh.opt_head, ST_OPTION_C), 0);
-	else
-	{
+	//if (option_is_set(&sh.opt_head, ST_OPTION_C) == 1)
+	//	ret = parser(&sh, option_get_value(&sh.opt_head, ST_OPTION_C), F_PARSING_NONE); // TODO: it doesn't work any more
+	//else
+	//{
 		if ((ret = loop_main(&sh)) != ST_END_OF_INPUT)
 			log_fatal("get_next_line failed (%d)", ret);
-	}
+	//}
 	if (sh.is_interactive == true)
 	{
 		if (!termcaps_finalize(&sh.termcaps_context))

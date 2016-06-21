@@ -8,9 +8,6 @@
 
 # define TOKEN_BUF_SIZE 256
 
-# define F_NO_PARSING	0x01
-# define F_PARSING		0x02
-
 /*
 ** Typedefs.
 */
@@ -94,6 +91,19 @@ struct				s_lexer
 };
 
 /*
+**
+*/
+
+typedef enum		s_parsing_mode
+{
+	F_PARSING_NONE,
+	F_PARSING_JOBS,
+	F_PARSING_PROCS,
+	F_PARSING_QUOTE,		// to be used within termcaps ? `echo '` + ENTER
+	F_PARSING_DBQUOTE		// to be used within termcaps ? `echo "` + ENTER
+}					t_parsing_mode;
+
+/*
 ** Parser definition.
 */
 
@@ -101,17 +111,9 @@ struct				s_parser
 {
 	char			*in;
 	t_lexer			*lexer;
-	t_list			job_head;
-
+	t_list			*target_list_head;
 	t_token			**token_list;
-
-	/*
-	 * See define at the top of the file
-	 * To enable a flag => mode |= F_NO_PARSING
-	 * To check if the flag is enable => mode & F_NO_PARSING
-	 */
-	// lexer or lexer / parser
-	int				mode;
+	t_parsing_mode	mode;
 };
 
 /*

@@ -82,7 +82,7 @@ typedef struct		e_sh
 t_list		g_current_jobs_list_head;
 typedef struct dirent	*t_dirent;
 
-int				parser(t_sh *sh, char const *input, int mode);
+int				parser(t_sh *sh, char const *input, int mode, t_list *target_list_head);
 
 /*
 ** builtins/

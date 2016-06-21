@@ -18,5 +18,6 @@ int	parser_new(t_parser **parser, const char *in, t_sh *sh, int mode)
 	(*parser)->lexer->sh = sh;
 	// TODO : make dynamic token list
 	(*parser)->mode = mode;
+	(*parser)->target_list_head = NULL;
 	return (ST_OK);
 }
