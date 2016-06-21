@@ -34,8 +34,6 @@ int			termcaps_display_command_line(const t_termcaps_context *context)
 	size_t	buffer_size_max;
 	size_t	buffer_size;
 	char	*buffer;
-	int		nb_write_total;
-	int		nb_write;
 
 	buffer_size_max = context->command_line.size * CHARACTER_SIZE_MAX;
 	buffer = malloc(buffer_size_max);
@@ -62,17 +60,7 @@ int			termcaps_display_command_line(const t_termcaps_context *context)
 	//TEMP ?
 	//log_debug("writing %.*s", (int)buffer_size, buffer);
 
-	nb_write_total = 0;
-	while ((size_t)nb_write_total != buffer_size)
-	{
-		nb_write = write(context->fd, buffer + nb_write_total, buffer_size - nb_write_total);
-		if (nb_write < 0)
-		{
-			log_fatal("write() failed");
-			return (0);
-		}
-		nb_write_total += nb_write;
-	}
+	ASSERT(termcaps_write(context->fd, buffer, buffer_size));
 
 	if (context->state == STATE_SELECTION)
 	{
@@ -81,9 +69,9 @@ int			termcaps_display_command_line(const t_termcaps_context *context)
 
 		caps__cursor_to_offset(offset_min, context->command_line.size);
 
-		write(context->fd, ANSI_COLOR_LIGHT_BLUE, ANSI_COLOR_LIGHT_BLUE_SIZE);
-		write(context->fd, buffer + offset_min, offset_max - offset_min);
-		write(context->fd, ANSI_COLOR_RESET, ANSI_COLOR_RESET_SIZE);
+		termcaps_write(context->fd, ANSI_COLOR_LIGHT_BLUE, ANSI_COLOR_LIGHT_BLUE_SIZE);
+		termcaps_write(context->fd, buffer + offset_min, offset_max - offset_min);
+		termcaps_write(context->fd, ANSI_COLOR_RESET, ANSI_COLOR_RESET_SIZE);
 
 		caps__cursor_to_offset(context->command_line.size, offset_max);
 	}

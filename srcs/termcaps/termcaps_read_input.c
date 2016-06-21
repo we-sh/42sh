@@ -46,13 +46,16 @@ static int		s_termcaps_treat_input(const t_input_type input_type,
 	return (1);
 }
 
+#define REVERSE_I_SEARCH					"reverse-i-search: "
+#define REVERSE_I_SEARCH_SIZE		(sizeof("reverse-i-search: ") - 1)
+
 static int		s_termcaps_read_loop(t_termcaps_context *context)
 {
 	size_t			input_buffer_size;
 	char			input_buffer[INPUT_SIZE_MAX];
 	t_input_type	input_type;
 	size_t			input_size_missing;
-	char			*history_search = NULL;
+	t_buffer		history_search;
 
 	while (context->buffer == NULL)
 	{
@@ -88,8 +91,7 @@ static int		s_termcaps_read_loop(t_termcaps_context *context)
 		}
 		else if (context->state == STATE_SEARCH_HISTORY)
 		{
-			caps__delete_line(ft_strlen(history_search));
-			free(history_search);
+			caps__delete_line(history_search.size);
 		}
 
 		s_termcaps_treat_input(input_type, input_buffer_size, input_buffer,
@@ -104,7 +106,8 @@ static int		s_termcaps_read_loop(t_termcaps_context *context)
 		else if (context->state == STATE_SEARCH_HISTORY)
 		{
 			ASSERT(termcaps_history_search(context, &history_search));
-			(void)write(context->fd, history_search, ft_strlen(history_search));
+			termcaps_write(context->fd, REVERSE_I_SEARCH, REVERSE_I_SEARCH_SIZE);
+			termcaps_write(context->fd, history_search.bytes, history_search.size);
 		}
 
 	}

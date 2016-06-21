@@ -195,6 +195,7 @@ char			*termcaps_read_input(t_termcaps_context *context);
 int				termcaps_string_to_command_line(const size_t input_buffer_size,
 										  const char *input_buffer,
 										  t_list_head *command_line);
-int				termcaps_history_search(t_termcaps_context *context, char **out_match);
+int				termcaps_history_search(t_termcaps_context *context, t_buffer *out_match);
+int				termcaps_write(int fd, char *buffer, size_t buffer_size);
 
 #endif
