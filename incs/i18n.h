@@ -24,6 +24,13 @@ typedef enum			e_language
 	LANG_TOTAL
 }						t_language;
 
+static const char		*g_language_identifiers[] = {
+	[LANG_GET] = NULL,
+	[LANG_EN] = "en",
+	[LANG_FR] = "fr",
+	[LANG_TOTAL] = NULL
+};
+
 static const char		*g_i18n_fr[] = {
 	[ST_OK] = "Français",
 	[ST_SETPGID] = "impossible d'associer le PID à un groupe",
@@ -67,9 +74,12 @@ static const char		*g_i18n_fr[] = {
 	[ST_BLTIN_JOBS_OPT_L] = "affiche plus d'informations sur les jobs",
 	[ST_BLTIN_JOBS_OPT_P] = "affiche seulement les IDs maîtres",
 	[ST_BLTIN_SETENV] = "initialise ou modifie une variable d'environnement",
-	[ST_BLTIN_TERMCAPS] = "",
+	[ST_BLTIN_TERMCAPS] = "affiche l'aide pour les termcaps",
 	[ST_BLTIN_ENV] = "lance une binaire avec un environnement modifié",
 	[ST_BLTIN_ENV_OPT_I] = "génère un environnement totalement vide",
+	[ST_BLTIN_LANGUAGE] = "modifie la langue du Shell",
+	[ST_BLTIN_LANGUAGE_OK] = "langue sélectionnée",
+	[ST_BLTIN_LANGUAGE_ERR_NOTFOUND] = "langue non disponible",
 	[ST_BLTIN_SETENV_ALPHA_NUM] = "le nom n'est pas alpha-numérique",
 	[ST_BLTIN_SETENV_FIRST_CHAR] = "le nom doit commencer par une lettre",
 	[ST_BLTIN_SETENV_TMANY_ARGV] = "setenv: trop d'arguments",
@@ -165,11 +175,14 @@ static const char		*g_i18n_en[] = {
 	[ST_BLTIN_JOBS_OPT_P] = "display only the leaders process IDs",
 	[ST_BLTIN_ENV] = "is used to display environment variables",
 	[ST_BLTIN_ENV_OPT_I] = "is used to send empty environment",
+	[ST_BLTIN_LANGUAGE] = "change the language of the Shell",
+	[ST_BLTIN_LANGUAGE_OK] = "changing language to",
+	[ST_BLTIN_LANGUAGE_ERR_NOTFOUND] = "unavailable language",
 	[ST_BLTIN_SETENV] = "initialize or modify an environment variable",
 	[ST_BLTIN_SETENV_ALPHA_NUM] = "variable name must be alphanumeric only",
 	[ST_BLTIN_SETENV_FIRST_CHAR] = "variable name must start with a letter",
 	[ST_BLTIN_SETENV_TMANY_ARGV] = "setenv: too many arguments",
-	[ST_BLTIN_TERMCAPS] = "TODO small description (i18n.h)",
+	[ST_BLTIN_TERMCAPS] = "display termcaps help",
 	[ST_BLTIN_UNSETENV] = "Is used to delete an environment variable",
 	[ST_OPTION_C] = "read commands from STRING",
 	[ST_OPTION_HELP] = "show the manual of the shell",
