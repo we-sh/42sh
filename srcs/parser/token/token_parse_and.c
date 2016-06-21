@@ -8,6 +8,11 @@ int	token_parse_and(t_proc *p, t_lexer *lexer, int *i)
 	{
 		if (lexer->tokens[(*i) + 1].code == TC_CHEV_RIGHT)
 			return (token_parse_chev_right(p, lexer, i));
+		else if (lexer->tokens[(*i) + 1].code == TC_DBL_CHEV_RIGHT)
+		{
+			display_status(ST_PARSER, "&", "unexpected token near '&'");
+			return (ST_PARSER);
+		}
 		else
 		{
 			p->j->foreground = 0;
