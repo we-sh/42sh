@@ -4,7 +4,7 @@
 ** Unstack the list of tokens to build a list of jobs.
 */
 
-int	job_build_unstack_job_from_lexer(t_parser *parser, t_lexer *lexer, int *i)
+int	parser_build_list_unstack_lexer_job(t_parser *parser, t_lexer *lexer, int *i)
 {
 	int		ret;
 	t_proc	*p;
@@ -20,7 +20,7 @@ int	job_build_unstack_job_from_lexer(t_parser *parser, t_lexer *lexer, int *i)
 			job_free(&j);
 			return (ST_MALLOC);
 		}
-		if ((ret = job_build_unstack_proc_from_lexer(p, lexer, i)) != ST_OK)
+		if ((ret = parser_build_list_unstack_lexer_proc(p, parser, lexer, i)) != ST_OK)
 		{
 			proc_free(&p);
 			job_free(&j);

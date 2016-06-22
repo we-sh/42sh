@@ -1,8 +1,12 @@
 #include "parser.h"
 
-int	token_parse_dbl_chev_left(t_proc *proc, t_lexer *lexer, int *i)
+int	token_parse_dbl_chev_left(void *target, t_parser *parser, t_lexer *lexer, int *i)
 {
 	log_trace("entering parsing token %-12s '<<'", "TT_REDIR");
+
+	// todo: use parsing mode to customize what this function does
+	(void)target;
+	(void)parser;
 
 	char *left = lexer->tokens[*i].content;
 	(*i)++;
@@ -17,6 +21,5 @@ int	token_parse_dbl_chev_left(t_proc *proc, t_lexer *lexer, int *i)
 	(*i)++;
 
 	log_trace("extracting redire %s > %s", left, right);
-	(void)proc;
 	return (0);
 }

@@ -18,6 +18,7 @@ static void		s_lexer_add(t_lexer *lexer, const char *str, t_token token)
 	item.parse = token.parse;
 	lexer->tokens[lexer->size] = item;
 	(lexer->size)++;
+	log_trace("%s %d %d", item.content, item.type, item.code);
 }
 
 static t_token	*s_token_recognizer(t_parser *parser, const char *s, int i)
@@ -43,10 +44,15 @@ static t_token	*s_token_recognizer(t_parser *parser, const char *s, int i)
 	l = 0;
 	while (parser->token_list[l])
 	{
+		log_trace("%s %d", parser->token_list[l]->op, parser->token_list[l]->len);
 		if (ft_strncmp(s, parser->token_list[l]->op, parser->token_list[l]->len) == 0)
+		{
+			log_trace("ok");
 			return ((t_token *)parser->token_list[l]);
+		}
 		l++;
 	}
+	log_trace("no token found");
 	return (NULL);
 }
 
@@ -78,8 +84,10 @@ static void		s_buffer_dump(t_lexer *lexer)
 {
 	t_token t;
 
+		log_error("here");
 	if (g_buf_index > 0)
 	{
+		log_error("here2");
 		g_buf[g_buf_index] = '\0';
 		t.len = g_buf_index;
 		t.type = TT_NAME;
@@ -89,11 +97,6 @@ static void		s_buffer_dump(t_lexer *lexer)
 		ft_bzero(g_buf, TOKEN_BUF_SIZE);
 		g_buf_index = 0;
 	}
-}
-
-int				s_is_escaped(t_token *token)
-{
-	return (token && token->code == TC_BACKSLASH) ? 1 : 0;
 }
 
 /*
@@ -129,19 +132,12 @@ int				tokenize(const char *s, t_parser *parser)
 	int		i;
 	int 	ret;
 
+	log_debug("enter in tokenize function");
 	i = 0;
 	is_inhibited = 0;
 	while (s && s[i])
 	{
 		token_found = s_token_recognizer(parser, s + i, i);
-		// TODO : remove
-		if (s_is_escaped(token_found))
-		{
-			s_lexer_add(parser->lexer, &s[i], *token_found);
-			s_bufferize(&s[++i], 1);
-			i++;
-			continue ;
-		}
 		is_inhibited = s_is_inhibited(token_found);
 		if (token_found != NULL && is_inhibited == 1)
 		{

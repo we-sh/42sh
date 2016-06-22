@@ -1,8 +1,13 @@
 #include "parser.h"
 
-int	token_parse_and(t_proc *p, t_lexer *lexer, int *i)
+int	token_parse_and(void *target, t_parser *parser, t_lexer *lexer, int *i)
 {
 	log_trace("entering parsing token %-12s '&'", "TT_SPECIAL");
+
+	// todo: use parsing mode to customize what this function does
+	t_proc	*p;
+	p = (t_proc *)target;
+	(void)parser;
 
 	if (p->argc == 0)
 	{
@@ -12,7 +17,7 @@ int	token_parse_and(t_proc *p, t_lexer *lexer, int *i)
 	if (*i < lexer->size)
 	{
 		if (lexer->tokens[(*i) + 1].code == TC_CHEV_RIGHT)
-			return (token_parse_chev_right(p, lexer, i));
+			return (token_parse_chev_right(target, parser, lexer, i));
 		else if (lexer->tokens[(*i) + 1].code == TC_DBL_CHEV_RIGHT)
 		{
 			display_status(ST_PARSER_TOKEN, NULL, "&");
@@ -21,7 +26,7 @@ int	token_parse_and(t_proc *p, t_lexer *lexer, int *i)
 		else
 		{
 			p->j->foreground = 0;
-			return (token_parse_none(p, lexer, i));
+			return (token_parse_none(target, parser, lexer, i));
 		}
 	}
 	return (ST_OK);

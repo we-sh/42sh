@@ -17,13 +17,22 @@ static int	s_fill_command(t_proc *p, char *content)
 	return (ST_OK);
 }
 
-int	token_parse_none(t_proc *p, t_lexer *lexer, int *i)
+int	token_parse_none(void *target, t_parser *parser, t_lexer *lexer, int *i)
 {
-	log_trace("entering parsing token %-12s", "TT_NONE");
+	log_trace("entering parsing token %-12s (type: %d) (code: %d)", "TT_NONE", lexer->tokens[*i].type, lexer->tokens[*i].code);
 
 	char	*content;
 	int		ret;
 	int		is_inhibited;
+
+	// todo: use parsing mode to customize what this function does
+	t_proc	*p;
+	p = (t_proc *)target;
+	(void)parser;
+
+	// todo: should be catch in parsing mode F_PARSING_NONE
+	if (lexer->tokens[*i].type == TT_ERROR)
+		return (ST_PARSER);
 
 	is_inhibited = *i == 0 ? 0 : lexer->tokens[*i - 1].type == TT_INHIBITOR;
 	if ((ret = s_fill_command(p, lexer->tokens[*i].content)) != ST_OK)

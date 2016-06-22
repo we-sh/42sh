@@ -46,11 +46,16 @@ static int	s_parse_right_redir(t_proc *p, t_lexer *lexer, int *i, int *fd)
 }
 
 
-int			token_parse_chev_left(t_proc *proc, t_lexer *lexer, int *i)
+int			token_parse_chev_left(void *target, t_parser *parser, t_lexer *lexer, int *i)
 {
 	int	fd_l;
 	int	fd_r;
 	int	ret;
+
+	// todo: use parsing mode to customize what this function does
+	t_proc	*proc;
+	proc = (t_proc *)target;
+	(void)parser;
 
 		fd_l = STDIN_FILENO;
 	if (lexer->tokens[*i].code != TC_CHEV_LEFT)
