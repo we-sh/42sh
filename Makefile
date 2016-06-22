@@ -239,7 +239,7 @@ test		:	re
 
 submodule	:
 	@git submodule init && git submodule update
-	@git submodule foreach git pull origin master
+	@git submodule foreach git pull --rebase origin master
 
 norme		:
 	@/usr/bin/norminette -R CheckTopCommentHeader	\
