@@ -108,7 +108,8 @@ SRCS		=	\
 				signal/signal_to_default.c		\
 				signal/signal_to_ignore.c		\
 				signal/signal_to_pgid.c			\
-				termcaps/termcaps_context.c		\
+				termcaps/termcaps_initialize.c		\
+				termcaps/termcaps_finalize.c		\
 				termcaps/termcaps_display_context.c				\
 				termcaps/termcaps_read_input.c					\
 				termcaps/termcaps_get_character_bytes_count.c	\
@@ -1818,7 +1819,7 @@ $(DIROBJ)signal_to_pgid.o: srcs/signal/signal_to_pgid.c incs/shell.h \
 		@printf "compiling ./srcs/signal/signal_to_pgid.c\n"
 		@$(CC) -c ./srcs/signal/signal_to_pgid.c -o ./.objs/signal_to_pgid.o $(CPPFLAGS) $(CFLAGS) 
 
-$(DIROBJ)termcaps_context.o: srcs/termcaps/termcaps_context.c incs/shell.h \
+$(DIROBJ)termcaps_initialize.o: srcs/termcaps/termcaps_initialize.c incs/shell.h \
   libs/libft/./incs/list.h incs/htabl.h incs/fnv.h incs/longlong.h \
   incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
@@ -1830,14 +1831,29 @@ $(DIROBJ)termcaps_context.o: srcs/termcaps/termcaps_context.c incs/shell.h \
   libs/libft/./incs/get_next_line.h incs/parser.h \
   incs/builtins/builtin.h incs/quoting.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
-		@printf "compiling ./srcs/termcaps/termcaps_context.c\n"
-		@$(CC) -c ./srcs/termcaps/termcaps_context.c -o ./.objs/termcaps_context.o $(CPPFLAGS) $(CFLAGS) 
+		@printf "compiling ./srcs/termcaps/termcaps_initialize.c\n"
+		@$(CC) -c ./srcs/termcaps/termcaps_initialize.c -o ./.objs/termcaps_initialize.o $(CPPFLAGS) $(CFLAGS) 
+
+$(DIROBJ)termcaps_finalize.o: srcs/termcaps/termcaps_finalize.c incs/shell.h \
+  libs/libft/./incs/list.h incs/htabl.h incs/fnv.h incs/longlong.h \
+  incs/termcaps/termcaps.h incs/termcaps/list_head.h \
+  libs/libcaps/./incs/types.h incs/termcaps/log.h \
+  incs/termcaps/termcaps_struct.h incs/termcaps/key.h incs/redirection.h \
+  libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h \
+  libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
+  incs/statuses.h incs/option.h incs/job.h libs/libcaps/./incs/caps.h \
+  libs/libcaps/./incs/logger.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/parser.h \
+  incs/builtins/builtin.h incs/quoting.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/termcaps/termcaps_finalize.c\n"
+		@$(CC) -c ./srcs/termcaps/termcaps_finalize.c -o ./.objs/termcaps_finalize.o $(CPPFLAGS) $(CFLAGS) 
 
 $(DIROBJ)termcaps_display_context.o: srcs/termcaps/termcaps_display_context.c \
   incs/shell.h libs/libft/./incs/list.h incs/htabl.h incs/fnv.h \
   incs/longlong.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
-  incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
+  incs/termcaps/termcaps_struct.h incs/termcaps/key.h incs/redirection.h \
   libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h \
   libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
   incs/statuses.h incs/option.h incs/job.h libs/libcaps/./incs/caps.h \
@@ -1946,7 +1962,7 @@ $(DIROBJ)termcaps_identify_input.o: srcs/termcaps/termcaps_identify_input.c \
   incs/shell.h libs/libft/./incs/list.h incs/htabl.h incs/fnv.h \
   incs/longlong.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
-  incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
+  incs/termcaps/termcaps_struct.h incs/termcaps/key.h incs/redirection.h \
   libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h \
   libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
   incs/statuses.h incs/option.h incs/job.h libs/libcaps/./incs/caps.h \
@@ -2297,7 +2313,7 @@ $(DIROBJ)key__share__command_line_to_history.o: \
   libs/libft/./incs/list.h incs/htabl.h incs/fnv.h incs/longlong.h \
   incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
-  incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
+  incs/termcaps/termcaps_struct.h incs/termcaps/key.h incs/redirection.h \
   libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h \
   libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
   incs/statuses.h incs/option.h incs/job.h libs/libcaps/./incs/caps.h \
@@ -2328,7 +2344,7 @@ $(DIROBJ)key__share__cut_build_copy.o: srcs/termcaps/key__share__cut_build_copy.
   incs/shell.h libs/libft/./incs/list.h incs/htabl.h incs/fnv.h \
   incs/longlong.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
-  incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
+  incs/termcaps/termcaps_struct.h incs/termcaps/key.h incs/redirection.h \
   libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h \
   libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
   incs/statuses.h incs/option.h incs/job.h libs/libcaps/./incs/caps.h \
@@ -2343,7 +2359,7 @@ $(DIROBJ)key__share__selection_get.o: srcs/termcaps/key__share__selection_get.c 
   incs/shell.h libs/libft/./incs/list.h incs/htabl.h incs/fnv.h \
   incs/longlong.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
-  incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
+  incs/termcaps/termcaps_struct.h incs/termcaps/key.h incs/redirection.h \
   libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h \
   libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
   incs/statuses.h incs/option.h incs/job.h libs/libcaps/./incs/caps.h \
@@ -2388,7 +2404,7 @@ $(DIROBJ)key__completion_s.o: srcs/termcaps/key__completion_s.c incs/shell.h \
   libs/libft/./incs/list.h incs/htabl.h incs/fnv.h incs/longlong.h \
   incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
-  incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
+  incs/termcaps/termcaps_struct.h incs/termcaps/key.h incs/redirection.h \
   libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h \
   libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
   incs/statuses.h incs/option.h incs/job.h libs/libcaps/./incs/caps.h \
@@ -2403,7 +2419,7 @@ $(DIROBJ)key__completion_list_dir.o: srcs/termcaps/key__completion_list_dir.c \
   incs/shell.h libs/libft/./incs/list.h incs/htabl.h incs/fnv.h \
   incs/longlong.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
-  incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
+  incs/termcaps/termcaps_struct.h incs/termcaps/key.h incs/redirection.h \
   libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h \
   libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
   incs/statuses.h incs/option.h incs/job.h libs/libcaps/./incs/caps.h \

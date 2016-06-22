@@ -97,7 +97,7 @@
 **
 */
 
-static int			s_termios_init(t_termcaps_context *context)
+static int	s_termios_init(t_termcaps_context *context)
 {
 	if (tcgetattr(0, &context->termios_old) != 0)
 	{
@@ -121,7 +121,7 @@ static int			s_termios_init(t_termcaps_context *context)
 ** Emacs like
 */
 
-static int			s_initialize_key_map_meta(void)
+static int	s_initialize_key_map_meta(void)
 {
 	ASSERT(caps__init_func_by_keycode(CAPS__KEYCODE_CTRL_M, &key__send));
 	ASSERT(caps__init_func_by_keycode(CAPS__KEYCODE_CTRL_Q,
@@ -153,7 +153,7 @@ static int			s_initialize_key_map_meta(void)
 ** Legit
 */
 
-static int			s_initialize_key_map_cursor(void)
+static int	s_initialize_key_map_cursor(void)
 {
 	ASSERT(caps__init_func_by_keycode(CAPS__KEYCODE_CTRL_W, &key__cut));
 	ASSERT(caps__init_func_by_keycode(CAPS__KEYCODE_CTRL_X, &key__copy));
@@ -181,13 +181,36 @@ static int			s_initialize_key_map_cursor(void)
 	return (1);
 }
 
-int		termcaps_initialize(t_sh *sh,
-		const char *prompt,
-		t_termcaps_context *context)
+static int	s_termcaps_init_context(t_termcaps_context *context,
+											t_sh *sh,
+											const char *prompt)
+{
+	context->sh = sh;
+	context->fd = sh->fd;
+	context->prompt.size = ft_strlen(prompt);
+	context->prompt.bytes = ft_strdup(prompt);
+	if (context->prompt.bytes == NULL)
+	{
+		log_error("ft_strdup() failed");
+		return (ST_MALLOC);
+	}
+	list_head__init(&context->history);
+	list_head__init(&context->command_line);
+	list_head__init(&context->copy);
+	context->selection_offset_start = 0;
+	context->selection_offset_end = 0;
+	context->buffer = NULL;
+	context->is_initialized = 1;
+	return (ST_OK);
+}
+
+int			termcaps_initialize(t_sh *sh, const char *prompt,
+								t_termcaps_context *context)
 {
 	if (sh->fd < 0 || prompt == NULL || context == NULL)
 	{
-		log_error("fd %d prompt %p context %p", sh->fd, (void *)prompt, (void *)context);
+		log_error("fd %d prompt %p context %p", sh->fd,
+			(void *)prompt, (void *)context);
 		return (0);
 	}
 	if (!s_initialize_key_map_meta() || !s_initialize_key_map_cursor())
@@ -201,31 +224,7 @@ int		termcaps_initialize(t_sh *sh,
 		log_fatal("s_termios_init() failed");
 		return (0);
 	}
-	context->sh = sh;
-	context->fd = sh->fd;
-	context->prompt.size = ft_strlen(prompt);
-	context->prompt.bytes = ft_strdup(prompt);
-	if (context->prompt.bytes == NULL)
-	{
-		log_error("ft_strdup() failed");
-		return (0);
-	}
-	list_head__init(&context->history);
-	list_head__init(&context->command_line);
-	list_head__init(&context->copy);
-	context->selection_offset_start = 0;
-	context->selection_offset_end = 0;
-	context->buffer = NULL;
-	context->is_initialized = 1;
-	return (1);
-}
-
-int		termcaps_finalize(t_termcaps_context *context)
-{
-	list_head__history_destroy(&context->history);
-	list_head__command_line_destroy(&context->command_line);
-	list_head__command_line_destroy(&context->copy);
-	free(context->prompt.bytes);
-	context->is_initialized = 0;
+	if ((s_termcaps_init_context(context, sh, prompt)) != ST_OK)
+		return (ST_MALLOC);
 	return (1);
 }
