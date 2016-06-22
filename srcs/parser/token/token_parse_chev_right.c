@@ -125,20 +125,17 @@ static int	s_token_parse_chev_right_jobs(t_job *target, t_parser *parser, t_lexe
 	return (ST_OK);
 }
 
-/*
-** change error return with a ST_PARSER_MODE_ERROR
-** TODO : use parsing mode to customize what this function does
-*/
-
 int			token_parse_chev_right(void *target, t_parser *parser, t_lexer *lexer, int *i)
 {
 	int	ret;
+
+	log_trace("entering parsing token %-12s (type: %d) (code: %d)", "TT_REDIR", lexer->tokens[*i].type, lexer->tokens[*i].code);
 
 	if (parser->mode == F_PARSING_PROCS)
 		ret = s_token_parse_chev_right_proc((t_proc *)target, parser, lexer, i);
 	else if (parser->mode == F_PARSING_JOBS)
 		ret = s_token_parse_chev_right_jobs((t_job *)target, parser, lexer, i);
 	else
-		return (ST_EINVAL);
+		return (ST_EINVAL); // TODO @jgigault check it?
 	return (ret);
 }
