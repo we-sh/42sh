@@ -3,14 +3,17 @@
 static int				s_fill_context_buffer(t_termcaps_context *context,
 												char *buffer)
 {
-	t_list_node_cmd	*node_cmd;
-	t_list			*pos;
+	t_list_node_cmd		*node_cmd;
+	t_list				*safe;
+	t_list				*pos;
 
 	context->buffer = ft_strdup(buffer + context->prompt.size);
 	if (!context->buffer)
 		return (0);
-	LIST_FOREACH(&context->command_line.list, pos)
+	safe = context->command_line.list.next;
+	while ((pos = safe) && (pos != &context->command_line.list))
 	{
+		safe = safe->next;
 		node_cmd = CONTAINER_OF(pos, t_list_node_cmd, list);
 		if (node_cmd->character[0] == '\n')
 			node_cmd->character[0] = ' ';

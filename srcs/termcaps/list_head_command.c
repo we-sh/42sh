@@ -49,11 +49,14 @@ t_list_head			*list_head__command_line_dup(t_list_head *dst,
 	t_list_node_cmd	*cur;
 	t_list_node_cmd	*new;
 	size_t			offset;
+	t_list			*safe;
 
 	list_head__init(dst);
 	offset = 0;
-	LIST_FOREACH(&src->list, pos)
+	safe = src->list.next;
+	while ((pos = safe) && pos != &src->list)
 	{
+		safe = safe->next;
 		cur = CONTAINER_OF(pos, t_list_node_cmd, list);
 		new = list_node__command_line_create(cur->character_size,
 			cur->character);
@@ -91,10 +94,13 @@ int					list_head__command_line_to_buffer(const t_list_head *head,
 	size_t			buffer_offset;
 	t_list			*pos;
 	t_list_node_cmd *node_cmd;
+	t_list			*safe;
 
 	buffer_offset = 0;
-	LIST_FOREACH(&head->list, pos)
+	safe = head->list.next;
+	while ((pos = safe) && pos != &head->list)
 	{
+		safe = safe->next;
 		node_cmd = CONTAINER_OF(pos, t_list_node_cmd, list);
 		if (buffer_offset + node_cmd->character_size >= buffer_size_max)
 		{

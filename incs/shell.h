@@ -215,7 +215,10 @@ int				termcaps_string_to_command_line(const size_t input_buffer_size,
 										  t_list_head *command_line);
 int				termcaps_history_search(t_termcaps_context *context, t_buffer *out_match);
 int				termcaps_write(int fd, char *buffer, size_t buffer_size);
-
+int				termcaps_display_context(t_termcaps_context *context, t_buffer *history_search);
+void			termcaps_identify_input(const unsigned int c,
+										t_input_type *input_type,
+										size_t *input_size_missing);
 /*
 ** completion
 */
