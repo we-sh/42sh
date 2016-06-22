@@ -146,6 +146,6 @@ int			token_parse_chev_right(void *target, t_parser *parser, t_lexer *lexer, int
 	else if (parser->mode == F_PARSING_JOBS)
 		ret = s_token_parse_chev_right_jobs((t_job *)target, parser, lexer, i);
 	else
-		return (ST_EINVAL); // TODO @jgigault check it?
+		return (ST_EINVAL); // TODO @jgigault check it
 	return (ret);
 }
