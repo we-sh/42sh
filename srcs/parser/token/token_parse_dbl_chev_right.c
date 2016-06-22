@@ -55,11 +55,19 @@ static int	s_parse_right_redir(t_proc *p, t_lexer *lexer, int *i, int *fd)
 	return (ST_OK);
 }
 
-int			token_parse_dbl_chev_right(t_proc *p, t_lexer *lexer, int *i)
+int			token_parse_dbl_chev_right(void *target, t_parser *parser, t_lexer *lexer, int *i)
 {
 	int	fd_l;
 	int	fd_r;
 	int	ret;
+
+	log_error("todo !!!");
+	return (ST_PARSER);
+
+	// todo: use parsing mode to customize what this function does
+	t_proc	*p;
+	p = (t_proc *)target;
+	(void)parser;
 
 	log_trace("entering parsing token %-12s '>>'", "TT_REDIR");
 	fd_l = STDOUT_FILENO;

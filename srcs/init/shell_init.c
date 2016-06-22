@@ -38,6 +38,7 @@ int		shell_init(t_sh *sh, char *envp[])
 	int		ret;
 
 	INIT_LIST_HEAD(&g_current_jobs_list_head);
+	INIT_LIST_HEAD(&sh->redir_head);
 	sh->last_exit_status = 0;
 	sh->pgid = getpid();
 	/* env */
@@ -80,7 +81,7 @@ int		shell_init(t_sh *sh, char *envp[])
 			log_fatal("caps__initialize() failed");
 			return (ST_TERMCAPS_INIT);
 		}
-		if (!termcaps_initialize(sh->fd, "$> ", &sh->termcaps_context))
+		if (!termcaps_initialize(sh, "$> ", &sh->termcaps_context))
 			return (ST_TERMCAPS_INIT);
 	}
 	return (ST_OK);

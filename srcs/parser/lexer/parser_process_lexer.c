@@ -24,16 +24,18 @@ static void	s_print(const t_lexer *lexer)
 
 int			parser_process_lexer(t_parser *parser, const char *in)
 {
+	int		ret;
+
 	if (!parser || !in)
 		return (ST_EINVAL);
 
 	log_info("lexer receives input : \"%s\"", in);
 	
 	parser->lexer->size = 0;
-	if (tokenize(in, parser) != ST_OK)
+	if ((ret = tokenize(in, parser)) != ST_OK)
 	{
 		log_error("tokenization failed (incomplete inhibition)");
-		return (ST_LEXER);
+		return (ret);
 	}
 	else
 	{

@@ -24,6 +24,9 @@ static int		s_job_launcher(t_sh *sh)
 		{
 			if (s_is_launchable(j_prev))
 			{
+				ret = parser(sh, j->command, F_PARSING_PROCS, &j->proc_head);
+				if (ret != ST_OK)
+					return (ret);
 				if ((ret = job_launch(sh, j)) != ST_OK)
 					return (ret);
 			}
@@ -45,30 +48,27 @@ int				loop_main(t_sh *sh)
 
 	while (1)
 	{
+		ret = ST_OK;
 		job_list_clean(1);
 		input = NULL;
 		if (sh->is_interactive == 1)
 			input = termcaps_read_input(&sh->termcaps_context);
 		else
 			ret = get_next_line(sh->fd, &input);
+		if (ret < 0)
+			break ;
 		if (sh->is_interactive == 1 ? input == NULL : ret == 0)
 			break ;
 		ret = parser(sh, input, F_PARSING_NONE, NULL);
-		if (ret != ST_OK)
-		{
-			ft_strdel(&input);
-			if (ret == ST_EXIT)
-				return (ST_OK);
-		}
-		else
+		if (ret == ST_OK)
 		{
 			ret = parser(sh, input, F_PARSING_JOBS, &g_current_jobs_list_head);
-			ft_strdel(&input);
 			if (ret != ST_OK)
 				return (ret);
 			if ((ret = s_job_launcher(sh)) != ST_OK)
 				return (ret);
 		}
+		ft_strdel(&input);
 	}
 	return (ST_END_OF_INPUT);
 }

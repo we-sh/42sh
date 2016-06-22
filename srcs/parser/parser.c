@@ -38,9 +38,9 @@ static int	s_parser_process(t_sh *sh, t_parser *parser)
 		return (ret);
 	if (!(parser->lexer))
 		return (ST_EINVAL);
-	if (parser->mode == F_PARSING_NONE)
+	if (parser->mode == F_PARSING_TERMCAPS)
 		return (ST_OK);
-	if ((ret = job_build_unstack_lexer(parser)) != ST_OK)
+	if ((ret = parser_build_list_unstack_lexer(parser)) != ST_OK)
 		return (ret);
 	return (ST_OK);
 }
@@ -57,9 +57,10 @@ int			parser(t_sh *sh, const char *in, int mode, t_list *target_list_head)
 
 	if (!sh || !in)
 		return (ST_EINVAL);
-	log_success("parser receives input : \"%s\"", in);
+	log_success("parser receives input : `%s' in mode %d", in, mode);
 	if ((ret = parser_new(&parser, in, sh, mode)) != ST_OK)
 		return (ret);
+	// TODO: TRY TO MOVE IT TO parse_new.c
 	parser->target_list_head = target_list_head;
 	ret = s_parser_process(sh, parser);
 	s_parser_callback(&parser);
