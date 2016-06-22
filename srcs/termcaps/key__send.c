@@ -47,28 +47,8 @@ static int				s_bufferize_input(t_termcaps_context *context)
 	return (1);
 }
 
-static int				s_key__regular(t_termcaps_context *context)
+static int				s_key_regular_display(t_termcaps_context *context)
 {
-//	int					ret;
-	size_t				command_line_cur_size;
-	char				command_line_cur[2048];
-
-	ft_bzero(command_line_cur, 2048);
-	ASSERT(list_head__command_line_to_buffer(&context->command_line,
-											sizeof(command_line_cur) - 1,
-											&command_line_cur_size,
-											command_line_cur));
-	/*if ((ret = parser(context->sh, command_line_cur + 3, F_PARSING_TERMCAPS, NULL)) != ST_OK)
-	{
-		log_warn("should enter quoting context with token: %d", ret);
-		//if ((ret = (quoting_new_context(context))) == ST_MALLOC)
-		//	return (ret);
-	}*/
-	if (g_child == 0)
-	{
-		termcaps_display_command_line(context);
-		caps__print_cap(CAPS__CARRIAGE_RETURN, 0);
-	}
 	if (context->command_line.size > context->prompt.size)
 	{
 		if (!s_bufferize_input(context))
@@ -79,7 +59,8 @@ static int				s_key__regular(t_termcaps_context *context)
 	}
 	else if (g_in_child == 2)
 	{
-		context->buffer = ft_strdup(" ");
+		if ((context->buffer = ft_strdup(" ")) == NULL)
+			return (ST_MALLOC);
 		(void)write(context->fd, "\n", 1);
 	}
 	else
@@ -115,10 +96,26 @@ int g_in_child = 0;
 
 int						key__send(t_termcaps_context *context)
 {
+	int					ret;
+	size_t				command_line_cur_size;
+	char				command_line_cur[2048];
+
 	if (context->state == STATE_REGULAR)
 	{
-		if ((s_key__regular(context)) != ST_OK)
-			return (0);
+		ASSERT(list_head__command_line_to_buffer(&context->command_line,
+												sizeof(command_line_cur) - 1,
+												&command_line_cur_size,
+												command_line_cur));
+		if ((ret = parser(context->sh, command_line_cur + 3,
+							F_PARSING_TERMCAPS, NULL)) != ST_OK)
+			log_warn("should enter quoting context with token: %d", ret);
+		if (g_child == 0)
+		{
+			termcaps_display_command_line(context);
+			caps__print_cap(CAPS__CARRIAGE_RETURN, 0);
+		}
+		if ((s_key_regular_display(context)) != ST_OK)
+			return (ST_MALLOC);
 		g_child = 0;
 	}
 	else if (context->state == STATE_SEARCH_HISTORY)
