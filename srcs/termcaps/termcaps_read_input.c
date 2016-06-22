@@ -68,8 +68,8 @@ static void		s_delete_line(t_termcaps_context *context,
 	else if (context->state == STATE_SEARCH_HISTORY)
 	{
 		caps__delete_line(history_search.size +
-						REVERSE_I_SEARCH_SIZE +
-						sizeof(" '' : ") - 1);
+						context->command_line.size - context->prompt.size +
+						sizeof("reverse-i-search '' : ") - 2);
 	}
 }
 
