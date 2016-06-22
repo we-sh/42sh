@@ -21,7 +21,8 @@ int	parser_build_list_unstack_lexer(t_parser *parser)
 			return (ret);
 		}
 	}
-	log_success("parsing lexer into %zu jobs",
+	if (parser->target_list_head)
+		log_success("parsing lexer into %zu jobs",
 			list_size(parser->target_list_head));
 	return (ST_OK);
 }

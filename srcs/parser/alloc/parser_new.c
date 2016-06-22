@@ -182,6 +182,7 @@ int	parser_new(t_parser **parser, const char *in, t_sh *sh, int mode)
 	// TODO : make dynamic token list
 	(*parser)->mode = mode;
 	(*parser)->target_list_head = NULL;
+	(*parser)->sh = sh;
 	s_build_token_list(*parser);
 
 	// assign the unstack function according to the parsing mode
@@ -191,7 +192,9 @@ int	parser_new(t_parser **parser, const char *in, t_sh *sh, int mode)
 		(*parser)->unstack_func = &parser_build_list_unstack_lexer_job;
 	else if (mode == F_PARSING_PROCS)
 		(*parser)->unstack_func = &parser_build_list_unstack_lexer_proc;
-	else if (mode != F_PARSING_NONE)
+	else if (mode == F_PARSING_NONE)
+		(*parser)->unstack_func = &parser_build_list_unstack_lexer_none;
+	else
 	{
 		log_error("parsing mode not yet supported (%d)", mode);
 		return (ST_EINVAL);

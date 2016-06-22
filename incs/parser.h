@@ -114,6 +114,7 @@ struct				s_parser
 	int				(*unstack_func)(t_parser *, t_lexer *, int *);
 	t_token			*token_list[20];
 	t_parsing_mode	mode;
+	t_sh			*sh;
 };
 
 /*
@@ -132,6 +133,7 @@ int		parser_process_lexer(t_parser *parser, const char *in);
 int		parser_new(t_parser **parser, const char *in, t_sh *sh, int mode);
 
 int		parser_build_list_unstack_lexer(t_parser *parser);
+int		parser_build_list_unstack_lexer_none(t_parser *parser, t_lexer *lexer, int *i);
 int		parser_build_list_unstack_lexer_job(t_parser *parser, t_lexer *lexer, int *i);
 int		parser_build_list_unstack_lexer_proc(t_parser *parser, t_lexer *lexer, int *i);
 

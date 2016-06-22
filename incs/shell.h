@@ -51,6 +51,7 @@ typedef struct s_sh		t_sh;
 # include "list.h"
 # include "htabl.h"
 # include "termcaps.h"
+# include "redirection.h"
 
 struct					s_sh
 {
@@ -63,6 +64,7 @@ struct					s_sh
 	int					last_exit_status;
 	t_list				opt_head;
 	char				*pwd;
+	t_list				redir_head;
 };
 
 
@@ -151,6 +153,8 @@ t_job			*job_background_nth(const t_list *head, const int index);
 int				job_background_update_status(void);
 int				job_display_status(t_job *j, int show_pid);
 void			job_set_stopped(t_job *j, int const stopped);
+t_redir			*redir_alloc(int fd);
+void			redir_list_free(t_list *redir_head);
 
 /*
 ** loop/
