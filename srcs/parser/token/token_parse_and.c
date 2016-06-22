@@ -17,6 +17,8 @@ int	token_parse_and(void *target, t_parser *parser, t_lexer *lexer, int *i)
 	j = (t_job *)target;
 	j->foreground = 0;
 
+	// if (parser->mode == F_PARSING_JOBS)
+	//	token_parse_utils_push_command(P_TOKEN_CONTENT(*i), &((t_job *)target)->command);
 	/*
 	t_proc	*p;
 	p = (t_proc *)target;

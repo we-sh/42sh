@@ -18,33 +18,43 @@ static int	s_parse_right_redir(void *target, t_parser *parser, int *i, int *fd)
 	int		ret;
 	char	*str;
 
-	if (parser->lexer->tokens[*i].code == TC_AND)
+	if (P_TOKEN_CODE(*i) == TC_AND)
 	{
+		log_debug("entering '&'");
+		log_success("%d => `%s'", *i, P_TOKEN_CONTENT(*i));
 		if (parser->mode == F_PARSING_JOBS)
-			token_parse_utils_push_command(parser->lexer->tokens[*i].content, &((t_job *)target)->command);
+			token_parse_utils_push_command(P_TOKEN_CONTENT(*i), &((t_job *)target)->command);
+		log_success("%d => `%s'", *i, P_TOKEN_CONTENT(*i));
 		(*i)++;
-		if (ft_strcmp(parser->lexer->tokens[*i].content, "-") == 0)
+		log_success("%d => `%s'", *i, P_TOKEN_CONTENT(*i));
+		log_success("%d => `%s'", (*i) + 1, P_TOKEN_CONTENT((*i) + 1));
+		if (ft_strcmp(P_TOKEN_CONTENT(*i), "-") == 0)
+		{
+			if (parser->mode == F_PARSING_JOBS)
+				token_parse_utils_push_command(P_TOKEN_CONTENT(*i), &((t_job *)target)->command);
+			log_debug("entering '-' close redir");
 			*fd = -1;
+		}
 		else
 		{
 			if (parser->mode == F_PARSING_PROCS)
-				if ((ret = s_open_new_fd_int(parser->lexer->tokens[*i].content, fd)) != ST_OK)
+				if ((ret = s_open_new_fd_int(P_TOKEN_CONTENT(*i), fd)) != ST_OK)
 				{
-					display_status(ST_PARSER_TOKEN, NULL, parser->lexer->tokens[*i].content);
+					display_status(ST_PARSER_TOKEN, NULL, P_TOKEN_CONTENT(*i));
 					return (ret);
 				}
 		}
 	}
 	else
 	{
-		while (parser->lexer->tokens[*i].type == TT_SEPARATOR
-			|| parser->lexer->tokens[*i].type == TT_INHIBITOR)
+		while (P_TOKEN_TYPE(*i) == TT_SEPARATOR
+				|| P_TOKEN_TYPE(*i) == TT_INHIBITOR)
 		{
 			if (parser->mode == F_PARSING_JOBS)
 			{
 				t_job *j;
 				j = (t_job *)target;
-				token_parse_utils_push_command(parser->lexer->tokens[*i].content, &j->command);
+				token_parse_utils_push_command(P_TOKEN_CONTENT(*i), &j->command);
 			}
 			(*i)++;
 		}
@@ -77,14 +87,14 @@ static int	s_token_parse_chev_right_proc(t_proc *target, t_parser *parser, t_lex
 	int		ret;
 
 	fd_l = STDOUT_FILENO;
-	if (lexer->tokens[*i].code != TC_CHEV_RIGHT)
+	if (TOKEN_CODE(*i) != TC_CHEV_RIGHT)
 	{
-		if (lexer->tokens[*i].code == TC_AND)
+		if (TOKEN_CODE(*i) == TC_AND)
 		{
 			token_parse_utils_set_proc_fds(target, STDOUT_FILENO, STDERR_FILENO);
 			fd_l = STDERR_FILENO;
 		}
-		else if ((s_open_new_fd_int(lexer->tokens[*i].content, &fd_l)) != ST_OK)
+		else if ((s_open_new_fd_int(TOKEN_CONTENT(*i), &fd_l)) != ST_OK)
 		{
 			if ((ret = token_parse_none((void *)target, parser, lexer, i)) != ST_OK)
 				return (ret);
@@ -107,17 +117,17 @@ static int	s_token_parse_chev_right_jobs(t_job *target, t_parser *parser, t_lexe
 	int	ret;
 
 	fd_l = STDOUT_FILENO;
-	if (lexer->tokens[*i].code != TC_CHEV_RIGHT)
+	if (TOKEN_CODE(*i) != TC_CHEV_RIGHT)
 	{
-		if (lexer->tokens[*i].code != TC_AND && s_open_new_fd_int(lexer->tokens[*i].content, &fd_l) != ST_OK)
+		if (TOKEN_CODE(*i) != TC_AND && s_open_new_fd_int(TOKEN_CONTENT(*i), &fd_l) != ST_OK)
 		{
 			if ((ret = token_parse_none((void *)target, parser, lexer, i)) != ST_OK)
 				return (ret);
 		}
-		token_parse_utils_push_command(lexer->tokens[*i].content, &(target->command));
+		token_parse_utils_push_command(TOKEN_CONTENT(*i), &(target->command));
 		(*i)++;
 	}
-	token_parse_utils_push_command(lexer->tokens[*i].content, &(target->command));
+	token_parse_utils_push_command(TOKEN_CONTENT(*i), &(target->command));
 	(*i)++;
 	if ((ret = s_parse_right_redir((void *)target, parser, i, &fd_r)) != ST_OK)
 		return (ret);
