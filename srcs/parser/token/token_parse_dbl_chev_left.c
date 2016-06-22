@@ -4,6 +4,9 @@ int	token_parse_dbl_chev_left(void *target, t_parser *parser, t_lexer *lexer, in
 {
 	log_trace("entering parsing token %-12s '<<'", "TT_REDIR");
 
+	log_error("todo !!!");
+	return (ST_PARSER);
+
 	// todo: use parsing mode to customize what this function does
 	(void)target;
 	(void)parser;

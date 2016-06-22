@@ -32,12 +32,19 @@ int	token_parse_none(void *target, t_parser *parser, t_lexer *lexer, int *i)
 	// todo: use parsing mode to customize what this function does
 	if (parser->mode == F_PARSING_JOBS)
 	{
-		log_trace("filling job command");
 		t_job *j;
 		j = (t_job *)target;
-		content = ft_strjoin(j->command, lexer->tokens[*i].content);
-		free(j->command);
-		j->command = content;
+		token_parse_utils_push_command(lexer->tokens[*i].content, &j->command);
+
+		int inhibitor;
+		inhibitor = (*i > 0 && lexer->tokens[*i].type == TT_INHIBITOR) ? lexer->tokens[*i].code : 0;
+
+		while (inhibitor != 0 && *i + 1 < lexer->size && lexer->tokens[*i + 1].code != inhibitor)
+		{
+			token_parse_utils_push_command(lexer->tokens[*i + 1].content, &j->command);
+			(*i)++;
+		}
+
 	}
 	else if (parser->mode == F_PARSING_PROCS)
 	{

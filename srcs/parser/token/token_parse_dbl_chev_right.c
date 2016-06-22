@@ -61,6 +61,9 @@ int			token_parse_dbl_chev_right(void *target, t_parser *parser, t_lexer *lexer,
 	int	fd_r;
 	int	ret;
 
+	log_error("todo !!!");
+	return (ST_PARSER);
+
 	// todo: use parsing mode to customize what this function does
 	t_proc	*p;
 	p = (t_proc *)target;

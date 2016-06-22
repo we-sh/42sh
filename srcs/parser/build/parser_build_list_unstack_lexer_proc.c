@@ -18,9 +18,13 @@ int		parser_build_list_unstack_lexer_proc(t_parser *parser, t_lexer *lexer, int 
 		if (!(p = proc_alloc(j)))
 			return (ST_MALLOC);
 
-		while (*i < lexer->size && lexer->tokens[*i].type != TT_REDIR)
+		while (*i < lexer->size && !(lexer->tokens[*i].type == TT_REDIR && lexer->tokens[*i].code == TC_PIPE))
 		{
-			ret = lexer->tokens[*i].parse((void *)p, parser, lexer, i);
+			if (lexer->tokens[*i].code == TC_NONE && *i + 1 < lexer->size
+					&& lexer->tokens[*i + 1].type == TT_REDIR)
+				ret = lexer->tokens[(*i) + 1].parse((void *)p, parser, lexer, i);
+			else
+				ret = lexer->tokens[*i].parse((void *)p, parser, lexer, i);
 			if (ret != ST_OK)
 			{
 				proc_free(&p);

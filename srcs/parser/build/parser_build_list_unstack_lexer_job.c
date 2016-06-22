@@ -18,6 +18,7 @@ int	parser_build_list_unstack_lexer_job(t_parser *parser, t_lexer *lexer, int *i
 
 		while (*i < lexer->size && lexer->tokens[*i].type != TT_JOBS)
 		{
+			log_debug("%d %d", lexer->tokens[*i].type, lexer->tokens[*i].code);
 			ret = lexer->tokens[*i].parse((void *)j, parser, lexer, i);
 			if (ret != ST_OK)
 			{

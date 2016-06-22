@@ -4,7 +4,20 @@ int	token_parse_and(void *target, t_parser *parser, t_lexer *lexer, int *i)
 {
 	log_trace("entering parsing token %-12s '&'", "TT_SPECIAL");
 
+	(void)lexer;
+	(void)i;
+
 	// todo: use parsing mode to customize what this function does
+	if (parser->mode != F_PARSING_JOBS)
+	{
+		return (ST_OK);
+	}
+
+	t_job *j;
+	j = (t_job *)target;
+	j->foreground = 0;
+
+	/*
 	t_proc	*p;
 	p = (t_proc *)target;
 	(void)parser;
@@ -28,6 +41,6 @@ int	token_parse_and(void *target, t_parser *parser, t_lexer *lexer, int *i)
 			p->j->foreground = 0;
 			return (token_parse_none(target, parser, lexer, i));
 		}
-	}
+	}*/
 	return (ST_OK);
 }

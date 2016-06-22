@@ -109,7 +109,7 @@ int				s_is_inhibited(t_token *token)
 			return (0);
 		}
 	}
-	return (g_inhibitor_code > 0) ? 1 : 0;
+	return (g_inhibitor_code > 0 ? 1 : 0);
 }
 
 /*
