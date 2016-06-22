@@ -37,7 +37,6 @@ int	key__share__copy_build_copy(t_list_head *command_line, size_t copy_start, si
 void	key__share__cut_build_copy(t_termcaps_context *in_context, size_t selection_start, size_t selection_size);
 
 
-
 /*
 ** -- Keys -- /\*
 */
@@ -127,6 +126,14 @@ int key__ctrl_c(t_termcaps_context *in_context);
 ** Search history
 */
 int key__search_history(t_termcaps_context *in_context);
+
+/*
+** Use for completion
+*/
+size_t		key__completion_list_dir(t_termcaps_context *context,
+									t_list *head,
+									t_buffer *match);
+
 
 /*
 ** Clear

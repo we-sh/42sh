@@ -17,16 +17,17 @@ t_node_dir		*node_dir__create(const char *filename)
 	return (new);
 }
 
-void				list_dir__destroy(t_list *head)
+void			list_dir__destroy(t_list *head)
 {
 	t_list		*pos;
 	t_list		*safe;
 	t_node_dir	*node_dir;
 
 	safe = head->next;
-	while ((pos = head) && (pos != head) && (safe = safe->next))
+	while ((pos = safe) && (pos != head))
 	{
+		safe = safe->next;
 		node_dir = CONTAINER_OF(pos, t_node_dir, list);
-		free(node_dir->filename.bytes);
+		free(node_dir);
 	}
 }

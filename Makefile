@@ -126,12 +126,14 @@ SRCS		=	\
 				signal/signal_to_ignore.c		\
 				signal/signal_to_pgid.c			\
 				termcaps/termcaps_context.c		\
+				termcaps/termcaps_display_context.c				\
 				termcaps/termcaps_read_input.c					\
 				termcaps/termcaps_get_character_bytes_count.c	\
 				termcaps/termcaps_string_to_command_line.c		\
 				termcaps/termcaps_character_to_command_line.c	\
 				termcaps/termcaps_display_command_line.c		\
 				termcaps/termcaps_isunicode.c					\
+				termcaps/termcaps_identify_input.c				\
 				termcaps/list_head.c							\
 				termcaps/list_head_command.c					\
 				termcaps/list_head_history.c					\
@@ -154,10 +156,14 @@ SRCS		=	\
 				termcaps/key__paste.c							\
 				termcaps/key__select.c							\
 				termcaps/key__send.c							\
-				termcaps/key__share.c							\
+				termcaps/key__share__command_line_to_history.c	\
+				termcaps/key__share__copy_build_copy.c			\
+				termcaps/key__share__cut_build_copy.c			\
+				termcaps/key__share__selection_get.c			\
 				termcaps/key__share_words.c						\
 				termcaps/key__completion.c						\
 				termcaps/key__completion_s.c					\
+				termcaps/key__completion_list_dir.c				\
 				termcaps/key__ctrl_c.c							\
 				termcaps/key__clear.c							\
 				termcaps/key__search_history.c					\
@@ -2101,6 +2107,21 @@ $(DIROBJ)termcaps_context.o: srcs/termcaps/termcaps_context.c incs/shell.h \
 		@printf "compiling ./srcs/termcaps/termcaps_context.c\n"
 		@$(CC) -c ./srcs/termcaps/termcaps_context.c -o ./.objs/termcaps_context.o $(CPPFLAGS) $(CFLAGS) 
 
+$(DIROBJ)termcaps_display_context.o: srcs/termcaps/termcaps_display_context.c \
+  incs/shell.h libs/libft/./incs/list.h incs/htabl.h incs/fnv.h \
+  incs/longlong.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
+  libs/libcaps/./incs/types.h incs/termcaps/log.h \
+  incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
+  libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h \
+  libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
+  incs/statuses.h incs/option.h incs/job.h libs/libcaps/./incs/caps.h \
+  libs/libcaps/./incs/logger.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/parser.h \
+  incs/builtins/builtin.h incs/quoting.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/termcaps/termcaps_display_context.c\n"
+		@$(CC) -c ./srcs/termcaps/termcaps_display_context.c -o ./.objs/termcaps_display_context.o $(CPPFLAGS) $(CFLAGS) 
+
 $(DIROBJ)termcaps_read_input.o: srcs/termcaps/termcaps_read_input.c incs/shell.h \
   libs/libft/./incs/list.h incs/htabl.h incs/fnv.h incs/longlong.h \
   incs/termcaps/termcaps.h incs/termcaps/list_head.h \
@@ -2194,6 +2215,21 @@ $(DIROBJ)termcaps_isunicode.o: srcs/termcaps/termcaps_isunicode.c incs/shell.h \
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/termcaps/termcaps_isunicode.c\n"
 		@$(CC) -c ./srcs/termcaps/termcaps_isunicode.c -o ./.objs/termcaps_isunicode.o $(CPPFLAGS) $(CFLAGS) 
+
+$(DIROBJ)termcaps_identify_input.o: srcs/termcaps/termcaps_identify_input.c \
+  incs/shell.h libs/libft/./incs/list.h incs/htabl.h incs/fnv.h \
+  incs/longlong.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
+  libs/libcaps/./incs/types.h incs/termcaps/log.h \
+  incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
+  libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h \
+  libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
+  incs/statuses.h incs/option.h incs/job.h libs/libcaps/./incs/caps.h \
+  libs/libcaps/./incs/logger.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/parser.h \
+  incs/builtins/builtin.h incs/quoting.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/termcaps/termcaps_identify_input.c\n"
+		@$(CC) -c ./srcs/termcaps/termcaps_identify_input.c -o ./.objs/termcaps_identify_input.o $(CPPFLAGS) $(CFLAGS) 
 
 $(DIROBJ)list_head.o: srcs/termcaps/list_head.c incs/shell.h \
   libs/libft/./incs/list.h incs/htabl.h incs/fnv.h incs/longlong.h \
@@ -2530,7 +2566,24 @@ $(DIROBJ)key__send.o: srcs/termcaps/key__send.c incs/shell.h \
 		@printf "compiling ./srcs/termcaps/key__send.c\n"
 		@$(CC) -c ./srcs/termcaps/key__send.c -o ./.objs/key__send.o $(CPPFLAGS) $(CFLAGS) 
 
-$(DIROBJ)key__share.o: srcs/termcaps/key__share.c incs/shell.h \
+$(DIROBJ)key__share__command_line_to_history.o: \
+  srcs/termcaps/key__share__command_line_to_history.c incs/shell.h \
+  libs/libft/./incs/list.h incs/htabl.h incs/fnv.h incs/longlong.h \
+  incs/termcaps/termcaps.h incs/termcaps/list_head.h \
+  libs/libcaps/./incs/types.h incs/termcaps/log.h \
+  incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
+  libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h \
+  libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
+  incs/statuses.h incs/option.h incs/job.h libs/libcaps/./incs/caps.h \
+  libs/libcaps/./incs/logger.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/parser.h \
+  incs/builtins/builtin.h incs/quoting.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/termcaps/key__share__command_line_to_history.c\n"
+		@$(CC) -c ./srcs/termcaps/key__share__command_line_to_history.c -o ./.objs/key__share__command_line_to_history.o $(CPPFLAGS) $(CFLAGS) 
+
+$(DIROBJ)key__share__copy_build_copy.o: \
+  srcs/termcaps/key__share__copy_build_copy.c incs/shell.h \
   libs/libft/./incs/list.h incs/htabl.h incs/fnv.h incs/longlong.h \
   incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
@@ -2542,8 +2595,38 @@ $(DIROBJ)key__share.o: srcs/termcaps/key__share.c incs/shell.h \
   libs/libft/./incs/get_next_line.h incs/parser.h \
   incs/builtins/builtin.h incs/quoting.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
-		@printf "compiling ./srcs/termcaps/key__share.c\n"
-		@$(CC) -c ./srcs/termcaps/key__share.c -o ./.objs/key__share.o $(CPPFLAGS) $(CFLAGS) 
+		@printf "compiling ./srcs/termcaps/key__share__copy_build_copy.c\n"
+		@$(CC) -c ./srcs/termcaps/key__share__copy_build_copy.c -o ./.objs/key__share__copy_build_copy.o $(CPPFLAGS) $(CFLAGS) 
+
+$(DIROBJ)key__share__cut_build_copy.o: srcs/termcaps/key__share__cut_build_copy.c \
+  incs/shell.h libs/libft/./incs/list.h incs/htabl.h incs/fnv.h \
+  incs/longlong.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
+  libs/libcaps/./incs/types.h incs/termcaps/log.h \
+  incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
+  libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h \
+  libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
+  incs/statuses.h incs/option.h incs/job.h libs/libcaps/./incs/caps.h \
+  libs/libcaps/./incs/logger.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/parser.h \
+  incs/builtins/builtin.h incs/quoting.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/termcaps/key__share__cut_build_copy.c\n"
+		@$(CC) -c ./srcs/termcaps/key__share__cut_build_copy.c -o ./.objs/key__share__cut_build_copy.o $(CPPFLAGS) $(CFLAGS) 
+
+$(DIROBJ)key__share__selection_get.o: srcs/termcaps/key__share__selection_get.c \
+  incs/shell.h libs/libft/./incs/list.h incs/htabl.h incs/fnv.h \
+  incs/longlong.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
+  libs/libcaps/./incs/types.h incs/termcaps/log.h \
+  incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
+  libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h \
+  libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
+  incs/statuses.h incs/option.h incs/job.h libs/libcaps/./incs/caps.h \
+  libs/libcaps/./incs/logger.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/parser.h \
+  incs/builtins/builtin.h incs/quoting.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/termcaps/key__share__selection_get.c\n"
+		@$(CC) -c ./srcs/termcaps/key__share__selection_get.c -o ./.objs/key__share__selection_get.o $(CPPFLAGS) $(CFLAGS) 
 
 $(DIROBJ)key__share_words.o: srcs/termcaps/key__share_words.c incs/shell.h \
   libs/libft/./incs/list.h incs/htabl.h incs/fnv.h incs/longlong.h \
@@ -2589,6 +2672,21 @@ $(DIROBJ)key__completion_s.o: srcs/termcaps/key__completion_s.c incs/shell.h \
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/termcaps/key__completion_s.c\n"
 		@$(CC) -c ./srcs/termcaps/key__completion_s.c -o ./.objs/key__completion_s.o $(CPPFLAGS) $(CFLAGS) 
+
+$(DIROBJ)key__completion_list_dir.o: srcs/termcaps/key__completion_list_dir.c \
+  incs/shell.h libs/libft/./incs/list.h incs/htabl.h incs/fnv.h \
+  incs/longlong.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
+  libs/libcaps/./incs/types.h incs/termcaps/log.h \
+  incs/termcaps/termcaps_struct.h incs/termcaps/key.h \
+  libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h \
+  libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
+  incs/statuses.h incs/option.h incs/job.h libs/libcaps/./incs/caps.h \
+  libs/libcaps/./incs/logger.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/parser.h \
+  incs/builtins/builtin.h incs/quoting.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/termcaps/key__completion_list_dir.c\n"
+		@$(CC) -c ./srcs/termcaps/key__completion_list_dir.c -o ./.objs/key__completion_list_dir.o $(CPPFLAGS) $(CFLAGS) 
 
 $(DIROBJ)key__ctrl_c.o: srcs/termcaps/key__ctrl_c.c incs/shell.h \
   libs/libft/./incs/list.h incs/htabl.h incs/fnv.h incs/longlong.h \

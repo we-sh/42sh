@@ -21,4 +21,10 @@ typedef enum {
 	MINISHELL__INPUT_TYPE_CAPS
 } t_input_type;
 
+typedef enum e_state_word{
+		STATE_UNDEFINED,
+		STATE_ALNUM,
+		STATE_ISSPACE
+}			t_state_word;
+
 #endif /* TERMCAPS_H */
