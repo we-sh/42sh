@@ -10,7 +10,7 @@ static int	s_open_heredoc(t_sh *sh, int *fd, const char *trigger)
 
 	if (pipe(pipefd) != 0)
 		return (ST_PIPE);
-	if (termcaps_initialize(sh, "> ", &termcaps_context) != ST_OK)
+	if (termcaps_initialize(sh, "heredoc> ", &termcaps_context) != 1)
 		return (ST_TERMCAPS_INIT);
 	while (1)
 	{
@@ -33,6 +33,28 @@ static int	s_open_heredoc(t_sh *sh, int *fd, const char *trigger)
 int	token_parse_dbl_chev_left(void *target, t_parser *parser, t_lexer *lexer, int *i)
 {
 	log_trace("entering parsing token %-12s '<<'", "TT_REDIR");
+
+	if (parser->mode == F_PARSING_JOBS)
+	{
+		if (TOKEN_CODE(*i) != TC_DBL_CHEV_LEFT)
+		{
+			token_parse_utils_push_command(TOKEN_CONTENT(*i), &((t_job *)target)->command);
+			(*i)++;
+		}
+		token_parse_utils_push_command(TOKEN_CONTENT(*i), &((t_job *)target)->command);
+		(*i)++;
+
+		int ret;
+		char *content;
+		if ((ret = token_parse_utils_get_full_word(&content, lexer, i)) != ST_OK)
+		{
+			log_error("ret: %d", ret);
+			return (ret);
+		}
+		token_parse_utils_push_command(content, &((t_job *)target)->command);
+		free(content);
+		return (ST_OK);
+	}
 
 	if (parser->mode == F_PARSING_NONE)
 	{
@@ -64,9 +86,35 @@ int	token_parse_dbl_chev_left(void *target, t_parser *parser, t_lexer *lexer, in
 		log_warn("push redir");
 
 		free(content);
+		(*i)++;
 		return (ST_OK);
 	}
 
+	if (parser->mode == F_PARSING_PROCS)
+	{
+
+		if (TOKEN_CODE(*i) != TC_DBL_CHEV_LEFT)
+		{
+			// before <<
+			(*i)++;
+		}
+
+		// <<
+		(*i)++;
+
+		// after <<
+		(*i)++;
+
+		t_proc *p;
+		p = (t_proc *)target;
+		t_redir *r;
+		r = CONTAINER_OF(parser->sh->redir_head.next, t_redir, list_redir);
+		p->stdin = r->fd;
+
+		log_warn("here fd from pipe redir: %d", p->stdin);
+
+
+	}
 
 	log_error("todo !!!");
 	return (ST_OK);

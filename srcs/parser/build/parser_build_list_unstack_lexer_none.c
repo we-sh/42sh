@@ -18,8 +18,9 @@ int	parser_build_list_unstack_lexer_none(t_parser *parser, t_lexer *lexer, int *
 		ret = ST_OK;
 
 		(void)parser;
-		while (*i < lexer->size && lexer->tokens[*i].type != TT_REDIR
-			&& lexer->tokens[*i].code != TC_DBL_CHEV_LEFT)
+		while (*i < lexer->size
+			&& !(lexer->tokens[*i].type == TT_REDIR && lexer->tokens[*i].code == TC_DBL_CHEV_LEFT)
+			&& !((*i + 1 < lexer->size && lexer->tokens[*i + 1].type == TT_REDIR && lexer->tokens[*i].code == TC_DBL_CHEV_LEFT)))
 		{
 			log_debug("%d %d", lexer->tokens[*i].type, lexer->tokens[*i].code);
 			//ret = lexer->tokens[*i].parse(NULL, parser, lexer, i);
@@ -30,6 +31,7 @@ int	parser_build_list_unstack_lexer_none(t_parser *parser, t_lexer *lexer, int *
 
 		if (*i < lexer->size)
 		{
+			log_debug("%d %d", lexer->tokens[*i].type, lexer->tokens[*i].code);
 			ret = lexer->tokens[*i].parse(NULL, parser, lexer, i);
 			if (ret != ST_OK)
 				return (ret);

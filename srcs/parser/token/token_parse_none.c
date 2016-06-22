@@ -31,7 +31,8 @@ int	token_parse_none(void *target, t_parser *parser, t_lexer *lexer, int *i)
 
 	if ((*i) + 1 < lexer->size && TOKEN_TYPE((*i) + 1) == TT_REDIR)
 	{
-		return (token_parse_chev_right(target, parser, lexer, i));
+		return (lexer->tokens[*i + 1].parse(target, parser, lexer, i));
+		//return (token_parse_chev_right(target, parser, lexer, i));
 	}
 	// todo: use parsing mode to customize what this function does
 	if (parser->mode == F_PARSING_JOBS)
