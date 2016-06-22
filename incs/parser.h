@@ -8,6 +8,14 @@
 
 # define TOKEN_BUF_SIZE 256
 
+# define TOKEN_CODE(i)		({lexer->tokens[i].code;})
+# define TOKEN_CONTENT(i)	({lexer->tokens[i].content;})
+# define TOKEN_TYPE(i)		({lexer->tokens[i].type;})
+
+# define P_TOKEN_CODE(i)	({parser->lexer->tokens[i].code;})
+# define P_TOKEN_CONTENT(i)	({parser->lexer->tokens[i].content;})
+# define P_TOKEN_TYPE(i)	({parser->lexer->tokens[i].type;})
+
 /*
 ** Typedefs.
 */
