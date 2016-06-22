@@ -16,7 +16,8 @@ int						termcaps_history_search(t_termcaps_context *context,
 		ASSERT(list_head__command_line_to_buffer(&context->command_line,
 												sizeof(command_line_cur) - 1,
 												&command_line_cur_size,
-												command_line_cur));
+												 command_line_cur));
+		command_line_cur[command_line_cur_size] = 0;
 		history_offset = context->history.offset;
 		pos = list_nth(&context->history.list, history_offset + 1);
 		while ((pos = pos->prev) && pos != &context->history.list)
