@@ -139,6 +139,9 @@ static int	s_build_token_list_for_jobs(t_parser *parser)
 	int		i;
 
 	i = 0;
+	// todo: customize tokens
+	// ls >&-    results in tokens 'ls >' '&' '-' NOT CORRECT
+	// add the token '>' but make it do do nothing
 	parser->token_list[i++] = &g_token_redir_dbl_chev_left;
 	parser->token_list[i++] = &g_token_jobs_dbl_or;
 	parser->token_list[i++] = &g_token_jobs_dbl_and;
@@ -225,7 +228,7 @@ int	parser_new(t_parser **parser, const char *in, t_sh *sh, int mode)
 	else if (mode == F_PARSING_PROCS)
 	{
 		s_build_token_list_for_procs(*parser);
-		(*parser)->unstack_func = &parser_build_list_unstack_lexer_job;
+		(*parser)->unstack_func = &parser_build_list_unstack_lexer_proc;
 	}
 	else if (mode == F_PARSING_NONE)
 	{

@@ -24,6 +24,9 @@ static int		s_job_launcher(t_sh *sh)
 		{
 			if (s_is_launchable(j_prev))
 			{
+				// parsing procs
+				ret = parser(sh, j->command, F_PARSING_PROCS, &j->proc_head);
+
 				if ((ret = job_launch(sh, j)) != ST_OK)
 					return (ret);
 			}

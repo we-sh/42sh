@@ -7,27 +7,54 @@
 int	parser_build_list_unstack_lexer_job(t_parser *parser, t_lexer *lexer, int *i)
 {
 	int		ret;
-	t_proc	*p;
 	t_job	*j;
 
-	if (!(j = job_alloc("")))
-		return (ST_MALLOC);
 	while (*i < lexer->size)
 	{
 		log_info("remaining tokens : %d / %d", lexer->size - *i, lexer->size);
-		if ((p = proc_alloc(j)) == NULL)
+
+		if (!(j = job_alloc("")))
+			return (ST_MALLOC);
+
+		while (*i < lexer->size && lexer->tokens[*i].type != TT_JOBS)
+		{
+			ret = lexer->tokens[*i].parse((void *)j, parser, lexer, i);
+			if (ret != ST_OK)
+			{
+				job_free(&j);
+				return (ret);
+			}
+			(*i)++;
+		}
+
+		if (*i < lexer->size)
+		{
+			ret = lexer->tokens[*i].parse((void *)j, parser, lexer, i);
+			if (ret != ST_OK)
+			{
+				job_free(&j);
+				return (ret);
+			}
+		}
+
+		list_push_back(&j->list_job, parser->target_list_head);
+
+		(*i)++;
+
+		/*if ((p = proc_alloc(j)) == NULL)
 		{
 			job_free(&j);
 			return (ST_MALLOC);
-		}
-		if ((ret = parser_build_list_unstack_lexer_proc(p, parser, lexer, i)) != ST_OK)
+		}*/
+		/*if ((ret = parser_build_list_unstack_lexer_proc(p, parser, lexer, i)) != ST_OK)
 		{
 			proc_free(&p);
 			job_free(&j);
 			return (ret);
-		}
-		list_push_back(&p->list_proc, &j->proc_head);
-		if (lexer->tokens[*i].type == TT_JOBS)
+		}*/
+
+		//list_push_back(&p->list_proc, &j->proc_head);
+		/*if (lexer->tokens[*i].type == TT_JOBS)
 		{
 			log_info("end of job encountered     ('%s')",
 					lexer->tokens[*i].content);
@@ -43,7 +70,7 @@ int	parser_build_list_unstack_lexer_job(t_parser *parser, t_lexer *lexer, int *i
 		else
 			log_info("remaining tokens : %d / %d", lexer->size - *i,
 					lexer->size);
+					*/
 	}
-	list_push_back(&j->list_job, parser->target_list_head);
 	return (ST_OK);
 }

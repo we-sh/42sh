@@ -25,27 +25,40 @@ int	token_parse_none(void *target, t_parser *parser, t_lexer *lexer, int *i)
 	int		ret;
 	int		is_inhibited;
 
-	// todo: use parsing mode to customize what this function does
-	t_proc	*p;
-	p = (t_proc *)target;
-	(void)parser;
-
 	// todo: should be catch in parsing mode F_PARSING_NONE
 	if (lexer->tokens[*i].type == TT_ERROR)
 		return (ST_PARSER);
 
-	is_inhibited = *i == 0 ? 0 : lexer->tokens[*i - 1].type == TT_INHIBITOR;
-	if ((ret = s_fill_command(p, lexer->tokens[*i].content)) != ST_OK)
-		return (ret);
-	if (!(lexer->tokens[*i].type == TT_NAME
-		&& lexer->tokens[*i].code == TC_NONE))
-		return (ST_OK);
-	if ((ret = token_parse_utils_get_full_word(&content, lexer, i)) != ST_OK)
-		return (ret);
-	if ((ret = expand(lexer->sh, p, content, is_inhibited)) != ST_OK)
+	// todo: use parsing mode to customize what this function does
+	if (parser->mode == F_PARSING_JOBS)
 	{
-		log_fatal("failed to push `%s` intro p->argv", lexer->tokens[*i].content);
-		return (ret);
+		log_trace("filling job command");
+		t_job *j;
+		j = (t_job *)target;
+		content = ft_strjoin(j->command, lexer->tokens[*i].content);
+		free(j->command);
+		j->command = content;
+	}
+	else if (parser->mode == F_PARSING_PROCS)
+	{
+
+		t_proc	*p;
+		p = (t_proc *)target;
+		(void)parser;
+
+		is_inhibited = *i == 0 ? 0 : lexer->tokens[*i - 1].type == TT_INHIBITOR;
+		if ((ret = s_fill_command(p, lexer->tokens[*i].content)) != ST_OK)
+			return (ret);
+		if (!(lexer->tokens[*i].type == TT_NAME
+			&& lexer->tokens[*i].code == TC_NONE))
+			return (ST_OK);
+		if ((ret = token_parse_utils_get_full_word(&content, lexer, i)) != ST_OK)
+			return (ret);
+		if ((ret = expand(lexer->sh, p, content, is_inhibited)) != ST_OK)
+		{
+			log_fatal("failed to push `%s` intro p->argv", lexer->tokens[*i].content);
+			return (ret);
+		}
 	}
 	return (0);
 }
