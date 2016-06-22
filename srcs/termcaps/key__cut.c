@@ -1,13 +1,13 @@
 #include "shell.h"
 
 static int		s_key_cut_selection(t_termcaps_context *in_context,
-									size_t selection_start,
+									size_t *selection_start,
 									size_t selection_size)
 {
 	ft_putstr(SELECTBLANC);
 	in_context->state = STATE_REGULAR;
 	if (!key__share__selection_get(in_context,
-									&selection_start,
+									selection_start,
 									&selection_size))
 	{
 		log_error("key__share__selection_get() failed %s\r", "");
@@ -34,7 +34,7 @@ int				key__cut(t_termcaps_context *in_context)
 	else if (in_context->state == STATE_SELECTION)
 	{
 		ASSERT(s_key_cut_selection(in_context,
-								selection_start, selection_size));
+								&selection_start, selection_size));
 	}
 	else
 		return (1);
