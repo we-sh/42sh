@@ -47,9 +47,20 @@ static int				s_bufferize_input(t_termcaps_context *context)
 static int				s_key__regular(t_termcaps_context *context)
 {
 	int					ret;
+	size_t				command_line_cur_size;
+	char				command_line_cur[2048];
 
-	if ((ret = (quoting_new_context(context))) == ST_MALLOC)
-		return (ret);
+	ASSERT(list_head__command_line_to_buffer(&context->command_line,
+											sizeof(command_line_cur) - 1,
+											&command_line_cur_size,
+											command_line_cur));
+
+	if ((ret = parser(context->sh, command_line_cur + 3, F_PARSING_TERMCAPS, NULL)) != ST_OK)
+	{
+		log_warn("should enter quoting context with token: %d", ret);
+		//if ((ret = (quoting_new_context(context))) == ST_MALLOC)
+		//	return (ret);
+	}
 	if (g_child == 0)
 	{
 		termcaps_display_command_line(context);

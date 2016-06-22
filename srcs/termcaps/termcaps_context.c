@@ -181,13 +181,13 @@ static int			s_initialize_key_map_cursor(void)
 	return (1);
 }
 
-int		termcaps_initialize(const int fd,
+int		termcaps_initialize(t_sh *sh,
 		const char *prompt,
 		t_termcaps_context *context)
 {
-	if (fd < 0 || prompt == NULL || context == NULL)
+	if (sh->fd < 0 || prompt == NULL || context == NULL)
 	{
-		log_error("fd %d prompt %p context %p", fd, (void *)prompt, (void *)context);
+		log_error("fd %d prompt %p context %p", sh->fd, (void *)prompt, (void *)context);
 		return (0);
 	}
 	if (!s_initialize_key_map_meta() || !s_initialize_key_map_cursor())
@@ -201,7 +201,8 @@ int		termcaps_initialize(const int fd,
 		log_fatal("s_termios_init() failed");
 		return (0);
 	}
-	context->fd = fd;
+	context->sh = sh;
+	context->fd = sh->fd;
 	context->prompt.size = ft_strlen(prompt);
 	context->prompt.bytes = ft_strdup(prompt);
 	if (context->prompt.bytes == NULL)

@@ -44,7 +44,10 @@ static t_token	*s_token_recognizer(t_parser *parser, const char *s, int i)
 	while (parser->token_list[l])
 	{
 		if (ft_strncmp(s, parser->token_list[l]->op, parser->token_list[l]->len) == 0)
+		{
+			log_debug("token found: `%s'", parser->token_list[l]->op);
 			return ((t_token *)parser->token_list[l]);
+		}
 		l++;
 	}
 	return (NULL);
@@ -97,7 +100,7 @@ static void		s_buffer_dump(t_lexer *lexer)
 
 static int		g_inhibitor_code;
 
-int				s_is_inhibited(t_token *token)
+int				s_inhibited_code(t_token *token)
 {
 	if (token != NULL && token->type == TT_INHIBITOR)
 	{
@@ -109,7 +112,7 @@ int				s_is_inhibited(t_token *token)
 			return (0);
 		}
 	}
-	return (g_inhibitor_code > 0 ? 1 : 0);
+	return (g_inhibitor_code);
 }
 
 /*
@@ -126,11 +129,12 @@ int				tokenize(const char *s, t_parser *parser)
 
 	i = 0;
 	is_inhibited = 0;
+	g_inhibitor_code = 0;
 	while (s && s[i])
 	{
 		token_found = s_token_recognizer(parser, s + i, i);
-		is_inhibited = s_is_inhibited(token_found);
-		if (token_found != NULL && is_inhibited == 1)
+		is_inhibited = s_inhibited_code(token_found);
+		if (token_found != NULL && is_inhibited != 0)
 		{
 			s_bufferize(token_found->op, token_found->len);
 			i += token_found->len;
@@ -145,7 +149,15 @@ int				tokenize(const char *s, t_parser *parser)
 			s_bufferize(&s[i++], 1);
 	}
 	s_buffer_dump(parser->lexer);
-	ret = (s_is_inhibited(NULL)) ? ST_LEXER : ST_OK;
-	g_inhibitor_code = 0;
+	ret = s_inhibited_code(NULL);
+	if (parser->mode == F_PARSING_TERMCAPS)
+	{
+		// todo: other cases -> TC_PIPE, TC_DBL_OR, TC_DBL_AND
+		if (ret == 0 && token_found)
+			ret = token_found->code == TC_BACKSLASH ? TC_BACKSLASH : 0;
+	}
+	else
+		ret = ret != 0 ? ST_LEXER : ST_OK;
+	log_debug("ret: %d", ret);
 	return (ret);
 }

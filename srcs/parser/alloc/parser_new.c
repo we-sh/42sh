@@ -134,6 +134,14 @@ static t_token g_token_separator_newline = {
 	token_parse_none
 };
 
+static t_token g_token_none_backslash = {
+	"\\",
+	1,
+	TT_NONE,
+	TC_BACKSLASH,
+	token_parse_none
+};
+
 static int	s_build_token_list(t_parser *parser)
 {
 	int		i;
@@ -152,6 +160,7 @@ static int	s_build_token_list(t_parser *parser)
 	parser->token_list[i++] = &g_token_special_and;
 	parser->token_list[i++] = &g_token_inhibitor_dbl_quote;
 	parser->token_list[i++] = &g_token_inhibitor_quote;
+	parser->token_list[i++] = &g_token_none_backslash;
 	parser->token_list[i++] = &g_token_separator_space;
 	parser->token_list[i++] = &g_token_separator_tab;
 	parser->token_list[i++] = &g_token_separator_newline;
@@ -176,7 +185,9 @@ int	parser_new(t_parser **parser, const char *in, t_sh *sh, int mode)
 	s_build_token_list(*parser);
 
 	// assign the unstack function according to the parsing mode
-	if (mode == F_PARSING_JOBS)
+	if (mode == F_PARSING_TERMCAPS)
+		(*parser)->unstack_func = NULL;
+	else if (mode == F_PARSING_JOBS)
 		(*parser)->unstack_func = &parser_build_list_unstack_lexer_job;
 	else if (mode == F_PARSING_PROCS)
 		(*parser)->unstack_func = &parser_build_list_unstack_lexer_proc;

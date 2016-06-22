@@ -1,10 +1,11 @@
 #include "shell.h"
 
-static int				s_d_init(t_termcaps_context *c, t_termcaps_context *ch)
+static int				s_d_init(t_termcaps_context *parent,
+							t_termcaps_context *child)
 {
-	termcaps_display_command_line(c);
+	termcaps_display_command_line(parent);
 	caps__print_cap(CAPS__DOWN, 0);
-	termcaps_initialize(c->fd, "> ", ch);
+	termcaps_initialize(parent->sh, "> ", child);
 	g_in_child = 1;
 	return (ST_OK);
 }

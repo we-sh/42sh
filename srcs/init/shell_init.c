@@ -80,7 +80,7 @@ int		shell_init(t_sh *sh, char *envp[])
 			log_fatal("caps__initialize() failed");
 			return (ST_TERMCAPS_INIT);
 		}
-		if (!termcaps_initialize(sh->fd, "$> ", &sh->termcaps_context))
+		if (!termcaps_initialize(sh, "$> ", &sh->termcaps_context))
 			return (ST_TERMCAPS_INIT);
 	}
 	return (ST_OK);

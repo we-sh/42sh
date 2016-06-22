@@ -97,10 +97,9 @@ struct				s_lexer
 typedef enum		s_parsing_mode
 {
 	F_PARSING_NONE,
+	F_PARSING_TERMCAPS,
 	F_PARSING_JOBS,
-	F_PARSING_PROCS,
-	F_PARSING_QUOTE,		// to be used within termcaps ? `echo '` + ENTER
-	F_PARSING_DBQUOTE		// to be used within termcaps ? `echo "` + ENTER
+	F_PARSING_PROCS
 }					t_parsing_mode;
 
 /*

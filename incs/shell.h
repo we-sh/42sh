@@ -46,11 +46,13 @@
 ** Shell structure
 */
 
+typedef struct s_sh		t_sh;
+
 # include "list.h"
 # include "htabl.h"
 # include "termcaps.h"
 
-typedef struct		e_sh
+struct					s_sh
 {
 	pid_t				pgid;
 	bool				is_interactive;
@@ -61,7 +63,8 @@ typedef struct		e_sh
 	int					last_exit_status;
 	t_list				opt_head;
 	char				*pwd;
-}					t_sh;
+};
+
 
 # include "libft.h"
 # include "libftprintf.h"
@@ -192,7 +195,7 @@ int				signal_to_pgid(int pgid);
 /*
 ** termcaps/
 */
-int				termcaps_initialize(const int fd, const char *prompt, t_termcaps_context *context);
+int				termcaps_initialize(t_sh *sh, const char *prompt, t_termcaps_context *context);
 int				termcaps_finalize(t_termcaps_context *context);
 int				termcaps_character_to_command_line(const size_t character_bytes_count,
 											 const char *character_bytes,
