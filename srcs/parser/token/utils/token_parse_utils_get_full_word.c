@@ -5,21 +5,23 @@ int			token_parse_utils_get_full_word(char **content, t_lexer *lexer,
 {
 	char	*tmp;
 
-	if (lexer->tokens[*i].type != TT_NAME)
+	while (*i < lexer->size && TOKEN_TYPE(*i) == TT_INHIBITOR)
+		(*i)++;
+	if (*i >= lexer->size || TOKEN_TYPE(*i) != TT_NAME)
 	{
-		if ((*i) - 1 >= 0)
-			display_status(ST_PARSER_TOKEN, NULL, lexer->tokens[(*i)].content);
+		if (*i < lexer->size)
+			display_status(ST_PARSER_TOKEN, NULL, TOKEN_CONTENT(*i));
 		return (ST_PARSER);
 	}
-	if ((*content = ft_strdup(lexer->tokens[*i].content)) == NULL)
+	if ((*content = ft_strdup(TOKEN_CONTENT(*i))) == NULL)
 		return (ST_MALLOC);
-	while (lexer->tokens[*i + 1].type == TT_INHIBITOR
-		|| lexer->tokens[*i + 1].type == TT_NAME)
+	(*i)++;
+	while (*i < lexer->size && (TOKEN_TYPE(*i) == TT_INHIBITOR
+									|| TOKEN_TYPE(*i) == TT_NAME))
 	{
-		if (lexer->tokens[*i + 1].type == TT_NAME
-			&& lexer->tokens[*i + 1].code == TC_NONE)
+		if (TOKEN_TYPE(*i) == TT_NAME)
 		{
-			tmp = ft_strjoin(*content, lexer->tokens[*i + 1].content);
+			tmp = ft_strjoin(*content, TOKEN_CONTENT(*i));
 			free(*content);
 			*content = tmp;
 		}
