@@ -54,6 +54,14 @@ static t_token g_token_redir_chev_right_2 = {
 	token_parse_chev_right
 };
 
+static t_token g_token_redir_andgreat = {
+	"&>",
+	2,
+	TT_REDIR,
+	TC_ANDGREAT,
+	token_parse_andgreat
+};
+
 static t_token g_token_jobs_semi = {
 	";",
 	1,
@@ -153,6 +161,7 @@ static int	s_build_token_list(t_parser *parser)
 	parser->token_list[i++] = &g_token_jobs_dbl_and;
 	parser->token_list[i++] = &g_token_error_dbl_semi;
 	parser->token_list[i++] = &g_token_redir_chev_right_2;
+	parser->token_list[i++] = &g_token_redir_andgreat;
 	parser->token_list[i++] = &g_token_jobs_semi;
 	parser->token_list[i++] = &g_token_redir_chev_right;
 	parser->token_list[i++] = &g_token_redir_chev_left;

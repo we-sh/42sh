@@ -56,6 +56,7 @@ typedef enum		e_token_code
 	TC_CHEV_LEFT,
 	TC_PIPE,
 	TC_AND,
+	TC_ANDGREAT,
 	TC_BACKSLASH,
 	TC_DBL_QUOTE,
 	TC_QUOTE,
@@ -176,6 +177,7 @@ int		token_parse_chev_left(void *target, t_parser *parser, t_lexer *lexer, int *
 int		token_parse_chev_right(void *target, t_parser *parser, t_lexer *lexer, int *i);
 int		token_parse_dbl_chev_left(void *target, t_parser *parser, t_lexer *lexer, int *i);
 int		token_parse_dgreat(void *target, t_parser *parser, t_lexer *lexer, int *i);
+int		token_parse_andgreat(void *target, t_parser *parser, t_lexer *lexer, int *i);
 
 // Function pointers utils.
 int		token_parse_utils_get_full_word(char **content, t_lexer *lexer, int *i);
