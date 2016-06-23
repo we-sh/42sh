@@ -147,11 +147,18 @@ static int	s_token_parse_chev_right_jobs(t_job *target, t_parser *parser, t_lexe
 
 int			token_parse_great(void *target, t_parser *parser, t_lexer *lexer, int *i)
 {
+	log_trace("entering parsing token %-12s (type: %d) (code: %d) `%s'", "TT_REDIR", TOKEN_TYPE(*i), TOKEN_CODE(*i), TOKEN_CONTENT(*i));
+
 	int	ret;
 
+	// setup
 	lexer->tokens[*i].is_redir_checked = 1;
+	ret = ST_OK;
 
-	log_trace("entering parsing token %-12s (type: %d) (code: %d) `%s'", "TT_REDIR", TOKEN_TYPE(*i), TOKEN_CODE(*i), TOKEN_CONTENT(*i));
+	// skip token if necessary
+	if (TOKEN_CODE(*i) != TC_GREAT)
+		return (lexer->tokens[*i].parse(target, parser, lexer, i));
+
 	if (parser->mode == F_PARSING_PROCS)
 	{
 		ret = s_token_parse_chev_right_proc((t_proc *)target, parser, lexer, i);
@@ -162,6 +169,7 @@ int			token_parse_great(void *target, t_parser *parser, t_lexer *lexer, int *i)
 		ret = s_token_parse_chev_right_jobs((t_job *)target, parser, lexer, i);
 	else
 		return (ST_EINVAL);
+	// epilogue
 	(*i)++;
 	return (ret);
 }
