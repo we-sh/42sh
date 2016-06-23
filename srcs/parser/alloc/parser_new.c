@@ -145,7 +145,7 @@ static t_token g_token_separator_newline = {
 static t_token g_token_none_backslash = {
 	"\\",
 	1,
-	TT_NONE,
+	TT_NAME,
 	TC_BACKSLASH,
 	token_parse_none
 };
