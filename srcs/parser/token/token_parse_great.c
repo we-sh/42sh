@@ -149,6 +149,8 @@ int			token_parse_great(void *target, t_parser *parser, t_lexer *lexer, int *i)
 {
 	int	ret;
 
+	lexer->tokens[*i].is_redir_checked = 1;
+
 	log_trace("entering parsing token %-12s (type: %d) (code: %d) `%s'", "TT_REDIR", TOKEN_TYPE(*i), TOKEN_CODE(*i), TOKEN_CONTENT(*i));
 	if (parser->mode == F_PARSING_PROCS)
 	{
