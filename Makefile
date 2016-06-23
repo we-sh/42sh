@@ -21,6 +21,7 @@ SRCS		=	\
 				parser/lexer/tokenize.c								\
 				parser/token/token_parse_none.c						\
 				parser/token/token_parse_and.c						\
+				parser/token/token_parse_andgreat.c					\
 				parser/token/token_parse_semi.c						\
 				parser/token/token_parse_dbl_and.c					\
 				parser/token/token_parse_or_if.c					\
@@ -506,6 +507,21 @@ $(DIROBJ)token_parse_and.o: srcs/parser/token/token_parse_and.c incs/parser.h \
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/parser/token/token_parse_and.c\n"
 		@$(CC) -c ./srcs/parser/token/token_parse_and.c -o ./.objs/token_parse_and.o $(CPPFLAGS) $(CFLAGS) 
+
+$(DIROBJ)token_parse_andgreat.o: srcs/parser/token/token_parse_andgreat.c \
+  incs/parser.h libs/libft/./incs/libft.h libs/logger/./incs/logger.h \
+  libs/logger/./incs/logger_utils.h incs/statuses.h incs/shell.h \
+  libs/libft/./incs/list.h incs/htabl.h incs/fnv.h incs/longlong.h \
+  incs/termcaps/termcaps.h incs/termcaps/list_head.h \
+  libs/libcaps/./incs/types.h incs/termcaps/log.h \
+  incs/termcaps/termcaps_struct.h incs/termcaps/key.h incs/redirection.h \
+  libs/libft/./incs/libftprintf.h incs/option.h incs/job.h \
+  libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/builtins/builtin.h \
+  incs/quoting.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/parser/token/token_parse_andgreat.c\n"
+		@$(CC) -c ./srcs/parser/token/token_parse_andgreat.c -o ./.objs/token_parse_andgreat.o $(CPPFLAGS) $(CFLAGS) 
 
 $(DIROBJ)token_parse_semi.o: srcs/parser/token/token_parse_semi.c incs/parser.h \
   libs/libft/./incs/libft.h libs/logger/./incs/logger.h \
