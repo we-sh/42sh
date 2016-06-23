@@ -1,22 +1,5 @@
 #include "parser.h"
 
-static int	s_open_new_fd_int(char *f, int *fd)
-{
-	int	open_fd;
-
-	if ((ft_strisnumeric(f)) == 0)
-		return (ST_PARSER);
-	else
-	{
-		open_fd = ft_atoi(f);
-		if (open_fd != STDIN_FILENO && open_fd != STDOUT_FILENO
-				&& open_fd != STDERR_FILENO)
-			return (ST_PARSER);
-		*fd = open_fd;
-	}
-	return (ST_OK);
-}
-
 static int	s_parse_right_redir_proc(t_proc *target, t_parser *parser, int *i, int *fd)
 {
 	int		ret;
@@ -31,7 +14,7 @@ static int	s_parse_right_redir_proc(t_proc *target, t_parser *parser, int *i, in
 		}
 		else
 		{
-			if ((ret = s_open_new_fd_int(P_TOKEN_CONTENT(*i), fd)) != ST_OK)
+			if ((ret = token_parse_utils_check_char_to_fd(P_TOKEN_CONTENT(*i), fd)) != ST_OK)
 			{
 				display_status(ST_PARSER_TOKEN, NULL, P_TOKEN_CONTENT(*i));
 				return (ret);
@@ -112,7 +95,7 @@ static int	s_token_parse_chev_right_proc(t_proc *target, t_parser *parser, t_lex
 			token_parse_utils_set_proc_fds(target, STDOUT_FILENO, STDERR_FILENO);
 			fd_l = STDERR_FILENO;
 		}
-		else if ((s_open_new_fd_int(TOKEN_CONTENT(*i), &fd_l)) != ST_OK)
+		else if ((token_parse_utils_check_char_to_fd(TOKEN_CONTENT(*i), &fd_l)) != ST_OK)
 		{
 			if ((ret = token_parse_none((void *)target, parser, lexer, i)) != ST_OK)
 				return (ret);
@@ -136,7 +119,7 @@ static int	s_token_parse_chev_right_jobs(t_job *target, t_parser *parser, t_lexe
 	fd_l = STDOUT_FILENO;
 	if (TOKEN_CODE(*i) != TC_GREAT)
 	{
-		if (TOKEN_CODE(*i) != TC_AND && s_open_new_fd_int(TOKEN_CONTENT(*i), &fd_l) != ST_OK)
+		if (TOKEN_CODE(*i) != TC_AND && token_parse_utils_check_char_to_fd(TOKEN_CONTENT(*i), &fd_l) != ST_OK)
 		{
 			if ((ret = token_parse_none((void *)target, parser, lexer, i)) != ST_OK)
 				return (ret);
