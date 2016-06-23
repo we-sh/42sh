@@ -50,11 +50,11 @@ static int				s_key__regular(t_termcaps_context *context)
 	size_t				command_line_cur_size;
 	char				command_line_cur[2048];
 
+	ft_bzero(command_line_cur, 2048);
 	ASSERT(list_head__command_line_to_buffer(&context->command_line,
 											sizeof(command_line_cur) - 1,
 											&command_line_cur_size,
 											command_line_cur));
-
 	if ((ret = parser(context->sh, command_line_cur + 3, F_PARSING_TERMCAPS, NULL)) != ST_OK)
 	{
 		log_warn("should enter quoting context with token: %d", ret);
