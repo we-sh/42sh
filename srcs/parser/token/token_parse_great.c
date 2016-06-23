@@ -36,34 +36,6 @@ static int	s_parse_right_redir_proc(t_proc *target, t_parser *parser, int *i, in
 
 }
 
-static int	s_parse_right_redir_jobs(t_job *target, t_parser *parser, int *i)
-{
-	int		ret;
-	char	*str;
-
-	if (P_TOKEN_CODE(*i) == TC_AND)
-	{
-		token_parse_utils_push_command(P_TOKEN_CONTENT(*i), &(target->command));
-		(*i)++;
-		if (ft_strcmp(P_TOKEN_CONTENT(*i), "-") == 0)
-			token_parse_utils_push_command(P_TOKEN_CONTENT(*i), &(target->command));
-	}
-	else
-	{
-		while (P_TOKEN_TYPE(*i) == TT_SEPARATOR)
-		{
-			token_parse_utils_push_command(P_TOKEN_CONTENT(*i), &(target->command));
-			(*i)++;
-		}
-		str = NULL;
-		if ((ret = token_parse_utils_get_full_word(&str, parser->lexer, i)) != ST_OK)
-			return (ret);
-		token_parse_utils_push_command(str, &(target->command));
-		free(str);
-	}
-	return (ST_OK);
-}
-
 /*
 ** Parse the token 'right arrow' with a t_proc as target.
 ** Behavior description :
@@ -78,7 +50,7 @@ static int	s_parse_right_redir_jobs(t_job *target, t_parser *parser, int *i)
 ** The function end by set the proc file descriptors.
 */
 
-static int	s_token_parse_chev_right_proc(t_proc *target, t_parser *parser, t_lexer *lexer, int *i)
+static int	s_great_parse_proc(t_proc *target, t_parser *parser, t_lexer *lexer, int *i)
 {
 	int		fd_l;
 	int		fd_r;
@@ -112,29 +84,16 @@ static int	s_token_parse_chev_right_proc(t_proc *target, t_parser *parser, t_lex
 ** If the token is not a and, it call token_parse_none.
 */
 
-static int	s_token_parse_chev_right_jobs(t_job *target, t_parser *parser, t_lexer *lexer, int *i)
+static int	s_great_parse_jobs(t_job *target, t_parser *parser, t_lexer *lexer, int *i)
 {
 	int	ret;
 
 	if (TOKEN_CODE(*i) != TC_GREAT)
 	{
-		if (TOKEN_CODE(*i) != TC_AND) // 1>
-		{
 			if ((ret = token_parse_none((void *)target, parser, lexer, i)) != ST_OK)
 				return (ret);
-		}
-		else
-		{
-			token_parse_utils_push_command(TOKEN_CONTENT(*i), &(target->command));
-			(*i)++;
-		}
-		// here, the i is on >
 	}
 	token_parse_utils_push_command(TOKEN_CONTENT(*i), &(target->command));
-	(*i)++;
-	if ((ret = s_parse_right_redir_jobs((t_job *)target, parser, i)) != ST_OK)
-		return (ret);
-	(*i)++;
 	return (ST_OK);
 }
 
@@ -152,23 +111,19 @@ int			token_parse_great(void *target, t_parser *parser, t_lexer *lexer, int *i)
 	int	ret;
 
 	// setup
+	// @jigault : where to use it? In TC_NONE?
 	lexer->tokens[*i].is_redir_checked = 1;
 	ret = ST_OK;
 
-	// skip token if necessary
-	if (TOKEN_CODE(*i) != TC_GREAT)
-		return (lexer->tokens[*i].parse(target, parser, lexer, i));
-
 	if (parser->mode == F_PARSING_PROCS)
 	{
-		ret = s_token_parse_chev_right_proc((t_proc *)target, parser, lexer, i);
+		ret = s_great_parse_proc((t_proc *)target, parser, lexer, i);
 		if (ret != ST_OK)
 			((t_proc *)target)->is_valid = 1;
 	}
 	else if (parser->mode == F_PARSING_JOBS)
-		ret = s_token_parse_chev_right_jobs((t_job *)target, parser, lexer, i);
-	else
-		return (ST_EINVAL);
+		ret = s_great_parse_jobs((t_job *)target, parser, lexer, i);
+
 	// epilogue
 	(*i)++;
 	return (ret);
