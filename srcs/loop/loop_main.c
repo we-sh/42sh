@@ -59,7 +59,6 @@ int				loop_main(t_sh *sh)
 			break ;
 		if (sh->is_interactive == 1 ? input == NULL : ret == 0)
 			break ;
-		log_error("input before parser : `%s'", input);
 		ret = parser(sh, input, F_PARSING_NONE, NULL);
 		if (ret == ST_OK)
 		{
