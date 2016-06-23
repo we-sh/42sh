@@ -46,14 +46,11 @@ static int	s_parse_right_redir_jobs(t_job *target, t_parser *parser, int *i, int
 		token_parse_utils_push_command(P_TOKEN_CONTENT(*i), &(target->command));
 		(*i)++;
 		if (ft_strcmp(P_TOKEN_CONTENT(*i), "-") == 0)
-		{
 			token_parse_utils_push_command(P_TOKEN_CONTENT(*i), &(target->command));
-			*fd = -1;
-		}
 	}
 	else
 	{
-		while (P_TOKEN_TYPE(*i) == TT_SEPARATOR || P_TOKEN_TYPE(*i) == TT_INHIBITOR)
+		while (P_TOKEN_TYPE(*i) == TT_SEPARATOR)
 		{
 			token_parse_utils_push_command(P_TOKEN_CONTENT(*i), &(target->command));
 			(*i)++;
@@ -110,26 +107,32 @@ static int	s_token_parse_chev_right_proc(t_proc *target, t_parser *parser, t_lex
 	return (ST_OK);
 }
 
+/*
+** If the left token is not a great, it push the token into the command.
+** If the token is not a and, it call token_parse_none.
+*/
+
 static int	s_token_parse_chev_right_jobs(t_job *target, t_parser *parser, t_lexer *lexer, int *i)
 {
-	int	fd_l;
-	int	fd_r;
 	int	ret;
 
-	fd_l = STDOUT_FILENO;
 	if (TOKEN_CODE(*i) != TC_GREAT)
 	{
-		if (TOKEN_CODE(*i) != TC_AND && token_parse_utils_check_char_to_fd(TOKEN_CONTENT(*i), &fd_l) != ST_OK)
+		if (TOKEN_CODE(*i) != TC_AND) // 1>
 		{
 			if ((ret = token_parse_none((void *)target, parser, lexer, i)) != ST_OK)
 				return (ret);
 		}
-		token_parse_utils_push_command(TOKEN_CONTENT(*i), &(target->command));
-		(*i)++;
+		else
+		{
+			token_parse_utils_push_command(TOKEN_CONTENT(*i), &(target->command));
+			(*i)++;
+		}
+		// here, the i is on >
 	}
 	token_parse_utils_push_command(TOKEN_CONTENT(*i), &(target->command));
 	(*i)++;
-	if ((ret = s_parse_right_redir_jobs((t_job *)target, parser, i, &fd_r)) != ST_OK)
+	if ((ret = s_parse_right_redir_jobs((t_job *)target, parser, i)) != ST_OK)
 		return (ret);
 	(*i)++;
 	return (ST_OK);
@@ -147,19 +150,15 @@ int			token_parse_great(void *target, t_parser *parser, t_lexer *lexer, int *i)
 	int	ret;
 
 	log_trace("entering parsing token %-12s (type: %d) (code: %d) `%s'", "TT_REDIR", TOKEN_TYPE(*i), TOKEN_CODE(*i), TOKEN_CONTENT(*i));
-
 	if (parser->mode == F_PARSING_PROCS)
 	{
-		// p->is_valid
 		ret = s_token_parse_chev_right_proc((t_proc *)target, parser, lexer, i);
+		if (ret != ST_OK)
+			((t_proc *)target)->is_valid = 1;
 	}
 	else if (parser->mode == F_PARSING_JOBS)
 		ret = s_token_parse_chev_right_jobs((t_job *)target, parser, lexer, i);
 	else
-	{
-		// p->isvalid = -1 (from target)
-		// return OK
-		return (ST_EINVAL); // TODO @jgigault check it
-	}
+		return (ST_EINVAL);
 	return (ret);
 }

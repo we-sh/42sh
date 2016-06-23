@@ -45,7 +45,6 @@ static t_token	*s_token_recognizer(t_parser *parser, const char *s, int i)
 	{
 		if (ft_strncmp(s, parser->token_list[l]->op, parser->token_list[l]->len) == 0)
 		{
-			log_debug("token found: `%s'", parser->token_list[l]->op);
 			return ((t_token *)parser->token_list[l]);
 		}
 		l++;
@@ -66,7 +65,7 @@ static void		s_bufferize(const char *str, size_t len)
 {
 	if (g_buf_index + len >= TOKEN_BUF_SIZE - 1)
 	{
-		log_error("Buffer overflow.\n");
+		log_error("buffer overflow.\n");
 		exit(ST_BUFFER);
 	}
 	strncat(g_buf, str, len);
@@ -152,12 +151,10 @@ int				tokenize(const char *s, t_parser *parser)
 	ret = s_inhibited_code(NULL);
 	if (parser->mode == F_PARSING_TERMCAPS)
 	{
-		// todo: other cases -> TC_PIPE, TC_DBL_OR, TC_DBL_AND
 		if (ret == 0 && token_found)
 			ret = token_found->code == TC_BACKSLASH ? TC_BACKSLASH : 0;
 	}
 	else
 		ret = ret != 0 ? ST_LEXER : ST_OK;
-	log_debug("ret: %d", ret);
 	return (ret);
 }
