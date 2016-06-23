@@ -36,7 +36,7 @@ static int	s_parse_right_redir_proc(t_proc *target, t_parser *parser, int *i, in
 
 }
 
-static int	s_parse_right_redir_jobs(t_job *target, t_parser *parser, int *i, int *fd)
+static int	s_parse_right_redir_jobs(t_job *target, t_parser *parser, int *i)
 {
 	int		ret;
 	char	*str;
