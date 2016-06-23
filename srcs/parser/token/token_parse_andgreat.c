@@ -36,13 +36,8 @@ int	token_parse_andgreat(void *target, t_parser *parser, t_lexer *lexer, int *i)
 		else
 		{
 			token_parse_utils_skip_separators(lexer, i, NULL);
-			// FIXME from @anouvel to @jgigault : ??? (case of 'ls &> ;')
-			// doesnt work because the ';' is escape
 			if (TOKEN_CODE(*i) != TT_NONE)
-			{
 				log_error("unexpected token `%s'", TOKEN_CONTENT(*i));
-				return (ST_PARSER);
-			}
 			ret = token_parse_utils_open_new_fd((t_proc *)target,
 					TOKEN_CONTENT(*i), &fd, O_WRONLY | O_CREAT | O_APPEND);
 		}
