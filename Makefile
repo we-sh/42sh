@@ -35,6 +35,7 @@ SRCS		=	\
 				parser/token/utils/token_parse_utils_open_new_fd.c	\
 				parser/token/utils/token_parse_utils_push_command.c	\
 				parser/token/utils/token_parse_utils_set_proc_fds.c	\
+				parser/token/utils/token_parse_utils_skip_separators.c\
 				builtins/bg/builtin_bg.c		\
 				builtins/cd/builtin_cd.c		\
 				builtins/cd/builtin_cd_chk_path.c\
