@@ -26,8 +26,8 @@ static t_token g_token_jobs_dbl_or = {
 	"||",
 	2,
 	TT_JOBS,
-	TC_DBL_OR,
-	token_parse_dbl_or
+	TC_OR_IF,
+	token_parse_or_if
 };
 
 static t_token g_token_jobs_dbl_and = {

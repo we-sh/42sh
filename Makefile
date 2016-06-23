@@ -23,7 +23,7 @@ SRCS		=	\
 				parser/token/token_parse_and.c						\
 				parser/token/token_parse_semi.c						\
 				parser/token/token_parse_dbl_and.c					\
-				parser/token/token_parse_dbl_or.c					\
+				parser/token/token_parse_or_if.c					\
 				parser/token/token_parse_pipe.c						\
 				parser/token/token_parse_chev_left.c				\
 				parser/token/token_parse_chev_right.c				\
@@ -537,8 +537,8 @@ $(DIROBJ)token_parse_dbl_and.o: srcs/parser/token/token_parse_dbl_and.c \
 		@printf "compiling ./srcs/parser/token/token_parse_dbl_and.c\n"
 		@$(CC) -c ./srcs/parser/token/token_parse_dbl_and.c -o ./.objs/token_parse_dbl_and.o $(CPPFLAGS) $(CFLAGS) 
 
-$(DIROBJ)token_parse_dbl_or.o: srcs/parser/token/token_parse_dbl_or.c \
-  incs/parser.h libs/libft/./incs/libft.h libs/logger/./incs/logger.h \
+$(DIROBJ)token_parse_or_if.o: srcs/parser/token/token_parse_or_if.c incs/parser.h \
+  libs/libft/./incs/libft.h libs/logger/./incs/logger.h \
   libs/logger/./incs/logger_utils.h incs/statuses.h incs/shell.h \
   libs/libft/./incs/list.h incs/htabl.h incs/fnv.h incs/longlong.h \
   incs/termcaps/termcaps.h incs/termcaps/list_head.h \
@@ -549,8 +549,8 @@ $(DIROBJ)token_parse_dbl_or.o: srcs/parser/token/token_parse_dbl_or.c \
   libs/libft/./incs/get_next_line.h incs/builtins/builtin.h \
   incs/quoting.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
-		@printf "compiling ./srcs/parser/token/token_parse_dbl_or.c\n"
-		@$(CC) -c ./srcs/parser/token/token_parse_dbl_or.c -o ./.objs/token_parse_dbl_or.o $(CPPFLAGS) $(CFLAGS) 
+		@printf "compiling ./srcs/parser/token/token_parse_or_if.c\n"
+		@$(CC) -c ./srcs/parser/token/token_parse_or_if.c -o ./.objs/token_parse_or_if.o $(CPPFLAGS) $(CFLAGS) 
 
 $(DIROBJ)token_parse_pipe.o: srcs/parser/token/token_parse_pipe.c incs/parser.h \
   libs/libft/./incs/libft.h libs/logger/./incs/logger.h \

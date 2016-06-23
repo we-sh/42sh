@@ -48,7 +48,7 @@ typedef enum		e_token_code
 {
 	TC_DBL_CHEV_LEFT,
 	TC_DGREAT,
-	TC_DBL_OR,
+	TC_OR_IF,
 	TC_DBL_AND,
 	TC_DBL_SEMI,
 	TC_SEMI,
@@ -163,7 +163,7 @@ int		token_parse_none(void *target, t_parser *parser, t_lexer *lexer, int *i);
 // Jobs.
 int		token_parse_semi(void *target, t_parser *parser, t_lexer *lexer, int *i);
 int		token_parse_dbl_and(void *target, t_parser *parser, t_lexer *lexer, int *i);
-int		token_parse_dbl_or(void *target, t_parser *parser, t_lexer *lexer, int *i);
+int		token_parse_or_if(void *target, t_parser *parser, t_lexer *lexer, int *i);
 
 // Pipe,
 int		token_parse_pipe(void *target, t_parser *parser, t_lexer *lexer, int *i);

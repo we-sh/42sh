@@ -1,6 +1,6 @@
 #include "parser.h"
 
-int	token_parse_dbl_or(void *target, t_parser *parser, t_lexer *lexer, int *i)
+int	token_parse_or_if(void *target, t_parser *parser, t_lexer *lexer, int *i)
 {
 	log_trace("entering parsing token %-12s '||'", "TT_JOBS");
 
