@@ -4,7 +4,6 @@ int	token_parse_semi(void *target, t_parser *parser, t_lexer *lexer, int *i)
 {
 	log_trace("entering parsing token %-12s ';'", "TT_JOBS");
 	(void)lexer;
-	(void)i;
 
 	// todo: use parsing mode to customize what this function does
 	if (parser->mode != F_PARSING_JOBS)
@@ -15,6 +14,8 @@ int	token_parse_semi(void *target, t_parser *parser, t_lexer *lexer, int *i)
 	t_job *j;
 	j = (t_job *)target;
 	j->separator = F_JSEP_SEMI;
+
+	(*i)++;
 
 	/*
 	t_proc	*p;

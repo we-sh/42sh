@@ -14,7 +14,7 @@ int	parser_build_list_unstack_lexer_none(t_parser *parser, t_lexer *lexer, int *
 
 	while (*i < lexer->size)
 	{
-		log_info("remaining tokens : %d / %d", lexer->size - *i, lexer->size);
+		log_info("remaining tokens (none) : %d / %d", lexer->size - *i, lexer->size);
 		ret = ST_OK;
 
 		(void)parser;
@@ -38,7 +38,6 @@ int	parser_build_list_unstack_lexer_none(t_parser *parser, t_lexer *lexer, int *
 			if (ret != ST_OK)
 				return (ret);
 		}
-		(*i)++;
 
 	}
 	return (ST_OK);

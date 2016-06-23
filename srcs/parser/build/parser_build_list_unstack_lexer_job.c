@@ -11,7 +11,7 @@ int	parser_build_list_unstack_lexer_job(t_parser *parser, t_lexer *lexer, int *i
 
 	while (*i < lexer->size)
 	{
-		log_info("remaining tokens : %d / %d", lexer->size - *i, lexer->size);
+		log_info("remaining tokens (job) : %d / %d", lexer->size - *i, lexer->size);
 
 		if (!(j = job_alloc("")))
 			return (ST_MALLOC);
@@ -25,7 +25,6 @@ int	parser_build_list_unstack_lexer_job(t_parser *parser, t_lexer *lexer, int *i
 				job_free(&j);
 				return (ret);
 			}
-			(*i)++;
 		}
 
 		if (*i < lexer->size)
@@ -40,7 +39,6 @@ int	parser_build_list_unstack_lexer_job(t_parser *parser, t_lexer *lexer, int *i
 
 		list_push_back(&j->list_job, parser->target_list_head);
 
-		(*i)++;
 
 		/*if ((p = proc_alloc(j)) == NULL)
 		{

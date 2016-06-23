@@ -1,19 +1,24 @@
 #include "parser.h"
 
-static int	s_fill_command(t_proc *p, char *content)
+static int	s_proc(t_proc *p, t_lexer *lexer, int *i)
 {
-	char	*tmp;
+	char	*content;
+	int		is_inhibited;
+	int		ret;
 
-	if (!(p->command))
-		p->command = ft_strdup(content);
-	else
+	is_inhibited = *i == 0 ? 0 : TOKEN_TYPE(*i - 1) == TT_INHIBITOR;
+	/*if ((ret = s_fill_command(p, lexer->tokens[*i].content)) != ST_OK)
+		return (ret);
+	if (!(lexer->tokens[*i].type == TT_NAME
+		&& lexer->tokens[*i].code == TC_NONE))
+		return (ST_PARSER);*/
+	if ((ret = token_parse_utils_get_full_word(&content, lexer, i)) != ST_OK)
+		return (ret);
+	if ((ret = expand(lexer->sh, p, content, is_inhibited)) != ST_OK)
 	{
-		tmp = ft_strjoin(p->command, content);
-		free(p->command);
-		p->command = tmp;
+		log_fatal("failed to push `%s` intro p->argv", TOKEN_CONTENT(*i));
+		return (ret);
 	}
-	if (p->command == NULL)
-		return (ST_MALLOC);
 	return (ST_OK);
 }
 
@@ -21,15 +26,15 @@ int	token_parse_none(void *target, t_parser *parser, t_lexer *lexer, int *i)
 {
 	log_trace("entering parsing token %-12s (type: %d) (code: %d)", "TT_NONE", lexer->tokens[*i].type, lexer->tokens[*i].code);
 
-	char	*content;
 	int		ret;
-	int		is_inhibited;
 
+	ret = ST_OK;
 	// todo: should be catch in parsing mode F_PARSING_NONE
 	if (lexer->tokens[*i].type == TT_ERROR)
 		return (ST_PARSER);
 
-	if ((*i) + 1 < lexer->size && TOKEN_TYPE((*i) + 1) == TT_REDIR)
+	if (lexer->tokens[*i].is_redir_checked == 0
+		&& (*i) + 1 < lexer->size && TOKEN_TYPE((*i) + 1) == TT_REDIR)
 	{
 		return (lexer->tokens[*i + 1].parse(target, parser, lexer, i));
 		//return (token_parse_chev_right(target, parser, lexer, i));
@@ -53,24 +58,8 @@ int	token_parse_none(void *target, t_parser *parser, t_lexer *lexer, int *i)
 	}
 	else if (parser->mode == F_PARSING_PROCS)
 	{
-
-		t_proc	*p;
-		p = (t_proc *)target;
-		(void)parser;
-
-		is_inhibited = *i == 0 ? 0 : lexer->tokens[*i - 1].type == TT_INHIBITOR;
-		if ((ret = s_fill_command(p, lexer->tokens[*i].content)) != ST_OK)
-			return (ret);
-		if (!(lexer->tokens[*i].type == TT_NAME
-			&& lexer->tokens[*i].code == TC_NONE))
-			return (ST_OK);
-		if ((ret = token_parse_utils_get_full_word(&content, lexer, i)) != ST_OK)
-			return (ret);
-		if ((ret = expand(lexer->sh, p, content, is_inhibited)) != ST_OK)
-		{
-			log_fatal("failed to push `%s` intro p->argv", lexer->tokens[*i].content);
-			return (ret);
-		}
+		ret = s_proc((t_proc *)target, lexer, i);
 	}
-	return (0);
+	(*i)++;
+	return (ret);
 }

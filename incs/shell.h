@@ -154,6 +154,7 @@ int				job_background_update_status(void);
 int				job_display_status(t_job *j, int show_pid);
 void			job_set_stopped(t_job *j, int const stopped);
 t_redir			*redir_alloc(int fd);
+void			redir_free(t_redir **redir);
 void			redir_list_free(t_list *redir_head);
 
 /*

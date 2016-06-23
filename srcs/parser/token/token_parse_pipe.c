@@ -4,30 +4,43 @@
 ** Return -1 on error, 0 on success, or 1 if a job delimiter is find.
 */
 
-int	token_parse_pipe(void *target, t_parser *parser, t_lexer *lexer, int *i)
+static int	s_job(t_job *j, t_lexer *lexer, int *i)
+{
+	(void)lexer;
+	if (token_parse_utils_push_command(TOKEN_CONTENT(*i), &j->command) != ST_OK)
+		return (ST_MALLOC);
+	return (ST_OK);
+}
+
+static int	s_proc(t_proc *p, t_lexer *lexer, int *i)
+{
+	if (p->argc == 0)
+	{
+		display_status(ST_PARSER_TOKEN, NULL, TOKEN_CONTENT(*i));
+		return (ST_PARSER);
+	}
+	return (ST_OK);
+}
+
+int			token_parse_pipe(void *target, t_parser *parser, t_lexer *lexer, int *i)
 {
 	log_trace("entering parsing token %-12s '|'", "TT_REDIR");
-	(void)lexer;
-	(void)i;
 
-	// todo: use parsing mode to customize what this function does
+	int		ret;
+
+	ret = ST_OK;
+	lexer->tokens[*i].is_redir_checked = 1;
+	if (TOKEN_CODE(*i) != TC_PIPE)
+		return (lexer->tokens[*i].parse(target, parser, lexer, i));
+
 	if (parser->mode == F_PARSING_JOBS)
 	{
-		t_job *j;
-		j = (t_job *)target;
-		token_parse_utils_push_command(parser->lexer->tokens[*i].content, &j->command);
+		ret = s_job((t_job *)target, lexer, i);
 	}
 	else if (parser->mode == F_PARSING_PROCS)
 	{
-		t_proc	*p;
-		p = (t_proc *)target;
-		(void)parser;
-
-		if (p->argc == 0)
-		{
-			display_status(ST_PARSER_TOKEN, NULL, "|");
-			return (ST_PARSER);
-		}
+		ret = s_proc((t_proc *)target, lexer, i);
 	}
-	return (0);
+	(*i)++;
+	return (ret);
 }

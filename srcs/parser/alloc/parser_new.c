@@ -123,7 +123,7 @@ static t_token g_token_separator_space = {
 	1,
 	TT_SEPARATOR,
 	TC_SPACE,
-	token_parse_none
+	token_parse_separator
 };
 
 static t_token g_token_separator_tab = {
@@ -131,7 +131,7 @@ static t_token g_token_separator_tab = {
 	1,
 	TT_SEPARATOR,
 	TC_TAB,
-	token_parse_none
+	token_parse_separator
 };
 
 static t_token g_token_separator_newline = {
@@ -139,7 +139,7 @@ static t_token g_token_separator_newline = {
 	1,
 	TT_SEPARATOR,
 	TC_NEWLINE,
-	token_parse_none
+	token_parse_separator
 };
 
 static t_token g_token_none_backslash = {

@@ -31,6 +31,7 @@ SRCS		=	\
 				parser/token/token_parse_dless.c					\
 				parser/token/token_parse_dgreat.c					\
 				parser/token/token_parse_inhib.c					\
+				parser/token/token_parse_separator.c				\
 				parser/token/utils/token_parse_utils_get_full_word.c\
 				parser/token/utils/token_parse_utils_open_new_fd.c	\
 				parser/token/utils/token_parse_utils_push_command.c	\
@@ -92,6 +93,7 @@ SRCS		=	\
 				job/proc_launch.c				\
 				job/proc_update_status.c		\
 				job/redir_alloc.c				\
+				job/redir_free.c				\
 				job/redir_list_free.c			\
 				loop/loop_main.c				\
 				options/option_get_value.c		\
@@ -659,6 +661,21 @@ $(DIROBJ)token_parse_inhib.o: srcs/parser/token/token_parse_inhib.c incs/parser.
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/parser/token/token_parse_inhib.c\n"
 		@$(CC) -c ./srcs/parser/token/token_parse_inhib.c -o ./.objs/token_parse_inhib.o $(CPPFLAGS) $(CFLAGS) 
+
+$(DIROBJ)token_parse_separator.o: srcs/parser/token/token_parse_separator.c \
+  incs/shell.h libs/libft/./incs/list.h incs/htabl.h incs/fnv.h \
+  incs/longlong.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
+  libs/libcaps/./incs/types.h incs/termcaps/log.h \
+  incs/termcaps/termcaps_struct.h incs/termcaps/key.h incs/redirection.h \
+  libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h \
+  libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
+  incs/statuses.h incs/option.h incs/job.h libs/libcaps/./incs/caps.h \
+  libs/libcaps/./incs/logger.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/parser.h \
+  incs/builtins/builtin.h incs/quoting.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/parser/token/token_parse_separator.c\n"
+		@$(CC) -c ./srcs/parser/token/token_parse_separator.c -o ./.objs/token_parse_separator.o $(CPPFLAGS) $(CFLAGS) 
 
 $(DIROBJ)token_parse_utils_get_full_word.o: \
   srcs/parser/token/utils/token_parse_utils_get_full_word.c incs/shell.h \
@@ -1581,6 +1598,20 @@ $(DIROBJ)redir_alloc.o: srcs/job/redir_alloc.c incs/shell.h \
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/job/redir_alloc.c\n"
 		@$(CC) -c ./srcs/job/redir_alloc.c -o ./.objs/redir_alloc.o $(CPPFLAGS) $(CFLAGS) 
+
+$(DIROBJ)redir_free.o: srcs/job/redir_free.c incs/shell.h libs/libft/./incs/list.h \
+  incs/htabl.h incs/fnv.h incs/longlong.h incs/termcaps/termcaps.h \
+  incs/termcaps/list_head.h libs/libcaps/./incs/types.h \
+  incs/termcaps/log.h incs/termcaps/termcaps_struct.h \
+  incs/termcaps/key.h incs/redirection.h libs/libft/./incs/libft.h \
+  libs/libft/./incs/libftprintf.h libs/logger/./incs/logger.h \
+  libs/logger/./incs/logger_utils.h incs/statuses.h incs/option.h \
+  incs/job.h libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/i18n.h libs/libft/./incs/get_next_line.h incs/parser.h \
+  incs/builtins/builtin.h incs/quoting.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/job/redir_free.c\n"
+		@$(CC) -c ./srcs/job/redir_free.c -o ./.objs/redir_free.o $(CPPFLAGS) $(CFLAGS) 
 
 $(DIROBJ)redir_list_free.o: srcs/job/redir_list_free.c incs/shell.h \
   libs/libft/./incs/list.h incs/htabl.h incs/fnv.h incs/longlong.h \

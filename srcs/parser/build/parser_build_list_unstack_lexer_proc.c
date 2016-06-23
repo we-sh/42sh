@@ -13,17 +13,18 @@ int		parser_build_list_unstack_lexer_proc(t_parser *parser, t_lexer *lexer, int 
 	j = CONTAINER_OF(parser->target_list_head, t_job, proc_head);
 	while (*i < lexer->size)
 	{
-		log_info("remaining tokens : %d / %d", lexer->size - *i, lexer->size);
+		log_info("remaining tokens (proc) : %d / %d", lexer->size - *i, lexer->size);
 
 		if (!(p = proc_alloc(j)))
 			return (ST_MALLOC);
 
-		while (*i < lexer->size && !(lexer->tokens[*i].type == TT_REDIR && lexer->tokens[*i].code == TC_PIPE))
+		while (*i < lexer->size
+			&& !(TOKEN_TYPE(*i) == TT_REDIR && TOKEN_CODE(*i) == TC_PIPE))
 		{
-			// todo: is that still necessary ?
-			// this job is now done in TT_NONE parser
-			if (lexer->tokens[*i].code == TC_NONE && *i + 1 < lexer->size
-					&& lexer->tokens[*i + 1].type == TT_REDIR)
+			if (TOKEN_CODE(*i) == TC_NONE
+				&& *i + 1 < lexer->size
+				&& (TOKEN_TYPE(*i + 1) == TT_REDIR
+				&& TOKEN_CODE(*i + 1) != TC_PIPE))
 				ret = lexer->tokens[(*i) + 1].parse((void *)p, parser, lexer, i);
 			else
 				ret = lexer->tokens[*i].parse((void *)p, parser, lexer, i);
@@ -32,12 +33,12 @@ int		parser_build_list_unstack_lexer_proc(t_parser *parser, t_lexer *lexer, int 
 				proc_free(&p);
 				return (ret);
 			}
-			(*i)++;
 		}
 
 		list_push_back(&p->list_proc, parser->target_list_head);
 
 		(*i)++;
+
 	}
 	return (ST_OK);
 

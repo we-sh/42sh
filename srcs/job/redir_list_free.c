@@ -16,11 +16,6 @@ void		redir_list_free(t_list *redir_head)
 		redir = CONTAINER_OF(pos, t_redir, list_redir);
 		pos->prev->next = safe;
 		safe->prev = pos->prev;
-		if (redir->fd > 0
-			&& redir->fd != STDIN_FILENO
-			&& redir->fd != STDOUT_FILENO
-			&& redir->fd != STDERR_FILENO)
-			close(redir->fd);
-		ft_memdel((void **)&redir);
+		redir_free(&redir);
 	}
 }

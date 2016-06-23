@@ -87,6 +87,7 @@ struct				s_token
 struct				s_lexer_token
 {
 	char			content[256];
+	int				is_redir_checked;
 	size_t			len;
 	t_token_type	type;
 	t_token_code	code;
@@ -190,5 +191,8 @@ int		token_parse_utils_check_char_to_fd(char *f, int *fd);
 
 // Inhibitors.
 int		token_parse_inhib(void *target, t_parser *parser, t_lexer *lexer, int *i);
+
+// Separators.
+int		token_parse_separator(void *target, t_parser *parser, t_lexer *lexer, int *i);
 
 #endif

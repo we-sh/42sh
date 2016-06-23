@@ -14,8 +14,9 @@ int	token_parse_and_if(void *target, t_parser *parser, t_lexer *lexer, int *i)
 	j = (t_job *)target;
 	j->separator = F_JSEP_AND_IF;
 
+	(*i)++;
+
 	(void)lexer;
-	(void)i;
 	/*
 	if (p->argc == 0)
 	{

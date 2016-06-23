@@ -13,6 +13,7 @@ static void		s_lexer_add(t_lexer *lexer, const char *str, t_token token)
 	ft_strncpy(item.content, str, token.len);
 	item.content[token.len] = '\0';
 	item.len = token.len;
+	item.is_redir_checked = 0;
 	item.type = token.type;
 	item.code = token.code;
 	item.parse = token.parse;

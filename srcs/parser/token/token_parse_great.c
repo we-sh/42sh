@@ -160,5 +160,6 @@ int			token_parse_great(void *target, t_parser *parser, t_lexer *lexer, int *i)
 		ret = s_token_parse_chev_right_jobs((t_job *)target, parser, lexer, i);
 	else
 		return (ST_EINVAL);
+	(*i)++;
 	return (ret);
 }

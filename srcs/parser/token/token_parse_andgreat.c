@@ -15,5 +15,7 @@ int	token_parse_andgreat(void *target, t_parser *parser, t_lexer *lexer, int *i)
 	(void)parser;
 	(void)target;
 
+	(*i)++;
+
 	return (ST_OK);
 }
