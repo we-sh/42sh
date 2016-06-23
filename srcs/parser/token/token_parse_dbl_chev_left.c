@@ -23,8 +23,8 @@ static int	s_open_heredoc(t_sh *sh, int *fd, const char *trigger)
 			break ;
 		}
 		ft_putendl_fd(buffer, pipefd[1]);
+		free(termcaps_context.buffer);
 	}
-	termcaps_finalize(&termcaps_context);
 	close(pipefd[1]);
 	*fd = pipefd[0];
 	return (ST_OK);
@@ -58,6 +58,13 @@ int	token_parse_dbl_chev_left(void *target, t_parser *parser, t_lexer *lexer, in
 
 	if (parser->mode == F_PARSING_NONE)
 	{
+
+		if (*i + 1 < lexer->size && TOKEN_CODE(*i + 1) != TC_NONE)
+		{
+			display_status(ST_PARSER_TOKEN, NULL, TOKEN_CONTENT(*i + 1));
+			return (ST_PARSER);
+		}
+
 		int ret;
 		char *content;
 		(*i)++;

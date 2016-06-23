@@ -19,13 +19,15 @@ int	parser_build_list_unstack_lexer_none(t_parser *parser, t_lexer *lexer, int *
 
 		(void)parser;
 		while (*i < lexer->size
-			&& !(lexer->tokens[*i].type == TT_REDIR && lexer->tokens[*i].code == TC_DBL_CHEV_LEFT)
-			&& !((*i + 1 < lexer->size && lexer->tokens[*i + 1].type == TT_REDIR && lexer->tokens[*i].code == TC_DBL_CHEV_LEFT)))
+			&& !(TOKEN_TYPE(*i) == TT_REDIR && TOKEN_CODE(*i) == TC_DBL_CHEV_LEFT)
+			&& !((*i + 1 < lexer->size && TOKEN_CODE(*i) == TC_NONE && TOKEN_TYPE(*i + 1) == TT_REDIR && TOKEN_CODE(*i + 1) == TC_DBL_CHEV_LEFT)))
 		{
-			log_debug("%d %d", lexer->tokens[*i].type, lexer->tokens[*i].code);
-			//ret = lexer->tokens[*i].parse(NULL, parser, lexer, i);
-			if (ret != ST_OK)
-				return (ret);
+			if (TOKEN_TYPE(*i) == TT_ERROR)
+			{
+				log_error("here");
+				display_status(ST_PARSER_TOKEN, NULL, TOKEN_CONTENT(*i));
+				return (ST_PARSER_TOKEN);
+			}
 			(*i)++;
 		}
 
