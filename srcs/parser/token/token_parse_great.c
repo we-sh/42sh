@@ -105,7 +105,7 @@ static int	s_token_parse_chev_right_proc(t_proc *target, t_parser *parser, t_lex
 	int		ret;
 
 	fd_l = STDOUT_FILENO;
-	if (TOKEN_CODE(*i) != TC_CHEV_RIGHT)
+	if (TOKEN_CODE(*i) != TC_GREAT)
 	{
 		if (TOKEN_CODE(*i) == TC_AND)
 		{
@@ -134,7 +134,7 @@ static int	s_token_parse_chev_right_jobs(t_job *target, t_parser *parser, t_lexe
 	int	ret;
 
 	fd_l = STDOUT_FILENO;
-	if (TOKEN_CODE(*i) != TC_CHEV_RIGHT)
+	if (TOKEN_CODE(*i) != TC_GREAT)
 	{
 		if (TOKEN_CODE(*i) != TC_AND && s_open_new_fd_int(TOKEN_CONTENT(*i), &fd_l) != ST_OK)
 		{
@@ -159,7 +159,7 @@ static int	s_token_parse_chev_right_jobs(t_job *target, t_parser *parser, t_lexe
 ** Notice that the behavior of the function is different according to target.
 */
 
-int			token_parse_chev_right(void *target, t_parser *parser, t_lexer *lexer, int *i)
+int			token_parse_great(void *target, t_parser *parser, t_lexer *lexer, int *i)
 {
 	int	ret;
 

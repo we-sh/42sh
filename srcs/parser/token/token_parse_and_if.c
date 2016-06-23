@@ -1,6 +1,6 @@
 #include "parser.h"
 
-int	token_parse_dbl_and(void *target, t_parser *parser, t_lexer *lexer, int *i)
+int	token_parse_and_if(void *target, t_parser *parser, t_lexer *lexer, int *i)
 {
 	log_trace("entering parsing token %-12s '&&'", "TT_JOBS");
 

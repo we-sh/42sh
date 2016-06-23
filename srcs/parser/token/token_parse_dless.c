@@ -30,13 +30,13 @@ static int	s_open_heredoc(t_sh *sh, int *fd, const char *trigger)
 	return (ST_OK);
 }
 
-int	token_parse_dbl_chev_left(void *target, t_parser *parser, t_lexer *lexer, int *i)
+int	token_parse_dless(void *target, t_parser *parser, t_lexer *lexer, int *i)
 {
 	log_trace("entering parsing token %-12s '<<'", "TT_REDIR");
 
 	if (parser->mode == F_PARSING_JOBS)
 	{
-		if (TOKEN_CODE(*i) != TC_DBL_CHEV_LEFT)
+		if (TOKEN_CODE(*i) != TC_DLESS)
 		{
 			token_parse_utils_push_command(TOKEN_CONTENT(*i), &((t_job *)target)->command);
 			(*i)++;
@@ -100,7 +100,7 @@ int	token_parse_dbl_chev_left(void *target, t_parser *parser, t_lexer *lexer, in
 	if (parser->mode == F_PARSING_PROCS)
 	{
 
-		if (TOKEN_CODE(*i) != TC_DBL_CHEV_LEFT)
+		if (TOKEN_CODE(*i) != TC_DLESS)
 		{
 			// before <<
 			(*i)++;
@@ -132,7 +132,7 @@ int	token_parse_dbl_chev_left(void *target, t_parser *parser, t_lexer *lexer, in
 
 	char *left = lexer->tokens[*i].content;
 	(*i)++;
-	if (lexer->tokens[*i].code != TC_CHEV_RIGHT)
+	if (lexer->tokens[*i].code != TC_GREAT)
 		log_error("parsing in loosing state");
 	(*i)++;
 

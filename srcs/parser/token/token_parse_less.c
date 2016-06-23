@@ -68,7 +68,7 @@ static int	s_parse_right_redir(void *target, t_parser *parser, int *i, int *fd)
 }
 
 
-int			token_parse_chev_left(void *target, t_parser *parser, t_lexer *lexer, int *i)
+int			token_parse_less(void *target, t_parser *parser, t_lexer *lexer, int *i)
 {
 	int	fd_l;
 	int	fd_r;
@@ -77,7 +77,7 @@ int			token_parse_chev_left(void *target, t_parser *parser, t_lexer *lexer, int 
 	// todo: use parsing mode to customize what this function does
 
 	fd_l = STDIN_FILENO;
-	if (lexer->tokens[*i].code != TC_CHEV_LEFT)
+	if (lexer->tokens[*i].code != TC_LESS)
 	{
 		if ((ret = s_open_new_fd_int(lexer->tokens[*i].content,
 			&fd_l)) != ST_OK)
