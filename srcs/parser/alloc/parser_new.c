@@ -6,15 +6,15 @@
 */
 
 
-static t_token g_token_redir_dbl_chev_left = {
+static t_token g_token_redir_dless = {
 	"<<",
 	2,
 	TT_REDIR,
-	TC_DBL_CHEV_LEFT,
-	token_parse_dbl_chev_left
+	TC_DLESS,
+	token_parse_dless
 };
 
-static t_token g_token_redir_dbl_chev_right = {
+static t_token g_token_redir_dgreat = {
 	">>",
 	2,
 	TT_REDIR,
@@ -22,7 +22,7 @@ static t_token g_token_redir_dbl_chev_right = {
 	token_parse_dgreat
 };
 
-static t_token g_token_jobs_dbl_or = {
+static t_token g_token_jobs_or_if = {
 	"||",
 	2,
 	TT_JOBS,
@@ -30,28 +30,28 @@ static t_token g_token_jobs_dbl_or = {
 	token_parse_or_if
 };
 
-static t_token g_token_jobs_dbl_and = {
+static t_token g_token_jobs_and_if = {
 	"&&",
 	2,
 	TT_JOBS,
-	TC_DBL_AND,
-	token_parse_dbl_and
+	TC_AND_IF,
+	token_parse_and_if
 };
 
-static t_token g_token_error_dbl_semi = {
+static t_token g_token_error_dsemi = {
 	";;",
 	2,
 	TT_ERROR,
-	TC_DBL_SEMI,
+	TC_DSEMI,
 	token_parse_none
 };
 
-static t_token g_token_redir_chev_right_2 = {
+static t_token g_token_redir_clobber = {
 	">|",
 	2,
 	TT_REDIR,
-	TC_CHEV_RIGHT,
-	token_parse_chev_right
+	TC_CLOBBER,
+	token_parse_great
 };
 
 static t_token g_token_redir_andgreat = {
@@ -70,20 +70,20 @@ static t_token g_token_jobs_semi = {
 	token_parse_semi
 };
 
-static t_token g_token_redir_chev_right = {
+static t_token g_token_redir_great = {
 	">",
 	1,
 	TT_REDIR,
-	TC_CHEV_RIGHT,
-	token_parse_chev_right
+	TC_GREAT,
+	token_parse_great
 };
 
-static t_token g_token_redir_chev_left = {
+static t_token g_token_redir_less = {
 	"<",
 	1,
 	TT_REDIR,
-	TC_CHEV_LEFT,
-	token_parse_chev_left
+	TC_LESS,
+	token_parse_less
 };
 
 static t_token g_token_redir_pipe = {
@@ -102,11 +102,11 @@ static t_token g_token_special_and = {
 	token_parse_and
 };
 
-static t_token g_token_inhibitor_dbl_quote = {
+static t_token g_token_inhibitor_dquote = {
 	"\"",
 	1,
 	TT_INHIBITOR,
-	TC_DBL_QUOTE,
+	TC_DQUOTE,
 	token_parse_inhib
 };
 
@@ -155,19 +155,19 @@ static int	s_build_token_list(t_parser *parser)
 	int		i;
 
 	i = 0;
-	parser->token_list[i++] = &g_token_redir_dbl_chev_left;
-	parser->token_list[i++] = &g_token_redir_dbl_chev_right;
-	parser->token_list[i++] = &g_token_jobs_dbl_or;
-	parser->token_list[i++] = &g_token_jobs_dbl_and;
-	parser->token_list[i++] = &g_token_error_dbl_semi;
-	parser->token_list[i++] = &g_token_redir_chev_right_2;
+	parser->token_list[i++] = &g_token_redir_dless;
+	parser->token_list[i++] = &g_token_redir_dgreat;
+	parser->token_list[i++] = &g_token_jobs_or_if;
+	parser->token_list[i++] = &g_token_jobs_and_if;
+	parser->token_list[i++] = &g_token_error_dsemi;
+	parser->token_list[i++] = &g_token_redir_clobber;
 	parser->token_list[i++] = &g_token_redir_andgreat;
 	parser->token_list[i++] = &g_token_jobs_semi;
-	parser->token_list[i++] = &g_token_redir_chev_right;
-	parser->token_list[i++] = &g_token_redir_chev_left;
+	parser->token_list[i++] = &g_token_redir_great;
+	parser->token_list[i++] = &g_token_redir_less;
 	parser->token_list[i++] = &g_token_redir_pipe;
 	parser->token_list[i++] = &g_token_special_and;
-	parser->token_list[i++] = &g_token_inhibitor_dbl_quote;
+	parser->token_list[i++] = &g_token_inhibitor_dquote;
 	parser->token_list[i++] = &g_token_inhibitor_quote;
 	parser->token_list[i++] = &g_token_none_backslash;
 	parser->token_list[i++] = &g_token_separator_space;
