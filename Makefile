@@ -28,7 +28,7 @@ SRCS		=	\
 				parser/token/token_parse_chev_left.c				\
 				parser/token/token_parse_chev_right.c				\
 				parser/token/token_parse_dbl_chev_left.c			\
-				parser/token/token_parse_dbl_chev_right.c			\
+				parser/token/token_parse_dgreat.c					\
 				parser/token/token_parse_inhib.c					\
 				parser/token/utils/token_parse_utils_get_full_word.c\
 				parser/token/utils/token_parse_utils_open_new_fd.c	\
@@ -613,9 +613,8 @@ $(DIROBJ)token_parse_dbl_chev_left.o: \
 		@printf "compiling ./srcs/parser/token/token_parse_dbl_chev_left.c\n"
 		@$(CC) -c ./srcs/parser/token/token_parse_dbl_chev_left.c -o ./.objs/token_parse_dbl_chev_left.o $(CPPFLAGS) $(CFLAGS) 
 
-$(DIROBJ)token_parse_dbl_chev_right.o: \
-  srcs/parser/token/token_parse_dbl_chev_right.c incs/parser.h \
-  libs/libft/./incs/libft.h libs/logger/./incs/logger.h \
+$(DIROBJ)token_parse_dgreat.o: srcs/parser/token/token_parse_dgreat.c \
+  incs/parser.h libs/libft/./incs/libft.h libs/logger/./incs/logger.h \
   libs/logger/./incs/logger_utils.h incs/statuses.h incs/shell.h \
   libs/libft/./incs/list.h incs/htabl.h incs/fnv.h incs/longlong.h \
   incs/termcaps/termcaps.h incs/termcaps/list_head.h \
@@ -626,8 +625,8 @@ $(DIROBJ)token_parse_dbl_chev_right.o: \
   libs/libft/./incs/get_next_line.h incs/builtins/builtin.h \
   incs/quoting.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
-		@printf "compiling ./srcs/parser/token/token_parse_dbl_chev_right.c\n"
-		@$(CC) -c ./srcs/parser/token/token_parse_dbl_chev_right.c -o ./.objs/token_parse_dbl_chev_right.o $(CPPFLAGS) $(CFLAGS) 
+		@printf "compiling ./srcs/parser/token/token_parse_dgreat.c\n"
+		@$(CC) -c ./srcs/parser/token/token_parse_dgreat.c -o ./.objs/token_parse_dgreat.o $(CPPFLAGS) $(CFLAGS) 
 
 $(DIROBJ)token_parse_inhib.o: srcs/parser/token/token_parse_inhib.c incs/parser.h \
   libs/libft/./incs/libft.h libs/logger/./incs/logger.h \

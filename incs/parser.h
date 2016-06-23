@@ -47,7 +47,7 @@ typedef enum		e_token_type
 typedef enum		e_token_code
 {
 	TC_DBL_CHEV_LEFT,
-	TC_DBL_CHEV_RIGHT,
+	TC_DGREAT,
 	TC_DBL_OR,
 	TC_DBL_AND,
 	TC_DBL_SEMI,
@@ -175,7 +175,7 @@ int		token_parse_and(void *target, t_parser *parser, t_lexer *lexer, int *i);
 int		token_parse_chev_left(void *target, t_parser *parser, t_lexer *lexer, int *i);
 int		token_parse_chev_right(void *target, t_parser *parser, t_lexer *lexer, int *i);
 int		token_parse_dbl_chev_left(void *target, t_parser *parser, t_lexer *lexer, int *i);
-int		token_parse_dbl_chev_right(void *target, t_parser *parser, t_lexer *lexer, int *i);
+int		token_parse_dgreat(void *target, t_parser *parser, t_lexer *lexer, int *i);
 
 // Function pointers utils.
 int		token_parse_utils_get_full_word(char **content, t_lexer *lexer, int *i);

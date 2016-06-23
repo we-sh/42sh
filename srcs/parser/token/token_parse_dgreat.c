@@ -55,7 +55,7 @@ static int	s_parse_right_redir(t_proc *p, t_lexer *lexer, int *i, int *fd)
 	return (ST_OK);
 }
 
-int			token_parse_dbl_chev_right(void *target, t_parser *parser, t_lexer *lexer, int *i)
+int			token_parse_dgreat(void *target, t_parser *parser, t_lexer *lexer, int *i)
 {
 	int	fd_l;
 	int	fd_r;
@@ -71,7 +71,7 @@ int			token_parse_dbl_chev_right(void *target, t_parser *parser, t_lexer *lexer,
 
 	log_trace("entering parsing token %-12s '>>'", "TT_REDIR");
 	fd_l = STDOUT_FILENO;
-	if (lexer->tokens[*i].code != TC_DBL_CHEV_RIGHT)
+	if (lexer->tokens[*i].code != TC_DGREAT)
 	{
 		if ((ret = s_open_new_fd_int(lexer->tokens[*i].content, &fd_l)) != ST_OK)
 			return (ret);

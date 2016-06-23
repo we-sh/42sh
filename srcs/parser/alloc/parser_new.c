@@ -18,8 +18,8 @@ static t_token g_token_redir_dbl_chev_right = {
 	">>",
 	2,
 	TT_REDIR,
-	TC_DBL_CHEV_RIGHT,
-	token_parse_dbl_chev_right
+	TC_DGREAT,
+	token_parse_dgreat
 };
 
 static t_token g_token_jobs_dbl_or = {
