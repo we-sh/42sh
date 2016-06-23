@@ -29,18 +29,15 @@ int			token_parse_pipe(void *target, t_parser *parser, t_lexer *lexer, int *i)
 	int		ret;
 
 	ret = ST_OK;
+
 	lexer->tokens[*i].is_redir_checked = 1;
 	if (TOKEN_CODE(*i) != TC_PIPE)
 		return (lexer->tokens[*i].parse(target, parser, lexer, i));
 
 	if (parser->mode == F_PARSING_JOBS)
-	{
 		ret = s_job((t_job *)target, lexer, i);
-	}
 	else if (parser->mode == F_PARSING_PROCS)
-	{
 		ret = s_proc((t_proc *)target, lexer, i);
-	}
 	(*i)++;
 	return (ret);
 }
