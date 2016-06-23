@@ -164,7 +164,7 @@ int		token_parse_none(void *target, t_parser *parser, t_lexer *lexer, int *i);
 
 // Jobs.
 int		token_parse_semi(void *target, t_parser *parser, t_lexer *lexer, int *i);
-int		token_parse_dbl_and(void *target, t_parser *parser, t_lexer *lexer, int *i);
+int		token_parse_and_if(void *target, t_parser *parser, t_lexer *lexer, int *i);
 int		token_parse_or_if(void *target, t_parser *parser, t_lexer *lexer, int *i);
 
 // Pipe,
@@ -174,9 +174,9 @@ int		token_parse_pipe(void *target, t_parser *parser, t_lexer *lexer, int *i);
 int		token_parse_and(void *target, t_parser *parser, t_lexer *lexer, int *i);
 
 // Redirections.
-int		token_parse_chev_left(void *target, t_parser *parser, t_lexer *lexer, int *i);
-int		token_parse_chev_right(void *target, t_parser *parser, t_lexer *lexer, int *i);
-int		token_parse_dbl_chev_left(void *target, t_parser *parser, t_lexer *lexer, int *i);
+int		token_parse_less(void *target, t_parser *parser, t_lexer *lexer, int *i);
+int		token_parse_great(void *target, t_parser *parser, t_lexer *lexer, int *i);
+int		token_parse_dless(void *target, t_parser *parser, t_lexer *lexer, int *i);
 int		token_parse_dgreat(void *target, t_parser *parser, t_lexer *lexer, int *i);
 int		token_parse_andgreat(void *target, t_parser *parser, t_lexer *lexer, int *i);
 
