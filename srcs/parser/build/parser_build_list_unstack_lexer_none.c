@@ -22,11 +22,17 @@ int	parser_build_list_unstack_lexer_none(t_parser *parser, t_lexer *lexer, int *
 			&& !(TOKEN_TYPE(*i) == TT_REDIR && TOKEN_CODE(*i) == TC_DLESS)
 			&& !((*i + 1 < lexer->size && TOKEN_CODE(*i) == TC_NONE && TOKEN_TYPE(*i + 1) == TT_REDIR && TOKEN_CODE(*i + 1) == TC_DLESS)))
 		{
-			if (TOKEN_TYPE(*i) == TT_ERROR)
+			// todo make all parser to support F_PARSING_NONE
+			if (TOKEN_TYPE(*i) == TT_ERROR
+				|| TOKEN_CODE(*i) == TC_GREATAND
+				|| TOKEN_CODE(*i) == TC_ANDGREAT)
 			{
-				log_error("here");
-				display_status(ST_PARSER_TOKEN, NULL, TOKEN_CONTENT(*i));
-				return (ST_PARSER_TOKEN);
+				ret = lexer->tokens[*i].parse(NULL, parser, lexer, i);
+				if (ret != ST_OK)
+				{
+					display_status(ST_PARSER_TOKEN, NULL, TOKEN_CONTENT(*i));
+					return (ST_PARSER_TOKEN);
+				}
 			}
 			(*i)++;
 		}
