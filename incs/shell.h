@@ -41,6 +41,7 @@
 # include <dirent.h>
 # include <sys/stat.h>
 # include <sys/ioctl.h>
+# include <fcntl.h>
 
 /*
 ** Shell structure
