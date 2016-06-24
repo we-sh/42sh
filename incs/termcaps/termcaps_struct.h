@@ -31,6 +31,8 @@ typedef struct	s_termcaps_context
 	t_list_head								history;
 
 	char									*buffer;
+	
+	//char									*checkparse;
 
 	t_sh									*sh;
 }				t_termcaps_context;

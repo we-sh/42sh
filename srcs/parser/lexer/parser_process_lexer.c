@@ -29,7 +29,7 @@ int			parser_process_lexer(t_parser *parser, const char *in)
 	if (!parser || !in)
 		return (ST_EINVAL);
 
-	log_info("lexer receives input : \"%s\"", in);
+//	log_info("lexer receives input : \"%s\"", in);
 	
 	parser->lexer->size = 0;
 	if ((ret = tokenize(in, parser)) != ST_OK)
@@ -39,7 +39,7 @@ int			parser_process_lexer(t_parser *parser, const char *in)
 	}
 	else
 	{
-		log_success("tokenization succeded, extract %d tokens", parser->lexer->size);
+	//	log_success("tokenization succeded, extract %d tokens", parser->lexer->size);
 		s_print(parser->lexer);
 	}
 	return (ST_OK);

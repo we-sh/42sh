@@ -57,7 +57,7 @@ int			parser(t_sh *sh, const char *in, int mode, t_list *target_list_head)
 
 	if (!sh || !in)
 		return (ST_EINVAL);
-	log_success("parser receives input : `%s' in mode %d", in, mode);
+//	log_success("parser receives input : `%s' in mode %d", in, mode);
 	if ((ret = parser_new(&parser, in, sh, mode)) != ST_OK)
 		return (ret);
 	// TODO: TRY TO MOVE IT TO parse_new.c

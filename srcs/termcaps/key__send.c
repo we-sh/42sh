@@ -102,13 +102,28 @@ int						key__send(t_termcaps_context *context)
 
 	if (context->state == STATE_REGULAR)
 	{
+		ft_bzero(command_line_cur, 2048);
 		ASSERT(list_head__command_line_to_buffer(&context->command_line,
 												sizeof(command_line_cur) - 1,
 												&command_line_cur_size,
 												command_line_cur));
-		if ((ret = parser(context->sh, command_line_cur + 3,
+		if ((ret = parser(context->sh, command_line_cur + context->prompt.size,
 							F_PARSING_TERMCAPS, NULL)) != ST_OK)
-			log_warn("should enter quoting context with token: %d", ret);
+		{
+			log_warn("ZOB");
+			log_warn("Actual commande line: %s", command_line_cur);
+			quoting_new_context(context, ret);
+			
+
+		// ft_bzero(command_line_cur, 2048);
+
+		// ASSERT(list_head__command_line_to_buffer(&context->command_line,
+		// 										sizeof(command_line_cur) - 1,
+		// 										&command_line_cur_size,
+		// 										command_line_cur));
+			log_warn("FINAL OUTPUT %s", command_line_cur);
+
+		}
 		if (g_child == 0)
 		{
 			termcaps_display_command_line(context);
