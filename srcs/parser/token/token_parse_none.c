@@ -24,7 +24,7 @@ static int	s_proc(t_proc *p, t_lexer *lexer, int *i)
 
 int	token_parse_none(void *target, t_parser *parser, t_lexer *lexer, int *i)
 {
-	log_trace("entering parsing token %-12s (type: %d) (code: %d)", "TT_NONE", lexer->tokens[*i].type, lexer->tokens[*i].code);
+	log_trace("entering parsing token %-12s (type: %d) (code: %d) (content:`%s')", "TT_NONE", lexer->tokens[*i].type, lexer->tokens[*i].code, TOKEN_CONTENT(*i));
 
 	int		ret;
 

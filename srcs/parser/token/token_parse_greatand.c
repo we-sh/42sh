@@ -13,12 +13,13 @@ static int	s_parse_right_redir_proc(t_proc *p, t_parser *parser, int *i, int *fd
 	}
 	else
 	{
+		token_parse_utils_skip_separators(parser->lexer, i, NULL);
 		if ((ret = token_parse_utils_check_char_to_fd(P_TOKEN_CONTENT(*i), fd)) != ST_OK)
 		{
-			token_parse_utils_skip_separators(parser->lexer, i, NULL);
 			str = NULL;
 			if ((ret = token_parse_utils_get_full_word(&str, parser->lexer, i)) != ST_OK)
 				return (ret);
+			(*i)--;
 			if ((ret = token_parse_utils_open_new_fd(p, str, fd, O_WRONLY | O_CREAT | O_TRUNC)) != ST_OK)
 				return (ret);
 			free(str);
@@ -88,6 +89,8 @@ static int	s_proc(t_proc *p, t_parser *parser, t_lexer *lexer, int *i)
 
 int			token_parse_greatand(void *target, t_parser *parser, t_lexer *lexer, int *i)
 {
+	log_trace("entering parsing token %-12s GREATAND (type: %d) (code: %d) `%s'", "TT_REDIR", TOKEN_TYPE(*i), TOKEN_CODE(*i), TOKEN_CONTENT(*i));
+
 	int		ret;
 
 	lexer->tokens[*i].is_redir_checked = 1;

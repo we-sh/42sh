@@ -74,7 +74,7 @@ static int	s_great_parse_proc(t_proc *target, t_parser *parser, t_lexer *lexer, 
 	if ((ret = s_parse_right_redir_proc((t_proc *)target, parser, i, &fd_r)) != ST_OK)
 		return (ret);
 	token_parse_utils_set_proc_fds(target, fd_l, fd_r);
-	(*i)++; // go on token after right part of the redirection
+	//(*i)++; // go on token after right part of the redirection
 	return (ST_OK);
 }
 
