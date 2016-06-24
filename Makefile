@@ -42,6 +42,7 @@ SRCS		=	\
 				parser/token/utils/token_parse_utils_set_proc_fds.c	\
 				parser/token/utils/token_parse_utils_skip_separators.c\
 				parser/token/utils/token_parse_utils_check_char_to_fd.c	\
+				parser/token/utils/token_parse_utils_gen_token_after_dash.c\
 				parser/token/utils/token_globing_parse_utils_push_str.c\
 				builtins/bg/builtin_bg.c		\
 				builtins/cd/builtin_cd.c		\
@@ -839,6 +840,22 @@ $(DIROBJ)token_parse_utils_check_char_to_fd.o: \
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/parser/token/utils/token_parse_utils_check_char_to_fd.c\n"
 		@$(CC) -c ./srcs/parser/token/utils/token_parse_utils_check_char_to_fd.c -o ./.objs/token_parse_utils_check_char_to_fd.o $(CPPFLAGS) $(CFLAGS) 
+
+$(DIROBJ)token_parse_utils_gen_token_after_dash.o: \
+  srcs/parser/token/utils/token_parse_utils_gen_token_after_dash.c \
+  incs/shell.h libs/libft/./incs/list.h incs/htabl.h incs/fnv.h \
+  incs/longlong.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
+  libs/libcaps/./incs/types.h incs/termcaps/log.h \
+  incs/termcaps/termcaps_struct.h incs/termcaps/key.h incs/redirection.h \
+  libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h \
+  libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
+  incs/statuses.h incs/option.h incs/job.h libs/libcaps/./incs/caps.h \
+  libs/libcaps/./incs/logger.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/parser.h \
+  incs/builtins/builtin.h incs/quoting.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/parser/token/utils/token_parse_utils_gen_token_after_dash.c\n"
+		@$(CC) -c ./srcs/parser/token/utils/token_parse_utils_gen_token_after_dash.c -o ./.objs/token_parse_utils_gen_token_after_dash.o $(CPPFLAGS) $(CFLAGS) 
 
 $(DIROBJ)token_globing_parse_utils_push_str.o: \
   srcs/parser/token/utils/token_globing_parse_utils_push_str.c \

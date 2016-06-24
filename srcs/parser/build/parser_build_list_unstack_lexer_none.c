@@ -29,10 +29,7 @@ int	parser_build_list_unstack_lexer_none(t_parser *parser, t_lexer *lexer, int *
 			{
 				ret = lexer->tokens[*i].parse(NULL, parser, lexer, i);
 				if (ret != ST_OK)
-				{
-					display_status(ST_PARSER_TOKEN, NULL, TOKEN_CONTENT(*i));
-					return (ST_PARSER_TOKEN);
-				}
+					return (ret);
 			}
 			(*i)++;
 		}

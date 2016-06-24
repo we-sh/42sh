@@ -13,12 +13,16 @@ void	token_parse_utils_set_proc_fds(t_proc *p, int fd_l, int fd_r)
 		}
 		if (fd_l == STDOUT_FILENO)
 		{
+			if (fd_r == STDERR_FILENO && p->stderr == -1)
+				fd_r = -1;
 			if (p->stdout != STDIN_FILENO && p->stdout != STDOUT_FILENO && p->stdout != STDERR_FILENO)
 				close(p->stdout);
 			p->stdout = fd_r;
 		}
 		if (fd_l == STDERR_FILENO)
 		{
+			if (fd_r == STDOUT_FILENO && p->stdout == -1)
+				fd_r = -1;
 			if (p->stderr != STDIN_FILENO && p->stderr != STDOUT_FILENO && p->stderr != STDERR_FILENO)
 				close(p->stderr);
 			p->stderr = fd_r;

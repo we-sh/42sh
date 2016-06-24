@@ -5,13 +5,11 @@ static int	s_parse_right_redir_proc(t_proc *target, t_parser *parser, int *i, in
 	int		ret;
 	char	*str;
 
-	if (P_TOKEN_CODE(*i) == TC_AND)
+	/*if (P_TOKEN_CODE(*i) == TC_AND)
 	{
 		(*i)++;
 		if (ft_strcmp(P_TOKEN_CONTENT(*i), "-") == 0)
-		{
 			*fd = -1;
-		}
 		else
 		{
 			if ((ret = token_parse_utils_check_char_to_fd(P_TOKEN_CONTENT(*i), fd)) != ST_OK)
@@ -22,18 +20,16 @@ static int	s_parse_right_redir_proc(t_proc *target, t_parser *parser, int *i, in
 		}
 	}
 	else
-	{
-		while (P_TOKEN_TYPE(*i) == TT_SEPARATOR || P_TOKEN_TYPE(*i) == TT_INHIBITOR)
-			(*i)++;
+	{*/
+		token_parse_utils_skip_separators(parser->lexer, i, NULL);
 		str = NULL;
 		if ((ret = token_parse_utils_get_full_word(&str, parser->lexer, i)) != ST_OK)
 			return (ret);
 		if ((ret = token_parse_utils_open_new_fd((t_proc *)target, str, fd, O_WRONLY | O_CREAT | O_TRUNC)) != ST_OK)
 			return (ret);
 		free(str);
-	}
+	//}
 	return (ST_OK);
-
 }
 
 /*
