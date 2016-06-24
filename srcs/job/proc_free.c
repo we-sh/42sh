@@ -16,17 +16,17 @@ void	proc_free(t_proc **p)
 		option_free(&opt);
 	}
 
-	if ((*p)->stdin != 0)
+	if ((*p)->stdin != STDIN_FILENO && (*p)->stdin != STDOUT_FILENO && (*p)->stdin != STDERR_FILENO)
 	{
 		log_info("closing non-standard stdin (%d)", (*p)->stdin);
 		close ((*p)->stdin);
 	}
-	if ((*p)->stdout != 1)
+	if ((*p)->stdout != STDIN_FILENO && (*p)->stdout != STDOUT_FILENO && (*p)->stdout != STDERR_FILENO)
 	{
 		log_info("closing non-standard stdin (%d)", (*p)->stdout);
 		close ((*p)->stdout);
 	}
-	if ((*p)->stderr != 2)
+	if ((*p)->stderr != STDIN_FILENO && (*p)->stderr != STDOUT_FILENO && (*p)->stderr != STDERR_FILENO)
 	{
 		log_info("closing non-standard stderr (%d)", (*p)->stderr);
 		close ((*p)->stderr);

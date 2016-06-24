@@ -10,6 +10,37 @@
 ** 4. Escape character `\`
 */
 
+
+
+/* -----------------------------------------------------------------
+** to be exported */
+int			token_parse_utils_get_word_and_inhib(char **content, t_lexer *lexer,
+				int *i)
+{
+	char	*tmp;
+
+	if ((*content = ft_strdup("")) == NULL)
+		return (ST_MALLOC);
+	while (*i < lexer->size && (TOKEN_TYPE(*i) == TT_INHIBITOR
+								|| TOKEN_TYPE(*i) == TT_NAME))
+	{
+		if ((tmp = ft_strjoin(*content, TOKEN_CONTENT(*i))) == NULL)
+			return (ST_MALLOC);
+		free(*content);
+		*content = tmp;
+		(*i)++;
+	}
+	return (ST_OK);
+}
+/* ------------------------------------------------------------------ */
+
+static void	s_free_argv(t_argv **argument)
+{
+	free((*argument)->buffer);
+	free(*argument);
+	*argument = NULL;
+}
+
 static char	*s_expand_escape_char_not_inhibited(char *str)
 {
 	size_t	i;
@@ -28,28 +59,70 @@ static char	*s_expand_escape_char_not_inhibited(char *str)
 	str[i] = '\0';
 	return (str);
 }
-
-static int	s_recursive(t_proc *p, int i, char *(func)(char *))
+/*
+static int	s_recursive(t_globing_param *params, t_lexer *lexer, int i)
 {
-	if (p->argv[i] == NULL)
+	if (TOKEN_TYPE(*i) != TT_NAME && TOKEN_TYPE(*i) != TT_INHIBITOR)
 		return (ST_OK);
-	func(p->argv[i]);
-	return (s_recursive(p, i + 1, func));
-}
 
-int			expand(t_sh *sh, t_proc *p, char *content, int is_inhibited)
-{
-	log_debug("exanding word: `%s`", content);
+	is_inhibited = 0;
+	if (TOKEN_TYPE(*i) == TT_INHIBITOR)
+	{
+		is_inhibited = 1;
+		(*i)++;
+	}
+
 	if (is_inhibited == 0)
 	{
-		if ((content = expand_tilde(sh, content)) == NULL)
-			return (ST_MALLOC);
+		if (params->depth == 1)
+			if (expand_tilde(params, lexer, i) != ST_OK)
+				return (ST_MALLOC);
 	}
-	if (ft_array_push_back(&p->argv, content) < 0)
-		return (ST_MALLOC);
-	p->argc++;
-	free(content);
+
 	if (is_inhibited == 1)
-		return (s_recursive(p, 0, &expand_escape_char));
-	return (s_recursive(p, 0, &s_expand_escape_char_not_inhibited));
+	{
+		(*i)++;
+	}
+
+	params.depth++;
+	return (s_recursive(params, p, lexer, i));
+}
+*/
+int			expand(t_lexer *lexer, t_proc *p, int *i)
+{
+	int		ret;
+	t_list	argv_list;
+	char	*words;
+
+	if ((ret = token_parse_utils_get_word_and_inhib(&words, lexer, i)) != ST_OK)
+		return (ret);
+
+	log_debug("word and inhibitors: `%s'", words);
+
+	INIT_LIST_HEAD(&argv_list);
+	ret = parser(lexer->sh, words, F_PARSING_GLOBING, &argv_list);
+	if (ret != ST_OK)
+		return (ret);
+
+	free(words);
+	log_debug("parser globing ret: %d", ret);
+
+	t_argv	*argument;
+	t_list	*pos;
+	t_list	*safe;
+	safe = argv_list.next;
+	while ((pos = safe) && safe != &argv_list)
+	{
+		safe = safe->next;
+		argument = CONTAINER_OF(pos, t_argv, argv_list);
+		log_trace("argv string expanded: `%s'", argument->buffer);
+		argument->buffer = s_expand_escape_char_not_inhibited(argument->buffer);
+		if ((ft_array_push_back(&p->argv, argument->buffer)) < 0)
+			return (ST_MALLOC);
+		p->argc++;
+		s_free_argv(&argument);
+		//free(pos);
+	}
+
+	return (ST_OK);
 }

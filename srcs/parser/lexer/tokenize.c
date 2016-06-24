@@ -77,7 +77,7 @@ static void		s_bufferize(const char *str, size_t len)
 ** Add buffer to lexer as TT_NAME and reset buffer.
 */
 
-static void		s_buffer_dump(t_lexer *lexer)
+static void		s_buffer_dump(t_parser *parser, t_lexer *lexer)
 {
 	t_token t;
 
@@ -87,7 +87,10 @@ static void		s_buffer_dump(t_lexer *lexer)
 		t.len = g_buf_index;
 		t.type = TT_NAME;
 		t.code = TC_NONE;
-		t.parse = token_parse_none;
+		if (parser->mode == F_PARSING_GLOBING)
+			t.parse = token_globing_parse_none;
+		else
+			t.parse = token_parse_none;
 		s_lexer_add(lexer, g_buf, t);
 		ft_bzero(g_buf, TOKEN_BUF_SIZE);
 		g_buf_index = 0;
@@ -141,14 +144,14 @@ int				tokenize(const char *s, t_parser *parser)
 		}
 		else if (token_found != NULL && is_inhibited == 0)
 		{
-			s_buffer_dump(parser->lexer);
+			s_buffer_dump(parser, parser->lexer);
 			s_lexer_add(parser->lexer, &s[i], *token_found);
 			i += token_found->len;
 		}
 		else
 			s_bufferize(&s[i++], 1);
 	}
-	s_buffer_dump(parser->lexer);
+	s_buffer_dump(parser, parser->lexer);
 	ret = s_inhibited_code(NULL);
 	if (parser->mode == F_PARSING_TERMCAPS)
 	{

@@ -9,18 +9,16 @@ static int	s_job(t_job *j, t_lexer *lexer, int *i)
 
 static int	s_proc(t_proc *p, t_lexer *lexer, int *i)
 {
-	char	*content;
-	int		is_inhibited;
 	int		ret;
 
-	is_inhibited = *i == 0 ? 0 : TOKEN_TYPE(*i - 1) == TT_INHIBITOR;
-	if ((ret = token_parse_utils_get_full_word(&content, lexer, i)) != ST_OK)
-		return (ret);
-	if ((ret = expand(lexer->sh, p, content, is_inhibited)) != ST_OK)
+	if (*i > 0 && TOKEN_TYPE(*i - 1) == TT_INHIBITOR)
+		(*i)--;
+	if ((ret = expand(lexer, p, i)) != ST_OK)
 	{
 		log_fatal("failed to expand at token #%d (content: `%s')", *i, TOKEN_CONTENT(*i));
 		return (ret);
 	}
+	(*i)--;
 	return (ST_OK);
 }
 
@@ -31,10 +29,10 @@ int	token_parse_none(void *target, t_parser *parser, t_lexer *lexer, int *i)
 	int		ret;
 
 	ret = ST_OK;
-	if (lexer->tokens[*i].type == TT_ERROR)
+	if (TOKEN_TYPE(*i) == TT_ERROR)
 		return (ST_PARSER);
 	if (lexer->tokens[*i].is_redir_checked == 0
-		&& (*i) + 1 < lexer->size && TOKEN_TYPE((*i) + 1) == TT_REDIR)
+		&& *i + 1 < lexer->size && TOKEN_TYPE(*i + 1) == TT_REDIR && TOKEN_CODE(*i + 1) != TC_PIPE)
 		return (lexer->tokens[*i + 1].parse(target, parser, lexer, i));
 	if (parser->mode == F_PARSING_JOBS)
 		ret = s_job((t_job *)target, lexer, i);

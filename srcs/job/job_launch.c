@@ -75,11 +75,11 @@ static int			s_job_setup(t_sh *sh, t_job *job)
 		if ((ret = s_proc_setup(CONTAINER_OF(pos, t_proc, list_proc),
 			sh, head, fds)) != ST_OK)
 			return (ret);
-		if (fds[FD_STDIN] != job->stdin)
+		if (fds[FD_STDIN] != STDIN_FILENO && fds[FD_STDIN] != STDOUT_FILENO && fds[FD_STDIN] != STDERR_FILENO)
 			close(fds[FD_STDIN]);
-		if (fds[FD_STDOUT] != job->stdout)
+		if (fds[FD_STDOUT] != STDIN_FILENO && fds[FD_STDOUT] != STDOUT_FILENO && fds[FD_STDOUT] != STDERR_FILENO)
 			close(fds[FD_STDOUT]);
-		if (fds[FD_STDERR] != job->stderr)
+		if (fds[FD_STDERR] != STDIN_FILENO && fds[FD_STDERR] != STDOUT_FILENO && fds[FD_STDERR] != STDERR_FILENO)
 			close(fds[FD_STDERR]);
 		fds[FD_STDIN] = fds[FD_PIPE_IN];
 	}

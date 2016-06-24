@@ -4,7 +4,7 @@
 ** Tilde `~` must be the first expansion to perform.
 */
 
-char		*expand_tilde(t_sh *sh, char *input)
+int			expand_tilde(t_globing_param *params, t_lexer *lexer, int *i)
 {
 	char	*tmp;
 	char	*output;

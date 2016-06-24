@@ -10,7 +10,7 @@ int		s_job(t_job *j, t_lexer *lexer, int *i)
 
 int		token_parse_separator(void *target, t_parser *parser, t_lexer *lexer, int *i)
 {
-	log_trace("entering parsing token %-12s '\'", "TT_SEPARATOR");
+	log_trace("entering parsing token %-12s `%s'", "TT_SEPARATOR", TOKEN_CONTENT(*i));
 
 	int	ret;
 

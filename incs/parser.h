@@ -64,6 +64,7 @@ typedef enum		e_token_code
 	TC_SPACE,
 	TC_TAB,
 	TC_NEWLINE,
+	TC_TILDE,
 	TC_NONE
 }					t_token_code;
 
@@ -110,7 +111,8 @@ typedef enum		s_parsing_mode
 	F_PARSING_NONE,
 	F_PARSING_TERMCAPS,
 	F_PARSING_JOBS,
-	F_PARSING_PROCS
+	F_PARSING_PROCS,
+	F_PARSING_GLOBING
 }					t_parsing_mode;
 
 /*
@@ -127,6 +129,17 @@ struct				s_parser
 	t_parsing_mode	mode;
 	t_sh			*sh;
 };
+
+/*
+** Expansion definitions
+*/
+
+typedef struct				s_argv
+{
+	t_list					argv_list;
+	char					*buffer;
+}							t_argv;
+
 
 /*
 ** Lexer functions.
@@ -147,14 +160,15 @@ int		parser_build_list_unstack_lexer(t_parser *parser);
 int		parser_build_list_unstack_lexer_none(t_parser *parser, t_lexer *lexer, int *i);
 int		parser_build_list_unstack_lexer_job(t_parser *parser, t_lexer *lexer, int *i);
 int		parser_build_list_unstack_lexer_proc(t_parser *parser, t_lexer *lexer, int *i);
+int		parser_build_list_unstack_lexer_globing(t_parser *parser, t_lexer *lexer, int *i);
 
 /*
 ** Expansion.
 */
 
-int		expand(t_sh *sh, t_proc *p, char *content, int is_inhibited);
+int		expand(t_lexer *lexer, t_proc *p, int *i);
 char	*expand_escape_char(char *buf);
-char	*expand_tilde(t_sh *sh, char *buf);
+//int		expand_tilde(t_globing_param *params, t_lexer *lexer, int i);
 
 /*
 ** Function pointers for the parser.
@@ -188,11 +202,16 @@ int		token_parse_utils_open_new_fd(t_proc *p, char *f, int *fd, int flag);
 void	token_parse_utils_set_proc_fds(t_proc *p, int fd_l, int fd_r);
 int		token_parse_utils_push_command(char *content, char **target);
 int		token_parse_utils_check_char_to_fd(char *f, int *fd);
+int		token_globing_parse_utils_push_str(t_list *head, char *str);
 
 // Inhibitors.
 int		token_parse_inhib(void *target, t_parser *parser, t_lexer *lexer, int *i);
 
 // Separators.
 int		token_parse_separator(void *target, t_parser *parser, t_lexer *lexer, int *i);
+
+// Globing
+int		token_globing_parse_none(void *target, t_parser *parser, t_lexer *lexer, int *i);
+int		token_globing_parse_inhib(void *target, t_parser *parser, t_lexer *lexer, int *i);
 
 #endif
