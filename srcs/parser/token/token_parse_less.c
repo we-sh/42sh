@@ -21,26 +21,26 @@ static int	s_parse_right_redir(void *target, t_parser *parser, int *i, int *fd)
 	int		ret;
 	char	*str;
 
-	if (parser->lexer->tokens[*i].code == TC_AND)
+	if (parser->lexer->tokens[*i]->code == TC_AND)
 	{
 		(*i)++;
-		if (ft_strcmp(parser->lexer->tokens[*i].content, "-") == 0)
+		if (ft_strcmp(parser->lexer->tokens[*i]->content, "-") == 0)
 			*fd = -1;
-		else if ((ret = s_open_new_fd_int(parser->lexer->tokens[*i].content,
+		else if ((ret = s_open_new_fd_int(parser->lexer->tokens[*i]->content,
 			fd)) != ST_OK)
 			return (ret);
 	}
 	else
 	{
-		while (parser->lexer->tokens[*i].type == TT_SEPARATOR
-			|| parser->lexer->tokens[*i].type == TT_INHIBITOR)
+		while (parser->lexer->tokens[*i]->type == TT_SEPARATOR
+			|| parser->lexer->tokens[*i]->type == TT_INHIBITOR)
 		{
 
 			if (parser->mode == F_PARSING_JOBS)
 			{
 				t_job *j;
 				j = (t_job *)target;
-				token_parse_utils_push_command(parser->lexer->tokens[*i].content, &j->command);
+				token_parse_utils_push_command(parser->lexer->tokens[*i]->content, &j->command);
 			}
 			(*i)++;
 		}
@@ -77,9 +77,9 @@ int			token_parse_less(void *target, t_parser *parser, t_lexer *lexer, int *i)
 	// todo: use parsing mode to customize what this function does
 
 	fd_l = STDIN_FILENO;
-	if (lexer->tokens[*i].code != TC_LESS)
+	if (lexer->tokens[*i]->code != TC_LESS)
 	{
-		if ((ret = s_open_new_fd_int(lexer->tokens[*i].content,
+		if ((ret = s_open_new_fd_int(lexer->tokens[*i]->content,
 			&fd_l)) != ST_OK)
 			return (ret);
 
@@ -87,7 +87,7 @@ int			token_parse_less(void *target, t_parser *parser, t_lexer *lexer, int *i)
 		{
 			t_job *j;
 			j = (t_job *)target;
-			token_parse_utils_push_command(lexer->tokens[*i].content, &j->command);
+			token_parse_utils_push_command(lexer->tokens[*i]->content, &j->command);
 		}
 		(*i)++;
 	}
@@ -96,7 +96,7 @@ int			token_parse_less(void *target, t_parser *parser, t_lexer *lexer, int *i)
 	{
 		t_job *j;
 		j = (t_job *)target;
-		token_parse_utils_push_command(lexer->tokens[*i].content, &j->command);
+		token_parse_utils_push_command(lexer->tokens[*i]->content, &j->command);
 	}
 	(*i)++;
 

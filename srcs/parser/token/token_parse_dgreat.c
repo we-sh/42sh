@@ -40,16 +40,16 @@ static void	s_set_proc_fds(t_proc *p, int fd_l, int fd_r)
 
 static int	s_parse_right_redir(t_proc *p, t_lexer *lexer, int *i, int *fd)
 {
-	if (lexer->tokens[*i].code == TC_AND)
+	if (lexer->tokens[*i]->code == TC_AND)
 		return (ST_PARSER);
 	else
 	{
-		while (lexer->tokens[*i].type == TT_SEPARATOR)
+		while (lexer->tokens[*i]->type == TT_SEPARATOR)
 			(*i)++;
-		if (lexer->tokens[*i].code != TC_NONE)
+		if (lexer->tokens[*i]->code != TC_NONE)
 			return (ST_PARSER);
-		log_info("%s", lexer->tokens[*i].content);
-		token_parse_utils_open_new_fd(p, lexer->tokens[*i].content, fd, O_WRONLY | O_CREAT | O_APPEND);
+		log_info("%s", lexer->tokens[*i]->content);
+		token_parse_utils_open_new_fd(p, lexer->tokens[*i]->content, fd, O_WRONLY | O_CREAT | O_APPEND);
 		log_info("%d", *fd);
 	}
 	return (ST_OK);
@@ -71,9 +71,9 @@ int			token_parse_dgreat(void *target, t_parser *parser, t_lexer *lexer, int *i)
 
 	log_trace("entering parsing token %-12s '>>'", "TT_REDIR");
 	fd_l = STDOUT_FILENO;
-	if (lexer->tokens[*i].code != TC_DGREAT)
+	if (lexer->tokens[*i]->code != TC_DGREAT)
 	{
-		if ((ret = s_open_new_fd_int(lexer->tokens[*i].content, &fd_l)) != ST_OK)
+		if ((ret = s_open_new_fd_int(lexer->tokens[*i]->content, &fd_l)) != ST_OK)
 			return (ret);
 		(*i)++;
 	}

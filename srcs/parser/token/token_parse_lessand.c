@@ -40,7 +40,7 @@ static int	s_jobs(t_job *j, t_parser *parser, t_lexer *lexer, int *i)
 
 	if (TOKEN_CODE(*i) != TC_LESSAND)
 	{
-		ret = lexer->tokens[*i].parse((void *)j, parser, lexer, i);
+		ret = lexer->tokens[*i]->parse((void *)j, parser, lexer, i);
 		if (ret != ST_OK)
 			return (ret);
 	}
@@ -65,7 +65,7 @@ int			token_parse_lessand(void *target, t_parser *parser, t_lexer *lexer, int *i
 
 	int		ret;
 
-	lexer->tokens[*i].is_redir_checked = 1;
+	lexer->tokens[*i]->is_redir_checked = 1;
 	ret = ST_OK;
 
 	if (parser->mode == F_PARSING_PROCS)

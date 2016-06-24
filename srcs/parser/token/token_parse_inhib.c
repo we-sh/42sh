@@ -12,13 +12,18 @@ int		token_parse_inhib(void *target, t_parser *parser, t_lexer *lexer, int *i)
 	(void)lexer;
 	(void)i;
 
+	int ret;
+
+	ret = ST_OK;
 	if (parser->mode == F_PARSING_JOBS)
 	{
 		t_job *j;
 		j = (t_job *)target;
-		token_parse_utils_push_command(lexer->tokens[*i].content, &j->command);
+		ret = token_parse_utils_push_command(TOKEN_CONTENT(*i), &j->command);
+		if (ret != ST_OK)
+			return (ret);
 	}
 	(*i)++;
 
-	return (0);
+	return (ret);
 }

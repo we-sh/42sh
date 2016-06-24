@@ -52,7 +52,7 @@ static int	s_jobs(t_job *j, t_parser *parser, t_lexer *lexer, int *i)
 
 	if (TOKEN_CODE(*i) != TC_GREATAND)
 	{
-		ret = lexer->tokens[*i].parse((void *)j, parser, lexer, i);
+		ret = lexer->tokens[*i]->parse((void *)j, parser, lexer, i);
 		if (ret != ST_OK)
 			return (ret);
 	}
@@ -73,7 +73,7 @@ static int	s_proc(t_proc *p, t_parser *parser, t_lexer *lexer, int *i)
 	{
 		if ((token_parse_utils_check_char_to_fd(TOKEN_CONTENT(*i), &fd_l)) != ST_OK)
 		{
-			ret = lexer->tokens[*i].parse((void *)p, parser, lexer, i);
+			ret = lexer->tokens[*i]->parse((void *)p, parser, lexer, i);
 			if (ret != ST_OK)
 				return (ret);
 		}
@@ -93,7 +93,7 @@ int			token_parse_greatand(void *target, t_parser *parser, t_lexer *lexer, int *
 
 	int		ret;
 
-	lexer->tokens[*i].is_redir_checked = 1;
+	lexer->tokens[*i]->is_redir_checked = 1;
 	ret = ST_OK;
 
 	if (parser->mode == F_PARSING_NONE)

@@ -16,9 +16,9 @@ int	parser_build_list_unstack_lexer_job(t_parser *parser, t_lexer *lexer, int *i
 		if (!(j = job_alloc("")))
 			return (ST_MALLOC);
 
-		while (*i < lexer->size && lexer->tokens[*i].type != TT_JOBS)
+		while (*i < lexer->size && TOKEN_TYPE(*i) != TT_JOBS)
 		{
-			ret = lexer->tokens[*i].parse((void *)j, parser, lexer, i);
+			ret = lexer->tokens[*i]->parse((void *)j, parser, lexer, i);
 			if (ret != ST_OK)
 			{
 				job_free(&j);
@@ -28,7 +28,7 @@ int	parser_build_list_unstack_lexer_job(t_parser *parser, t_lexer *lexer, int *i
 
 		if (*i < lexer->size)
 		{
-			ret = lexer->tokens[*i].parse((void *)j, parser, lexer, i);
+			ret = lexer->tokens[*i]->parse((void *)j, parser, lexer, i);
 			if (ret != ST_OK)
 			{
 				job_free(&j);

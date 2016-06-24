@@ -22,7 +22,7 @@ int		parser_build_list_unstack_lexer_proc(t_parser *parser, t_lexer *lexer, int 
 			&& !(TOKEN_TYPE(*i) == TT_REDIR && TOKEN_CODE(*i) == TC_PIPE))
 		{
 
-			ret = lexer->tokens[*i].parse((void *)p, parser, lexer, i);
+			ret = lexer->tokens[*i]->parse((void *)p, parser, lexer, i);
 			if (ret != ST_OK)
 			{
 				proc_free(&p);
@@ -32,7 +32,7 @@ int		parser_build_list_unstack_lexer_proc(t_parser *parser, t_lexer *lexer, int 
 
 		if (*i < lexer->size)
 		{
-			ret = lexer->tokens[*i].parse((void *)p, parser, lexer, i);
+			ret = lexer->tokens[*i]->parse((void *)p, parser, lexer, i);
 			if (ret != ST_OK)
 			{
 				proc_free(&p);

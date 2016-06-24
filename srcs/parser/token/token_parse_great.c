@@ -62,7 +62,7 @@ static int	s_great_parse_proc(t_proc *target, t_parser *parser, t_lexer *lexer, 
 		}
 		else if ((token_parse_utils_check_char_to_fd(TOKEN_CONTENT(*i), &fd_l)) != ST_OK)
 		{
-			ret = lexer->tokens[*i].parse((void *)target, parser, lexer, i);
+			ret = lexer->tokens[*i]->parse((void *)target, parser, lexer, i);
 			if (ret != ST_OK)
 				return (ret);
 			log_error("ici");
@@ -89,7 +89,7 @@ static int	s_great_parse_jobs(t_job *j, t_parser *parser, t_lexer *lexer, int *i
 
 	if (TOKEN_CODE(*i) != TC_GREAT)
 	{
-		ret = lexer->tokens[*i].parse((void *)j, parser, lexer, i);
+		ret = lexer->tokens[*i]->parse((void *)j, parser, lexer, i);
 		if (ret != ST_OK)
 			return (ret);
 	}
@@ -119,7 +119,7 @@ int			token_parse_great(void *target, t_parser *parser, t_lexer *lexer, int *i)
 
 	int		ret;
 
-	lexer->tokens[*i].is_redir_checked = 1;
+	lexer->tokens[*i]->is_redir_checked = 1;
 	ret = ST_OK;
 
 	if (parser->mode == F_PARSING_PROCS)

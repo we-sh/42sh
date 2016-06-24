@@ -7,8 +7,18 @@
 
 static int	s_parser_callback(t_parser **parser)
 {
+	int		i;
+
 	if (!(*parser))
 		return (ST_EINVAL);
+	i = 0;
+	while (i < (*parser)->lexer->size)
+	{
+		free((*parser)->lexer->tokens[i]->content);
+		free((*parser)->lexer->tokens[i]);
+		i++;
+	}
+	free((*parser)->lexer->tokens);
 	if ((*parser)->in)
 		ft_strdel(&((*parser)->in));
 	if ((*parser)->lexer)

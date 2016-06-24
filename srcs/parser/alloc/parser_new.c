@@ -7,220 +7,274 @@
 
 static t_token g_token_redir_dless = {
 	"<<",
+	NULL,
 	2,
 	TT_REDIR,
 	TC_DLESS,
-	token_parse_dless
+	token_parse_dless,
+	0
 };
 
 static t_token g_token_redir_dgreat = {
 	">>",
+	NULL,
 	2,
 	TT_REDIR,
 	TC_DGREAT,
-	token_parse_dgreat
+	token_parse_dgreat,
+	0
 };
 
 static t_token g_token_jobs_or_if = {
 	"||",
+	NULL,
 	2,
 	TT_JOBS,
 	TC_OR_IF,
-	token_parse_or_if
+	token_parse_or_if,
+	0
 };
 
 static t_token g_token_jobs_and_if = {
 	"&&",
+	NULL,
 	2,
 	TT_JOBS,
 	TC_AND_IF,
-	token_parse_and_if
+	token_parse_and_if,
+	0
 };
 
 static t_token g_token_error_dsemi = {
 	";;",
+	NULL,
 	2,
 	TT_ERROR,
 	TC_DSEMI,
-	token_parse_none
+	token_parse_none,
+	0
 };
 
 static t_token g_token_redir_clobber = {
 	">|",
+	NULL,
 	2,
 	TT_REDIR,
 	TC_CLOBBER,
-	token_parse_great
+	token_parse_great,
+	0
 };
 
 static t_token g_token_redir_andgreat = {
 	"&>",
+	NULL,
 	2,
 	TT_REDIR,
 	TC_ANDGREAT,
-	token_parse_andgreat
+	token_parse_andgreat,
+	0
 };
 
 static t_token g_token_redir_greatand = {
 	">&",
+	NULL,
 	2,
 	TT_REDIR,
 	TC_GREATAND,
-	token_parse_greatand
+	token_parse_greatand,
+	0
 };
 
 static t_token g_token_redir_lessand = {
 	"<&",
+	NULL,
 	2,
 	TT_REDIR,
 	TC_LESSAND,
-	token_parse_lessand
+	token_parse_lessand,
+	0
 };
 
 static t_token g_token_jobs_semi = {
 	";",
+	NULL,
 	1,
 	TT_JOBS,
 	TC_SEMI,
-	token_parse_semi
+	token_parse_semi,
+	0
 };
 
 static t_token g_token_redir_great = {
 	">",
+	NULL,
 	1,
 	TT_REDIR,
 	TC_GREAT,
-	token_parse_great
+	token_parse_great,
+	0
 };
 
 static t_token g_token_redir_less = {
 	"<",
+	NULL,
 	1,
 	TT_REDIR,
 	TC_LESS,
-	token_parse_less
+	token_parse_less,
+	0
 };
 
 static t_token g_token_redir_pipe = {
 	"|",
+	NULL,
 	1,
 	TT_REDIR,
 	TC_PIPE,
-	token_parse_pipe
+	token_parse_pipe,
+	0
 };
 
 static t_token g_token_special_and = {
 	"&",
+	NULL,
 	1,
 	TT_SPECIAL,
 	TC_AND,
-	token_parse_and
+	token_parse_and,
+	0
 };
 
 static t_token g_token_inhibitor_dquote = {
 	"\"",
+	NULL,
 	1,
 	TT_INHIBITOR,
 	TC_DQUOTE,
-	token_parse_inhib
+	token_parse_inhib,
+	0
 };
 
 static t_token g_token_inhibitor_quote = {
 	"'",
+	NULL,
 	1,
 	TT_INHIBITOR,
 	TC_QUOTE,
-	token_parse_inhib
+	token_parse_inhib,
+	0
 };
 
 static t_token g_token_separator_space = {
 	" ",
+	NULL,
 	1,
 	TT_SEPARATOR,
 	TC_SPACE,
-	token_parse_separator
+	token_parse_separator,
+	0
 };
 
 static t_token g_token_separator_tab = {
 	"\t",
+	NULL,
 	1,
 	TT_SEPARATOR,
 	TC_TAB,
-	token_parse_separator
+	token_parse_separator,
+	0
 };
 
 static t_token g_token_separator_newline = {
 	"\n",
+	NULL,
 	1,
 	TT_SEPARATOR,
 	TC_NEWLINE,
-	token_parse_separator
+	token_parse_separator,
+	0
 };
 
 static t_token g_token_name_backslash = {
 	"\\",
+	NULL,
 	1,
 	TT_NAME,
 	TC_BACKSLASH,
-	token_parse_none
+	token_parse_none,
+	0
 };
 
 static t_token g_token_name_bquote = {
 	"`",
+	NULL,
 	1,
 	TT_NAME,
 	TC_BQUOTE,
-	token_parse_none
+	token_parse_none,
+	0
 };
 
 static t_token g_token_name_lbrace = {
 	"{",
+	NULL,
 	1,
 	TT_NAME,
 	TC_LBRACE,
-	token_parse_none
+	token_parse_none,
+	0
 };
 
 static t_token g_token_name_rbrace = {
 	"}",
+	NULL,
 	1,
 	TT_NAME,
 	TC_RBRACE,
-	token_parse_none
+	token_parse_none,
+	0
 };
 
 
 
 static t_token g_token_globing_inhibitor_dquote = {
 	"\"",
+	NULL,
 	1,
 	TT_INHIBITOR,
 	TC_DQUOTE,
-	token_globing_parse_inhib
+	token_globing_parse_inhib,
+	0
 };
 
 static t_token g_token_globing_inhibitor_quote = {
 	"'",
+	NULL,
 	1,
 	TT_INHIBITOR,
 	TC_QUOTE,
-	token_globing_parse_inhib
+	token_globing_parse_inhib,
+	0
 };
 
 static t_token g_token_globing_name_tilde = {
 	"~",
+	NULL,
 	1,
 	TT_NAME,
 	TC_TILDE,
-	token_globing_parse_none
+	token_globing_parse_none,
+	0
 };
 
 static t_token g_token_globing_name_backslash = {
 	"\\",
+	NULL,
 	1,
 	TT_NAME,
 	TC_BACKSLASH,
-	token_globing_parse_none
+	token_globing_parse_none,
+	0
 };
 
 
@@ -280,7 +334,23 @@ int	parser_new(t_parser **parser, const char *in, t_sh *sh, int mode)
 	if (!((*parser)->lexer = ft_memalloc(sizeof(t_lexer))))
 		return (ST_MALLOC);
 	(*parser)->lexer->sh = sh;
-	// TODO : make dynamic token list
+	(*parser)->lexer->size = 0;
+
+	if (((*parser)->lexer->tokens = (t_token **)malloc(sizeof(t_token *) * (TOKEN_LIST_REALLOC + 1))) == NULL)
+		return (ST_MALLOC);
+
+	int i = 0;
+	while (i < TOKEN_LIST_REALLOC)
+	{
+		log_info("set to NULL index: %d", i);
+		(*parser)->lexer->tokens[i] = NULL;
+		i++;
+	}
+	(*parser)->lexer->tokens[i] = NULL;
+
+	(*parser)->lexer->size = 0;
+	(*parser)->lexer->size_allocated = TOKEN_LIST_REALLOC;
+
 	(*parser)->mode = mode;
 	(*parser)->target_list_head = NULL;
 	(*parser)->sh = sh;

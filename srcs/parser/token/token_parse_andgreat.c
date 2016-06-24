@@ -40,10 +40,10 @@ static int	s_proc(t_proc *p, t_parser *parser, t_lexer *lexer, int *i)
 	{
 		fd = -1;
 		ft_strcpy(TOKEN_CONTENT(*i), TOKEN_CONTENT(*i) + 1);
-		lexer->tokens[*i].type = TT_NAME;
-		lexer->tokens[*i].code = TC_NONE;
-		lexer->tokens[*i].parse = token_parse_none;
-		ret = lexer->tokens[*i].parse((void *)p, parser, lexer, i);
+		lexer->tokens[*i]->type = TT_NAME;
+		lexer->tokens[*i]->code = TC_NONE;
+		lexer->tokens[*i]->parse = token_parse_none;
+		ret = lexer->tokens[*i]->parse((void *)p, parser, lexer, i);
 	}
 	else
 	{
@@ -65,11 +65,11 @@ int			token_parse_andgreat(void *target, t_parser *parser, t_lexer *lexer, int *
 
 	int		ret;
 
-	lexer->tokens[*i].is_redir_checked = 1;
+	lexer->tokens[*i]->is_redir_checked = 1;
 	ret = ST_OK;
 
 	if (TOKEN_CODE(*i) != TC_ANDGREAT)
-		return (lexer->tokens[*i].parse(target, parser, lexer, i));
+		return (lexer->tokens[*i]->parse(target, parser, lexer, i));
 
 	if (parser->mode == F_PARSING_NONE)
 		ret = s_none(lexer, i);

@@ -96,9 +96,9 @@ int				token_parse_dless(void *target, t_parser *parser,
 
 	int					ret;
 
-	lexer->tokens[*i].is_redir_checked = 1;
+	lexer->tokens[*i]->is_redir_checked = 1;
 	if (TOKEN_CODE(*i) != TC_DLESS)
-		return (lexer->tokens[*i].parse(target, parser, lexer, i));
+		return (lexer->tokens[*i]->parse(target, parser, lexer, i));
 	ret = ST_OK;
 	if (parser->mode == F_PARSING_JOBS)
 		ret = s_job((t_job *)target, lexer, i);

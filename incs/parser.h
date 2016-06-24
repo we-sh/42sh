@@ -6,23 +6,22 @@
 # include "statuses.h"
 # include "shell.h"
 
-# define TOKEN_BUF_SIZE 256
+# define TOKEN_BUFFER_REALLOC 512
+# define TOKEN_LIST_REALLOC 2
 
-# define TOKEN_CODE(i)		({lexer->tokens[i].code;})
-# define TOKEN_CONTENT(i)	({lexer->tokens[i].content;})
-# define TOKEN_TYPE(i)		({lexer->tokens[i].type;})
+# define TOKEN_CODE(i)		({lexer->tokens[i]->code;})
+# define TOKEN_CONTENT(i)	({lexer->tokens[i]->content;})
+# define TOKEN_TYPE(i)		({lexer->tokens[i]->type;})
 
-# define P_TOKEN_CODE(i)	({parser->lexer->tokens[i].code;})
-# define P_TOKEN_CONTENT(i)	({parser->lexer->tokens[i].content;})
-# define P_TOKEN_TYPE(i)	({parser->lexer->tokens[i].type;})
+# define P_TOKEN_CODE(i)	({parser->lexer->tokens[i]->code;})
+# define P_TOKEN_CONTENT(i)	({parser->lexer->tokens[i]->content;})
+# define P_TOKEN_TYPE(i)	({parser->lexer->tokens[i]->type;})
 
 /*
 ** Typedefs.
 */
 
 typedef struct s_token			t_token;
-/* TODO " sure we can delete one of t_token or t_lexer_token... */
-typedef struct s_lexer_token	t_lexer_token;
 typedef struct s_lexer			t_lexer;
 
 typedef struct s_parser			t_parser;
@@ -75,36 +74,25 @@ typedef enum		e_token_code
 }					t_token_code;
 
 /*
-** This structure is used into token recognition
+** This structure is used to fill lexer.
 */
 
 struct				s_token
 {
 	const char		*op;
-	size_t			len;
+	char			*content;
+	int				len;
 	t_token_type	type;
 	t_token_code	code;
 	int				(*parse)(void *, t_parser *, t_lexer *, int *);
-};
-
-/*
-** This structure is used to fill lexer.
-*/
-
-struct				s_lexer_token
-{
-	char			content[256];
 	int				is_redir_checked;
-	size_t			len;
-	t_token_type	type;
-	t_token_code	code;
-	int				(*parse)(void *, t_parser *, t_lexer *, int *);
 };
 
 struct				s_lexer
 {
-	t_lexer_token	tokens[2048];
+	t_token			**tokens;
 	int				size;
+	int				size_allocated;
 	t_sh			*sh;
 };
 

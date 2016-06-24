@@ -12,8 +12,8 @@ static void	s_print(const t_lexer *lexer)
 	while (i < lexer->size)
 	{
 		log_debug("tokens[%d] (TT %d - TC %2d) => \"%s\"", i,
-				lexer->tokens[i].type, lexer->tokens[i].code,
-				lexer->tokens[i].content);
+				TOKEN_TYPE(i), TOKEN_CODE(i),
+				TOKEN_CONTENT(i));
 		i++;
 	}
 }
