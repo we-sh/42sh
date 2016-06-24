@@ -70,7 +70,8 @@ typedef enum		e_token_code
 	TC_TAB,
 	TC_NEWLINE,
 	TC_TILDE,
-	TC_NONE
+	TC_NONE,
+	TC_TOTAL
 }					t_token_code;
 
 /*
@@ -130,7 +131,7 @@ struct				s_parser
 	t_lexer			*lexer;
 	t_list			*target_list_head;
 	int				(*unstack_func)(t_parser *, t_lexer *, int *);
-	t_token			*token_list[20];
+	t_token			*token_list[TC_TOTAL];
 	t_parsing_mode	mode;
 	t_sh			*sh;
 };

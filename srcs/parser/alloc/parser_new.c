@@ -5,7 +5,6 @@
 ** The input string is duplicated and the other are allocated.
 */
 
-
 static t_token g_token_redir_dless = {
 	"<<",
 	2,

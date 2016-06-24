@@ -156,7 +156,11 @@ int				tokenize(const char *s, t_parser *parser)
 	if (parser->mode == F_PARSING_TERMCAPS)
 	{
 		if (ret == 0 && token_found)
+		{
+			if (parser->lexer->size == 1 && token_found->code == TC_LBRACE)
+				return (TC_LBRACE);
 			ret = token_found->code == TC_BACKSLASH ? TC_BACKSLASH : 0;
+		}
 	}
 	else
 		ret = ret != 0 ? ST_LEXER : ST_OK;

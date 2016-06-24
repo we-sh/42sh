@@ -33,7 +33,6 @@ static int	s_parser_process(t_sh *sh, t_parser *parser)
 
 	if (!sh || !parser)
 		return (ST_EINVAL);
-
 	if ((ret = parser_process_lexer(parser, parser->in)) != ST_OK)
 		return (ret);
 	if (!(parser->lexer))
@@ -57,6 +56,8 @@ int			parser(t_sh *sh, const char *in, int mode, t_list *target_list_head)
 
 	if (!sh || !in)
 		return (ST_EINVAL);
+	if (mode == F_PARSING_TERMCAPS && in[0] == '\0')
+		return (ST_OK);
 	log_info("parser receives input : `%s' in mode %d", in, mode);
 	if ((ret = parser_new(&parser, in, sh, mode)) != ST_OK)
 		return (ret);
