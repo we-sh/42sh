@@ -58,6 +58,11 @@ typedef enum		e_token_code
 	TC_PIPE,
 	TC_AND,
 	TC_ANDGREAT,
+	TC_GREATAND,
+	TC_LESSAND,
+	TC_LBRACE,
+	TC_RBRACE,
+	TC_BQUOTE,
 	TC_BACKSLASH,
 	TC_DQUOTE,
 	TC_QUOTE,
@@ -194,6 +199,8 @@ int		token_parse_great(void *target, t_parser *parser, t_lexer *lexer, int *i);
 int		token_parse_dless(void *target, t_parser *parser, t_lexer *lexer, int *i);
 int		token_parse_dgreat(void *target, t_parser *parser, t_lexer *lexer, int *i);
 int		token_parse_andgreat(void *target, t_parser *parser, t_lexer *lexer, int *i);
+int		token_parse_greatand(void *target, t_parser *parser, t_lexer *lexer, int *i);
+int		token_parse_lessand(void *target, t_parser *parser, t_lexer *lexer, int *i);
 
 // Function pointers utils.
 int		token_parse_utils_skip_separators(t_lexer *lexer, int *i, char **command);
@@ -207,8 +214,16 @@ int		token_globing_parse_utils_push_str(t_list *head, char *str);
 // Inhibitors.
 int		token_parse_inhib(void *target, t_parser *parser, t_lexer *lexer, int *i);
 
+// Substitution
+int		token_parse_bquote(void *target, t_parser *parser, t_lexer *lexer, int *i);
+
+
 // Separators.
 int		token_parse_separator(void *target, t_parser *parser, t_lexer *lexer, int *i);
+
+// Globing.
+int		token_parse_lbrace(void *target, t_parser *parser, t_lexer *lexer, int *i);
+int		token_parse_rbrace(void *target, t_parser *parser, t_lexer *lexer, int *i);
 
 // Globing
 int		token_globing_parse_none(void *target, t_parser *parser, t_lexer *lexer, int *i);

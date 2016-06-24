@@ -62,6 +62,22 @@ static t_token g_token_redir_andgreat = {
 	token_parse_andgreat
 };
 
+static t_token g_token_redir_greatand = {
+	">&",
+	2,
+	TT_REDIR,
+	TC_GREATAND,
+	token_parse_greatand
+};
+
+static t_token g_token_redir_lessand = {
+	"<&",
+	2,
+	TT_REDIR,
+	TC_LESSAND,
+	token_parse_lessand
+};
+
 static t_token g_token_jobs_semi = {
 	";",
 	1,
@@ -150,6 +166,30 @@ static t_token g_token_name_backslash = {
 	token_parse_none
 };
 
+static t_token g_token_name_bquote = {
+	"`",
+	1,
+	TT_NAME,
+	TC_BQUOTE,
+	token_parse_none
+};
+
+static t_token g_token_name_lbrace = {
+	"{",
+	1,
+	TT_NAME,
+	TC_LBRACE,
+	token_parse_none
+};
+
+static t_token g_token_name_rbrace = {
+	"}",
+	1,
+	TT_NAME,
+	TC_RBRACE,
+	token_parse_none
+};
+
 
 
 static t_token g_token_globing_inhibitor_dquote = {
@@ -210,6 +250,8 @@ static int	s_build_token_command_line(t_parser *parser)
 	parser->token_list[i++] = &g_token_error_dsemi;
 	parser->token_list[i++] = &g_token_redir_clobber;
 	parser->token_list[i++] = &g_token_redir_andgreat;
+	parser->token_list[i++] = &g_token_redir_greatand;
+	parser->token_list[i++] = &g_token_redir_lessand;
 	parser->token_list[i++] = &g_token_jobs_semi;
 	parser->token_list[i++] = &g_token_redir_great;
 	parser->token_list[i++] = &g_token_redir_less;
@@ -221,6 +263,9 @@ static int	s_build_token_command_line(t_parser *parser)
 	parser->token_list[i++] = &g_token_separator_space;
 	parser->token_list[i++] = &g_token_separator_tab;
 	parser->token_list[i++] = &g_token_separator_newline;
+	parser->token_list[i++] = &g_token_name_rbrace;
+	parser->token_list[i++] = &g_token_name_lbrace;
+	parser->token_list[i++] = &g_token_name_bquote;
 	parser->token_list[i++] = NULL;
 	return (ST_OK);
 }
