@@ -66,10 +66,13 @@ static int	s_great_parse_proc(t_proc *target, t_parser *parser, t_lexer *lexer, 
 		}
 		else if ((token_parse_utils_check_char_to_fd(TOKEN_CONTENT(*i), &fd_l)) != ST_OK)
 		{
-			if ((ret = token_parse_none((void *)target, parser, lexer, i)) != ST_OK)
+			ret = lexer->tokens[*i].parse((void *)target, parser, lexer, i);
+			if (ret != ST_OK)
 				return (ret);
+			log_error("ici");
 		}
-		(*i)++; // go on arrow
+		else
+			(*i)++; // go on arrow
 	}
 	(*i)++; // go token next arrow
 	if ((ret = s_parse_right_redir_proc((t_proc *)target, parser, i, &fd_r)) != ST_OK)
@@ -84,16 +87,26 @@ static int	s_great_parse_proc(t_proc *target, t_parser *parser, t_lexer *lexer, 
 ** If the token is not a and, it call token_parse_none.
 */
 
-static int	s_great_parse_jobs(t_job *target, t_parser *parser, t_lexer *lexer, int *i)
+static int	s_great_parse_jobs(t_job *j, t_parser *parser, t_lexer *lexer, int *i)
 {
-	int	ret;
+	int		ret;
 
 	if (TOKEN_CODE(*i) != TC_GREAT)
 	{
-			if ((ret = token_parse_none((void *)target, parser, lexer, i)) != ST_OK)
-				return (ret);
+		ret = lexer->tokens[*i].parse((void *)j, parser, lexer, i);
+		if (ret != ST_OK)
+			return (ret);
 	}
-	token_parse_utils_push_command(TOKEN_CONTENT(*i), &(target->command));
+	ret = token_parse_utils_push_command(TOKEN_CONTENT(*i), &(j->command));
+	if (ret != ST_OK)
+		return (ret);
+	if (*i + 1 < lexer->size && P_TOKEN_CODE(*i + 1) == TC_AND)
+	{
+		(*i)++;
+		ret = token_parse_utils_push_command(TOKEN_CONTENT(*i), &(j->command));
+		if (ret != ST_OK)
+			return (ret);
+	}
 	return (ST_OK);
 }
 
@@ -108,10 +121,8 @@ int			token_parse_great(void *target, t_parser *parser, t_lexer *lexer, int *i)
 {
 	log_trace("entering parsing token %-12s (type: %d) (code: %d) `%s'", "TT_REDIR", TOKEN_TYPE(*i), TOKEN_CODE(*i), TOKEN_CONTENT(*i));
 
-	int	ret;
+	int		ret;
 
-	// setup
-	// @jigault : where to use it? In TC_NONE?
 	lexer->tokens[*i].is_redir_checked = 1;
 	ret = ST_OK;
 
