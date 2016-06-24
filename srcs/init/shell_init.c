@@ -45,7 +45,8 @@ int		shell_init(t_sh *sh, char *envp[])
 	if ((ret = shell_environment(sh, envp)) != ST_OK)
 		return (ret);
 	path_init_hasht(sh->envp);
-
+	if ((ret = conf_file_init()) != ST_OK)
+		return (ret);
 	if ((sh->pwd = getcwd(NULL, 0)) == NULL)
 		return (ST_MALLOC);
 

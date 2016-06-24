@@ -231,4 +231,10 @@ typedef struct	s_node_dir
 t_node_dir		*node_dir__create(const char *filename);
 void			list_dir__destroy(t_list *head);
 
+/*
+** conf
+*/
+int				conf_file_init(void);
+int				conf_check_color_mode(void);
+
 #endif

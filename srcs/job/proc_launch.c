@@ -70,7 +70,10 @@ void		proc_launch(t_sh *sh, t_job *j, t_proc *p)
 	builtin_callback(BLTIN_CB_EXEC, sh, p);
 	lowerargv = ft_strtolower(p->argv[0]);
 	if (path_hash_finder(sh->envp, &lowerargv) == ST_OK)
+	{
+		conf_check_color_mode();
 		execve(lowerargv, p->argv, p->envp);
+	}
 	free(lowerargv);
 	exit(EXIT_FAILURE);
 }
