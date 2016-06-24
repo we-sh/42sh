@@ -47,6 +47,8 @@ static int	s_dup2_and_close(int from, int to)
 
 void		proc_launch(t_sh *sh, t_job *j, t_proc *p)
 {
+	char *lowerargv;
+
 	p->pid = getpid();
 	s_interactive_mode_callback(sh, j, p);
 	s_dup2_and_close(STDIN_FILENO, p->stdin);
@@ -66,7 +68,9 @@ void		proc_launch(t_sh *sh, t_job *j, t_proc *p)
 	if (p->is_valid != 1)
 		exit(p->is_valid == 0 ? EXIT_SUCCESS : EXIT_FAILURE);
 	builtin_callback(BLTIN_CB_EXEC, sh, p);
-	if (path_hash_finder(sh->envp, &p->argv[0]) == ST_OK)
-		execve(p->argv[0], p->argv, p->envp);
+	lowerargv = ft_strtolower(p->argv[0]);
+	if (path_hash_finder(sh->envp, &lowerargv) == ST_OK)
+		execve(lowerargv, p->argv, p->envp);
+	free(lowerargv);
 	exit(EXIT_FAILURE);
 }

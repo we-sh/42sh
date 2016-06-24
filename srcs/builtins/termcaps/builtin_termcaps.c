@@ -48,7 +48,8 @@ static int	s_after(t_builtin const *builtin, t_sh *sh, t_proc *p)
 	return (ST_OK);
 }
 
-int			builtin_termcaps(t_builtin const *builtin, int callback, t_sh *sh, t_proc *p)
+int			builtin_termcaps(t_builtin const *builtin,
+								int callback, t_sh *sh, t_proc *p)
 {
 	if (callback == BLTIN_CB_BEFORE)
 		return (s_before(builtin, sh, p));

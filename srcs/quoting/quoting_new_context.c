@@ -61,7 +61,7 @@ static int				s_qloop(t_termcaps_context *c,
 	tmp2 = NULL;
 	buff_quote = NULL;
 	s_first_loop_check(&tmp2, child_context, c);
-	while ((parser(context->sh, tmp2, F_PARSING_TERMCAPS, NULL)) != ST_OK)
+	while ((parser(c->sh, tmp2, F_PARSING_TERMCAPS, NULL)) != ST_OK)
 	{
 		buff_quote = termcaps_read_input(child_context);
 		if ((tmp3 = ft_strjoin3_safe(tmp2, "\n", buff_quote)) == NULL)

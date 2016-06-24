@@ -107,8 +107,8 @@ int						key__send(t_termcaps_context *context)
 												sizeof(command_line_cur) - 1,
 												&command_line_cur_size,
 												command_line_cur));
-		if ( (command_line_cur_size != context->prompt.size) &&
-		 (ret = parser(context->sh, command_line_cur + context->prompt.size,
+		if ((command_line_cur_size != context->prompt.size) &&
+			(ret = parser(context->sh, command_line_cur + context->prompt.size,
 							F_PARSING_TERMCAPS, NULL)) != ST_OK)
 			quoting_new_context(context, ret);
 		if (g_child == 0)

@@ -1,6 +1,6 @@
 #include "shell.h"
 
-static	int s_check_if_alphanum(char const *arg)
+static int	s_check_if_alphanum(char const *arg)
 {
 	int		i;
 

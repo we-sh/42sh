@@ -3,7 +3,8 @@
 
 static void			s_dot(size_t *i, char **tmp, char **path)
 {
-	*tmp = *path + *i + ((*path)[*i + 1] == '\0' || (*path)[*i + 1] == '/' ? 1 : 2);
+	*tmp = *path + *i + ((*path)[*i + 1] == '\0' ||
+		(*path)[*i + 1] == '/' ? 1 : 2);
 	(*path)[*i] = '\0';
 	*path = ft_strcat(*path, *tmp);
 }
