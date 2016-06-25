@@ -33,9 +33,32 @@ static int	s_shell_fd_init(t_sh *sh)
 	return (ST_OK);
 }
 
-int		shell_init(t_sh *sh, char *envp[])
+char		*shell_set_prompt(char **env) // A deplacer
+{
+	char	*str;
+	char	*buf;
+	int		i;
+	char	*home;
+
+	i = 0;
+	buf = getcwd(NULL, 0);
+	home = env_get_home(env);
+	if ((ft_strncmp(buf, home, ft_strlen(home)) == 0))
+	{
+		str = ft_strjoin3_safe("~", home, "$> ");
+		log_warn("%s", str);
+	}
+	else
+		str = ft_strjoin(buf, "$> ");
+	log_warn("%s", str);
+	return (str);
+}
+
+
+int			shell_init(t_sh *sh, char *envp[])
 {
 	int		ret;
+	char	*prompt;
 
 	INIT_LIST_HEAD(&g_current_jobs_list_head);
 	INIT_LIST_HEAD(&sh->redir_head);
@@ -82,8 +105,13 @@ int		shell_init(t_sh *sh, char *envp[])
 			log_fatal("caps__initialize() failed");
 			return (ST_TERMCAPS_INIT);
 		}
-		if (!termcaps_initialize(sh, "$> ", &sh->termcaps_context))
+		prompt = shell_set_prompt(sh->envp);
+		if (!termcaps_initialize(sh, prompt, &sh->termcaps_context))
+		{
+			free(prompt);
 			return (ST_TERMCAPS_INIT);
+		}	
+		free(prompt);
 	}
 	return (ST_OK);
 }

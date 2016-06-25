@@ -45,10 +45,56 @@ static int	s_dup2_and_close(int from, int to)
 	return (ST_OK);
 }
 
+static int	s_match_one_binary(char *str)
+{
+	if (ft_strcmp("/bin/ls", str) == 0)
+		return (ST_OK);
+	else if (ft_strcmp("/bin/grep", str) == 0)
+		return (ST_OK);
+	return (-1);
+}
+
+// static int	s_set_new_prompt(t_sh *sh)
+// {
+// 	char 	*tmp;
+
+// 	free(sh->termcaps_context.prompt.bytes);
+// 	tmp = shell_set_prompt(sh->envp);
+// 	sh->termcaps_context.prompt.size = ft_strlen(tmp);
+// 	sh->termcaps_context.prompt.bytes = ft_strdup(tmp);
+// 	return (1);
+// }
+
+static int	s_proc_launch_execve(t_sh *sh, t_proc *p)
+{
+	char	*lowerargv;
+	int		i;
+
+	i = 0;
+	lowerargv = ft_strtolower(p->argv[0]);
+	if (path_hash_finder(sh->envp, &lowerargv) == ST_OK)
+	{
+		 if ((s_match_one_binary(lowerargv) == ST_OK) && (conf_check_color_mode()) == ST_OK)
+		 {
+			while(p->argv[i])
+				i++;
+			if ((p->argv[i++] = ft_strdup("--color=auto")) == NULL)
+				return (ST_MALLOC);
+			p->argv[i] = NULL;
+		 }
+		if ((execve(lowerargv, p->argv, p->envp)) == -1)
+			return (ST_EXECVE);
+//		s_set_new_prompt(sh);
+	}
+	free(lowerargv);
+	return (ST_OK);
+}
+
 void		proc_launch(t_sh *sh, t_job *j, t_proc *p)
 {
-	char *lowerargv;
+	int		ret;
 
+	ret = 0;
 	p->pid = getpid();
 	s_interactive_mode_callback(sh, j, p);
 	s_dup2_and_close(STDIN_FILENO, p->stdin);
@@ -68,22 +114,7 @@ void		proc_launch(t_sh *sh, t_job *j, t_proc *p)
 	if (p->is_valid != 1)
 		exit(p->is_valid == 0 ? EXIT_SUCCESS : EXIT_FAILURE);
 	builtin_callback(BLTIN_CB_EXEC, sh, p);
-	lowerargv = ft_strtolower(p->argv[0]);
-	if (path_hash_finder(sh->envp, &lowerargv) == ST_OK)
-	{
-		 if ((ft_strcmp(lowerargv, "/bin/ls") == 0) && (conf_check_color_mode()) == ST_OK)
-		 {
-			int j=0;
-			while(p->argv[j])
-			{
-				log_success("argv[j]: %s",p->argv[j]);
-				j++;
-			}
-			 p->argv[j++] = ft_strdup("--color");
-			 p->argv[j] = NULL;
-		 }
-		execve(lowerargv, p->argv, p->envp);
-	}
-	free(lowerargv);
+	if ((ret = (s_proc_launch_execve(sh, p))) != ST_OK)
+		display_status(ret, NULL, NULL);
 	exit(EXIT_FAILURE);
 }
