@@ -235,7 +235,9 @@ static t_token g_token_name_rbrace = {
 	0
 };
 
-
+/*
+** Tokens for parameters expansion (globing)
+*/
 
 static t_token g_token_globing_inhibitor_dquote = {
 	"\"",
@@ -277,6 +279,9 @@ static t_token g_token_globing_name_backslash = {
 	0
 };
 
+/*
+** Functions to initialize a new parser
+*/
 
 static int	s_build_token_globing(t_parser *parser)
 {
@@ -333,34 +338,26 @@ int	parser_new(t_parser **parser, const char *in, t_sh *sh, int mode)
 		return (ST_MALLOC);
 	if (!((*parser)->lexer = ft_memalloc(sizeof(t_lexer))))
 		return (ST_MALLOC);
+
 	(*parser)->lexer->sh = sh;
 	(*parser)->lexer->size = 0;
-
-	if (((*parser)->lexer->tokens = (t_token **)malloc(sizeof(t_token *) * (TOKEN_LIST_REALLOC + 1))) == NULL)
-		return (ST_MALLOC);
-
-	int i = 0;
-	while (i < TOKEN_LIST_REALLOC)
-	{
-		log_info("set to NULL index: %d", i);
-		(*parser)->lexer->tokens[i] = NULL;
-		i++;
-	}
-	(*parser)->lexer->tokens[i] = NULL;
-
-	(*parser)->lexer->size = 0;
-	(*parser)->lexer->size_allocated = TOKEN_LIST_REALLOC;
-
 	(*parser)->mode = mode;
 	(*parser)->target_list_head = NULL;
 	(*parser)->sh = sh;
+
+
+	if (((*parser)->lexer->buf = ft_strnew(TOKEN_BUFFER_REALLOC)) == NULL)
+		return (ST_MALLOC);
+	(*parser)->lexer->buf_allocated_size = TOKEN_BUFFER_REALLOC;
+
+	if (lexer_tokens_alloc((*parser)->lexer) != ST_OK)
+		return (ST_MALLOC);
 
 	if (mode == F_PARSING_GLOBING)
 		s_build_token_globing(*parser);
 	else
 		s_build_token_command_line(*parser);
 
-	// assign the unstack function according to the parsing mode
 	if (mode == F_PARSING_TERMCAPS)
 		(*parser)->unstack_func = NULL;
 	else if (mode == F_PARSING_JOBS)
@@ -372,10 +369,6 @@ int	parser_new(t_parser **parser, const char *in, t_sh *sh, int mode)
 	else if (mode == F_PARSING_GLOBING)
 		(*parser)->unstack_func = &parser_build_list_unstack_lexer_globing;
 	else
-	{
-		log_error("parsing mode not yet supported (%d)", mode);
 		return (ST_EINVAL);
-	}
-
 	return (ST_OK);
 }

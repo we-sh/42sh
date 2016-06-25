@@ -32,7 +32,7 @@ int			parser_process_lexer(t_parser *parser, const char *in)
 	log_info("lexer receives input : `%s'", in);
 	
 	parser->lexer->size = 0;
-	if ((ret = tokenize(in, parser)) != ST_OK)
+	if ((ret = tokenize(in, parser, parser->lexer)) != ST_OK)
 	{
 		log_error("tokenization failed (incomplete inhibition)");
 		return (ret);

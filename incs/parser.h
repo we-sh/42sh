@@ -7,7 +7,7 @@
 # include "shell.h"
 
 # define TOKEN_BUFFER_REALLOC 512
-# define TOKEN_LIST_REALLOC 2
+# define TOKEN_LIST_REALLOC 20
 
 # define TOKEN_CODE(i)		({lexer->tokens[i]->code;})
 # define TOKEN_CONTENT(i)	({lexer->tokens[i]->content;})
@@ -92,7 +92,10 @@ struct				s_lexer
 {
 	t_token			**tokens;
 	int				size;
-	int				size_allocated;
+	int				allocated_size;
+	char			*buf;
+	int				buf_allocated_size;
+	int				buf_index;
 	t_sh			*sh;
 };
 
@@ -139,8 +142,13 @@ typedef struct				s_argv
 ** Lexer functions.
 */
 
-t_token	*token_list(void);
-int		tokenize(const char *s, t_parser *parser);
+int		tokenize(const char *s, t_parser *parser, t_lexer *lexer);
+int		lexer_tokens_alloc(t_lexer *lexer);
+int		lexer_tokens_realloc(t_lexer *lexer);
+int		lexer_bufferize(t_lexer *lexer, const char *str, int len);
+t_token	*token_recognizer(t_parser *parser, const char *s, int i);
+int		lexer_buffer_dump(t_parser *parser, t_lexer *lexer);
+int		lexer_token_add(t_lexer *lexer, const char *str, t_token token);
 
 /*
 ** Parser functions.

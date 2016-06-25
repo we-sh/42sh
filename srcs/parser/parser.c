@@ -19,6 +19,7 @@ static int	s_parser_callback(t_parser **parser)
 		i++;
 	}
 	free((*parser)->lexer->tokens);
+	free((*parser)->lexer->buf);
 	if ((*parser)->in)
 		ft_strdel(&((*parser)->in));
 	if ((*parser)->lexer)
