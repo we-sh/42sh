@@ -107,7 +107,8 @@ int						key__send(t_termcaps_context *context)
 												sizeof(command_line_cur) - 1,
 												&command_line_cur_size,
 												command_line_cur));
-		if ((command_line_cur_size != context->prompt.size) &&
+		if ((context->state != STATE_HEREDOC) &&
+			(command_line_cur_size != context->prompt.size) && //Remove if the parser handle an empty string
 			(ret = parser(context->sh, command_line_cur + context->prompt.size,
 							F_PARSING_TERMCAPS, NULL)) != ST_OK)
 			quoting_new_context(context, ret);
