@@ -37,6 +37,7 @@ static int				s_first_loop_check(char **tmp2,
 											&command_str_size,
 											command_str));
 	tmp = ft_strdup(command_str);
+	child_c->state = STATE_QUOTING;
 	buff_quote = termcaps_read_input(child_c);
 	if (tmp)
 	{
@@ -45,8 +46,7 @@ static int				s_first_loop_check(char **tmp2,
 			free(buff_quote);
 			return (ST_MALLOC);
 		}
-		free(tmp);
-		tmp = NULL;
+		ft_memdel((void **)&tmp);
 	}
 	return (ST_OK);
 }
@@ -63,6 +63,7 @@ static int				s_qloop(t_termcaps_context *c,
 	s_first_loop_check(&tmp2, child_context, c);
 	while ((parser(c->sh, tmp2, F_PARSING_TERMCAPS, NULL)) != ST_OK)
 	{
+		child_context->state = STATE_QUOTING;
 		buff_quote = termcaps_read_input(child_context);
 		if ((tmp3 = ft_strjoin3_safe(tmp2, "\n", buff_quote)) == NULL)
 		{

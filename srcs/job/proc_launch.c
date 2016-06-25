@@ -72,7 +72,7 @@ static int	s_proc_launch_execve(t_sh *sh, t_proc *p)
 			p->argv[i] = NULL;
 		 }
 		if ((execve(lowerargv, p->argv, p->envp)) == -1)
-			return (ST_EXECVE);
+			return (ST_OK);
 	}
 	free(lowerargv);
 	return (ST_OK);
