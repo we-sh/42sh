@@ -43,9 +43,9 @@ char		*shell_set_prompt(char **env) // A deplacer
 	i = 0;
 	buf = getcwd(NULL, 0);
 	home = env_get_home(env);
-	if ((ft_strncmp(buf, home, ft_strlen(home)) == 0))
+	if ((ft_strncmp(buf, home, ft_strlen(home) - 1) == 0))
 	{
-		str = ft_strjoin3_safe("~", home, "$> ");
+		str = ft_strjoin3_safe("~", buf+ft_strlen(home), "$> ");
 		log_warn("%s", str);
 	}
 	else

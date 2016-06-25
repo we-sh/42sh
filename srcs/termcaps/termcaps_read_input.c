@@ -76,6 +76,17 @@ static int			s_termcaps_read_loop(t_termcaps_context *context,
 	return (1);
 }
 
+int			set_new_prompt(t_termcaps_context *context)
+{
+	char 	*tmp;
+
+	free(context->prompt.bytes);
+	tmp = shell_set_prompt(context->sh->envp);
+	context->prompt.size = ft_strlen(tmp);
+	context->prompt.bytes = ft_strdup(tmp);
+	return (1);
+}
+
 char				*termcaps_read_input(t_termcaps_context *context)
 {
 	int				x;
@@ -89,6 +100,7 @@ char				*termcaps_read_input(t_termcaps_context *context)
 	ASSERT(caps__cursor_getxy(&x, NULL));
 	if (x != 1)
 		termcaps_write(context->fd, "%\n", sizeof("%\n") - 1);
+	set_new_prompt(context);
 	ASSERT(termcaps_string_to_command_line(context->prompt.size,
 											context->prompt.bytes,
 											&context->command_line));

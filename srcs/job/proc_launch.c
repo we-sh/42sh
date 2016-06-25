@@ -54,17 +54,6 @@ static int	s_match_one_binary(char *str)
 	return (-1);
 }
 
-// static int	s_set_new_prompt(t_sh *sh)
-// {
-// 	char 	*tmp;
-
-// 	free(sh->termcaps_context.prompt.bytes);
-// 	tmp = shell_set_prompt(sh->envp);
-// 	sh->termcaps_context.prompt.size = ft_strlen(tmp);
-// 	sh->termcaps_context.prompt.bytes = ft_strdup(tmp);
-// 	return (1);
-// }
-
 static int	s_proc_launch_execve(t_sh *sh, t_proc *p)
 {
 	char	*lowerargv;
@@ -84,7 +73,6 @@ static int	s_proc_launch_execve(t_sh *sh, t_proc *p)
 		 }
 		if ((execve(lowerargv, p->argv, p->envp)) == -1)
 			return (ST_EXECVE);
-//		s_set_new_prompt(sh);
 	}
 	free(lowerargv);
 	return (ST_OK);
