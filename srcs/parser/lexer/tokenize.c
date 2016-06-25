@@ -22,7 +22,6 @@ int				s_inhibited_code(t_token *token)
 		else if (g_inhibitor_code == 0)
 		{
 			g_inhibitor_code = token->code;
-			return (0);
 		}
 	}
 	return (g_inhibitor_code);
@@ -36,7 +35,7 @@ static int		s_parenthesis_code(t_token *token)
 		if (g_parenthesis_code == 0)
 		{
 			if (token->code == TC_LBRACE)
-				g_parenthesis_code = 1;
+				g_parenthesis_code = TC_LBRACE;
 		}
 		else if (g_parenthesis_code == TC_LBRACE)
 		{
@@ -95,10 +94,12 @@ int				tokenize(const char *s, t_parser *parser, t_lexer *lexer)
 	{
 		if (ret == 0 && token_found)
 		{
+			if (g_parenthesis_code != 0)
+				return (g_parenthesis_code);
 			// todo: skip for separators here !!!
 			int	index;
 			index = parser->lexer->size;
-			while (index >= 0 && parser->lexer->tokens[index]->type == TT_SEPARATOR)
+			while (index > 0 && parser->lexer->tokens[index]->type == TT_SEPARATOR)
 				index--;
 
 			token_found = parser->lexer->tokens[index];
