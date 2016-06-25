@@ -103,6 +103,7 @@ SRCS		=	\
 				path/path_hash_finder.c			\
 				path/path_add_folder_content_to_hasht.c	\
 				path/path_commande_not_found_in_hasht.c\
+				path/path_str_tolower.c\
 				quoting/quoting_new_context.c\
 				signal/signal_to_default.c		\
 				signal/signal_to_ignore.c		\
@@ -152,8 +153,8 @@ SRCS		=	\
 				termcaps/key__search_history.c					\
 				termcaps/termcaps_history_search.c				\
 				termcaps/termcaps_write.c						\
-				conf/conf_file_init.c							\
 				conf/conf_check_color_mode.c					\
+				conf/conf_file_init.c							\
 
 # ---------------------------------------------------------------------------- #
 # PROJECT CONFIGURATION
@@ -425,6 +426,36 @@ $(DIROBJ)expand.o: srcs/parser/expand/expand.c incs/shell.h \
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/parser/expand/expand.c\n"
 		@$(CC) -c ./srcs/parser/expand/expand.c -o ./.objs/expand.o $(CPPFLAGS) $(CFLAGS) 
+
+$(DIROBJ)conf_file_init.o: srcs/conf/conf_file_init.c incs/shell.h \
+  libs/libft/./incs/list.h incs/htabl.h incs/fnv.h incs/longlong.h \
+  incs/termcaps/termcaps.h incs/termcaps/list_head.h \
+  libs/libcaps/./incs/types.h incs/termcaps/log.h \
+  incs/termcaps/termcaps_struct.h incs/termcaps/key.h incs/redirection.h \
+  libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h \
+  libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
+  incs/statuses.h incs/option.h incs/job.h libs/libcaps/./incs/caps.h \
+  libs/libcaps/./incs/logger.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/parser.h \
+  incs/builtins/builtin.h incs/quoting.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/conf/conf_file_init.c\n"
+		@$(CC) -c ./srcs/conf/conf_file_init.c -o ./.objs/conf_file_init.o $(CPPFLAGS) $(CFLAGS) 
+
+$(DIROBJ)conf_check_color_mode.o: srcs/conf/conf_check_color_mode.c incs/shell.h \
+  libs/libft/./incs/list.h incs/htabl.h incs/fnv.h incs/longlong.h \
+  incs/termcaps/termcaps.h incs/termcaps/list_head.h \
+  libs/libcaps/./incs/types.h incs/termcaps/log.h \
+  incs/termcaps/termcaps_struct.h incs/termcaps/key.h incs/redirection.h \
+  libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h \
+  libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
+  incs/statuses.h incs/option.h incs/job.h libs/libcaps/./incs/caps.h \
+  libs/libcaps/./incs/logger.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/parser.h \
+  incs/builtins/builtin.h incs/quoting.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/conf/conf_check_color_mode.c\n"
+		@$(CC) -c ./srcs/conf/conf_check_color_mode.c -o ./.objs/conf_check_color_mode.o $(CPPFLAGS) $(CFLAGS) 
 
 $(DIROBJ)expand_escape_char.o: srcs/parser/expand/expand_escape_char.c \
   incs/shell.h libs/libft/./incs/list.h incs/htabl.h incs/fnv.h \
@@ -1745,6 +1776,22 @@ $(DIROBJ)path_commande_not_found_in_hasht.o: \
 		@printf "compiling ./srcs/path/path_commande_not_found_in_hasht.c\n"
 		@$(CC) -c ./srcs/path/path_commande_not_found_in_hasht.c -o ./.objs/path_commande_not_found_in_hasht.o $(CPPFLAGS) $(CFLAGS) 
 
+$(DIROBJ)path_str_tolower.o: \
+  srcs/path/path_str_tolower.c incs/shell.h \
+  libs/libft/./incs/list.h incs/htabl.h incs/fnv.h incs/longlong.h \
+  incs/termcaps/termcaps.h incs/termcaps/list_head.h \
+  libs/libcaps/./incs/types.h incs/termcaps/log.h \
+  incs/termcaps/termcaps_struct.h incs/termcaps/key.h incs/redirection.h \
+  libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h \
+  libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
+  incs/statuses.h incs/option.h incs/job.h libs/libcaps/./incs/caps.h \
+  libs/libcaps/./incs/logger.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/parser.h \
+  incs/builtins/builtin.h incs/quoting.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/path/path_str_tolower.c\n"
+		@$(CC) -c ./srcs/path/path_str_tolower.c -o ./.objs/path_str_tolower.o $(CPPFLAGS) $(CFLAGS)
+
 $(DIROBJ)quoting_new_context.o: srcs/quoting/quoting_new_context.c incs/shell.h \
   libs/libft/./incs/list.h incs/htabl.h incs/fnv.h incs/longlong.h \
   incs/termcaps/termcaps.h incs/termcaps/list_head.h \
@@ -2490,36 +2537,6 @@ $(DIROBJ)termcaps_write.o: srcs/termcaps/termcaps_write.c incs/shell.h \
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/termcaps/termcaps_write.c\n"
 		@$(CC) -c ./srcs/termcaps/termcaps_write.c -o ./.objs/termcaps_write.o $(CPPFLAGS) $(CFLAGS) 
-
-$(DIROBJ)conf_file_init.o: srcs/conf/conf_file_init.c incs/shell.h \
-  libs/libft/./incs/list.h incs/htabl.h incs/fnv.h incs/longlong.h \
-  incs/termcaps/termcaps.h incs/termcaps/list_head.h \
-  libs/libcaps/./incs/types.h incs/termcaps/log.h \
-  incs/termcaps/termcaps_struct.h incs/termcaps/key.h incs/redirection.h \
-  libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h \
-  libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
-  incs/statuses.h incs/option.h incs/job.h libs/libcaps/./incs/caps.h \
-  libs/libcaps/./incs/logger.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/parser.h \
-  incs/builtins/builtin.h incs/quoting.h
-		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
-		@printf "compiling ./srcs/conf/conf_file_init.c\n"
-		@$(CC) -c ./srcs/conf/conf_file_init.c -o ./.objs/conf_file_init.o $(CPPFLAGS) $(CFLAGS) 
-
-$(DIROBJ)conf_check_color_mode.o: srcs/conf/conf_check_color_mode.c incs/shell.h \
-  libs/libft/./incs/list.h incs/htabl.h incs/fnv.h incs/longlong.h \
-  incs/termcaps/termcaps.h incs/termcaps/list_head.h \
-  libs/libcaps/./incs/types.h incs/termcaps/log.h \
-  incs/termcaps/termcaps_struct.h incs/termcaps/key.h incs/redirection.h \
-  libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h \
-  libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
-  incs/statuses.h incs/option.h incs/job.h libs/libcaps/./incs/caps.h \
-  libs/libcaps/./incs/logger.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/parser.h \
-  incs/builtins/builtin.h incs/quoting.h
-		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
-		@printf "compiling ./srcs/conf/conf_check_color_mode.c\n"
-		@$(CC) -c ./srcs/conf/conf_check_color_mode.c -o ./.objs/conf_check_color_mode.o $(CPPFLAGS) $(CFLAGS) 
 
 
 #end
