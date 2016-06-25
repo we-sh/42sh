@@ -68,7 +68,7 @@ void		proc_launch(t_sh *sh, t_job *j, t_proc *p)
 	if (p->is_valid != 1)
 		exit(p->is_valid == 0 ? EXIT_SUCCESS : EXIT_FAILURE);
 	builtin_callback(BLTIN_CB_EXEC, sh, p);
-	lowerargv = path_str_tolower(p->argv[0]);
+	lowerargv = ft_strtolower(p->argv[0]);
 	if (path_hash_finder(sh->envp, &lowerargv) == ST_OK)
 	{
 		 if ((ft_strcmp(lowerargv, "/bin/ls") == 0) && (conf_check_color_mode()) == ST_OK)

@@ -183,7 +183,6 @@ int				path_add_folder_content_to_hasht(char *name, char *dirname);
 void			path_free_hasht(void);
 int				path_commande_not_found_in_hasht(char **envp, char **cmd);
 int				path_get_new_cmd(char **commande, char *name, char *path);
-char			*path_str_tolower(char *str);
 
 /*
 ** quoting
