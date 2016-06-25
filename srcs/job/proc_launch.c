@@ -63,7 +63,8 @@ static int	s_proc_launch_execve(t_sh *sh, t_proc *p)
 	lowerargv = ft_strtolower(p->argv[0]);
 	if (path_hash_finder(sh->envp, &lowerargv) == ST_OK)
 	{
-		 if ((s_match_one_binary(lowerargv) == ST_OK) && (conf_check_color_mode()) == ST_OK)
+		 if ((s_match_one_binary(lowerargv) == ST_OK)
+		 	&& (conf_check_color_mode(sh->envp)) == ST_OK)
 		 {
 			while(p->argv[i])
 				i++;

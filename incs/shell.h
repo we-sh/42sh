@@ -238,7 +238,7 @@ void			list_dir__destroy(t_list *head);
 /*
 ** conf
 */
-int				conf_file_init(void);
-int				conf_check_color_mode(void);
+int				conf_file_init(char **env);
+int				conf_check_color_mode(char **env);
 
 #endif
