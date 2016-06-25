@@ -71,8 +71,32 @@ void		proc_launch(t_sh *sh, t_job *j, t_proc *p)
 	lowerargv = ft_strtolower(p->argv[0]);
 	if (path_hash_finder(sh->envp, &lowerargv) == ST_OK)
 	{
-		conf_check_color_mode();
+//		 if ((conf_check_color_mode()) == ST_OK)
+		// int ret= 0;
+		//  	if ((ret = ft_array_push_back((char ***)&p->argv, "--color")) == -1)
+		//  		log_fatal("Push NAck error %d", ret);
+		//  		log_fatal("Push NAck return %d", ret);
+		//  		p->argv[ret] = NULL;
+	//		 p->argv[2] = NULL;
+
+		 if ((ft_strcmp(lowerargv, "/bin/ls") == 0) && (conf_check_color_mode()) == ST_OK)
+		 {
+			int j=0;
+			while(p->argv[j])
+			{
+				log_success("YOOOOOOOOOOOOOO %s",p->argv[j]);
+				j++;
+			}
+			 p->argv[j++] = ft_strdup("--color");
+			 p->argv[j] = NULL;
+		 }
+
+
+		//log_success("Value ARGV: %s, %s, %s", p->argv[0], p->argv[1],p->argv[2]);
 		execve(lowerargv, p->argv, p->envp);
+	// 	char *argvr[] = { "ls", "--color", 0 };
+	// execvp(argvr[0], argvr);
+	// execv("/bin/ls", argvr);
 	}
 	free(lowerargv);
 	exit(EXIT_FAILURE);
