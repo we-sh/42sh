@@ -44,8 +44,10 @@ static int				s_first_loop_check(char **tmp2,
 		if ((*tmp2 = ft_strjoin3_safe(tmp, "\n", buff_quote)) == NULL)
 		{
 			free(buff_quote);
+			free(tmp);
 			return (ST_MALLOC);
 		}
+		free(buff_quote);
 		ft_memdel((void **)&tmp);
 	}
 	return (ST_OK);
@@ -73,8 +75,8 @@ static int				s_qloop(t_termcaps_context *c,
 		free(tmp2);
 		tmp2 = ft_strdup(tmp3);
 		free(tmp3);
+		ft_memdel((void **)&buff_quote);
 	}
-	ft_memdel((void **)&buff_quote);
 	list_head__command_line_destroy(&c->command_line);
 	list_head__init(&c->command_line);
 	termcaps_string_to_command_line((ft_strlen(tmp2)), tmp2, &c->command_line);

@@ -83,6 +83,7 @@ int			set_new_prompt(t_termcaps_context *context)
 		tmp = shell_set_prompt(context->sh->envp);
 	context->prompt.size = ft_strlen(tmp);
 	context->prompt.bytes = ft_strdup(tmp);
+	free(tmp);
 	return (ST_OK);
 }
 

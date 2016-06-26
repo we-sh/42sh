@@ -47,30 +47,37 @@ static int	s_dup2_and_close(int from, int to)
 
 static int	s_match_one_binary(char *str)
 {
-	if (ft_strcmp("/bin/ls", str) == 0)
+	if (ft_strcmp("ls", str) == 0)
 		return (ST_OK);
-	else if (ft_strcmp("/bin/grep", str) == 0)
-		return (ST_OK);
-	return (-1);
+	else if (ft_strcmp("grep", str) == 0)
+		return (5);
+	return (ST_CMD_NOT_FOUND);
 }
 
-static int	s_proc_launch_execve(t_sh *sh, t_proc *p)
+static int	s_proc_launch_execve(t_sh *sh, t_proc *p) //freeeeeeeeeeee
 {
 	char	*lowerargv;
+	char	*match;
+	char	*value;
+	int		ret;
 	int		i;
 
 	i = 0;
-	lowerargv = ft_strtolower(p->argv[0]);
+	match = ft_strdup(p->argv[0]);
+	lowerargv = ft_strtolower(match);
 	if (path_hash_finder(sh->envp, &lowerargv) == ST_OK)
 	{
-		 if ((s_match_one_binary(lowerargv) == ST_OK)
-		 	&& (conf_check_color_mode(sh->envp)) == ST_OK)
+		 if (((ret = s_match_one_binary(p->argv[0])) != ST_CMD_NOT_FOUND)
+		 	&& (conf_check_color_mode(sh->envp) == ST_OK))
 		 {
-			while(p->argv[i])
-				i++;
-			if ((p->argv[i++] = ft_strdup("--color=auto")) == NULL)
-				return (ST_MALLOC);
-			p->argv[i] = NULL;
+		 	if (ret == ST_OK)
+		 		value = LSOPTCOLOR;
+		 	else
+		 		value = "--color=auto";
+			if (p->argc > 1)
+			 	ft_array_push_index(&p->argv, value, 1);
+			 else
+			 	ft_array_push_back(&p->argv, value);
 		 }
 		if ((execve(lowerargv, p->argv, p->envp)) == -1)
 			return (ST_OK);

@@ -46,7 +46,7 @@ char		*shell_set_prompt(char **env) // A deplacer
 	home = env_get_home(env); //check leak
 	if ((ft_strncmp(buf, home, ft_strlen(home) - 1) == 0))
 	{
-		str = ft_strjoin3_safe("~", buf+ft_strlen(home), "$> ");//check return
+		str = ft_strjoin3_safe("~", buf + ft_strlen(home), "$> ");//check return
 		log_warn("%s", str);
 	}
 	else
@@ -59,6 +59,7 @@ char		*shell_set_prompt(char **env) // A deplacer
 		free(str);
 		str = tmp;
 	}
+	free(buf);
 	return (str);
 }
 

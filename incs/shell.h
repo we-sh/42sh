@@ -13,9 +13,11 @@
 #ifdef __linux__
 # define SELECTBLANC "\e]12;white\a"
 # define SELECTBLEU "\e]12;blue\a"
+# define LSOPTCOLOR "--color=auto"
 #else
 # define SELECTBLANC "\033]Plffffff\033\\"
 # define SELECTBLEU "\033]Pl4040ff\033\\"
+# define LSOPTCOLOR "-G"
 #endif
 
 #define ANSI_COLOR_RESET_SIZE (sizeof("\033[0m") - 1)
