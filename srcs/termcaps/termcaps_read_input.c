@@ -80,10 +80,17 @@ int			set_new_prompt(t_termcaps_context *context)
 
 	free(context->prompt.bytes);
 	if ((tmp = env_get(context->sh->envp, "PS1")) == NULL)
+	{
 		tmp = shell_set_prompt(context->sh->envp);
-	context->prompt.size = ft_strlen(tmp);
-	context->prompt.bytes = ft_strdup(tmp);
-	free(tmp);
+		context->prompt.size = ft_strlen(tmp);
+		context->prompt.bytes = ft_strdup(tmp);
+		free(tmp);
+	}
+	else
+	{
+		context->prompt.size = ft_strlen(tmp);
+		context->prompt.bytes = ft_strdup(tmp);
+	}
 	return (ST_OK);
 }
 
