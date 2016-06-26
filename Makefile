@@ -291,7 +291,7 @@ depend		:
 	@printf "#start\n\n" >> Makefile
 	@$(foreach s, $(SRC),													\
 		printf '$$(DIROBJ)'										>> Makefile	&& \
-		$(CC) -MM $(s) $(CPPFLAGS)								>> Makefile	&& \
+		printf "$(shell $(CC) -MM $(s) $(CPPFLAGS) | tr '\\' ' ')\n"	>> Makefile	&& \
 																			\
 		printf '\t\t@printf "$$(C_GRE)[ $(NAME) ] '				>> Makefile && \
 		printf '[ %%-6s ]$$(C_DFL) " "$(CC)"\n'					>> Makefile && \
