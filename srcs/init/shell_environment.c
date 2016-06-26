@@ -1,5 +1,9 @@
 #include "shell.h"
 
+/*
+** -> if ((defaultenv[6] = ft_strjoin("LOGNAME=", getlogin())) == NULL)
+** man 3 a verifier si seul moyen de le recuperer
+*/
 
 static char	**s_environment_default(void)
 {
@@ -23,12 +27,17 @@ static char	**s_environment_default(void)
 	if ((defaultenv[5] = ft_strjoin("PWD=", tmp)) == NULL)
 		return (NULL);
 	free(tmp);
-	if ((defaultenv[6] = ft_strjoin("LOGNAME=", getlogin())) == NULL) // man 3 a verifier seul moyen de le recuperer
+	if ((defaultenv[6] = ft_strjoin("LOGNAME=", getlogin())) == NULL)
 		return (NULL);
 	defaultenv[7] = NULL;
 	return (defaultenv);
 }
 
+/*
+** if ((sh->envp = s_environment_default()) == NULL)
+**		return (ST_MALLOC);
+**	return (ST_OK); // set default returm
+*/
 
 int			shell_environment(t_sh *sh, char **envp)
 {
@@ -39,7 +48,7 @@ int			shell_environment(t_sh *sh, char **envp)
 	{
 		if ((sh->envp = s_environment_default()) == NULL)
 			return (ST_MALLOC);
-		return (ST_OK); // Set Default return
+		return (ST_OK);
 	}
 	while (envp[i])
 		i++;
