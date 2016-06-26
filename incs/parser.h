@@ -172,7 +172,6 @@ int		parser_build_list_unstack_lexer_globing(t_parser *parser, t_lexer *lexer, i
 
 int		expand(t_lexer *lexer, t_proc *p, int *i);
 char	*expand_escape_char(char *buf);
-//int		expand_tilde(t_globing_param *params, t_lexer *lexer, int i);
 
 /*
 ** Function pointers for the parser.
@@ -182,51 +181,73 @@ char	*expand_escape_char(char *buf);
 int		token_parse_none(void *target, t_parser *parser, t_lexer *lexer, int *i);
 
 // Jobs.
-int		token_parse_semi(void *target, t_parser *parser, t_lexer *lexer, int *i);
-int		token_parse_and_if(void *target, t_parser *parser, t_lexer *lexer, int *i);
-int		token_parse_or_if(void *target, t_parser *parser, t_lexer *lexer, int *i);
+int		token_parse_semi(void *target, t_parser *parser, t_lexer *lexer,
+			int *i);
+int		token_parse_and_if(void *target, t_parser *parser, t_lexer *lexer,
+			int *i);
+int		token_parse_or_if(void *target, t_parser *parser, t_lexer *lexer,
+			int *i);
 
 // Pipe,
-int		token_parse_pipe(void *target, t_parser *parser, t_lexer *lexer, int *i);
+int		token_parse_pipe(void *target, t_parser *parser, t_lexer *lexer,
+			int *i);
 
 // And.
 int		token_parse_and(void *target, t_parser *parser, t_lexer *lexer, int *i);
 
 // Redirections.
-int		token_parse_less(void *target, t_parser *parser, t_lexer *lexer, int *i);
-int		token_parse_great(void *target, t_parser *parser, t_lexer *lexer, int *i);
-int		token_parse_dless(void *target, t_parser *parser, t_lexer *lexer, int *i);
-int		token_parse_dgreat(void *target, t_parser *parser, t_lexer *lexer, int *i);
-int		token_parse_andgreat(void *target, t_parser *parser, t_lexer *lexer, int *i);
-int		token_parse_greatand(void *target, t_parser *parser, t_lexer *lexer, int *i);
-int		token_parse_lessand(void *target, t_parser *parser, t_lexer *lexer, int *i);
+int		token_parse_less(void *target, t_parser *parser, t_lexer *lexer,
+			int *i);
+int		token_parse_great(void *target, t_parser *parser, t_lexer *lexer,
+			int *i);
+int		token_parse_dless(void *target, t_parser *parser, t_lexer *lexer,
+			int *i);
+int		token_parse_dgreat(void *target, t_parser *parser, t_lexer *lexer,
+			int *i);
+int		token_parse_andgreat(void *target, t_parser *parser, t_lexer *lexer,
+			int *i);
+int		token_parse_greatand(void *target, t_parser *parser, t_lexer *lexer,
+			int *i);
+int		token_parse_lessand(void *target, t_parser *parser, t_lexer *lexer,
+			int *i);
 
 // Function pointers utils.
-int		token_parse_utils_skip_separators(t_lexer *lexer, int *i, char **command);
+int		token_parse_utils_skip_separators(t_lexer *lexer, int *i,
+			char **command);
 int		token_parse_utils_get_full_word(char **content, t_lexer *lexer, int *i);
+int		token_parse_utils_get_word_and_inhib(char **content, t_lexer *lexer,
+			int *i)
 int		token_parse_utils_open_new_fd(t_proc *p, char *f, int *fd, int flag);
 void	token_parse_utils_set_proc_fds(t_proc *p, int fd_l, int fd_r);
 int		token_parse_utils_push_command(char *content, char **target);
 int		token_parse_utils_check_char_to_fd(char *f, int *fd);
-int		token_parse_utils_gen_token_after_dash(t_proc *p, t_parser *parser, t_lexer *lexer, int *i);
+int		token_parse_utils_gen_token_after_dash(t_proc *p, t_parser *parser,
+			t_lexer *lexer, int *i);
 int		token_globing_parse_utils_push_str(t_list *head, char *str);
 
 // Inhibitors.
-int		token_parse_inhib(void *target, t_parser *parser, t_lexer *lexer, int *i);
+int		token_parse_inhib(void *target, t_parser *parser, t_lexer *lexer,
+			int *i);
 
 // Substitution
-int		token_parse_bquote(void *target, t_parser *parser, t_lexer *lexer, int *i);
+int		token_parse_bquote(void *target, t_parser *parser, t_lexer *lexer,
+			int *i);
 
 
 // Separators.
-int		token_parse_separator(void *target, t_parser *parser, t_lexer *lexer, int *i);
+int		token_parse_separator(void *target, t_parser *parser, t_lexer *lexer,
+			int *i);
 
 // Globing.
-int		token_parse_lbrace(void *target, t_parser *parser, t_lexer *lexer, int *i);
-int		token_parse_rbrace(void *target, t_parser *parser, t_lexer *lexer, int *i);
+int		token_parse_lbrace(void *target, t_parser *parser, t_lexer *lexer,
+			int *i);
+int		token_parse_rbrace(void *target, t_parser *parser, t_lexer *lexer,
+			int *i);
 
 // Globing
-int		token_globing_parse_none(void *target, t_parser *parser, t_lexer *lexer, int *i);
-int		token_globing_parse_inhib(void *target, t_parser *parser, t_lexer *lexer, int *i);
+int		token_globing_parse_none(void *target, t_parser *parser,
+			t_lexer *lexer, int *i);
+int		token_globing_parse_inhib(void *target, t_parser *parser,
+			t_lexer *lexer, int *i);
 
 #endif

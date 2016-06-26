@@ -43,6 +43,7 @@ SRCS		=	\
 				parser/token/token_parse_inhib.c					\
 				parser/token/token_parse_separator.c				\
 				parser/token/utils/token_parse_utils_get_full_word.c\
+				parser/token/utils/token_parse_utils_get_word_and_inhib.c\
 				parser/token/utils/token_parse_utils_open_new_fd.c	\
 				parser/token/utils/token_parse_utils_push_command.c	\
 				parser/token/utils/token_parse_utils_set_proc_fds.c	\
