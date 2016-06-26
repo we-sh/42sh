@@ -1,9 +1,5 @@
 #include "parser.h"
 
-/*
-** Unstack the list of tokens to build a list of jobs.
-*/
-
 static t_argv	*s_argv_alloc(void)
 {
 	t_argv		*argument;
