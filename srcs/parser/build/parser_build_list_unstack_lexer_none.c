@@ -22,16 +22,9 @@ int	parser_build_list_unstack_lexer_none(t_parser *parser, t_lexer *lexer, int *
 			&& !(TOKEN_TYPE(*i) == TT_REDIR && TOKEN_CODE(*i) == TC_DLESS)
 			&& !((*i + 1 < lexer->size && TOKEN_CODE(*i) == TC_NONE && TOKEN_TYPE(*i + 1) == TT_REDIR && TOKEN_CODE(*i + 1) == TC_DLESS)))
 		{
-			// todo make all parser to support F_PARSING_NONE
-			if (TOKEN_TYPE(*i) == TT_ERROR
-				|| TOKEN_CODE(*i) == TC_GREATAND
-				|| TOKEN_CODE(*i) == TC_ANDGREAT
-				|| TOKEN_CODE(*i) == TC_PIPE)
-			{
-				ret = lexer->tokens[*i]->parse(NULL, parser, lexer, i);
-				if (ret != ST_OK)
-					return (ret);
-			}
+			ret = lexer->tokens[*i]->parse(NULL, parser, lexer, i);
+			if (ret != ST_OK)
+				return (ret);
 			(*i)++;
 		}
 
