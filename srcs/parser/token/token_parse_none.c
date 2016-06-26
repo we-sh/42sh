@@ -32,7 +32,9 @@ int	token_parse_none(void *target, t_parser *parser, t_lexer *lexer, int *i)
 	if (TOKEN_TYPE(*i) == TT_ERROR)
 		return (ST_PARSER);
 	if (lexer->tokens[*i]->is_redir_checked == 0
-		&& *i + 1 < lexer->size && TOKEN_TYPE(*i + 1) == TT_REDIR && TOKEN_CODE(*i + 1) != TC_PIPE)
+		&& *i + 1 < lexer->size
+		&& TOKEN_TYPE(*i + 1) == TT_REDIR
+		&& TOKEN_CODE(*i + 1) != TC_PIPE)
 		return (lexer->tokens[*i + 1]->parse(target, parser, lexer, i));
 	if (parser->mode == F_PARSING_JOBS)
 		ret = s_job((t_job *)target, lexer, i);

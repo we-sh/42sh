@@ -6,7 +6,7 @@
 ** the file descriptor is unchanged and the function returns ST_PARSER.
 */
 
-int	token_parse_utils_check_char_to_fd(char *f, int *fd)
+int		token_parse_utils_check_char_to_fd(char *f, int *fd)
 {
 	int	open_fd;
 

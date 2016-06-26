@@ -1,63 +1,65 @@
 #include "shell.h"
 
-/*
-** If '-' after the TC_LESSAND, try to close the stdin should produce an error
-** after (bad file descriptor).
-** If the fd is 0, 1 or 2, this should work.
-*/
-
-static int	s_proc(t_proc *target, t_parser *parser, t_lexer *lexer, int *i)
+static int	s_none(t_lexer *lexer, int *i)
 {
-	int	ret;
-	int	fd;
+	char	*content;
 
-	(void)lexer;
-	if (P_TOKEN_CODE(*i) != TC_LESSAND)
-		return (ST_PARSER);
+	content = TOKEN_CONTENT(*i);
 	(*i)++;
-	if (ft_strcmp(P_TOKEN_CONTENT(*i), "-") == 0)
-		fd = -1;
-	else
+	if (*i >= lexer->size || (TOKEN_CONTENT(*i)[0] != '-'
+								&& ft_strisnumeric(TOKEN_CONTENT(*i)) == 0))
 	{
-		if ((ret = token_parse_utils_check_char_to_fd(P_TOKEN_CONTENT(*i), &fd)) != ST_OK)
-		{
-			display_status(ST_PARSER_TOKEN, NULL, P_TOKEN_CONTENT(*i));
-			return (ret);
-		}
+		display_status(ST_PARSER_TOKEN, NULL, content);
+		return (ST_PARSER);
 	}
-	token_parse_utils_set_proc_fds(target, STDIN_FILENO, fd);
+	token_parse_utils_skip_separators(lexer, i, NULL);
+	if (*i >= lexer->size || TOKEN_TYPE(*i) != TT_NAME)
+	{
+		display_status(ST_PARSER_TOKEN, NULL, content);
+		return (ST_PARSER);
+	}
+	(*i)--;
 	return (ST_OK);
 }
 
-/*
-** If jobs, check if the token is TC_LESSAND, if not, call the appropriate
-** function, if it is, simply push the command.
-*/
-
-static int	s_jobs(t_job *j, t_parser *parser, t_lexer *lexer, int *i)
+static int	s_proc(t_proc *p, t_parser *parser, t_lexer *lexer, int *i)
 {
-	int	ret;
+	int		ret;
+	int		fd;
+	char	*content;
 
-	if (TOKEN_CODE(*i) != TC_LESSAND)
+	ret = ST_OK;
+	(*i)++;
+	if (TOKEN_CONTENT(*i)[0] == '-')
 	{
-		ret = lexer->tokens[*i]->parse((void *)j, parser, lexer, i);
+		fd = -1;
+		ret = token_parse_utils_gen_token_after_dash(p, parser, lexer, i);
 		if (ret != ST_OK)
 			return (ret);
 	}
-	ret = token_parse_utils_push_command(TOKEN_CONTENT(*i), &(j->command));
+	else
+	{
+		content = TOKEN_CONTENT(*i);
+		if ((ret = token_parse_utils_check_char_to_fd(content, &fd)) != ST_OK)
+		{
+			display_status(ST_PARSER_TOKEN, NULL, TOKEN_CONTENT(*i));
+			return (ret);
+		}
+	}
+	token_parse_utils_set_proc_fds(p, STDIN_FILENO, fd);
+	return (ST_OK);
+}
+
+static int	s_jobs(t_job *j, t_lexer *lexer, int *i)
+{
+	int		ret;
+
+	log_error(TOKEN_CONTENT(*i));
+	ret = token_parse_utils_push_command(TOKEN_CONTENT(*i), &j->command);
 	if (ret != ST_OK)
 		return (ret);
 	return (ST_OK);
 }
-
-/*
-** use case : ls no_file | cat <&- return :
-** cat: stdin: Bad file descriptor
-** ls: sdaf: No such file or directory
-** use case : ls no_file | cat <&2 return :
-** ls: sdaf: No such file or directory
-** 'cat wait for input'
-*/
 
 int			token_parse_lessand(void *target, t_parser *parser, t_lexer *lexer, int *i)
 {
@@ -67,16 +69,18 @@ int			token_parse_lessand(void *target, t_parser *parser, t_lexer *lexer, int *i
 
 	lexer->tokens[*i]->is_redir_checked = 1;
 	ret = ST_OK;
-
-	if (parser->mode == F_PARSING_PROCS)
+	if (TOKEN_CODE(*i) != TC_LESSAND)
+		return (lexer->tokens[*i]->parse(target, parser, lexer, i));
+	if (parser->mode == F_PARSING_NONE)
+		ret = s_none(lexer, i);
+	else if (parser->mode == F_PARSING_PROCS)
 	{
 		ret = s_proc((t_proc *)target, parser, lexer, i);
 		if (ret != ST_OK)
-			((t_proc *)target)->is_valid = 1;
+			((t_proc *)target)->is_valid = -1;
 	}
 	else if (parser->mode == F_PARSING_JOBS)
-		ret = s_jobs((t_job *)target, parser, lexer, i);
-	// epilogue
+		ret = s_jobs((t_job *)target, lexer, i);
 	(*i)++;
 	return (ret);
 }

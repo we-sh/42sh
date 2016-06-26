@@ -11,7 +11,6 @@ static int	s_none(t_lexer *lexer, int *i)
 			return (ST_OK);
 		index--;
 	}
-	log_error("eror");
 	display_status(ST_PARSER_TOKEN, NULL, lexer->tokens[*i]->content);
 	return (ST_PARSER);
 }

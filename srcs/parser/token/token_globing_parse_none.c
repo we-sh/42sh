@@ -1,6 +1,7 @@
 #include "shell.h"
 
-int	token_globing_parse_none(void *target, t_parser *parser, t_lexer *lexer, int *i)
+int			token_globing_parse_none(void *target, t_parser *parser,
+				t_lexer *lexer, int *i)
 {
 	log_trace("  entering parsing token %-12s", "TT_NONE");
 
@@ -25,9 +26,7 @@ int	token_globing_parse_none(void *target, t_parser *parser, t_lexer *lexer, int
 		}
 	}
 	else
-	{
 		ret = token_globing_parse_utils_push_str(parser->target_list_head, TOKEN_CONTENT(*i));
-	}
 	(*i)++;
 	return (ST_OK);
 }

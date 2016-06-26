@@ -17,14 +17,11 @@ static int		s_open_heredoc(t_sh *sh, int *fd, const char *trigger)
 		if (buffer == NULL)
 			break ;
 		if (!ft_strcmp(buffer, trigger))
-		{
-			free(buffer);
 			break ;
-		}
 		ft_putendl_fd(buffer, pipefd[1]);
-		free(buffer);
+		ft_memdel((void **)&buffer);
 	}
-	caps__delete_line(termcaps_context.command_line.offset);
+	ft_memdel((void **)&buffer);
 	termcaps_finalize(&termcaps_context);
 	close(pipefd[1]);
 	*fd = pipefd[0];

@@ -1,110 +1,66 @@
 #include "parser.h"
 
-static int	s_open_new_fd_int(char *f, int *fd)
+static int	s_none(t_lexer *lexer, int *i)
 {
-	if ((ft_strisnumeric(f)) == 0)
-		return (ST_PARSER);
-	else
+	char	*content;
+
+	content = TOKEN_CONTENT(*i);
+	log_error(content);
+	(*i)++;
+	token_parse_utils_skip_separators(lexer, i, NULL);
+	if (*i >= lexer->size || TOKEN_TYPE(*i) != TT_NAME)
 	{
-		*fd = ft_atoi(f);
-		if (*fd != STDIN_FILENO && *fd != STDOUT_FILENO && *fd != STDERR_FILENO)
-		{
-			log_error("bad file descriptor");
-			return (ST_PARSER);
-		}
+		display_status(ST_PARSER_TOKEN, NULL, content);
+		return (ST_PARSER);
 	}
 	return (ST_OK);
 }
 
-static int	s_parse_right_redir(void *target, t_parser *parser, int *i, int *fd)
+static int	s_job(t_job *j, t_lexer *lexer, int *i)
 {
 	int		ret;
-	char	*str;
 
-	if (parser->lexer->tokens[*i]->code == TC_AND)
-	{
-		(*i)++;
-		if (ft_strcmp(parser->lexer->tokens[*i]->content, "-") == 0)
-			*fd = -1;
-		else if ((ret = s_open_new_fd_int(parser->lexer->tokens[*i]->content,
-			fd)) != ST_OK)
-			return (ret);
-	}
-	else
-	{
-		while (parser->lexer->tokens[*i]->type == TT_SEPARATOR
-			|| parser->lexer->tokens[*i]->type == TT_INHIBITOR)
-		{
-
-			if (parser->mode == F_PARSING_JOBS)
-			{
-				t_job *j;
-				j = (t_job *)target;
-				token_parse_utils_push_command(parser->lexer->tokens[*i]->content, &j->command);
-			}
-			(*i)++;
-		}
-
-		str = NULL;
-		if ((ret = token_parse_utils_get_full_word(&str, parser->lexer, i)) != ST_OK)
-			return (ret);
-
-		if (parser->mode == F_PARSING_JOBS)
-		{
-			t_job *j;
-			j = (t_job *)target;
-			token_parse_utils_push_command(str, &j->command);
-		}
-
-		if (parser->mode == F_PARSING_PROCS)
-		{
-			if ((ret = token_parse_utils_open_new_fd((t_proc *)target, str, fd, O_RDONLY)) != ST_OK)
-				return (ret);
-		}
-
-		free(str);
-	}
+	ret = token_parse_utils_push_command(TOKEN_CONTENT(*i), &j->command);
+	if (ret != ST_OK)
+		return (ret);
 	return (ST_OK);
 }
 
+static int	s_proc(t_proc *p, t_lexer *lexer, int *i)
+{
+	int		ret;
+	int		fd_r;
+	char	*path;
+
+	(*i)++;
+	token_parse_utils_skip_separators(lexer, i, NULL);
+	path = NULL;
+	if ((ret = token_parse_utils_get_full_word(&path, lexer, i)) != ST_OK)
+		return (ret);
+	ret = ST_OK;
+	if ((ret = token_parse_utils_open_new_fd(p, path, &fd_r, O_RDONLY)) != ST_OK)
+		return (ret);
+	free(path);
+	token_parse_utils_set_proc_fds(p, STDIN_FILENO, fd_r);
+	return (ST_OK);
+}
 
 int			token_parse_less(void *target, t_parser *parser, t_lexer *lexer, int *i)
 {
-	int	fd_l;
-	int	fd_r;
-	int	ret;
+	log_trace("entering parsing token %-12s (type: %d) (code: %d) (content: `%s')", "TT_REDIR", TOKEN_TYPE(*i), TOKEN_CODE(*i), TOKEN_CONTENT(*i));
 
-	// todo: use parsing mode to customize what this function does
+	int		ret;
 
-	fd_l = STDIN_FILENO;
-	if (lexer->tokens[*i]->code != TC_LESS)
-	{
-		if ((ret = s_open_new_fd_int(lexer->tokens[*i]->content,
-			&fd_l)) != ST_OK)
-			return (ret);
-
-		if (parser->mode == F_PARSING_JOBS)
-		{
-			t_job *j;
-			j = (t_job *)target;
-			token_parse_utils_push_command(lexer->tokens[*i]->content, &j->command);
-		}
-		(*i)++;
-	}
-
-	if (parser->mode == F_PARSING_JOBS)
-	{
-		t_job *j;
-		j = (t_job *)target;
-		token_parse_utils_push_command(lexer->tokens[*i]->content, &j->command);
-	}
+	lexer->tokens[*i]->is_redir_checked = 1;
+	ret = ST_OK;
+	if (TOKEN_CODE(*i) != TC_LESS)
+		return (lexer->tokens[*i]->parse(target, parser, lexer, i));
+	if (parser->mode == F_PARSING_NONE)
+		ret = s_none(lexer, i);
+	else if (parser->mode == F_PARSING_JOBS)
+		ret = s_job((t_job *)target, lexer, i);
+	else if (parser->mode == F_PARSING_PROCS)
+		ret = s_proc((t_proc *)target, lexer, i);
 	(*i)++;
-
-	if ((ret = s_parse_right_redir(target, parser, i, &fd_r)) != ST_OK)
-		return (ret);
-
-	if (parser->mode == F_PARSING_PROCS)
-		token_parse_utils_set_proc_fds((t_proc *)target, fd_l, fd_r);
-	(*i)++;
-	return (ST_OK);
+	return (ret);
 }

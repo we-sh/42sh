@@ -17,15 +17,13 @@ int	parser_build_list_unstack_lexer_none(t_parser *parser, t_lexer *lexer, int *
 		log_info("remaining tokens (none) : %d / %d", lexer->size - *i, lexer->size);
 		ret = ST_OK;
 
-		(void)parser;
 		while (*i < lexer->size
 			&& !(TOKEN_TYPE(*i) == TT_REDIR && TOKEN_CODE(*i) == TC_DLESS)
-			&& !((*i + 1 < lexer->size && TOKEN_CODE(*i) == TC_NONE && TOKEN_TYPE(*i + 1) == TT_REDIR && TOKEN_CODE(*i + 1) == TC_DLESS)))
+			&& !((*i + 1 < lexer->size && TOKEN_TYPE(*i) == TT_NAME && TOKEN_TYPE(*i + 1) == TT_REDIR && TOKEN_CODE(*i + 1) == TC_DLESS)))
 		{
 			ret = lexer->tokens[*i]->parse(NULL, parser, lexer, i);
 			if (ret != ST_OK)
 				return (ret);
-			(*i)++;
 		}
 
 		if (*i < lexer->size)

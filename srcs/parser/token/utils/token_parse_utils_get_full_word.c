@@ -9,7 +9,6 @@ int			token_parse_utils_get_full_word(char **content, t_lexer *lexer,
 		(*i)++;
 	if (*i >= lexer->size || TOKEN_TYPE(*i) != TT_NAME)
 	{
-		log_debug("here");
 		if (*i < lexer->size)
 			display_status(ST_PARSER_TOKEN, NULL, TOKEN_CONTENT(*i));
 		return (ST_PARSER);
