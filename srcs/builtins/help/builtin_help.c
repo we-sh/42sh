@@ -18,7 +18,7 @@ static int	s_before(t_proc *p)
 			{
 				p->bltin_status = -i;
 				exists = 1;
-				break;
+				break ;
 			}
 		}
 		if (exists == 0)
@@ -68,9 +68,10 @@ static void	s_display_options(t_proc *p)
 		i = 0;
 		while (g_builtins[-p->bltin_status]->options[i])
 		{
-			ft_printf(" `%s`%s\n",
-				g_builtins[-p->bltin_status]->options[i]->name,
-				i18n_translate(g_builtins[-p->bltin_status]->options[i]->index));
+			ft_printf(
+			" `%s`%s\n",
+			g_builtins[-p->bltin_status]->options[i]->name,
+			i18n_translate(g_builtins[-p->bltin_status]->options[i]->index));
 			i++;
 		}
 	}
@@ -93,7 +94,8 @@ static int	s_exec(t_builtin const *builtin, t_proc *p)
 	return (EXIT_SUCCESS);
 }
 
-int			builtin_help(t_builtin const *builtin, int callback, t_sh *sh, t_proc *p)
+int			builtin_help(t_builtin const *builtin, int callback,
+						t_sh *sh, t_proc *p)
 {
 	(void)sh;
 	if (callback == BLTIN_CB_BEFORE)
