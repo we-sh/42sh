@@ -7,7 +7,7 @@ static int	s_none(t_lexer *lexer, int *i)
 	k = *i - 1;
 	while (k >= 0 && TOKEN_TYPE(k) == TT_SEPARATOR)
 		k--;
-	if (k < 0)
+	if (k < 0 || TOKEN_TYPE(k) == TT_JOBS)
 	{
 		display_status(ST_PARSER_TOKEN, NULL, TOKEN_CONTENT(*i));
 		return (ST_PARSER);
