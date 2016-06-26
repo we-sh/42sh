@@ -25,7 +25,7 @@ int				parser_build_list_unstack_lexer_globing(t_parser *parser, t_lexer *lexer,
 
 	while (*i < lexer->size)
 	{
-		log_info("remaining tokens (globing) : %d / %d", lexer->size - *i, lexer->size);
+		log_info("  remaining tokens (globing) : %d / %d", lexer->size - *i, lexer->size);
 
 		ret = lexer->tokens[*i]->parse((void *)argument, parser, lexer, i);
 		if (ret != ST_OK)

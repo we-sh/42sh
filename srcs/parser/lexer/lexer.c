@@ -22,7 +22,7 @@ static void	s_print(const t_lexer *lexer)
 ** Convert an input string into a token list.
 */
 
-int			parser_process_lexer(t_parser *parser, const char *in)
+int			lexer(t_parser *parser, const char *in)
 {
 	int		ret;
 
@@ -32,7 +32,7 @@ int			parser_process_lexer(t_parser *parser, const char *in)
 	log_info("lexer receives input : `%s'", in);
 	
 	parser->lexer->size = 0;
-	if ((ret = tokenize(in, parser, parser->lexer)) != ST_OK)
+	if ((ret = lexer_tokenize(in, parser, parser->lexer)) != ST_OK)
 	{
 		log_error("tokenization failed (incomplete inhibition)");
 		return (ret);

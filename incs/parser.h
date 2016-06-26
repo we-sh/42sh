@@ -96,6 +96,8 @@ struct				s_lexer
 	char			*buf;
 	int				buf_allocated_size;
 	int				buf_index;
+	int				is_inhibited;
+	int				is_parenthesized;
 	t_sh			*sh;
 };
 
@@ -142,11 +144,12 @@ typedef struct				s_argv
 ** Lexer functions.
 */
 
-int		tokenize(const char *s, t_parser *parser, t_lexer *lexer);
+int		lexer(t_parser *parser, const char *in);
+int		lexer_tokenize(const char *s, t_parser *parser, t_lexer *lexer);
 int		lexer_tokens_alloc(t_lexer *lexer);
 int		lexer_tokens_realloc(t_lexer *lexer);
 int		lexer_bufferize(t_lexer *lexer, const char *str, int len);
-t_token	*token_recognizer(t_parser *parser, const char *s, int i);
+t_token	*lexer_token_recognizer(t_parser *parser, const char *s, int i);
 int		lexer_buffer_dump(t_parser *parser, t_lexer *lexer);
 int		lexer_token_add(t_lexer *lexer, const char *str, t_token token);
 
@@ -154,7 +157,6 @@ int		lexer_token_add(t_lexer *lexer, const char *str, t_token token);
 ** Parser functions.
 */
 
-int		parser_process_lexer(t_parser *parser, const char *in);
 
 int		parser_new(t_parser **parser, const char *in, t_sh *sh, int mode);
 

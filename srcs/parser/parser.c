@@ -44,7 +44,7 @@ static int	s_parser_process(t_sh *sh, t_parser *parser)
 
 	if (!sh || !parser)
 		return (ST_EINVAL);
-	if ((ret = parser_process_lexer(parser, parser->in)) != ST_OK)
+	if ((ret = lexer(parser, parser->in)) != ST_OK)
 		return (ret);
 	if (!(parser->lexer))
 		return (ST_EINVAL);

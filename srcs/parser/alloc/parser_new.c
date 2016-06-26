@@ -350,6 +350,9 @@ int	parser_new(t_parser **parser, const char *in, t_sh *sh, int mode)
 		return (ST_MALLOC);
 	(*parser)->lexer->buf_allocated_size = TOKEN_BUFFER_REALLOC;
 
+	(*parser)->lexer->is_inhibited = 0;
+	(*parser)->lexer->is_parenthesized = 0;
+
 	if (lexer_tokens_alloc((*parser)->lexer) != ST_OK)
 		return (ST_MALLOC);
 

@@ -22,9 +22,9 @@ SRCS		=	\
 				parser/lexer/lexer_tokens_alloc.c					\
 				parser/lexer/lexer_tokens_realloc.c					\
 				parser/lexer/lexer_buffer_dump.c					\
-				parser/lexer/parser_process_lexer.c					\
-				parser/lexer/tokenize.c								\
-				parser/lexer/token_recognizer.c						\
+				parser/lexer/lexer.c								\
+				parser/lexer/lexer_tokenize.c						\
+				parser/lexer/lexer_token_recognizer.c				\
 				parser/token/token_globing_parse_none.c				\
 				parser/token/token_globing_parse_inhib.c			\
 				parser/token/token_parse_none.c						\
@@ -540,7 +540,36 @@ $(DIROBJ)lexer_buffer_dump.o: srcs/parser/lexer/lexer_buffer_dump.c incs/shell.h
 		@printf "compiling ./srcs/parser/lexer/lexer_buffer_dump.c\n"
 		@$(CC) -c ./srcs/parser/lexer/lexer_buffer_dump.c -o ./.objs/lexer_buffer_dump.o $(CPPFLAGS) $(CFLAGS) 
 
-$(DIROBJ)parser_process_lexer.o: srcs/parser/lexer/parser_process_lexer.c \
+$(DIROBJ)lexer.o: srcs/parser/lexer/lexer.c incs/shell.h libs/libft/./incs/list.h \
+  incs/htabl.h incs/fnv.h incs/longlong.h incs/termcaps/termcaps.h \
+  incs/termcaps/list_head.h libs/libcaps/./incs/types.h \
+  incs/termcaps/log.h incs/termcaps/termcaps_struct.h \
+  incs/termcaps/key.h incs/redirection.h libs/libft/./incs/libft.h \
+  libs/libft/./incs/libftprintf.h libs/logger/./incs/logger.h \
+  libs/logger/./incs/logger_utils.h incs/statuses.h incs/option.h \
+  incs/job.h libs/libcaps/./incs/caps.h libs/libcaps/./incs/logger.h \
+  incs/i18n.h libs/libft/./incs/get_next_line.h incs/parser.h \
+  incs/builtins/builtin.h incs/quoting.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/parser/lexer/lexer.c\n"
+		@$(CC) -c ./srcs/parser/lexer/lexer.c -o ./.objs/lexer.o $(CPPFLAGS) $(CFLAGS) 
+
+$(DIROBJ)lexer_tokenize.o: srcs/parser/lexer/lexer_tokenize.c incs/shell.h \
+  libs/libft/./incs/list.h incs/htabl.h incs/fnv.h incs/longlong.h \
+  incs/termcaps/termcaps.h incs/termcaps/list_head.h \
+  libs/libcaps/./incs/types.h incs/termcaps/log.h \
+  incs/termcaps/termcaps_struct.h incs/termcaps/key.h incs/redirection.h \
+  libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h \
+  libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
+  incs/statuses.h incs/option.h incs/job.h libs/libcaps/./incs/caps.h \
+  libs/libcaps/./incs/logger.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/parser.h \
+  incs/builtins/builtin.h incs/quoting.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/parser/lexer/lexer_tokenize.c\n"
+		@$(CC) -c ./srcs/parser/lexer/lexer_tokenize.c -o ./.objs/lexer_tokenize.o $(CPPFLAGS) $(CFLAGS) 
+
+$(DIROBJ)lexer_token_recognizer.o: srcs/parser/lexer/lexer_token_recognizer.c \
   incs/shell.h libs/libft/./incs/list.h incs/htabl.h incs/fnv.h \
   incs/longlong.h incs/termcaps/termcaps.h incs/termcaps/list_head.h \
   libs/libcaps/./incs/types.h incs/termcaps/log.h \
@@ -552,38 +581,8 @@ $(DIROBJ)parser_process_lexer.o: srcs/parser/lexer/parser_process_lexer.c \
   libs/libft/./incs/get_next_line.h incs/parser.h \
   incs/builtins/builtin.h incs/quoting.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
-		@printf "compiling ./srcs/parser/lexer/parser_process_lexer.c\n"
-		@$(CC) -c ./srcs/parser/lexer/parser_process_lexer.c -o ./.objs/parser_process_lexer.o $(CPPFLAGS) $(CFLAGS) 
-
-$(DIROBJ)tokenize.o: srcs/parser/lexer/tokenize.c incs/shell.h \
-  libs/libft/./incs/list.h incs/htabl.h incs/fnv.h incs/longlong.h \
-  incs/termcaps/termcaps.h incs/termcaps/list_head.h \
-  libs/libcaps/./incs/types.h incs/termcaps/log.h \
-  incs/termcaps/termcaps_struct.h incs/termcaps/key.h incs/redirection.h \
-  libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h \
-  libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
-  incs/statuses.h incs/option.h incs/job.h libs/libcaps/./incs/caps.h \
-  libs/libcaps/./incs/logger.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/parser.h \
-  incs/builtins/builtin.h incs/quoting.h
-		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
-		@printf "compiling ./srcs/parser/lexer/tokenize.c\n"
-		@$(CC) -c ./srcs/parser/lexer/tokenize.c -o ./.objs/tokenize.o $(CPPFLAGS) $(CFLAGS) 
-
-$(DIROBJ)token_recognizer.o: srcs/parser/lexer/token_recognizer.c incs/shell.h \
-  libs/libft/./incs/list.h incs/htabl.h incs/fnv.h incs/longlong.h \
-  incs/termcaps/termcaps.h incs/termcaps/list_head.h \
-  libs/libcaps/./incs/types.h incs/termcaps/log.h \
-  incs/termcaps/termcaps_struct.h incs/termcaps/key.h incs/redirection.h \
-  libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h \
-  libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
-  incs/statuses.h incs/option.h incs/job.h libs/libcaps/./incs/caps.h \
-  libs/libcaps/./incs/logger.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/parser.h \
-  incs/builtins/builtin.h incs/quoting.h
-		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
-		@printf "compiling ./srcs/parser/lexer/token_recognizer.c\n"
-		@$(CC) -c ./srcs/parser/lexer/token_recognizer.c -o ./.objs/token_recognizer.o $(CPPFLAGS) $(CFLAGS) 
+		@printf "compiling ./srcs/parser/lexer/lexer_token_recognizer.c\n"
+		@$(CC) -c ./srcs/parser/lexer/lexer_token_recognizer.c -o ./.objs/lexer_token_recognizer.o $(CPPFLAGS) $(CFLAGS) 
 
 $(DIROBJ)token_globing_parse_none.o: srcs/parser/token/token_globing_parse_none.c \
   incs/shell.h libs/libft/./incs/list.h incs/htabl.h incs/fnv.h \

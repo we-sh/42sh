@@ -2,7 +2,7 @@
 
 int	token_globing_parse_none(void *target, t_parser *parser, t_lexer *lexer, int *i)
 {
-	log_trace("GLOBBING entering parsing token %-12s", "TT_NONE");
+	log_trace("  entering parsing token %-12s", "TT_NONE");
 
 	t_argv	*argument;
 	char	*tmp;

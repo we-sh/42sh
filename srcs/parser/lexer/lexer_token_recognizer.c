@@ -1,6 +1,6 @@
 #include "shell.h"
 
-t_token			*token_recognizer(t_parser *parser, const char *s, int i)
+t_token			*lexer_token_recognizer(t_parser *parser, const char *s, int i)
 {
 	int			is_escaped;
 	int			l;
