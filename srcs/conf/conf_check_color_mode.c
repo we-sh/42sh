@@ -1,5 +1,26 @@
 #include "shell.h"
 
+static int	s_conf_check_mode(char *content, int fd)
+{
+	char	*mode;
+
+	mode = content + 6;
+	if (mode && *mode && ft_strncmp(mode, "on", 2) == 0)
+	{
+		free(content);
+		close(fd);
+		log_success("color is activated.");
+		return (ST_OK);
+	}
+	else
+	{
+		free(content);
+		close(fd);
+		log_success("color is not activated.");
+		return (-1);
+	}
+}
+
 int			conf_check_color_mode(char **env)
 {
 	int		fd;
@@ -17,25 +38,11 @@ int			conf_check_color_mode(char **env)
 	free(path);
 	while ((get_next_line(fd, &content)) == 1)
 	{
-		s_conf_check_loop();
 		if (ft_strncmp(content, "color=", 6) == 0)
-		{
-			if (ft_strncmp(content+6, "on", 2) == 0)
-			{
-				log_success("COLOR %s", content);
-				free(content);
-				close(fd);
-				return (ST_OK);
-			}
-			else
-			{
-				log_success("PAS  COLOR %s", content);
-				free(content);
-				close(fd);
-				return (-1);
-			}
-		}
+			return (s_conf_check_mode(content, fd));
 	}
+	log_warn("color behaviour is not specified.");
+	free(content);
 	close(fd);
-	return (ST_OK);
+	return (-1);
 }
