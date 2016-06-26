@@ -17,6 +17,7 @@ int			conf_check_color_mode(char **env)
 	free(path);
 	while ((get_next_line(fd, &content)) == 1)
 	{
+		s_conf_check_loop();
 		if (ft_strncmp(content, "color=", 6) == 0)
 		{
 			if (ft_strncmp(content+6, "on", 2) == 0)
@@ -35,7 +36,6 @@ int			conf_check_color_mode(char **env)
 			}
 		}
 	}
-	free(content);
 	close(fd);
 	return (ST_OK);
 }
