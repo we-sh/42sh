@@ -10,10 +10,11 @@ static int		s_open_heredoc(t_sh *sh, int *fd, const char *trigger)
 		return (ST_PIPE);
 	if (termcaps_initialize(sh, "heredoc> ", &termcaps_context) != 1)
 		return (ST_TERMCAPS_INIT);
+	termcaps_context.is_heredoc = 1;
 	while (1)
 	{
 		buffer = termcaps_read_input(&termcaps_context);
-		if (!buffer)
+		if (buffer == NULL)
 			break ;
 		if (!ft_strcmp(buffer, trigger))
 		{
@@ -23,6 +24,7 @@ static int		s_open_heredoc(t_sh *sh, int *fd, const char *trigger)
 		ft_putendl_fd(buffer, pipefd[1]);
 		free(buffer);
 	}
+	caps__delete_line(termcaps_context.command_line.offset);
 	termcaps_finalize(&termcaps_context);
 	close(pipefd[1]);
 	*fd = pipefd[0];
@@ -86,6 +88,7 @@ static int		s_proc(t_proc *p, t_parser *parser, t_lexer *lexer, int *i)
 	p->stdin = r->fd;
 	pos->prev->next = pos->next;
 	pos->next->prev = pos->prev;
+	free(r);
 	return (ST_OK);
 }
 

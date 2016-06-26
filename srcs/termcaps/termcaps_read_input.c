@@ -107,7 +107,7 @@ char				*termcaps_read_input(t_termcaps_context *context)
 	ASSERT(caps__cursor_getxy(&x, NULL));
 	if (x != 1)
 		termcaps_write(context->fd, "%\n", sizeof("%\n") - 1);
-	if (context->state != STATE_QUOTING && context->state != STATE_HEREDOC)
+	if (context->state != STATE_QUOTING && context->is_heredoc != 1)
 		set_new_prompt(context);
 	ASSERT(termcaps_string_to_command_line(context->prompt.size,
 											context->prompt.bytes,

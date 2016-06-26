@@ -1,9 +1,5 @@
 #include "parser.h"
 
-/*
-** Return -1 on error, 0 on success, or 1 if a job delimiter is find.
-*/
-
 static int	s_none(t_lexer *lexer, int *i)
 {
 	int		index;

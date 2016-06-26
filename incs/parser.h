@@ -6,7 +6,7 @@
 # include "statuses.h"
 # include "shell.h"
 
-# define TOKEN_BUFFER_REALLOC 512
+# define TOKEN_BUFFER_REALLOC 4096
 # define TOKEN_LIST_REALLOC 20
 
 # define TOKEN_CODE(i)		({lexer->tokens[i]->code;})

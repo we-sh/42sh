@@ -37,6 +37,8 @@ typedef struct	s_termcaps_context
 	//char									*checkparse;
 
 	t_sh									*sh;
+
+	int										is_heredoc;
 }				t_termcaps_context;
 
 
