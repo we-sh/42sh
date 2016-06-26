@@ -121,7 +121,6 @@ SRCS		=	\
 				path/path_add_folder_content_to_hasht.c	\
 				path/path_commande_not_found_in_hasht.c\
 				quoting/quoting_new_context.c\
-				quoting/quoting_invalid.c\
 				signal/signal_to_default.c		\
 				signal/signal_to_ignore.c		\
 				signal/signal_to_pgid.c			\
@@ -170,6 +169,8 @@ SRCS		=	\
 				termcaps/key__search_history.c					\
 				termcaps/termcaps_history_search.c				\
 				termcaps/termcaps_write.c						\
+				conf/conf_check_color_mode.c					\
+				conf/conf_file_init.c							\
 
 # ---------------------------------------------------------------------------- #
 # PROJECT CONFIGURATION
@@ -2033,21 +2034,6 @@ $(DIROBJ)quoting_new_context.o: srcs/quoting/quoting_new_context.c incs/shell.h 
 		@printf "compiling ./srcs/quoting/quoting_new_context.c\n"
 		@$(CC) -c ./srcs/quoting/quoting_new_context.c -o ./.objs/quoting_new_context.o $(CPPFLAGS) $(CFLAGS) 
 
-$(DIROBJ)quoting_invalid.o: srcs/quoting/quoting_invalid.c incs/shell.h \
-  libs/libft/./incs/list.h incs/htabl.h incs/fnv.h incs/longlong.h \
-  incs/termcaps/termcaps.h incs/termcaps/list_head.h \
-  libs/libcaps/./incs/types.h incs/termcaps/log.h \
-  incs/termcaps/termcaps_struct.h incs/termcaps/key.h incs/redirection.h \
-  libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h \
-  libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
-  incs/statuses.h incs/option.h incs/job.h libs/libcaps/./incs/caps.h \
-  libs/libcaps/./incs/logger.h incs/i18n.h \
-  libs/libft/./incs/get_next_line.h incs/parser.h \
-  incs/builtins/builtin.h incs/quoting.h
-		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
-		@printf "compiling ./srcs/quoting/quoting_invalid.c\n"
-		@$(CC) -c ./srcs/quoting/quoting_invalid.c -o ./.objs/quoting_invalid.o $(CPPFLAGS) $(CFLAGS) 
-
 $(DIROBJ)signal_to_default.o: srcs/signal/signal_to_default.c incs/shell.h \
   libs/libft/./incs/list.h incs/htabl.h incs/fnv.h incs/longlong.h \
   incs/termcaps/termcaps.h incs/termcaps/list_head.h \
@@ -2778,6 +2764,36 @@ $(DIROBJ)termcaps_write.o: srcs/termcaps/termcaps_write.c incs/shell.h \
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/termcaps/termcaps_write.c\n"
 		@$(CC) -c ./srcs/termcaps/termcaps_write.c -o ./.objs/termcaps_write.o $(CPPFLAGS) $(CFLAGS) 
+
+$(DIROBJ)conf_check_color_mode.o: srcs/conf/conf_check_color_mode.c incs/shell.h \
+  libs/libft/./incs/list.h incs/htabl.h incs/fnv.h incs/longlong.h \
+  incs/termcaps/termcaps.h incs/termcaps/list_head.h \
+  libs/libcaps/./incs/types.h incs/termcaps/log.h \
+  incs/termcaps/termcaps_struct.h incs/termcaps/key.h incs/redirection.h \
+  libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h \
+  libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
+  incs/statuses.h incs/option.h incs/job.h libs/libcaps/./incs/caps.h \
+  libs/libcaps/./incs/logger.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/parser.h \
+  incs/builtins/builtin.h incs/quoting.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/conf/conf_check_color_mode.c\n"
+		@$(CC) -c ./srcs/conf/conf_check_color_mode.c -o ./.objs/conf_check_color_mode.o $(CPPFLAGS) $(CFLAGS) 
+
+$(DIROBJ)conf_file_init.o: srcs/conf/conf_file_init.c incs/shell.h \
+  libs/libft/./incs/list.h incs/htabl.h incs/fnv.h incs/longlong.h \
+  incs/termcaps/termcaps.h incs/termcaps/list_head.h \
+  libs/libcaps/./incs/types.h incs/termcaps/log.h \
+  incs/termcaps/termcaps_struct.h incs/termcaps/key.h incs/redirection.h \
+  libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h \
+  libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h \
+  incs/statuses.h incs/option.h incs/job.h libs/libcaps/./incs/caps.h \
+  libs/libcaps/./incs/logger.h incs/i18n.h \
+  libs/libft/./incs/get_next_line.h incs/parser.h \
+  incs/builtins/builtin.h incs/quoting.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/conf/conf_file_init.c\n"
+		@$(CC) -c ./srcs/conf/conf_file_init.c -o ./.objs/conf_file_init.o $(CPPFLAGS) $(CFLAGS) 
 
 
 #end

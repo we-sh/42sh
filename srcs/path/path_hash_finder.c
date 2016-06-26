@@ -1,5 +1,26 @@
 #include "shell.h"
 
+static int	s_path_is_a_directory(char *path)
+{
+	struct stat *st;
+	int 		ret;
+	int			value;
+
+	if ((st = (struct stat *)malloc(sizeof(struct stat))) == NULL)
+		return (ST_MALLOC);
+	if ((value = lstat(path, st)) == -1)
+	{
+		free(st);
+		return (ST_CMD_NOT_FOUND);
+	}
+	if (S_ISREG(st->st_mode) && st->st_mode & 0111)
+		ret = ST_OK;
+	else
+		ret = ST_CMD_NOT_FOUND;
+	free(st);
+	return (ret);
+}
+
 static int	s_path_iter_in_list(t_hasht *ptr, char **cmd)
 {
 	while (ptr->next)
@@ -23,7 +44,7 @@ static	int	s_path_control_access(char **cmd, char **envp, int ret)
 		if ((ret = path_commande_not_found_in_hasht(envp, cmd)) == ST_MALLOC)
 			return (ret);
 	}
-	if (access(*cmd, F_OK) == -1 && ret != ST_OK)
+	if ((access(*cmd, F_OK) == -1 && ret != ST_OK) || s_path_is_a_directory(*cmd) != ST_OK)
 	{
 		display_status(ST_CMD_NOT_FOUND, *cmd, NULL);
 		return (ST_OK);

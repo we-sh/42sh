@@ -43,7 +43,8 @@ static int	s_after(t_sh *sh, t_proc *p)
 	return (ST_EXIT);
 }
 
-int			builtin_exit(t_builtin const *builtin, int callback, t_sh *sh, t_proc *p)
+int			builtin_exit(t_builtin const *builtin,
+						int callback, t_sh *sh, t_proc *p)
 {
 	if (callback == BLTIN_CB_BEFORE)
 		return (s_before(p));

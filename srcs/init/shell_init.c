@@ -33,9 +33,40 @@ static int	s_shell_fd_init(t_sh *sh)
 	return (ST_OK);
 }
 
-int		shell_init(t_sh *sh, char *envp[])
+char		*shell_set_prompt(char **env) // A deplacer
+{//check leaks
+	char	*str;
+	char	*buf;
+	int		i;
+	char	*home;
+	char	*tmp;
+
+	i = 0;
+	buf = getcwd(NULL, 0);
+	home = env_get_home(env); //check leak
+	if ((ft_strncmp(buf, home, ft_strlen(home) - 1) == 0))
+	{
+		str = ft_strjoin3_safe("~", buf + ft_strlen(home), "$> ");//check return
+		log_warn("%s", str);
+	}
+	else
+		str = ft_strjoin(buf, "$> ");//check return
+	if ((conf_check_color_mode(env)) == ST_OK)
+	{
+		tmp = ft_strjoin3_safe(ANSI_COLOR_LIGHT_BLUE,
+								str,
+								ANSI_COLOR_RESET);
+		free(str);
+		str = tmp;
+	}
+	free(buf);
+	return (str);
+}
+
+int			shell_init(t_sh *sh, char *envp[])
 {
 	int		ret;
+	char	*prompt;
 
 	INIT_LIST_HEAD(&g_current_jobs_list_head);
 	INIT_LIST_HEAD(&sh->redir_head);
@@ -45,7 +76,8 @@ int		shell_init(t_sh *sh, char *envp[])
 	if ((ret = shell_environment(sh, envp)) != ST_OK)
 		return (ret);
 	path_init_hasht(sh->envp);
-
+	if ((ret = conf_file_init(sh->envp)) != ST_OK)
+		return (ret);
 	if ((sh->pwd = getcwd(NULL, 0)) == NULL)
 		return (ST_MALLOC);
 
@@ -81,8 +113,13 @@ int		shell_init(t_sh *sh, char *envp[])
 			log_fatal("caps__initialize() failed");
 			return (ST_TERMCAPS_INIT);
 		}
-		if (!termcaps_initialize(sh, "$> ", &sh->termcaps_context))
+		prompt = shell_set_prompt(sh->envp);
+		if (!termcaps_initialize(sh, prompt, &sh->termcaps_context))
+		{
+			free(prompt);
 			return (ST_TERMCAPS_INIT);
+		}	
+		free(prompt);
 	}
 	return (ST_OK);
 }

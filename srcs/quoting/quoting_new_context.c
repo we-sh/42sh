@@ -20,81 +20,84 @@ static int				s_d_end(t_termcaps_context *c, t_termcaps_context *ch)
 	return (ST_OK);
 }
 
-static int				s_check_pipe_case(t_termcaps_context *context)
+static int				s_first_loop_check(char **tmp2,
+											t_termcaps_context *child_c,
+											t_termcaps_context *c)
 {
-	t_list_node_cmd	*node_cmd;
-	t_list			*pos;
-
-	LIST_FOREACH(&context->command_line.list, pos)
-	{
-		node_cmd = CONTAINER_OF(pos, t_list_node_cmd, list);
-		if (node_cmd->character[0] == '|')
-			return (1);
-	}
-	return (ST_OK);
-}
-
-static int				s_replace_backslash(t_termcaps_context *context)
-{
-	t_list_node_cmd	*node_cmd;
-	t_list			*pos;
-
-	LIST_FOREACH(&context->command_line.list, pos)
-	{
-		node_cmd = CONTAINER_OF(pos, t_list_node_cmd, list);
-		if (node_cmd->character[0] == '\\')
-		{
-			node_cmd->character[0] = ' ';
-			return (ST_OK);
-		}
-	}
-	return (ST_OK);
-}
-
-static int				s_qloop(t_termcaps_context *c)
-{
-	char				*test;
 	char				*buff_quote;
-	t_termcaps_context	child_context;
-	int 				ret = 0;
+	char				*tmp;
+	size_t				command_str_size;
+	char				command_str[TERMCAPS_BUFFER_MAX];
 
-	s_d_init(c, &child_context);
-	while ((ret = quoting_invalid(c)) != 0)
+	tmp = NULL;
+	buff_quote = NULL;
+	ft_bzero(command_str, TERMCAPS_BUFFER_MAX);
+	ASSERT(list_head__command_line_to_buffer(&c->command_line,
+											sizeof(command_str) - 1,
+											&command_str_size,
+											command_str));
+	tmp = ft_strdup(command_str);
+	child_c->state = STATE_QUOTING;
+	buff_quote = termcaps_read_input(child_c);
+	if (tmp)
 	{
-		if (ret == 2)
+		if ((*tmp2 = ft_strjoin3_safe(tmp, "\n", buff_quote)) == NULL)
 		{
-			s_replace_backslash(c);
-			g_in_child = 2;
+			free(buff_quote);
+			free(tmp);
+			return (ST_MALLOC);
 		}
-		buff_quote = termcaps_read_input(&child_context);
-		if (s_check_pipe_case(c) == 1)
-			termcaps_string_to_command_line((ft_strlen(buff_quote)),
-											buff_quote,	&c->command_line);
-		else
-		{
-			if ((test = ft_strjoin("\n", buff_quote)) == NULL)
-			{
-				free(buff_quote);
-				return (ST_MALLOC);
-			}
-			termcaps_string_to_command_line((ft_strlen(test)),
-											test, &c->command_line);
-			free(test);
-		}
-		ft_memdel((void **)&buff_quote); //leaks du child_cntext ou autre i don't knowww
+		free(buff_quote);
+		ft_memdel((void **)&tmp);
 	}
-	return (s_d_end(c, &child_context));
+	return (ST_OK);
 }
 
-int						quoting_new_context(t_termcaps_context *context)
+static int				s_qloop(t_termcaps_context *c,
+								t_termcaps_context *child_context)
 {
-	int			ret;
+	char				*buff_quote;
+	char				*tmp3;
+	char				*tmp2;
 
-	ret = quoting_invalid(context);
-	if (g_in_child == 0 && (ret != 0))
+	tmp2 = NULL;
+	buff_quote = NULL;
+	s_first_loop_check(&tmp2, child_context, c);
+	while ((parser(c->sh, tmp2, F_PARSING_TERMCAPS, NULL)) != ST_OK)
 	{
-		if ((ret = s_qloop(context)) != ST_OK)
+		child_context->state = STATE_QUOTING;
+		buff_quote = termcaps_read_input(child_context);
+		if ((tmp3 = ft_strjoin3_safe(tmp2, "\n", buff_quote)) == NULL)
+		{
+			free(buff_quote);
+			return (ST_MALLOC);
+		}
+		free(tmp2);
+		tmp2 = ft_strdup(tmp3);
+		free(tmp3);
+		ft_memdel((void **)&buff_quote);
+	}
+	list_head__command_line_destroy(&c->command_line);
+	list_head__init(&c->command_line);
+	termcaps_string_to_command_line((ft_strlen(tmp2)), tmp2, &c->command_line);
+	free(tmp2);
+	return (ST_OK);
+}
+
+int						quoting_new_context(t_termcaps_context *context,
+											int quot_value)
+{
+	t_termcaps_context	child_context;
+	int					ret;
+
+	ret = 0;
+	(void)quot_value;
+	if (g_in_child == 0)
+	{
+		s_d_init(context, &child_context);
+		if ((ret = s_qloop(context, &child_context)) != ST_OK)
 			return (ret);
+		s_d_end(context, &child_context);
 	}
 	return (ret);
 }

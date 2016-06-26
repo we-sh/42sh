@@ -89,12 +89,13 @@ static int	s_after(t_sh *sh, t_proc *p)
 			return (ret);
 		ft_memdel((void **)&sh->pwd);
 		if ((sh->pwd = ft_strdup(p->bltin_char)) == NULL)
-			return(ST_MALLOC);
+			return (ST_MALLOC);
 	}
 	return (ST_OK);
 }
 
-int			builtin_cd(t_builtin const *builtin, int callback, t_sh *sh, t_proc *p)
+int			builtin_cd(t_builtin const *builtin,
+						int callback, t_sh *sh, t_proc *p)
 {
 	if (callback == BLTIN_CB_BEFORE)
 		return (s_before(sh, p));

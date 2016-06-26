@@ -21,7 +21,7 @@ static char	*s_get_value_and_remove_equal_sign(char *arg)
 int			env_update_from_cmd_line(char ***argv, int *argc, char ***envp)
 {
 	char	*value;
-	int ret;
+	int		ret;
 
 	if (!argv)
 		return (ST_OK);

@@ -16,7 +16,7 @@ int			builtin_cd_readlink(char const *path, char **buf)
 		if ((*buf = getcwd(NULL, 0)) == NULL)
 			status = ST_GETCWD;
 		if (chdir(current) < 0)
-			status =  ST_CHDIR;
+			status = ST_CHDIR;
 	}
 	ft_memdel((void *)&current);
 	return (status);

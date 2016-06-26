@@ -45,8 +45,52 @@ static int	s_dup2_and_close(int from, int to)
 	return (ST_OK);
 }
 
+static int	s_match_one_binary(char *str)
+{
+	if (ft_strcmp("ls", str) == 0)
+		return (ST_OK);
+	else if (ft_strcmp("grep", str) == 0)
+		return (5);
+	return (ST_CMD_NOT_FOUND);
+}
+
+static int	s_proc_launch_execve(t_sh *sh, t_proc *p) //freeeeeeeeeeee
+{
+	char	*lowerargv;
+	char	*match;
+	char	*value;
+	int		ret;
+	int		i;
+
+	i = 0;
+	match = ft_strdup(p->argv[0]);
+	lowerargv = ft_strtolower(match);
+	if (path_hash_finder(sh->envp, &lowerargv) == ST_OK)
+	{
+		 if (((ret = s_match_one_binary(p->argv[0])) != ST_CMD_NOT_FOUND)
+		 	&& (conf_check_color_mode(sh->envp) == ST_OK))
+		 {
+		 	if (ret == ST_OK)
+		 		value = LSOPTCOLOR;
+		 	else
+		 		value = "--color=auto";
+			if (p->argc > 1)
+			 	ft_array_push_index(&p->argv, value, 1);
+			 else
+			 	ft_array_push_back(&p->argv, value);
+		 }
+		if ((execve(lowerargv, p->argv, p->envp)) == -1)
+			return (ST_OK);
+	}
+	free(lowerargv);
+	return (ST_OK);
+}
+
 void		proc_launch(t_sh *sh, t_job *j, t_proc *p)
 {
+	int		ret;
+
+	ret = 0;
 	p->pid = getpid();
 	s_interactive_mode_callback(sh, j, p);
 	s_dup2_and_close(STDIN_FILENO, p->stdin);
@@ -66,7 +110,7 @@ void		proc_launch(t_sh *sh, t_job *j, t_proc *p)
 	if (p->is_valid != 1)
 		exit(p->is_valid == 0 ? EXIT_SUCCESS : EXIT_FAILURE);
 	builtin_callback(BLTIN_CB_EXEC, sh, p);
-	if (path_hash_finder(sh->envp, &p->argv[0]) == ST_OK)
-		execve(p->argv[0], p->argv, p->envp);
+	if ((ret = (s_proc_launch_execve(sh, p))) != ST_OK)
+		display_status(ret, NULL, NULL);
 	exit(EXIT_FAILURE);
 }

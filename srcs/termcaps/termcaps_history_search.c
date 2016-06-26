@@ -31,7 +31,7 @@ static int				s_termcaps_history_search_loop(
 int						termcaps_history_search(t_termcaps_context *context,
 												t_buffer *out_match)
 {
-	char				command_line_cur[2048];
+	char				command_line_cur[TERMCAPS_BUFFER_MAX];
 	size_t				command_line_cur_size;
 
 	out_match->size = 0;

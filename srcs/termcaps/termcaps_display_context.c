@@ -6,7 +6,7 @@
 int		termcaps_display_context(t_termcaps_context *context,
 									t_buffer *history_search)
 {
-	char		buffer[2048];
+	char		buffer[TERMCAPS_BUFFER_MAX];
 	size_t		buffer_size;
 
 	if (context->state == STATE_REGULAR || context->state == STATE_SELECTION)

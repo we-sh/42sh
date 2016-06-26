@@ -74,7 +74,8 @@ static int	s_after(t_sh *sh, t_proc *p)
 	return (ST_OK);
 }
 
-int			builtin_bg(t_builtin const *builtin, int callback, t_sh *sh, t_proc *p)
+int			builtin_bg(t_builtin const *builtin,
+						int callback, t_sh *sh, t_proc *p)
 {
 	(void)sh;
 	if (callback == BLTIN_CB_BEFORE)

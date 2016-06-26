@@ -33,11 +33,9 @@ static int			s_check_job_status(t_termcaps_context *context)
 static void			s_delete_line_context(t_termcaps_context *context,
 							const t_buffer history_search)
 {
-	if (context->state == STATE_REGULAR || context->state == STATE_SELECTION)
-	{
+	if (context->state != STATE_SEARCH_HISTORY)
 		caps__delete_line(context->command_line.offset);
-	}
-	else if (context->state == STATE_SEARCH_HISTORY)
+	else
 	{
 		caps__delete_line(history_search.size +
 						context->command_line.size - context->prompt.size +
@@ -76,6 +74,19 @@ static int			s_termcaps_read_loop(t_termcaps_context *context,
 	return (1);
 }
 
+int			set_new_prompt(t_termcaps_context *context)
+{
+	char 	*tmp;
+
+	free(context->prompt.bytes);
+	if ((tmp = env_get(context->sh->envp, "PS1")) == NULL)
+		tmp = shell_set_prompt(context->sh->envp);
+	context->prompt.size = ft_strlen(tmp);
+	context->prompt.bytes = ft_strdup(tmp);
+	free(tmp);
+	return (ST_OK);
+}
+
 char				*termcaps_read_input(t_termcaps_context *context)
 {
 	int				x;
@@ -89,6 +100,8 @@ char				*termcaps_read_input(t_termcaps_context *context)
 	ASSERT(caps__cursor_getxy(&x, NULL));
 	if (x != 1)
 		termcaps_write(context->fd, "%\n", sizeof("%\n") - 1);
+	if (context->state != STATE_QUOTING && context->state != STATE_HEREDOC)
+		set_new_prompt(context);
 	ASSERT(termcaps_string_to_command_line(context->prompt.size,
 											context->prompt.bytes,
 											&context->command_line));

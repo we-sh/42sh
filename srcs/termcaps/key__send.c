@@ -24,7 +24,7 @@ static int				s_fill_context_buffer(t_termcaps_context *context,
 static int				s_bufferize_input(t_termcaps_context *context)
 {
 	size_t		buffer_size;
-	char		buffer[2048];
+	char		buffer[TERMCAPS_BUFFER_MAX];
 
 	if (!list_head__command_line_to_buffer(&context->command_line,
 				sizeof(buffer) - 1, &buffer_size, buffer))
@@ -98,17 +98,20 @@ int						key__send(t_termcaps_context *context)
 {
 	int					ret;
 	size_t				command_line_cur_size;
-	char				command_line_cur[2048];
+	char				command_line_cur[TERMCAPS_BUFFER_MAX];
 
 	if (context->state == STATE_REGULAR)
 	{
+		ft_bzero(command_line_cur, TERMCAPS_BUFFER_MAX);
 		ASSERT(list_head__command_line_to_buffer(&context->command_line,
 												sizeof(command_line_cur) - 1,
 												&command_line_cur_size,
 												command_line_cur));
-		if ((ret = parser(context->sh, command_line_cur + 3,
+		if ((context->state != STATE_HEREDOC) &&
+			(command_line_cur_size != context->prompt.size) && //Remove if the parser handle an empty string
+			(ret = parser(context->sh, command_line_cur + context->prompt.size,
 							F_PARSING_TERMCAPS, NULL)) != ST_OK)
-			log_warn("should enter quoting context with token: %d", ret);
+			quoting_new_context(context, ret);
 		if (g_child == 0)
 		{
 			termcaps_display_command_line(context);

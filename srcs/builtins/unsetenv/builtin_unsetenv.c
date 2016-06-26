@@ -37,9 +37,7 @@ static int	s_after(t_sh *sh, t_proc *p)
 			env_unset(&sh->envp, p->argv[i]);
 			if (ft_strcmp(p->argv[i], "PATH") == 0)
 			{
-				log_info("RESET HASH TABLE");
 				path_free_hasht();
-				log_info("HUHU TABLE");
 				path_init_hasht(sh->envp);
 			}
 			i++;
@@ -48,7 +46,8 @@ static int	s_after(t_sh *sh, t_proc *p)
 	return (ST_OK);
 }
 
-int			builtin_unsetenv(t_builtin const *builtin, int callback, t_sh *sh, t_proc *p)
+int			builtin_unsetenv(t_builtin const *builtin,
+								int callback, t_sh *sh, t_proc *p)
 {
 	if (callback == BLTIN_CB_BEFORE)
 		return (s_before(p));

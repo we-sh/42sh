@@ -2,7 +2,7 @@
 # define SHELL_H
 # define TTY_DEVICE "/dev/tty"
 # define PROGRAM_NAME "42sh"
-# define PATH_MAX 4096
+# define TERMCAPS_BUFFER_MAX 4096
 # define PATH_ROOT "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 # define PATH_STD "/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games"
 
@@ -13,9 +13,11 @@
 #ifdef __linux__
 # define SELECTBLANC "\e]12;white\a"
 # define SELECTBLEU "\e]12;blue\a"
+# define LSOPTCOLOR "--color=auto"
 #else
 # define SELECTBLANC "\033]Plffffff\033\\"
 # define SELECTBLEU "\033]Pl4040ff\033\\"
+# define LSOPTCOLOR "-G"
 #endif
 
 #define ANSI_COLOR_RESET_SIZE (sizeof("\033[0m") - 1)
@@ -41,6 +43,7 @@
 # include <dirent.h>
 # include <sys/stat.h>
 # include <sys/ioctl.h>
+# include <fcntl.h>
 
 /*
 ** Shell structure
@@ -126,6 +129,7 @@ char const		*i18n_translate(int status);
 int				shell_init(t_sh *sh, char *envp[]);
 int				shell_language(int lang);
 int				shell_environment(t_sh *sh, char **envp);
+char			*shell_set_prompt(char **env);// A deplacer
 
 /*
 ** job/
@@ -187,8 +191,7 @@ int				path_get_new_cmd(char **commande, char *name, char *path);
 /*
 ** quoting
 */
-int				quoting_invalid(t_termcaps_context *context);
-int				quoting_new_context(t_termcaps_context *context);
+int				quoting_new_context(t_termcaps_context *context, int quot_value);
 
 /*
 ** signal/
@@ -220,16 +223,15 @@ int				termcaps_display_context(t_termcaps_context *context, t_buffer *history_s
 void			termcaps_identify_input(const unsigned int c,
 										t_input_type *input_type,
 										size_t *input_size_missing);
-/*
-** completion
-*/
-typedef struct	s_node_dir
-{
-	t_buffer		filename;
-	t_list			list;
-}				t_node_dir;
+char			*termcaps_read_input(t_termcaps_context *context);
 
 t_node_dir		*node_dir__create(const char *filename);
 void			list_dir__destroy(t_list *head);
+
+/*
+** conf
+*/
+int				conf_file_init(char **env);
+int				conf_check_color_mode(char **env);
 
 #endif

@@ -1,6 +1,5 @@
 #include "shell.h"
 
-
 static int	s_before(t_proc *p)
 {
 	int		ret;
@@ -12,7 +11,7 @@ static int	s_before(t_proc *p)
 		{
 			if (p->argc > 3)
 				p->bltin_status = ST_E2BIG;
-			else if (((ret  = setenv_argv_is_valid(p->argv[1])) != ST_OK))
+			else if (((ret = setenv_argv_is_valid(p->argv[1])) != ST_OK))
 				p->bltin_status = ret;
 		}
 	}
@@ -24,7 +23,7 @@ static int	s_exec(t_builtin const *builtin, t_proc *p, t_sh *sh)
 	int		i;
 
 	i = 0;
-	if (p->bltin_status == ST_OK  && p->argc == 1)
+	if (p->bltin_status == ST_OK && p->argc == 1)
 	{
 		while (sh->envp[i])
 		{
@@ -42,7 +41,6 @@ static int	s_exec(t_builtin const *builtin, t_proc *p, t_sh *sh)
 
 static int	s_after(t_sh *sh, t_proc *p)
 {
-
 	if (p->bltin_status == ST_OK && (p->argc == 2 || p->argc == 3))
 	{
 		env_set(&sh->envp, p->argv[1], p->argv[2]);
@@ -56,7 +54,8 @@ static int	s_after(t_sh *sh, t_proc *p)
 	return (ST_OK);
 }
 
-int			builtin_setenv(t_builtin const *builtin, int callback, t_sh *sh, t_proc *p)
+int			builtin_setenv(t_builtin const *builtin,
+							int callback, t_sh *sh, t_proc *p)
 {
 	if (callback == BLTIN_CB_BEFORE)
 		return (s_before(p));

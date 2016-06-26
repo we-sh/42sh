@@ -12,8 +12,8 @@ static void	s_print(const t_lexer *lexer)
 	while (i < lexer->size)
 	{
 		log_debug("tokens[%d] (TT %d - TC %2d) => \"%s\"", i,
-				TOKEN_TYPE(i), TOKEN_CODE(i),
-				TOKEN_CONTENT(i));
+				lexer->tokens[i].type, lexer->tokens[i].code,
+				lexer->tokens[i].content);
 		i++;
 	}
 }
@@ -22,7 +22,7 @@ static void	s_print(const t_lexer *lexer)
 ** Convert an input string into a token list.
 */
 
-int			lexer(t_parser *parser, const char *in)
+int			parser_process_lexer(t_parser *parser, const char *in)
 {
 	int		ret;
 
@@ -31,7 +31,7 @@ int			lexer(t_parser *parser, const char *in)
 
 	log_info("lexer receives input : `%s'", in);
 	parser->lexer->size = 0;
-	if ((ret = lexer_tokenize(in, parser, parser->lexer)) != ST_OK)
+	if ((ret = tokenize(in, parser)) != ST_OK)
 	{
 		log_error("tokenization failed (incomplete inhibition)");
 		return (ret);

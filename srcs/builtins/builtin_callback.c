@@ -1,9 +1,9 @@
 #include "shell.h"
 #include "builtin_struct.h"
 
-static int		s_argc(char **argv)
+static int	s_argc(char **argv)
 {
-	int	i;
+	int		i;
 
 	i = 0;
 	while (argv[i])
@@ -11,9 +11,9 @@ static int		s_argc(char **argv)
 	return (i);
 }
 
-int	builtin_callback(int callback, t_sh *sh, t_proc *p)
+int			builtin_callback(int callback, t_sh *sh, t_proc *p)
 {
-	int	i;
+	int		i;
 
 	i = BLTIN_NONE;
 	while (++i < BLTIN_TOTAL)

@@ -10,6 +10,7 @@ char				*env_get_home(char **envp)
 	{
 		uid = getuid();
 		passwd = getpwuid(uid);
+		free(tmp);
 		return (passwd->pw_dir);
 	}
 	return (tmp);

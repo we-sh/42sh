@@ -27,4 +27,13 @@ typedef enum e_state_word{
 		STATE_ISSPACE
 }			t_state_word;
 
+/*
+** completion
+*/
+typedef struct	s_node_dir
+{
+	t_buffer		filename;
+	t_list			list;
+}				t_node_dir;
+
 #endif /* TERMCAPS_H */

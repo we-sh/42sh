@@ -9,7 +9,7 @@ t_list_node_history		*list_node__history_create(t_list_head *command_line,
 {
 	void				*addr;
 	t_list_node_history	*new;
-	char				buffer[2048];
+	char				buffer[TERMCAPS_BUFFER_MAX];
 	size_t				buffer_size;
 
 	ASSERT(list_head__command_line_to_buffer(command_line,
