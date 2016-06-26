@@ -5,7 +5,7 @@
 ** global variable g_current_jobs_list_head.
 */
 
-int	parser_build_list_unstack_lexer(t_parser *parser)
+int			parser_build_list_unstack_lexer(t_parser *parser)
 {
 	int		i;
 	int		ret;
@@ -16,13 +16,7 @@ int	parser_build_list_unstack_lexer(t_parser *parser)
 	while (i < parser->lexer->size)
 	{
 		if ((ret = parser->unstack_func(parser, parser->lexer, &i)) != ST_OK)
-		{
-			log_warn("failed to unstack lexer");
 			return (ret);
-		}
 	}
-	if (parser->target_list_head)
-		log_success("parsing lexer into %zu jobs",
-			list_size(parser->target_list_head));
 	return (ST_OK);
 }

@@ -22,15 +22,11 @@ int				parser_build_list_unstack_lexer_globing(t_parser *parser, t_lexer *lexer,
 	if (!(argument = s_argv_alloc()))
 		return (ST_MALLOC);
 	list_push_back(&argument->argv_list, parser->target_list_head);
-
 	while (*i < lexer->size)
 	{
-		log_info("  remaining tokens (globing) : %d / %d", lexer->size - *i, lexer->size);
-
 		ret = lexer->tokens[*i]->parse((void *)argument, parser, lexer, i);
 		if (ret != ST_OK)
 			return (ret);
-
 	}
 	return (ST_OK);
 }

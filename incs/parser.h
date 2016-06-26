@@ -216,7 +216,7 @@ int		token_parse_utils_skip_separators(t_lexer *lexer, int *i,
 			char **command);
 int		token_parse_utils_get_full_word(char **content, t_lexer *lexer, int *i);
 int		token_parse_utils_get_word_and_inhib(char **content, t_lexer *lexer,
-			int *i)
+			int *i);
 int		token_parse_utils_open_new_fd(t_proc *p, char *f, int *fd, int flag);
 void	token_parse_utils_set_proc_fds(t_proc *p, int fd_l, int fd_r);
 int		token_parse_utils_push_command(char *content, char **target);
