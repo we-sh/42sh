@@ -22,6 +22,10 @@ static int	s_bask_to_shell(t_sh *sh)
 	return (ST_OK);
 }
 
+/*
+** TODO: notify user a problem occured (l. 52)
+*/
+
 int			job_foreground(t_sh *sh, t_job *j, int const sigcont)
 {
 	signal_to_pgid(j->pgid);
@@ -45,9 +49,6 @@ int			job_foreground(t_sh *sh, t_job *j, int const sigcont)
 	}
 	job_wait(j);
 	if (job_is_completed(j) == 0 && tcgetattr(sh->fd, &j->tmodes) != 0)
-	{
-		// todo notify user a problem occured
 		log_error("failed to save termios structure a the job %d", j->pgid);
-	}
 	return (s_bask_to_shell(sh));
 }
