@@ -4,9 +4,11 @@ static int	s_before(t_proc *p)
 {
 	if (p->bltin_status == ST_OK)
 	{
+		if (p->argc > 2)
+			p->bltin_status = ST_EINVAL;
 		if (p->argc == 2)
 			if (job_by_name(p->argv[1], 0) == NULL)
-				p->bltin_status = ST_EINVAL;
+				p->bltin_status = ST_BLTIN_JOBS_ERR_NOSUCHJOB;
 	}
 	return (ST_OK);
 }
@@ -34,7 +36,10 @@ static int	s_exec(t_builtin const *builtin, t_proc *p)
 
 	if (p->bltin_status > ST_OK)
 	{
-		builtin_usage(builtin, p->bltin_status);
+		if (p->bltin_status != ST_EINVAL && p->argc == 2)
+			display_status(p->bltin_status, NULL, p->argv[1]);
+		else
+			builtin_usage(builtin, p->bltin_status);
 		return (EXIT_FAILURE);
 	}
 	show_pid = option_is_set(&p->bltin_opt_head, ST_BLTIN_JOBS_OPT_L);
