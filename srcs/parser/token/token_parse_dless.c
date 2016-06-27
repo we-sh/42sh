@@ -5,6 +5,7 @@ static int		s_open_heredoc(t_sh *sh, int *fd, const char *trigger)
 	t_termcaps_context	termcaps_context;
 	char				*buffer;
 	int					pipefd[2];
+	int					ret;
 
 	if (pipe(pipefd) != 0)
 		return (ST_PIPE);
@@ -16,16 +17,25 @@ static int		s_open_heredoc(t_sh *sh, int *fd, const char *trigger)
 		buffer = termcaps_read_input(&termcaps_context);
 		if (buffer == NULL)
 			break ;
-		if (!ft_strcmp(buffer, trigger))
+		if (!ft_strcmp("^C\n", buffer))
+		{
+			close(pipefd[0]);
+			ret = -1; //TEMP
 			break ;
+		}
+		if (!ft_strcmp(buffer, trigger))
+		{
+			ret = ST_OK;
+			break ;
+		}
 		ft_putendl_fd(buffer, pipefd[1]);
-		ft_memdel((void **)&buffer);
+		free(buffer);
 	}
-	ft_memdel((void **)&buffer);
+	free(buffer);
 	termcaps_finalize(&termcaps_context);
 	close(pipefd[1]);
 	*fd = pipefd[0];
-	return (ST_OK);
+	return (ret);
 }
 
 static int		s_none(t_parser *parser, t_lexer *lexer, int *i)
