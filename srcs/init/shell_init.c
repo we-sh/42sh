@@ -6,6 +6,22 @@
 ** It returns a negative value when an error occurs.
 */
 
+static int	s_shell_environment(t_sh *sh, char *envp[])
+{
+	int ret;
+
+	if ((ret = shell_environment(sh, envp)) != ST_OK)
+		return (ret);
+	path_init_hasht(sh->envp);
+	if ((ret = conf_file_init(sh->envp)) != ST_OK)
+		return (ret);
+	if ((sh->pwd = getcwd(NULL, 0)) == NULL)
+		return (ST_GETCWD);
+	if ((ret = shell_language(LANG_EN)) < 0)
+		return (-ret);
+	return (ST_OK);
+}
+
 static int	s_shell_fd_init(t_sh *sh)
 {
 	int			fd;
@@ -29,97 +45,70 @@ static int	s_shell_fd_init(t_sh *sh)
 	else
 		fd = STDIN_FILENO;
 	sh->fd = fd;
-	log_info("is_interactive ? %s fd: %d", sh->is_interactive ? "true" : "false", fd);
+	log_info("is_interactive ? %s fd: %d",
+		sh->is_interactive ? "true" : "false", fd);
 	return (ST_OK);
 }
 
-char		*shell_set_prompt(char **env) // A deplacer
-{//check leaks
-	char	*str;
-	char	*buf;
-	int		i;
-	char	*home;
-	char	*tmp;
+static int	s_shell_job_control(t_sh *sh)
+{
+	int ret;
 
-	i = 0;
-	buf = getcwd(NULL, 0);
-	home = env_get_home(env); //check leak
-	if ((ft_strncmp(buf, home, ft_strlen(home) - 1) == 0))
+	while (1)
 	{
-		str = ft_strjoin3_safe("~", buf + ft_strlen(home), "$> ");//check return
-		log_warn("%s", str);
+		ioctl(STDIN_FILENO, TIOCGPGRP, &ret);
+		if (ret == (sh->pgid = getpgrp()))
+			break ;
+		if (kill(-sh->pgid, SIGTTIN) != 0)
+			log_error("kill(-sh->pgid. SIGTTIN) failed");
 	}
-	else
-		str = ft_strjoin(buf, "$> ");//check return
-	if ((conf_check_color_mode(env)) == ST_OK)
+	if ((ret = signal_to_ignore()) != ST_OK)
+		return (ret);
+	if (setpgid(sh->pgid, sh->pgid) < 0)
+		return (ST_SETPGID);
+	log_info("pgid: %d", sh->pgid);
+	if (ioctl(STDIN_FILENO, TIOCSPGRP, &sh->pgid) < 0)
+		return (ST_TCSETPGRP);
+	return (ST_OK);
+}
+
+static int	s_shell_termcaps(t_sh *sh)
+{
+	char	*prompt;
+
+	if (!caps__initialize(sh->fd))
 	{
-		tmp = ft_strjoin3_safe(ANSI_COLOR_LIGHT_BLUE,
-								str,
-								ANSI_COLOR_RESET);
-		free(str);
-		str = tmp;
+		log_fatal("caps__initialize() failed");
+		return (ST_TERMCAPS_INIT);
 	}
-	free(buf);
-	return (str);
+	prompt = shell_set_prompt(sh->envp);
+	if (!termcaps_initialize(sh, prompt, &sh->termcaps_context))
+	{
+		free(prompt);
+		return (ST_TERMCAPS_INIT);
+	}
+	free(prompt);
+	return (ST_OK);
 }
 
 int			shell_init(t_sh *sh, char *envp[])
 {
 	int		ret;
-	char	*prompt;
 
 	INIT_LIST_HEAD(&g_current_jobs_list_head);
 	INIT_LIST_HEAD(&sh->redir_head);
 	sh->last_exit_status = 0;
 	sh->pgid = getpid();
-	/* env */
-	if ((ret = shell_environment(sh, envp)) != ST_OK)
+	if ((ret = s_shell_environment(sh, envp)) != ST_OK)
 		return (ret);
-	path_init_hasht(sh->envp);
-	if ((ret = conf_file_init(sh->envp)) != ST_OK)
-		return (ret);
-	if ((sh->pwd = getcwd(NULL, 0)) == NULL)
-		return (ST_MALLOC);
-
-	if ((ret = shell_language(LANG_EN)) < 0)
-		return (-ret);
 	if ((ret = s_shell_fd_init(sh)) != ST_OK)
-	{
-		log_error("s_shell_fd_init() failed");
 		return (ret);
-	}
 	if (sh->is_interactive == 1)
 	{
-		/* jobs */
-		while (1)
-		{
-			ioctl(STDIN_FILENO, TIOCGPGRP, &ret);
-			if (ret == (sh->pgid = getpgrp()))
-				break ;
-			if (kill(-sh->pgid, SIGTTIN) != 0)
-			  log_error("kill(-sh->pgid. SIGTTIN) failed");
-		}
-		if ((ret = signal_to_ignore()) != ST_OK)
+		if ((ret = s_shell_job_control(sh)) != ST_OK)
 			return (ret);
-		if (setpgid(sh->pgid, sh->pgid) < 0)
-			return (ST_SETPGID);
-		log_info("pgid: %d", sh->pgid);
-
-		if (ioctl(STDIN_FILENO, TIOCSPGRP, &sh->pgid) < 0)
-			return (ST_TCSETPGRP);
-		/* termcaps */
-		if (!caps__initialize(sh->fd))
-		{
-			log_fatal("caps__initialize() failed");
-			return (ST_TERMCAPS_INIT);
-		}
-		prompt = shell_set_prompt(sh->envp);
-		if (!termcaps_initialize(sh, prompt, &sh->termcaps_context))
-		{
-			free(prompt);
-			return (ST_TERMCAPS_INIT);
-		}	
-		free(prompt);
+		if ((ret = s_shell_termcaps(sh)) != ST_OK)
+			return (ret);
 	}
 	return (ST_OK);
 }

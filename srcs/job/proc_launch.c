@@ -54,7 +54,7 @@ static int	s_match_one_binary(char *str)
 	return (ST_CMD_NOT_FOUND);
 }
 
-static int	s_proc_launch_execve(t_sh *sh, t_proc *p) //freeeeeeeeeeee
+static int	s_proc_launch_execve(t_sh *sh, t_proc *p)
 {
 	char	*lowerargv;
 	char	*match;
@@ -67,18 +67,15 @@ static int	s_proc_launch_execve(t_sh *sh, t_proc *p) //freeeeeeeeeeee
 	lowerargv = ft_strtolower(match);
 	if (path_hash_finder(sh->envp, &lowerargv) == ST_OK)
 	{
-		 if (((ret = s_match_one_binary(p->argv[0])) != ST_CMD_NOT_FOUND)
-		 	&& (conf_check_color_mode(sh->envp) == ST_OK))
-		 {
-		 	if (ret == ST_OK)
-		 		value = LSOPTCOLOR;
-		 	else
-		 		value = "--color=auto";
+		if (((ret = s_match_one_binary(p->argv[0])) != ST_CMD_NOT_FOUND)
+			&& (conf_check_color_mode(sh->envp) == ST_OK))
+		{
+			value = (ret == ST_OK) ? LSOPTCOLOR : "--color=auto";
 			if (p->argc > 1)
-			 	ft_array_push_index(&p->argv, value, 1);
-			 else
-			 	ft_array_push_back(&p->argv, value);
-		 }
+				ft_array_push_index(&p->argv, value, 1);
+			else
+				ft_array_push_back(&p->argv, value);
+		}
 		if ((execve(lowerargv, p->argv, p->envp)) == -1)
 			return (ST_OK);
 	}

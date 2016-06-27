@@ -27,7 +27,7 @@ static int			s_value_is_valid(t_option const **available_opt,
 			&& ft_strisalnum(value) == 0)
 			return (-ST_EINVAL);
 		if (available_opt[opt]->value_is_indexof != NULL
-			&& ft_array_indexof(available_opt[opt]->value_is_indexof, value) == -1)
+		&& ft_array_indexof(available_opt[opt]->value_is_indexof, value) == -1)
 			return (-ST_EINVAL);
 	}
 	return (opt);
@@ -71,7 +71,8 @@ static int			s_single(t_list *list_head,
 		log_debug("parsing single character option %c", (*argv)[i][k]);
 		if ((opt = s_is_valid(available_opt, *argv, i, k)) < ST_OK)
 			return (-opt);
-		if ((option_node = list_node__option_alloc(available_opt[opt], *argv, i)) == NULL)
+		if ((option_node =
+			list_node__option_alloc(available_opt[opt], *argv, i)) == NULL)
 			return (ST_MALLOC);
 		list_push_back(option_node, list_head);
 		k++;
@@ -92,7 +93,8 @@ static int			s_multi(t_list *list_head,
 	log_debug("parsing multi character option %s", (*argv)[i] + 2);
 	if ((opt = s_is_valid(available_opt, *argv, i, 0)) < ST_OK)
 		return (-opt);
-	if ((option_node = list_node__option_alloc(available_opt[opt], *argv, i)) == NULL)
+	if ((option_node =
+		list_node__option_alloc(available_opt[opt], *argv, i)) == NULL)
 		return (ST_MALLOC);
 	list_push_back(option_node, list_head);
 	ft_array_pop(argv, i, 1);
