@@ -1,9 +1,9 @@
 #include "shell.h"
 
-static int	s_path_return_file_type(char *path)
+static int		s_path_return_file_type(char *path)
 {
 	struct stat *st;
-	int			ret;
+	int 		ret;
 	int			value;
 
 	if ((st = (struct stat *)malloc(sizeof(struct stat))) == NULL)
@@ -38,6 +38,14 @@ static int	s_path_iter_in_list(t_hasht *ptr, char **cmd)
 	return (ST_CMD_NOT_FOUND);
 }
 
+static void s_path_check_dir_access(int ret, char **cmd)
+{
+	if (ret == ST_EISDIR)
+		display_status(ST_EISDIR, *cmd, NULL);
+	else if (access(*cmd, X_OK) == -1)
+		display_status(ST_EACCES, *cmd, NULL);
+}
+
 static	int	s_path_control_access(char **cmd, char **envp, int ret)
 {
 	if (ret == ST_CMD_NOT_FOUND &&
@@ -46,17 +54,15 @@ static	int	s_path_control_access(char **cmd, char **envp, int ret)
 		if ((ret = path_commande_not_found_in_hasht(envp, cmd)) == ST_MALLOC)
 			return (ret);
 	}
+	if (ret == ST_OK && access(*cmd, X_OK) == -1)
+	{
+		display_status(ST_EACCES, *cmd, NULL);
+		return (ST_OK);
+	}
 	if (ret != ST_OK && (access(*cmd, F_OK) != -1))
 	{
 		if ((ret = s_path_return_file_type(*cmd)) != ST_OK)
-		{
-			if (ret == ST_EISDIR)
-				display_status(ST_EISDIR, *cmd, NULL);
-			else if (access(*cmd, X_OK) == -1)
-				display_status(ST_EACCES, *cmd, NULL);
-			else
-				return (ST_OK);
-		}
+			s_path_check_dir_access(ret, cmd);
 		return (ST_OK);
 	}
 	else if (ret != ST_OK)
