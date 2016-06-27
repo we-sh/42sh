@@ -45,6 +45,8 @@ char				*builtin_cd_rm_dotdot(char *path)
 			path[i] = '\0';
 			path = ft_strcat(path, tmp);
 		}
+		else if (path[i] == '/' && path[i + 1] == '/')
+			path = ft_strcpy(path, path + 1);
 		else
 			i++;
 	}
