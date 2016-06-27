@@ -25,5 +25,5 @@ int			token_globing_parse_none(void *target, t_parser *parser,
 		ret = token_globing_parse_utils_push_str(parser->target_list_head,
 														TOKEN_CONTENT(*i));
 	(*i)++;
-	return (ST_OK);
+	return (ret);
 }
