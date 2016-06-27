@@ -44,7 +44,6 @@ char		*shell_set_prompt(char **env)
 	{
 		tmp = ft_strjoin3_safe(ANSI_COLOR_LIGHT_BLUE,
 				str, ANSI_COLOR_RESET);
-			free(str);
 		free(str);
 		str = tmp;
 	}
