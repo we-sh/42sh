@@ -103,10 +103,9 @@ static int	s_none(t_lexer *lexer, int *i)
 	return (ST_OK);
 }
 
-int			token_parse_dgreat(void *target, t_parser *parser, t_lexer *lexer, int *i)
+int			token_parse_dgreat(void *target, t_parser *parser, t_lexer *lexer,
+				int *i)
 {
-	log_trace("entering parsing token %-12s '>>'", "TT_REDIR");
-
 	int		ret;
 
 	lexer->tokens[*i]->is_redir_checked = 1;

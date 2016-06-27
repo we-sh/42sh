@@ -14,18 +14,13 @@ static int	s_proc(t_proc *p, t_lexer *lexer, int *i)
 	if (*i > 0 && TOKEN_TYPE(*i - 1) == TT_INHIBITOR)
 		(*i)--;
 	if ((ret = expand(lexer, p, i)) != ST_OK)
-	{
-		log_fatal("failed to expand at token #%d (content: `%s')", *i, TOKEN_CONTENT(*i));
 		return (ret);
-	}
 	(*i)--;
 	return (ST_OK);
 }
 
 int	token_parse_none(void *target, t_parser *parser, t_lexer *lexer, int *i)
 {
-	log_trace("entering parsing token %-12s (type: %d) (code: %d) (content:`%s')", "TT_NONE", lexer->tokens[*i]->type, lexer->tokens[*i]->code, TOKEN_CONTENT(*i));
-
 	int		ret;
 
 	ret = ST_OK;

@@ -10,8 +10,6 @@ static int	s_jobs(t_job *j, t_lexer *lexer, int *i)
 
 int			token_parse_and(void *target, t_parser *parser, t_lexer *lexer, int *i)
 {
-	log_trace("entering parsing token %-12s '&'", "TT_SPECIAL");
-
 	int		ret;
 
 	ret = ST_OK;

@@ -10,10 +10,9 @@ static int	s_jobs(t_job *j, t_lexer *lexer, int *i)
 	return (ST_OK);
 }
 
-int			token_parse_inhib(void *target, t_parser *parser, t_lexer *lexer, int *i)
+int			token_parse_inhib(void *target, t_parser *parser, t_lexer *lexer,
+				int *i)
 {
-	log_trace("entering parsing token %-12s `%s'", "TT_INHIB", TOKEN_CONTENT(*i));
-
 	int		ret;
 
 	(void)parser;

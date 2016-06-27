@@ -61,10 +61,9 @@ static int	s_jobs(t_job *j, t_lexer *lexer, int *i)
 	return (ST_OK);
 }
 
-int			token_parse_lessand(void *target, t_parser *parser, t_lexer *lexer, int *i)
+int			token_parse_lessand(void *target, t_parser *parser, t_lexer *lexer,
+				int *i)
 {
-	log_trace("entering parsing token %-12s (type: %d) (code: %d) `%s'", "TT_REDIR", TOKEN_TYPE(*i), TOKEN_CODE(*i), TOKEN_CONTENT(*i));
-
 	int		ret;
 
 	lexer->tokens[*i]->is_redir_checked = 1;

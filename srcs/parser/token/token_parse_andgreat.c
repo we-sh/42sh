@@ -54,8 +54,6 @@ static int	s_proc(t_proc *p, t_parser *parser, t_lexer *lexer, int *i)
 int			token_parse_andgreat(void *target, t_parser *parser, t_lexer *lexer,
 				int *i)
 {
-	log_trace("entering parsing token %-12s '&>'", "TT_REDIR");
-
 	int		ret;
 
 	lexer->tokens[*i]->is_redir_checked = 1;

@@ -21,10 +21,9 @@ static int	s_job(t_job *j)
 	return (ST_OK);
 }
 
-int			token_parse_semi(void *target, t_parser *parser, t_lexer *lexer, int *i)
+int			token_parse_semi(void *target, t_parser *parser, t_lexer *lexer,
+				int *i)
 {
-	log_trace("entering parsing token %-12s ';'", "TT_JOBS");
-
 	int		ret;
 
 	(void)parser;

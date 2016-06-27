@@ -33,10 +33,9 @@ static int	s_proc(t_proc *p, t_lexer *lexer, int *i)
 	return (ST_OK);
 }
 
-int			token_parse_pipe(void *target, t_parser *parser, t_lexer *lexer, int *i)
+int			token_parse_pipe(void *target, t_parser *parser, t_lexer *lexer,
+				int *i)
 {
-	log_trace("entering parsing token %-12s '|'", "TT_REDIR");
-
 	int		ret;
 
 	ret = ST_OK;
