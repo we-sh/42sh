@@ -1,42 +1,14 @@
 #include "shell.h"
 
-t_list	g_current_jobs_list_head = {
+t_list		g_current_jobs_list_head = {
 	.next = &g_current_jobs_list_head,
 	.prev = &g_current_jobs_list_head
 };
 
-static t_option				g_sh_option_help = {
-	.name = "help",
-	.index = ST_OPTION_HELP,
-	.is_single_char = 0,
-	.has_value = 0,
-	.value_is_numeric = 0,
-	.value_is_alnum = 0,
-	.value_is_indexof = NULL,
-	.value = NULL
-};
-
-static t_option				g_sh_option_c = {
-	.name = "c",
-	.index = ST_OPTION_C,
-	.is_single_char = 1,
-	.has_value = 1,
-	.value_is_numeric = 0,
-	.value_is_alnum = 0,
-	.value_is_indexof = NULL,
-	.value = NULL
-};
-
-static const t_option		*g_sh_options[] = {
-	[0] = &g_sh_option_help,
-	[1] = &g_sh_option_c,
-	[2] = NULL
-};
-
 static int	s_usage(int status)
 {
-	int	fd;
-	int	i;
+	int		fd;
+	int		i;
 
 	fd = status == ST_OK ? STDOUT_FILENO : STDERR_FILENO;
 	if (status != ST_OK)
@@ -58,48 +30,32 @@ static int	s_usage(int status)
 	return (EXIT_SUCCESS);
 }
 
-int		main(int argc, char *argv[], char *envp[])
+int			main(int argc, char *argv[], char *envp[])
 {
-	int	ret;
+	int		ret;
 	t_sh	sh;
 
 	(void)argc;
 	logger_init(D_TRACE, "/tmp/out.log");
-
-	// shell options
 	if ((sh.argv = ft_array_dup(argv)) == NULL)
 		return (display_status(ST_MALLOC, NULL, NULL));
 	if ((ret = option_parse(&sh.opt_head, g_sh_options, &sh.argv, 1)) != ST_OK)
 		return (s_usage(ret));
 	if (option_is_set(&sh.opt_head, ST_OPTION_HELP) == 1)
 		return (s_usage(ST_OK));
-
-	//if (option_is_set(&sh.opt_head, ST_OPTION_C) == 1)
-	//	sh.is_interactive = 0;
-	//else
-		sh.is_interactive = isatty(STDIN_FILENO);
-
-	// we need to initialize the shell structure and co even if we are in `-c` mode
+	sh.is_interactive = isatty(STDIN_FILENO);
 	if ((ret = shell_init(&sh, envp)) != ST_OK)
-		log_fatal("shell initialization failed (%d)", ret);
-
-	//if (option_is_set(&sh.opt_head, ST_OPTION_C) == 1)
-	//	ret = parser(&sh, option_get_value(&sh.opt_head, ST_OPTION_C), F_PARSING_NONE); // TODO: it doesn't work any more
-	//else
-	//{
-		if ((ret = loop_main(&sh)) != ST_END_OF_INPUT)
-			log_fatal("get_next_line failed (%d)", ret);
-	//}
+		exit(display_status(ret, NULL, NULL));
+	if ((ret = loop_main(&sh)) != ST_END_OF_INPUT)
+		exit(display_status(ret, NULL, NULL));
 	if (sh.is_interactive == true)
 	{
 		if (!termcaps_finalize(&sh.termcaps_context))
-			log_error("termcaps_finalize() failed");
+			exit(display_status(ST_TERMCAPS_FINALIZE, NULL, NULL));
 		if (close(sh.fd) != 0)
-			log_error("close() failed");
+			exit(display_status(ST_CLOSE, NULL, NULL));
 		caps__finalize();
 	}
-
-	// shell_end()
 	logger_close();
 	return (sh.last_exit_status);
 }

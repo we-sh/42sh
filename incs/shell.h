@@ -85,6 +85,26 @@ struct					s_sh
 # include "quoting.h"
 
 /*
+** Options of the Shell implementation
+*/
+
+static t_option				g_sh_option_help = {
+	.name = "help",
+	.index = ST_OPTION_HELP,
+	.is_single_char = 0,
+	.has_value = 0,
+	.value_is_numeric = 0,
+	.value_is_alnum = 0,
+	.value_is_indexof = NULL,
+	.value = NULL
+};
+
+static const t_option		*g_sh_options[] = {
+	[0] = &g_sh_option_help,
+	[1] = NULL
+};
+
+/*
 ** List of current jobs
 */
 t_list		g_current_jobs_list_head;
