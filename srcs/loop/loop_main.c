@@ -2,6 +2,8 @@
 
 static int		s_is_launchable(t_job *j_prev)
 {
+	if (j_prev && j_prev->is_interrupted != 0)
+		return (1 == 2);
 	return (!j_prev || j_prev->separator == F_JSEP_SEMI
 		|| (j_prev->separator == F_JSEP_AND_IF
 			&& j_prev->exit_status == EXIT_SUCCESS)
@@ -9,11 +11,11 @@ static int		s_is_launchable(t_job *j_prev)
 			&& j_prev->exit_status != EXIT_SUCCESS));
 }
 
-static int		s_process_job(t_sh *sh, t_job *j_prev, t_job *j)
+static int		s_process_job(t_sh *sh, t_job **j_prev, t_job *j)
 {
 	int			ret;
 
-	if (s_is_launchable(j_prev))
+	if (s_is_launchable(*j_prev))
 	{
 		ret = parser(sh, j->command, F_PARSING_PROCS, &j->proc_head);
 		if (ret != ST_OK)
@@ -23,10 +25,10 @@ static int		s_process_job(t_sh *sh, t_job *j_prev, t_job *j)
 	}
 	else
 	{
-		j->exit_status = j_prev->exit_status;
+		j->exit_status = (*j_prev)->exit_status;
 		j->notified = 1;
 	}
-	j_prev = j;
+	*j_prev = j;
 	return (ST_OK);
 }
 
@@ -47,7 +49,7 @@ static int		s_job_launcher(t_sh *sh, char *input)
 		j = CONTAINER_OF(j_ptr, t_job, list_job);
 		if (j->launched == 0)
 		{
-			if ((ret = s_process_job(sh, j_prev, j)) != ST_OK)
+			if ((ret = s_process_job(sh, &j_prev, j)) != ST_OK)
 				return (ret);
 		}
 	}

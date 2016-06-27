@@ -8,12 +8,12 @@ typedef struct s_proc		t_proc;
 /*
 ** A job may expected a success of the one before, an error or nothing.
 */
-typedef enum	e_flag_job_separator
+typedef enum				e_flag_job_separator
 {
 	F_JSEP_SEMI = 0,
 	F_JSEP_AND_IF,
 	F_JSEP_OR_IF
-}				t_flag_job_separator;
+}							t_flag_job_separator;
 
 /*
 ** Typedef to help code review in job_launch
@@ -65,6 +65,7 @@ struct						s_job
 	int						id;
 	int						exit_status;
 	t_flag_job_separator	separator;
+	int						is_interrupted;
 };
 
 #endif

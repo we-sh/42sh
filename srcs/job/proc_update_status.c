@@ -20,6 +20,8 @@ static void	s_set_flags(t_job *j, t_proc *p, int const status)
 			p->completed = 1;
 			if (WIFSIGNALED(status))
 				p->signaled = WTERMSIG(status);
+			if (p->signaled == SIGINT)
+				j->is_interrupted = p->signaled;
 		}
 	}
 	if (job_is_stopped(j) == 1 && job_is_completed(j) == 0)

@@ -19,5 +19,6 @@ t_job	*job_alloc(char const *command)
 	j->id = job_available_id();
 	j->separator = F_JSEP_SEMI;
 	j->exit_status = EXIT_SUCCESS;
+	j->is_interrupted = 0;
 	return (j);
 }
