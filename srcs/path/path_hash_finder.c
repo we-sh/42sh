@@ -1,6 +1,6 @@
 #include "shell.h"
 
-static int	s_path_is_a_directory(char *path)
+static int		s_path_return_file_type(char *path)
 {
 	struct stat *st;
 	int 		ret;
@@ -15,6 +15,8 @@ static int	s_path_is_a_directory(char *path)
 	}
 	if (S_ISREG(st->st_mode) && st->st_mode & 0111)
 		ret = ST_OK;
+	else if (S_ISDIR(st->st_mode))
+		ret = ST_EISDIR;
 	else
 		ret = ST_CMD_NOT_FOUND;
 	free(st);
@@ -44,16 +46,21 @@ static	int	s_path_control_access(char **cmd, char **envp, int ret)
 		if ((ret = path_commande_not_found_in_hasht(envp, cmd)) == ST_MALLOC)
 			return (ret);
 	}
-	if ((access(*cmd, F_OK) == -1 && ret != ST_OK) || s_path_is_a_directory(*cmd) != ST_OK)
+	if (ret != ST_OK && (access(*cmd, F_OK) != -1))
 	{
+		if ((ret = s_path_return_file_type(*cmd)) != ST_OK)
+		{
+			if (ret == ST_EISDIR)
+				display_status(ST_EISDIR, *cmd, NULL);
+			else if (access(*cmd, X_OK) == -1)
+				display_status(ST_EACCES, *cmd, NULL);
+			else
+				return (ST_OK);
+		}
+		return (ST_OK);
+	}
+	else if (ret != ST_OK)
 		display_status(ST_CMD_NOT_FOUND, *cmd, NULL);
-		return (ST_OK);
-	}
-	if (access(*cmd, X_OK) == -1)
-	{
-		display_status(ST_EACCES, *cmd, NULL);
-		return (ST_OK);
-	}
 	return (ret);
 }
 
