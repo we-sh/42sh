@@ -11,12 +11,26 @@ static int	s_before(t_proc *p)
 	return (ST_OK);
 }
 
-static int	s_exec(t_builtin const *builtin, t_proc *p)
+static void	s_iterate_on_jobs(int show_pid)
 {
 	t_list	*j_pos;
 	t_job	*j;
-	int		show_pid;
 	size_t	j_total;
+
+	j_total = list_size(&g_current_jobs_list_head);
+	j_pos = &g_current_jobs_list_head;
+	while ((j_pos = j_pos->next) && j_pos != &g_current_jobs_list_head)
+	{
+		j = CONTAINER_OF(j_pos, t_job, list_job);
+		if (j->foreground == 0)
+			job_display_status(j, show_pid);
+	}
+}
+
+static int	s_exec(t_builtin const *builtin, t_proc *p)
+{
+	t_job	*j;
+	int		show_pid;
 
 	if (p->bltin_status > ST_OK)
 	{
@@ -33,13 +47,7 @@ static int	s_exec(t_builtin const *builtin, t_proc *p)
 			job_display_status(j, show_pid);
 		return (EXIT_SUCCESS);
 	}
-	j_total = list_size(&g_current_jobs_list_head);
-	LIST_FOREACH(&g_current_jobs_list_head, j_pos)
-	{
-		j = CONTAINER_OF(j_pos, t_job, list_job);
-		if (j->foreground == 0)
-			job_display_status(j, show_pid);
-	}
+	s_iterate_on_jobs(show_pid);
 	return (EXIT_SUCCESS);
 }
 
