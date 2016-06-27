@@ -72,13 +72,16 @@ int				loop_main(t_sh *sh)
 			ret = get_next_line(sh->fd, &input);
 		if (ret < 0 || (sh->is_interactive == 1 ? input == NULL : ret == 0))
 			break ;
-		if ((ret = parser(sh, input, F_PARSING_NONE, NULL)) == ST_OK)
+		if (ft_strcmp("^C", input))
 		{
-			if ((ret = s_job_launcher(sh, input)) != ST_OK)
-				return (ret);
+			if ((ret = parser(sh, input, F_PARSING_NONE, NULL)) == ST_OK)
+			{
+				if ((ret = s_job_launcher(sh, input)) != ST_OK)
+					return (ret);
+			}
+			else
+				sh->last_exit_status = EXIT_FAILURE;
 		}
-		else
-			sh->last_exit_status = EXIT_FAILURE;
 		ft_strdel(&input);
 	}
 	return (ST_END_OF_INPUT);
