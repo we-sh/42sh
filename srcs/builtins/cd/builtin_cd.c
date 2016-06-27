@@ -82,7 +82,10 @@ static int	s_after(t_sh *sh, t_proc *p)
 	if (p->bltin_status == ST_OK)
 	{
 		if (chdir(p->bltin_char) < 0)
-			return (ST_CHDIR);
+		{
+			display_status(ST_ENOTDIR, "cd", p->bltin_char);
+			return (ST_OK);
+		}
 		if ((ret = env_set(&sh->envp, "OLDPWD", sh->pwd)) != ST_OK)
 			return (ret);
 		if ((ret = env_set(&sh->envp, "PWD", p->bltin_char)) != ST_OK)
