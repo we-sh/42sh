@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   termcaps_struct.h                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abombard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/06/27 18:50:05 by abombard          #+#    #+#             */
+/*   Updated: 2016/06/27 18:50:13 by abombard         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef TERMCAPS_STRUCT_H
 # define TERMCAPS_STRUCT_H
 
@@ -12,9 +24,13 @@ typedef struct	s_termcaps_context
 		STATE_REGULAR,
 		STATE_SELECTION,
 		STATE_SEARCH_HISTORY,
-		STATE_QUOTING,
-		STATE_HEREDOC
 	}										state;
+
+	enum {
+		OPTION_NONE,
+		OPTION_QUOTING,
+		OPTION_HEREDOC
+	}										option;
 
 	struct termios							termios_old;
 	struct termios							termios_new;
@@ -33,12 +49,8 @@ typedef struct	s_termcaps_context
 	t_list_head								history;
 
 	char									*buffer;
-	
-	//char									*checkparse;
 
 	t_sh									*sh;
-
-	int										is_heredoc;
 }				t_termcaps_context;
 
 

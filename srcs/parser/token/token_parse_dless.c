@@ -12,7 +12,7 @@ static int		s_open_heredoc(t_sh *sh, int *fd, const char *trigger)
 		return (ST_PIPE);
 	if (termcaps_initialize(sh, "heredoc> ", &termcaps_context) != 1)
 		return (ST_TERMCAPS_INIT);
-	termcaps_context.is_heredoc = 1;
+	termcaps_context.option = OPTION_HEREDOC;
 	while (1)
 	{
 		buffer = termcaps_read_input(&termcaps_context);

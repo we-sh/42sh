@@ -185,9 +185,9 @@ static int	s_termcaps_init_context(t_termcaps_context *context,
 											t_sh *sh,
 											const char *prompt)
 {
-	context->is_heredoc = 0;
 	context->sh = sh;
 	context->fd = sh->fd;
+	context->option = OPTION_NONE;
 	context->prompt.size = ft_strlen(prompt);
 	context->prompt.bytes = ft_strdup(prompt);
 	if (context->prompt.bytes == NULL)

@@ -104,11 +104,9 @@ int						key__send(t_termcaps_context *context)
 	{
 		ft_bzero(command_line_cur, TERMCAPS_BUFFER_MAX);
 		ASSERT(list_head__command_line_to_buffer(&context->command_line,
-												sizeof(command_line_cur) - 1,
-												&command_line_cur_size,
-												command_line_cur));
-		if ((context->is_heredoc == 0) &&
-			(command_line_cur_size != context->prompt.size) && //Remove if the parser handle an empty string
+		sizeof(command_line_cur) - 1, &command_line_cur_size, command_line_cur));
+		if (context->option != OPTION_HEREDOC &&
+			command_line_cur_size != context->prompt.size && //Remove if the parser handle an empty string
 			(ret = parser(context->sh, command_line_cur + context->prompt.size,
 							F_PARSING_TERMCAPS, NULL)) != ST_OK)
 			quoting_new_context(context, ret);

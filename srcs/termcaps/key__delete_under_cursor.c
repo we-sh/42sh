@@ -4,7 +4,7 @@ int		key__delete_under_cursor(t_termcaps_context *context)
 {
 	t_list *entry;
 
-	if (context->state == STATE_REGULAR && !context->is_heredoc)
+	if (context->state == STATE_REGULAR && context->option == OPTION_NONE)
 	{
 		if (context->command_line.size == context->prompt.size)
 		{

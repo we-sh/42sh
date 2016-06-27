@@ -12,7 +12,7 @@ static int				s_first_loop_check(char **tmp2,
 	ft_bzero(command_str, TERMCAPS_BUFFER_MAX);
 	ASSERT(list_head__command_line_to_buffer(&c->command_line,
 		(sizeof(command_str) - 1), &command_str_size, command_str));
-	child_c->state = STATE_QUOTING;
+	child_c->option = OPTION_QUOTING;
 	buff_quote = termcaps_read_input(child_c);
 	if (ft_strcmp(buff_quote, "^C\n") == 0)
 	{
@@ -54,7 +54,7 @@ static int				s_qloop(t_termcaps_context *c,
 	buff_quote = NULL;
 	while ((parser(c->sh, tmp2, F_PARSING_TERMCAPS, NULL)) != ST_OK)
 	{
-		child_context->state = STATE_QUOTING;
+		child_context->option = OPTION_QUOTING;
 		buff_quote = termcaps_read_input(child_context);
 		if (ft_strcmp(buff_quote, "^C\n") == 0)
 		{
