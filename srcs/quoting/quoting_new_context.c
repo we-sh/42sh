@@ -5,16 +5,13 @@ static int				s_first_loop_check(char **tmp2,
 											t_termcaps_context *c)
 {
 	char				*buff_quote;
-	char				*tmp;
 	size_t				command_str_size;
 	char				command_str[TERMCAPS_BUFFER_MAX];
 
-	tmp = NULL;
 	buff_quote = NULL;
 	ft_bzero(command_str, TERMCAPS_BUFFER_MAX);
 	ASSERT(list_head__command_line_to_buffer(&c->command_line,
 		(sizeof(command_str) - 1), &command_str_size, command_str));
-	tmp = ft_strdup(command_str);
 	child_c->state = STATE_QUOTING;
 	buff_quote = termcaps_read_input(child_c);
 	if (ft_strcmp(buff_quote, "^C\n") == 0)
@@ -22,16 +19,14 @@ static int				s_first_loop_check(char **tmp2,
 		child_c->state = STATE_REGULAR;
 		return (-1);
 	}
-	if (tmp)
+	if (command_str_size)
 	{
-		if ((*tmp2 = ft_strjoin3_safe(tmp, "\n", buff_quote)) == NULL)
+		if ((*tmp2 = ft_strjoin3_safe(command_str, "\n", buff_quote)) == NULL)
 		{
 			free(buff_quote);
-			free(tmp);
 			return (ST_MALLOC);
 		}
 		free(buff_quote);
-		ft_memdel((void **)&tmp);
 	}
 	return (ST_OK);
 }
@@ -55,12 +50,17 @@ static int				s_qloop(t_termcaps_context *c,
 
 	tmp2 = NULL;
 	if (s_first_loop_check(&tmp2, child_context, c) == -1)
-		return (-1);
+		return (ST_OK);
 	buff_quote = NULL;
 	while ((parser(c->sh, tmp2, F_PARSING_TERMCAPS, NULL)) != ST_OK)
 	{
 		child_context->state = STATE_QUOTING;
 		buff_quote = termcaps_read_input(child_context);
+		if (ft_strcmp(buff_quote, "^C\n") == 0)
+		{
+			c->state = STATE_REGULAR;
+			return (ST_OK);
+		}
 		if ((tmp3 = ft_strjoin3_safe(tmp2, "\n", buff_quote)) == NULL)
 		{
 			free(buff_quote);
