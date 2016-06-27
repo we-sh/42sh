@@ -31,22 +31,13 @@ static int	s_shell_fd_init(t_sh *sh)
 	if (sh->is_interactive == true)
 	{
 		if ((tty_name = ttyname(STDIN_FILENO)) == NULL)
-		{
-			log_error("ttyname() failed");
 			return (ST_TTYNAME);
-		}
 		if ((fd = open(tty_name, O_RDWR)) == -1)
-		{
-			log_error("open() failed");
 			return (ST_OPEN);
-		}
-		log_info("ttyname: %s, ttyslot: %d", tty_name, ttyslot());
 	}
 	else
 		fd = STDIN_FILENO;
 	sh->fd = fd;
-	log_info("is_interactive ? %s fd: %d",
-		sh->is_interactive ? "true" : "false", fd);
 	return (ST_OK);
 }
 
@@ -59,14 +50,12 @@ static int	s_shell_job_control(t_sh *sh)
 		ioctl(STDIN_FILENO, TIOCGPGRP, &ret);
 		if (ret == (sh->pgid = getpgrp()))
 			break ;
-		if (kill(-sh->pgid, SIGTTIN) != 0)
-			log_error("kill(-sh->pgid. SIGTTIN) failed");
+		kill(-sh->pgid, SIGTTIN);
 	}
 	if ((ret = signal_to_ignore()) != ST_OK)
 		return (ret);
 	if (setpgid(sh->pgid, sh->pgid) < 0)
 		return (ST_SETPGID);
-	log_info("pgid: %d", sh->pgid);
 	if (ioctl(STDIN_FILENO, TIOCSPGRP, &sh->pgid) < 0)
 		return (ST_TCSETPGRP);
 	return (ST_OK);
@@ -77,11 +66,9 @@ static int	s_shell_termcaps(t_sh *sh)
 	char	*prompt;
 
 	if (!caps__initialize(sh->fd))
-	{
-		log_fatal("caps__initialize() failed");
 		return (ST_TERMCAPS_INIT);
-	}
-	prompt = shell_set_prompt(sh->envp);
+	if ((prompt = shell_set_prompt(sh->envp)) == NULL)
+		return (ST_MALLOC);
 	if (!termcaps_initialize(sh, prompt, &sh->termcaps_context))
 	{
 		free(prompt);
