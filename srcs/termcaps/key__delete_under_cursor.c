@@ -4,9 +4,10 @@ int		key__delete_under_cursor(t_termcaps_context *context)
 {
 	t_list *entry;
 
-	if (context->state == STATE_REGULAR && context->option == OPTION_NONE)
+	if (context->state == STATE_REGULAR)
 	{
-		if (context->command_line.size == context->prompt.size)
+		if (context->command_line.size == context->prompt.size &&
+				context->option == OPTION_NONE)
 		{
 			context->buffer = ft_strdup("exit");
 			return (1);
