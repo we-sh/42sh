@@ -7,6 +7,7 @@ static int		s_open_heredoc(t_sh *sh, int *fd, const char *trigger)
 	int					pipefd[2];
 	int					ret;
 
+	ret = ST_OK;
 	if (pipe(pipefd) != 0)
 		return (ST_PIPE);
 	if (termcaps_initialize(sh, "heredoc> ", &termcaps_context) != 1)
@@ -24,10 +25,7 @@ static int		s_open_heredoc(t_sh *sh, int *fd, const char *trigger)
 			break ;
 		}
 		if (!ft_strcmp(buffer, trigger))
-		{
-			ret = ST_OK;
 			break ;
-		}
 		ft_putendl_fd(buffer, pipefd[1]);
 		free(buffer);
 	}
