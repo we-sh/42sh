@@ -56,7 +56,8 @@ static int	s_exec(t_builtin const *builtin, t_proc *p)
 	return (EXIT_SUCCESS);
 }
 
-int			builtin_jobs(t_builtin const *builtin, int callback, t_sh *sh, t_proc *p)
+int			builtin_jobs(t_builtin const *builtin, int callback, t_sh *sh,
+				t_proc *p)
 {
 	(void)sh;
 	if (callback == BLTIN_CB_BEFORE)
