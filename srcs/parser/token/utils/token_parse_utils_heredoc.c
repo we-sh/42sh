@@ -1,6 +1,7 @@
 #include "shell.h"
 
-static int	s_read_input(char const *trigger, int *ret, t_termcaps_context *termcaps_context, int *pipefd)
+static int	s_read_input(char const *trigger, int *ret,
+				t_termcaps_context *termcaps_context, int *pipefd)
 {
 	char				*buffer;
 
