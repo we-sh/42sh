@@ -51,7 +51,7 @@ static int	s_add_color_to_cmd(t_proc *p)
 
 	value = NULL;
 	if (ft_strcmp("ls", p->argv[0]) == 0)
-		value  = LSOPTCOLOR;
+		value = LSOPTCOLOR;
 	else if (ft_strcmp("grep", p->argv[0]) == 0)
 		value = "--color=auto";
 	if (p->argc > 1)
