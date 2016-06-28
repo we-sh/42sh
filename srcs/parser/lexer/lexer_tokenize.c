@@ -44,7 +44,8 @@ static int		s_parenthesis_code(t_lexer *lexer, t_token *token)
 	return (lexer->is_parenthesized);
 }
 
-static int		s_analyse_char(t_parser *parser, t_lexer *lexer, char const *s, int *i)
+static int		s_analyse_char(t_parser *parser, t_lexer *lexer, char const *s,
+					int *i)
 {
 	t_token		*token;
 	int			ret;
