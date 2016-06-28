@@ -69,6 +69,7 @@ typedef enum		e_token_code
 	TC_TAB,
 	TC_NEWLINE,
 	TC_TILDE,
+	TC_LASTEXITSTATUS,
 	TC_NONE,
 	TC_TOTAL
 }					t_token_code;
