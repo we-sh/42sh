@@ -23,7 +23,6 @@ int				path_add_folder_content_to_hasht(char *name, char *dirname)
 {
 	int			nbr;
 	int			index;
-	static int zb= 0;
 
 	nbr = 0;
 	if (ft_strcmp(name, "..") != 0 && name[0] != '.')
@@ -31,8 +30,8 @@ int				path_add_folder_content_to_hasht(char *name, char *dirname)
 		index = fnv_a_str(name) % HASH_TABLE_SIZE;
 		if (!bodies[index].head)
 		{
-			if ((bodies[index].head =
-				(t_hasht *)malloc(sizeof(t_hasht))) == NULL)
+			if ((bodies[index].head = (t_hasht *)malloc(sizeof(t_hasht)))
+					== NULL)
 				return (ST_MALLOC);
 			if ((bodies[index].head->path = ft_strdup(dirname)) == NULL)
 				return (ST_MALLOC);
@@ -44,7 +43,6 @@ int				path_add_folder_content_to_hasht(char *name, char *dirname)
 		{
 			if (s_add_new_node(name, dirname, index) == ST_MALLOC)
 				return (ST_MALLOC);
-			zb++;
 		}
 	}
 	return (ST_OK);
