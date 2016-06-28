@@ -244,7 +244,9 @@ void			termcaps_line_erase(t_termcaps_context *context, const t_buffer history_s
 void			termcaps_identify_input(const unsigned int c,
 										t_input_type *input_type,
 										size_t *input_size_missing);
-char			*termcaps_read_input(t_termcaps_context *context);
+int				termcaps_read_loop(t_termcaps_context *context,
+									size_t input_buffer_size,
+									size_t input_size_missing);
 
 t_node_dir		*node_dir__create(const char *filename);
 void			list_dir__destroy(t_list *head);
