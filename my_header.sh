@@ -1,10 +1,19 @@
 #!/bin/bash
 
 LOGIN=${1}
+EMAIL=${2}
+CREATED="2016/01/01 00:00:21"
+UPDATED="2016/01/01 00:00:42"
 
 if [ "${LOGIN}" == "" ]
 then
-	printf "%s\n" "Error: specify a login"
+	printf "%s\n" "Error: specify a login (first argument)"
+	exit 1
+fi
+
+if [ "${EMAIL}" == "" ]
+then
+	printf "%s\n" "Error: specify an email (second argument)"
 	exit 1
 fi
 
@@ -30,6 +39,7 @@ run_browse_directory()
 	local SUBDIR
 	local IMGS=""
 
+	mkdir -p /tmp/my_header
 
 	for SUBDIR in $(ls -1 "${DIR}")
 	do
@@ -37,12 +47,54 @@ run_browse_directory()
 		then
 			run_browse_directory "$(( INDEX + 1 ))" "${DIR}/${SUBDIR}"
 		else
-			if [[ "${SUBDIR}" =~ *[ch]\$ ]]
+			if [[ "${SUBDIR}" =~ \.c$ || "${SUBDIR}" =~ \.h$ ]]
 			then
 				echo ${SUBDIR}
+
+				awk -v NAMEOFFILE="${SUBDIR}" -v LOGIN="${LOGIN}" -v LOGIN_EMAIL="${LOGIN} <${EMAIL}>" -v CREATED="${CREATED}" -v UPDATED="${UPDATED}" '
+					BEGIN {
+						DO_UPDATE=1
+					}
+					NR == 1 && $0 !~ /^#\*/ {
+						DO_UPDATE=0
+						print "#******************************************************************************#"
+						print "#                                                                              #"
+						print "#                                                         :::      ::::::::    #"
+						printf "#    %-47s    :+:      :+:    :+:    #\n", NAMEOFFILE
+						print "#                                                     +:+ +:+         +:+      #"
+						printf "#    By: %-40s   +#+  +:+       +#+         #\n", LOGIN_EMAIL
+						print "#                                                 +#+#+#+#+#+   +#+            #"
+						printf "#    Created: %-19s by %-15s   #+#    #+#              #\n", CREATED, LOGIN
+						printf "#    Updated: %-19s by %-15s  ###   ########.fr        #\n", UPDATED, LOGIN
+						print "#                                                                              #"
+						print "#******************************************************************************#"
+						print ""
+					}
+					DO_UPDATE == 1 && NR == 4 {
+						printf "#    %-47s    :+:      :+:    :+:    #\n", NAMEOFFILE
+						next
+					}
+					DO_UPDATE == 1 && NR == 6 {
+						printf "#    By: %-40s   +#+  +:+       +#+         #\n", LOGIN_EMAIL
+						next
+					}
+					DO_UPDATE == 1 && NR == 8 {
+						printf "#    Created: %-19s by %-15s   #+#    #+#              #\n", CREATED, LOGIN
+						next
+					}
+					DO_UPDATE == 1 && NR == 9 {
+						printf "#    Updated: %-19s by %-15s  ###   ########.fr        #\n", UPDATED, LOGIN
+						next
+					}
+					{
+						print
+					}
+				' \
+					"${DIR}/${SUBDIR}" > /tmp/my_header/file
+				cat /tmp/my_header/file > "${DIR}/${SUBDIR}"
 			fi
 		fi
 	done
 }
 
-run_browse_directory -1 "."
+run_browse_directory -1 "srcs"
