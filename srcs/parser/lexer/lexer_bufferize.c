@@ -7,6 +7,8 @@ int		lexer_bufferize(t_lexer *lexer, const char *str, int len)
 	if (lexer->buf_index + len >= lexer->buf_allocated_size)
 	{
 		tmp = lexer->buf;
+		lexer->buf_allocated_size = lexer->buf_index + len\
+													+ TOKEN_BUFFER_REALLOC;
 		lexer->buf = ft_strnew(lexer->buf_index + len + TOKEN_BUFFER_REALLOC);
 		if (lexer->buf == NULL)
 			return (ST_MALLOC);

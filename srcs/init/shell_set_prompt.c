@@ -31,7 +31,6 @@ char		*shell_set_prompt(char **env)
 	char	*buf;
 	int		i;
 	char	*home;
-	char	*tmp;
 
 	i = 0;
 	buf = getcwd(NULL, 0);
@@ -40,13 +39,6 @@ char		*shell_set_prompt(char **env)
 	{
 		free(str);
 		return (NULL);
-	}
-	if ((conf_check_color_mode(env)) == ST_OK)
-	{
-		tmp = ft_strjoin3_safe(ANSI_COLOR_LIGHT_BLUE,
-				str, ANSI_COLOR_RESET);
-		free(str);
-		str = tmp;
 	}
 	free(buf);
 	return (str);

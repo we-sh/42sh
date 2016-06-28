@@ -12,19 +12,19 @@
 */
 
 # ifdef __linux__
-#  define SELECTBLANC ""
-#  define SELECTBLEU ""
+#  define SELECTBLANC "\e]12;white\a"
+#  define SELECTBLEU "\e]12;blue\a"
 #  define LSOPTCOLOR "--color=auto"
 # else
-#  define SELECTBLANC ""
-#  define SELECTBLEU ""
+#  define SELECTBLANC "\033]Plffffff\033\\"
+#  define SELECTBLEU "\033]Pl4040ff\033\\"
 #  define LSOPTCOLOR "-G"
 # endif
 
-# define ANSI_COLOR_RESET_SIZE 0
-# define ANSI_COLOR_RESET ""
-# define ANSI_COLOR_LIGHT_BLUE_SIZE 0
-# define ANSI_COLOR_LIGHT_BLUE ""
+# define ANSI_COLOR_RESET_SIZE (sizeof("\033[0m") - 1)
+# define ANSI_COLOR_RESET "\033[0m"
+# define ANSI_COLOR_LIGHT_BLUE_SIZE (sizeof("\033[94m") - 1)
+# define ANSI_COLOR_LIGHT_BLUE "\033[94m"
 
 # define MIN(x, y) (x < y ? x : y)
 # define MAX(x, y) (x > y ? x : y)
