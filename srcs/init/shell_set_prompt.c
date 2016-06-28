@@ -4,11 +4,12 @@
 ** TODO: Check for leaks and strjoin returns values.
 */
 
-static int s_fill_prompt(char **str, char *buf, char *home)
+static int	s_fill_prompt(char **str, char *buf, char *home)
 {
 	if (buf && (ft_strncmp(buf, home, ft_strlen(home) - 1) == 0))
 	{
-		if ((*str = ft_strjoin3_safe("~", buf + ft_strlen(home), "$> ")) == NULL)
+		if ((*str = ft_strjoin3_safe("~", buf + ft_strlen(home),
+			"$> ")) == NULL)
 			return (ST_MALLOC);
 	}
 	else if (buf)

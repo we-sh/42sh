@@ -3,7 +3,7 @@
 static int		s_path_return_file_type(char *path)
 {
 	struct stat *st;
-	int 		ret;
+	int			ret;
 	int			value;
 
 	if ((st = (struct stat *)malloc(sizeof(struct stat))) == NULL)
@@ -23,13 +23,13 @@ static int		s_path_return_file_type(char *path)
 	return (ret);
 }
 
-static int	s_path_iter_in_list(t_hasht *ptr, char **cmd)
+static int		s_path_iter_in_list(t_hasht *ptr, char **cmd)
 {
-	while (ptr->next)
+	while (ptr)
 	{
 		if (ft_strcmp(*cmd, ptr->name) == 0)
 		{
-			if (path_get_new_cmd(cmd, ptr->name, ptr->path) != ST_OK)
+			if (path_get_new_cmd(cmd, ptr->name, ptr->path) == ST_MALLOC)
 				return (ST_MALLOC);
 			return (ST_OK);
 		}
@@ -38,60 +38,68 @@ static int	s_path_iter_in_list(t_hasht *ptr, char **cmd)
 	return (ST_CMD_NOT_FOUND);
 }
 
-static void s_path_check_dir_access(int ret, char **cmd)
+static int		path_look_inside_hast(char **cmd, int index, int *ret)
 {
-	if (ret == ST_EISDIR)
-		display_status(ST_EISDIR, *cmd, NULL);
-	else if (access(*cmd, X_OK) == -1)
-		display_status(ST_EACCES, *cmd, NULL);
-}
-
-static	int	s_path_control_access(char **cmd, char **envp, int ret)
-{
-	if (ret == ST_CMD_NOT_FOUND &&
-		ft_strncmp(*cmd, "/", 1) != 0 && ft_strncmp(*cmd, ".", 1) != 0)
+	if (bodies[index].head != NULL && !bodies[index].head->next)
 	{
-		if ((ret = path_commande_not_found_in_hasht(envp, cmd)) == ST_MALLOC)
-			return (ret);
+		if ((ft_strcmp(bodies[index].head->name, *cmd) != 0))
+			*ret = ST_CMD_NOT_FOUND;
+		else if (path_get_new_cmd(cmd, bodies[index].head->name,
+			bodies[index].head->path) == ST_MALLOC)
+			return (ST_MALLOC);
+		else
+			return (ST_OK);
 	}
-	if (ret == ST_OK && access(*cmd, X_OK) == -1)
+	else if (bodies[index].head != NULL && bodies[index].head->next)
 	{
-		display_status(ST_EACCES, *cmd, NULL);
+		if ((*ret = s_path_iter_in_list(bodies[index].head, cmd)) == ST_MALLOC)
+			return (ST_MALLOC);
+		if (*ret == ST_CMD_NOT_FOUND)
+			return (ST_CMD_NOT_FOUND);
 		return (ST_OK);
 	}
-	if (ret != ST_OK && (access(*cmd, F_OK) != -1))
-	{
-		if ((ret = s_path_return_file_type(*cmd)) != ST_OK)
-			s_path_check_dir_access(ret, cmd);
-		return (ST_OK);
-	}
-	else if (ret != ST_OK)
-		display_status(ST_CMD_NOT_FOUND, *cmd, NULL);
-	return (ret);
+	if (*ret == ST_OK && access(*cmd, X_OK) == -1)
+		return (ST_EACCES);
+	return (*ret);
 }
 
-int			path_hash_finder(char **envp, char **cmd)
+static int		s_path_full(int *ret, char **cmd)
 {
-	int		index;
-	int		ret;
+	if (*ret != ST_OK && access(*cmd, F_OK) != -1)
+	{
+		if ((*ret = s_path_return_file_type(*cmd)) != ST_OK)
+		{
+			if (*ret == ST_EISDIR)
+				return (*ret);
+			else if (access(*cmd, X_OK) == -1)
+				return (ST_EACCES);
+			else
+				return (ST_CMD_NOT_FOUND);
+		}
+		return (*ret);
+	}
+	return (ST_OK);
+}
+
+int				path_hash_finder(char **envp, char **cmd)
+{
+	int			index;
+	int			ret;
 
 	if (*cmd == NULL)
 		return (ST_OK);
 	ret = ST_CMD_NOT_FOUND;
 	index = fnv_64a_str(*cmd) % HASH_TABLE_SIZE;
-	if (bodies[index].head != NULL && !bodies[index].head->next)
+	if ((ret = path_look_inside_hast(cmd, index, &ret)) != ST_CMD_NOT_FOUND)
+		return (ret);
+	if (ft_strncmp(*cmd, "/", 1) != 0 && ft_strncmp(*cmd, ".", 1) != 0)
 	{
-		if ((ft_strcmp(bodies[index].head->name, *cmd) != 0))
-			ret = ST_CMD_NOT_FOUND;
-		else if (path_get_new_cmd(cmd, bodies[index].head->name,
-			bodies[index].head->path) == ST_MALLOC)
-			return (ST_MALLOC);
+		if ((ret = path_commande_not_found_in_hasht(envp, cmd)) != ST_OK)
+			return (ret);
 	}
-	else if (bodies[index].head != NULL && bodies[index].head->next)
-	{
-		if ((ret = s_path_iter_in_list(bodies[index].head, cmd)) == ST_MALLOC)
-			return (ST_MALLOC);
-	}
-	s_path_control_access(cmd, envp, ret);
+	if (ret == ST_OK && access(*cmd, X_OK) == -1)
+		return (ST_EACCES);
+	if ((ft_strncmp(*cmd, "/", 1) == 0 || ft_strncmp(*cmd, ".", 1) == 0))
+		return (s_path_full(&ret, cmd));
 	return (ST_OK);
 }

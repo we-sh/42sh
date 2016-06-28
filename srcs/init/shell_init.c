@@ -75,7 +75,7 @@ static int	s_shell_termcaps(t_sh *sh)
 		return (ST_TERMCAPS_INIT);
 	}
 	if ((conf_check_color_mode(sh->envp)) == ST_OK)
-		sh->termcaps_context.prompt.size = ft_strlen(prompt) - 
+		sh->termcaps_context.prompt.size = ft_strlen(prompt) -
 	(ANSI_COLOR_LIGHT_BLUE_SIZE + ANSI_COLOR_RESET_SIZE);
 	free(prompt);
 	return (ST_OK);
