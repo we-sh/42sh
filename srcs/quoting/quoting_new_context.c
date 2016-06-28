@@ -41,14 +41,23 @@ static int				s_clean_loop(t_termcaps_context *c, char **tmp2)
 	return (1);
 }
 
+static int				s_free_tmp(char **tmp2, char **tmp3, char **buff_quote)
+{
+	free(*tmp2);
+	if ((*tmp2 = ft_strdup(*tmp3)) == NULL)
+		return (ST_MALLOC);
+	free(*tmp3);
+	ft_memdel((void **)buff_quote);
+	return (ST_OK);
+}
+
 static int				s_qloop(t_termcaps_context *c,
-								t_termcaps_context *child_context)
+								t_termcaps_context *child_context,
+								char *tmp2)
 {
 	char				*buff_quote;
 	char				*tmp3;
-	char				*tmp2;
 
-	tmp2 = NULL;
 	if (s_first_loop_check(&tmp2, child_context, c) == -1)
 		return (ST_OK);
 	buff_quote = NULL;
@@ -66,10 +75,8 @@ static int				s_qloop(t_termcaps_context *c,
 			free(buff_quote);
 			return (ST_MALLOC);
 		}
-		free(tmp2);
-		tmp2 = ft_strdup(tmp3);
-		free(tmp3);
-		ft_memdel((void **)&buff_quote);
+		if ((s_free_tmp(&tmp2, &tmp3, &buff_quote)) == ST_MALLOC)
+			return (ST_MALLOC);
 	}
 	s_clean_loop(c, &tmp2);
 	return (ST_OK);
@@ -80,7 +87,9 @@ int						quoting_new_context(t_termcaps_context *context,
 {
 	t_termcaps_context	child_context;
 	int					ret;
+	char				*tmp2;
 
+	tmp2 = NULL;
 	ret = 0;
 	(void)quot_value;
 	if (g_in_child == 0)
@@ -89,7 +98,7 @@ int						quoting_new_context(t_termcaps_context *context,
 		caps__print_cap(CAPS__DOWN, 0);
 		termcaps_initialize(context->sh, "> ", &child_context);
 		g_in_child = 1;
-		if ((ret = s_qloop(context, &child_context)) != ST_OK)
+		if ((ret = s_qloop(context, &child_context, tmp2)) != ST_OK)
 			return (ret);
 		g_in_child = 0;
 		caps__delete_line(context->command_line.offset);
