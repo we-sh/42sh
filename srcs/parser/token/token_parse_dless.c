@@ -81,6 +81,7 @@ static int		s_proc(t_proc *p, t_parser *parser, t_lexer *lexer, int *i)
 	pos->prev->next = pos->next;
 	pos->next->prev = pos->prev;
 	free(r);
+	(*i)--;
 	return (ST_OK);
 }
 
