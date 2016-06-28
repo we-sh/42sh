@@ -1,53 +1,34 @@
 #include "parser.h"
 
-static int		s_open_heredoc(t_sh *sh, int *fd, const char *trigger)
+static int		s_none_check(t_lexer *lexer, int *i)
 {
-	t_termcaps_context	termcaps_context;
-	char				*buffer;
-	int					pipefd[2];
-	int					ret;
+	int			k;
 
-	ret = ST_OK;
-	if (pipe(pipefd) != 0)
-		return (ST_PIPE);
-	if (termcaps_initialize(sh, "heredoc> ", &termcaps_context) != 1)
-		return (ST_TERMCAPS_INIT);
-	termcaps_context.option = OPTION_HEREDOC;
-	while (1)
+	k = *i + 1;
+	while (k < lexer->size && TOKEN_TYPE(k) == TT_SEPARATOR)
+		k++;
+	if (k >= lexer->size || TOKEN_TYPE(k) != TT_NAME)
 	{
-		buffer = termcaps_read_input(&termcaps_context);
-		if (buffer == NULL)
-			break ;
-		if (!ft_strcmp("^C\n", buffer))
-		{
-			close(pipefd[0]);
-			ret = -1; //TEMP
-			break ;
-		}
-		if (!ft_strcmp(buffer, trigger))
-			break ;
-		ft_putendl_fd(buffer, pipefd[1]);
-		free(buffer);
+		display_status(ST_PARSER_TOKEN, NULL, TOKEN_CONTENT(*i));
+		return (ST_PARSER);
 	}
-	free(buffer);
-	termcaps_finalize(&termcaps_context);
-	close(pipefd[1]);
-	*fd = pipefd[0];
-	return (ret);
+	return (ST_OK);
 }
 
 static int		s_none(t_parser *parser, t_lexer *lexer, int *i)
 {
-	char				*content;
-	int					fd;
-	t_redir				*redir;
-	int					ret;
+	char		*content;
+	int			fd;
+	t_redir		*redir;
+	int			ret;
 
+	if ((ret = s_none_check(lexer, i)) != ST_OK)
+		return (ret);
 	(*i)++;
 	token_parse_utils_skip_separators(lexer, i, NULL);
 	if ((ret = token_parse_utils_get_full_word(&content, lexer, i)) != ST_OK)
 		return (ret);
-	if ((ret = s_open_heredoc(parser->sh, &fd, content)) != ST_OK)
+	if ((ret = token_parse_utils_heredoc(parser->sh, &fd, content)) != ST_OK)
 		return (ret);
 	if ((redir = redir_alloc(fd)) == NULL)
 		return (ST_MALLOC);
@@ -58,8 +39,8 @@ static int		s_none(t_parser *parser, t_lexer *lexer, int *i)
 
 static int		s_job(t_job *j, t_lexer *lexer, int *i)
 {
-	int					ret;
-	char				*content;
+	int			ret;
+	char		*content;
 
 	if (token_parse_utils_push_command(TOKEN_CONTENT(*i), &j->command) != ST_OK)
 		return (ST_MALLOC);
@@ -77,10 +58,10 @@ static int		s_job(t_job *j, t_lexer *lexer, int *i)
 
 static int		s_proc(t_proc *p, t_parser *parser, t_lexer *lexer, int *i)
 {
-	t_list				*pos;
-	t_redir				*r;
-	char				*content;
-	int					ret;
+	t_list		*pos;
+	t_redir		*r;
+	char		*content;
+	int			ret;
 
 	(*i)++;
 	token_parse_utils_skip_separators(lexer, i, NULL);
@@ -100,7 +81,7 @@ static int		s_proc(t_proc *p, t_parser *parser, t_lexer *lexer, int *i)
 int				token_parse_dless(void *target, t_parser *parser,
 					t_lexer *lexer, int *i)
 {
-	int					ret;
+	int			ret;
 
 	lexer->tokens[*i]->is_redir_checked = 1;
 	if (TOKEN_CODE(*i) != TC_DLESS)

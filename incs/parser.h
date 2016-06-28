@@ -223,6 +223,7 @@ int		token_parse_utils_push_command(char *content, char **target);
 int		token_parse_utils_check_char_to_fd(char *f, int *fd);
 int		token_parse_utils_gen_token_after_dash(t_proc *p, t_parser *parser,
 			t_lexer *lexer, int *i);
+int		token_parse_utils_heredoc(t_sh *sh, int *fd, const char *trigger);
 int		token_globing_parse_utils_push_str(t_list *head, char *str);
 
 // Inhibitors.
