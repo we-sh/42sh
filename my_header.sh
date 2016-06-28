@@ -8,12 +8,21 @@ UPDATED="2016/01/01 00:00:42"
 if [ "${LOGIN}" == "" ]
 then
 	printf "%s\n" "Error: specify a login (first argument)"
+	printf "%s\n" "Usage: bash ./my_header.sh LOGIN EMAIL FOLDER"
 	exit 1
 fi
 
 if [ "${EMAIL}" == "" ]
 then
 	printf "%s\n" "Error: specify an email (second argument)"
+	printf "%s\n" "Usage: bash ./my_header.sh LOGIN EMAIL FOLDER"
+	exit 1
+fi
+
+if [ "${FOLDER}" == "" ]
+then
+	printf "%s\n" "Error: specify a folder to scan (third argument)"
+	printf "%s\n" "Usage: bash ./my_header.sh LOGIN EMAIL FOLDER"
 	exit 1
 fi
 
@@ -97,4 +106,4 @@ run_browse_directory()
 	done
 }
 
-run_browse_directory -1 "srcs"
+run_browse_directory -1 "${FOLDER}"
