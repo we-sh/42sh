@@ -4,22 +4,21 @@
 # define HASH_TABLE_SIZE 5000
 
 /*
-*   Struct related to path_init_hasht.c
+** Struct related to path_init_hasht.c
 */
 
-
-
-typedef struct          s_hasht{
-    char                *path;
-    char                *name;
-    struct s_hasht      *next;
-}                       t_hasht;
-
-struct body
+typedef struct			s_hasht
 {
-    t_hasht             *head;
+	char				*path;
+	char				*name;
+	struct s_hasht		*next;
+}						t_hasht;
+
+struct					s_body
+{
+	t_hasht				*head;
 };
 
-struct body bodies[HASH_TABLE_SIZE];
+struct s_body bodies[HASH_TABLE_SIZE];
 
-#endif /*HTABL_H*/
+#endif
