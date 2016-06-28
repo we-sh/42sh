@@ -13,7 +13,7 @@ t_token			*lexer_token_recognizer(t_parser *parser, const char *s, int i)
 		{
 			l++;
 			if (*(s - l) != '\\')
-				break;
+				break ;
 			is_escaped = is_escaped == 1 ? 0 : 1;
 		}
 		if (is_escaped == 1)
