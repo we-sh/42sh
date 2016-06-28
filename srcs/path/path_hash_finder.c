@@ -89,7 +89,7 @@ int				path_hash_finder(char **envp, char **cmd)
 	if (*cmd == NULL)
 		return (ST_OK);
 	ret = ST_CMD_NOT_FOUND;
-	index = fnv_64a_str(*cmd) % HASH_TABLE_SIZE;
+	index = fnv_a_str(*cmd) % HASH_TABLE_SIZE;
 	if ((ret = path_look_inside_hast(cmd, index, &ret)) != ST_CMD_NOT_FOUND)
 		return (ret);
 	if (ft_strncmp(*cmd, "/", 1) != 0 && ft_strncmp(*cmd, ".", 1) != 0)
