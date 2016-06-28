@@ -1,30 +1,5 @@
 #include "parser.h"
 
-static void	s_set_proc_fds(t_proc *p, int fd_l, int fd_r)
-{
-	if (!(fd_r == 0 && (fd_l == STDOUT_FILENO || fd_l == STDERR_FILENO)))
-	{
-		if (fd_l == 0)
-		{
-			if (p->stdin != STDIN_FILENO)
-				close(p->stdin);
-			p->stdin = fd_r;
-		}
-		if (fd_l == 1)
-		{
-			if (p->stdout != STDOUT_FILENO)
-				close(p->stdout);
-			p->stdout = fd_r;
-		}
-		if (fd_l == 2)
-		{
-			if (p->stderr != STDERR_FILENO)
-				close(p->stderr);
-			p->stderr = fd_r;
-		}
-	}
-}
-
 static int	s_parse_right_redir(t_proc *p, t_lexer *lexer, int *i, int *fd)
 {
 	int		ret;
@@ -82,7 +57,7 @@ static int	s_proc(t_proc *p, t_parser *parser, t_lexer *lexer, int *i)
 	(*i)++;
 	if ((ret = s_parse_right_redir(p, lexer, i, &fd_r)) != ST_OK)
 		return (ret);
-	s_set_proc_fds(p, fd_l, fd_r);
+	token_parse_utils_set_proc_fds(p, fd_l, fd_r);
 	return (ST_OK);
 }
 
