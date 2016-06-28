@@ -2,6 +2,7 @@
 # define SHELL_H
 # define TTY_DEVICE "/dev/tty"
 # define PROGRAM_NAME "42sh"
+# define CONFIGURATION_FILE ".weshrc"
 # define TERMCAPS_BUFFER_MAX 4096
 # define PATH_ROOT "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 # define PATH_STD "/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games"
