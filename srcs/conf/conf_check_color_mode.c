@@ -28,12 +28,15 @@ int			conf_check_color_mode(char **env)
 	char	*path;
 
 	env = NULL;
-	path = ft_strjoin(env_get_home(env), "/.weshrc");
+	if ((content = env_get_home(env)) == NULL)
+		return (-1);
+	if ((path = ft_strjoin3(content, "/", CONFIGURATION_FILE)) == NULL)
+		return (ST_MALLOC);
 	if ((fd = open(path, O_RDONLY)) == -1)
 	{
 		free(path);
 		log_error("open() failed");
-		return (ST_OPEN);
+		return (-1);
 	}
 	free(path);
 	while ((get_next_line(fd, &content)) == 1)
