@@ -28,7 +28,7 @@ static int	s_shell_fd_init(t_sh *sh)
 	char		*tty_name;
 
 	fd = -1;
-	if (sh->is_interactive == true)
+	if (sh->is_interactive == 1)
 	{
 		if ((tty_name = ttyname(STDIN_FILENO)) == NULL)
 			return (ST_TTYNAME);

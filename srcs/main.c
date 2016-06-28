@@ -46,9 +46,9 @@ int			main(int argc, char *argv[], char *envp[])
 	sh.is_interactive = isatty(STDIN_FILENO);
 	if ((ret = shell_init(&sh, envp)) != ST_OK)
 		exit(display_status(ret, NULL, NULL));
-	if ((ret = loop_main(&sh)) != ST_END_OF_INPUT)
+	if ((ret = loop_main(&sh)) != ST_END_OF_INPUT && ret != ST_EXIT)
 		exit(display_status(ret, NULL, NULL));
-	if (sh.is_interactive == true)
+	if (sh.is_interactive == 1)
 	{
 		if (!termcaps_finalize(&sh.termcaps_context))
 			exit(display_status(ST_TERMCAPS_FINALIZE, NULL, NULL));

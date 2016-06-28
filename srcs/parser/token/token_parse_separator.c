@@ -13,8 +13,9 @@ int		token_parse_separator(void *target, t_parser *parser, t_lexer *lexer,
 {
 	int	ret;
 
+	ret = ST_OK;
 	if (parser->mode == F_PARSING_JOBS)
 		ret = s_job((t_job *)target, lexer, i);
 	(*i)++;
-	return (0);
+	return (ret);
 }

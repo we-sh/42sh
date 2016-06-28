@@ -56,6 +56,30 @@ static int		s_job_launcher(t_sh *sh, char *input)
 	return (ST_OK);
 }
 
+static int		s_read(t_sh *sh, char **input)
+{
+	int			gnl_ret;
+
+	gnl_ret = 0;
+	if (sh->is_interactive == 1)
+	{
+		*input = termcaps_read_input(&sh->termcaps_context);
+		if (input == NULL)
+			return (ST_EXIT);
+		if (ft_strcmp(*input, "^C\n") == 0)
+			return (ST_CANCEL);
+	}
+	else
+	{
+		gnl_ret = get_next_line(sh->fd, input);
+		if (gnl_ret < 0)
+			return (ST_READ);
+		if (gnl_ret == 0)
+			return (ST_EXIT);
+	}
+	return (ST_OK);
+}
+
 int				loop_main(t_sh *sh)
 {
 	char		*input;
@@ -63,21 +87,22 @@ int				loop_main(t_sh *sh)
 
 	while (1)
 	{
-		ret = ST_OK;
 		job_list_clean(1);
 		input = NULL;
-		if (sh->is_interactive == 1)
-			input = termcaps_read_input(&sh->termcaps_context);
-		else
-			ret = get_next_line(sh->fd, &input);
-		if (ret < 0 || (sh->is_interactive == 1 ? input == NULL : ret == 0))
+		if ((ret = s_read(sh, &input)) == ST_EXIT)
 			break ;
-		if (!(ft_strcmp(input, "^C\n") == 0) && (ret = parser(sh, input, F_PARSING_NONE, NULL)) == ST_OK)
+		else if (ret != ST_OK && ret != ST_CANCEL)
+			return (ret);
+		else if (ret == ST_OK)
 		{
-			if ((ret = s_job_launcher(sh, input)) != ST_OK)
+			ret = parser(sh, input, F_PARSING_NONE, NULL);
+			if (ret != ST_OK && ret != ST_PARSER && ret != ST_LEXER)
 				return (ret);
+			if (ret == ST_OK)
+				if ((ret = s_job_launcher(sh, input)) != ST_OK)
+					return (ret);
 		}
-		else
+		if (ret != ST_OK)
 			sh->last_exit_status = EXIT_FAILURE;
 		ft_strdel(&input);
 	}
