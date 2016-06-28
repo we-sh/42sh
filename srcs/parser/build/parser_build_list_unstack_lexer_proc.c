@@ -37,6 +37,7 @@ static int	s_process_tokens(t_parser *parser, t_lexer *lexer,
 				t_proc *p, int *i)
 {
 	int		ret;
+
 	while (*i < lexer->size
 		&& !(TOKEN_TYPE(*i) == TT_REDIR && TOKEN_CODE(*i) == TC_PIPE))
 	{
