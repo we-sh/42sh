@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   termcaps_struct.h                                  :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: abombard <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/06/27 18:50:05 by abombard          #+#    #+#             */
-/*   Updated: 2016/06/27 18:50:13 by abombard         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef TERMCAPS_STRUCT_H
 # define TERMCAPS_STRUCT_H
 
@@ -53,5 +41,4 @@ typedef struct	s_termcaps_context
 	t_sh									*sh;
 }				t_termcaps_context;
 
-
-#endif /* TERMCAPS_STRUCT_H */
+#endif

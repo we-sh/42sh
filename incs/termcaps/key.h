@@ -125,12 +125,12 @@ int		key__completion(t_termcaps_context *in_context);
 /*
 ** Ctrl C
 */
-int 	key__ctrl_c(t_termcaps_context *in_context);
+int		key__ctrl_c(t_termcaps_context *in_context);
 
 /*
 ** Search history
 */
-int 	key__search_history(t_termcaps_context *in_context);
+int		key__search_history(t_termcaps_context *in_context);
 
 /*
 ** Use for completion
