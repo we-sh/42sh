@@ -16,7 +16,7 @@ char				*env_get_path(char **envp)
 	{
 		uid = getuid();
 		if (uid == 0)
-			return (PATH_ROOT);
+			return (PATH_RT);
 		else
 			return (PATH_STD);
 	}
