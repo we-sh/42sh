@@ -2,7 +2,7 @@
 
 int				lexer_buffer_dump(t_parser *parser, t_lexer *lexer)
 {
-	t_token 	t;
+	t_token		t;
 
 	if (lexer->buf_index > 0)
 	{
@@ -15,7 +15,7 @@ int				lexer_buffer_dump(t_parser *parser, t_lexer *lexer)
 		else
 			t.parse = token_parse_none;
 		if (lexer_token_add(lexer, lexer->buf, t) != ST_OK)
-		 	return (ST_MALLOC);
+			return (ST_MALLOC);
 		ft_bzero(lexer->buf, lexer->buf_allocated_size);
 		lexer->buf_index = 0;
 	}
