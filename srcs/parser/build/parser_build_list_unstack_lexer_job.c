@@ -40,7 +40,7 @@ int			parser_build_list_unstack_lexer_job(t_parser *parser,
 		if (!(j = job_alloc("")))
 			return (ST_MALLOC);
 		if ((ret = s_process_tokens(parser, lexer, j, i)) != ST_OK)
-		 	return (ret);
+			return (ret);
 		list_push_back(&j->list_job, parser->target_list_head);
 	}
 	return (ST_OK);
