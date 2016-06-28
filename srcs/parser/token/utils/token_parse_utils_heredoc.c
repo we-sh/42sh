@@ -1,9 +1,32 @@
 #include "shell.h"
 
+static int	s_read_input(char const *trigger, int *ret, t_termcaps_context *termcaps_context, int *pipefd)
+{
+	char				*buffer;
+
+	buffer = termcaps_read_input(termcaps_context);
+	if (buffer == NULL)
+		return (ST_BREAK);
+	if (!ft_strcmp("^C\n", buffer))
+	{
+		close(pipefd[0]);
+		*ret = ST_PARSER;
+		free(buffer);
+		return (ST_BREAK);
+	}
+	if (!ft_strcmp(buffer, trigger))
+	{
+		free(buffer);
+		return (ST_BREAK);
+	}
+	ft_putendl_fd(buffer, pipefd[1]);
+	free(buffer);
+	return (ST_OK);
+}
+
 int			token_parse_utils_heredoc(t_sh *sh, int *fd, const char *trigger)
 {
 	t_termcaps_context	termcaps_context;
-	char				*buffer;
 	int					pipefd[2];
 	int					ret;
 
@@ -15,21 +38,9 @@ int			token_parse_utils_heredoc(t_sh *sh, int *fd, const char *trigger)
 	termcaps_context.option = OPTION_HEREDOC;
 	while (1)
 	{
-		buffer = termcaps_read_input(&termcaps_context);
-		if (buffer == NULL)
+		if (s_read_input(trigger, &ret, &termcaps_context, pipefd) == ST_BREAK)
 			break ;
-		if (!ft_strcmp("^C\n", buffer))
-		{
-			close(pipefd[0]);
-			ret = ST_PARSER; //TEMP
-			break ;
-		}
-		if (!ft_strcmp(buffer, trigger))
-			break ;
-		ft_putendl_fd(buffer, pipefd[1]);
-		free(buffer);
 	}
-	free(buffer);
 	termcaps_finalize(&termcaps_context);
 	close(pipefd[1]);
 	*fd = pipefd[0];

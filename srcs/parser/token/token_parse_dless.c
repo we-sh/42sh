@@ -29,9 +29,15 @@ static int		s_none(t_parser *parser, t_lexer *lexer, int *i)
 	if ((ret = token_parse_utils_get_full_word(&content, lexer, i)) != ST_OK)
 		return (ret);
 	if ((ret = token_parse_utils_heredoc(parser->sh, &fd, content)) != ST_OK)
+	{
+		free(content);
 		return (ret);
+	}
 	if ((redir = redir_alloc(fd)) == NULL)
+	{
+		free(content);
 		return (ST_MALLOC);
+	}
 	list_push_back(&redir->list_redir, &parser->sh->redir_head);
 	free(content);
 	return (ST_OK);
