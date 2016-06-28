@@ -1,6 +1,11 @@
 #ifndef TERMCAPS_STRUCT_H
 # define TERMCAPS_STRUCT_H
 
+# include "list_head.h"
+# include "types.h"
+typedef struct s_sh		t_sh;
+
+
 /*
 ** termcaps context
 */

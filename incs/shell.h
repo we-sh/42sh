@@ -3,35 +3,35 @@
 # define TTY_DEVICE "/dev/tty"
 # define PROGRAM_NAME "42sh"
 # define TERMCAPS_BUFFER_MAX 4096
-# define PATH_ROOT "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+# define PATH_RT "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 # define PATH_STD "/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games"
 
 /*
-**	 A deplacer
+** Colors defines.
 */
 
-#ifdef __linux__
-# define SELECTBLANC "\e]12;white\a"
-# define SELECTBLEU "\e]12;blue\a"
-# define LSOPTCOLOR "--color=auto"
-#else
-# define SELECTBLANC "\033]Plffffff\033\\"
-# define SELECTBLEU "\033]Pl4040ff\033\\"
-# define LSOPTCOLOR "-G"
-#endif
+# ifdef __linux__
+#  define SELECTBLANC ""
+#  define SELECTBLEU ""
+#  define LSOPTCOLOR "--color=auto"
+# else
+#  define SELECTBLANC ""
+#  define SELECTBLEU ""
+#  define LSOPTCOLOR "-G"
+# endif
 
-#define ANSI_COLOR_RESET_SIZE (sizeof("\033[0m") - 1)
-#define ANSI_COLOR_RESET "\033[0m"
-#define ANSI_COLOR_LIGHT_BLUE_SIZE (sizeof("\033[94m") - 1)
-#define ANSI_COLOR_LIGHT_BLUE "\033[94m"
+# define ANSI_COLOR_RESET_SIZE 0
+# define ANSI_COLOR_RESET ""
+# define ANSI_COLOR_LIGHT_BLUE_SIZE 0
+# define ANSI_COLOR_LIGHT_BLUE ""
 
-#define MIN(x, y) (x < y ? x : y)
-#define MAX(x, y) (x > y ? x : y)
-
+# define MIN(x, y) (x < y ? x : y)
+# define MAX(x, y) (x > y ? x : y)
 
 /*
 ** Extern headers and structures
 */
+
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <pwd.h>
@@ -46,31 +46,14 @@
 # include <fcntl.h>
 
 /*
-** Shell structure
+** Project headers
 */
 
-typedef struct s_sh		t_sh;
-
+# include "shell_struct.h"
 # include "list.h"
 # include "htabl.h"
 # include "termcaps.h"
 # include "redirection.h"
-
-struct					s_sh
-{
-	pid_t				pgid;
-	bool				is_interactive;
-	int					fd;
-	char				**argv;
-	char				**envp;
-	t_termcaps_context	termcaps_context;
-	int					last_exit_status;
-	t_list				opt_head;
-	char				*pwd;
-	t_list				redir_head;
-};
-
-
 # include "libft.h"
 # include "libftprintf.h"
 # include "logger.h"
@@ -85,36 +68,18 @@ struct					s_sh
 # include "quoting.h"
 
 /*
-** Options of the Shell implementation
-*/
-
-static t_option				g_sh_option_help = {
-	.name = "help",
-	.index = ST_OPTION_HELP,
-	.is_single_char = 0,
-	.has_value = 0,
-	.value_is_numeric = 0,
-	.value_is_alnum = 0,
-	.value_is_indexof = NULL,
-	.value = NULL
-};
-
-static const t_option		*g_sh_options[] = {
-	[0] = &g_sh_option_help,
-	[1] = NULL
-};
-
-/*
 ** List of current jobs
 */
-t_list		g_current_jobs_list_head;
-typedef struct dirent	*t_dirent;
 
-int				parser(t_sh *sh, char const *input, int mode, t_list *target_list_head);
+t_list			g_current_jobs_list_head;
+
+int				parser(t_sh *sh, char const *input, int mode,
+						t_list *target_list_head);
 
 /*
 ** builtins/
 */
+
 int				builtin_callback(int callback, t_sh *sh, t_proc *p);
 int				setenv_argv_is_valid(char const *arg);
 void			builtin_usage(t_builtin const *bltin, int status);
@@ -122,6 +87,7 @@ void			builtin_usage(t_builtin const *bltin, int status);
 /*
 ** env /
 */
+
 char			*env_get(char **envp, char *key);
 char			*env_get_path(char **envp);
 char			*env_get_user(char **envp);
@@ -135,25 +101,29 @@ int				env_update_from_cmd_line(char ***argv, int *argc, char ***envp);
 /*
 ** log_status /
 */
-int				display_status(const int status, const char *prefix, const char *suffix);
+
+int				display_status(const int status, const char *prefix,
+								const char *suffix);
 
 /*
 ** i18n/
 */
+
 char const		*i18n_translate(int status);
 
 /*
 ** init/
 */
-//int				shell_fd(void);
+
 int				shell_init(t_sh *sh, char *envp[]);
 int				shell_language(int lang);
 int				shell_environment(t_sh *sh, char **envp);
-char			*shell_set_prompt(char **env);// A deplacer
+char			*shell_set_prompt(char **env);
 
 /*
 ** job/
 */
+
 int				job_available_id(void);
 int				job_foreground(t_sh *sh, t_job *j, int const sigcont);
 int				job_background(t_sh *sh, t_job *j, int const sigcont);
@@ -184,17 +154,20 @@ void			redir_list_free(t_list *redir_head);
 /*
 ** loop/
 */
+
 int				loop_main(t_sh *sh);
 
 /*
 ** options/
 */
+
 int				option_is_set(t_list *list_option_head, int option_index);
 char			*option_get_value(t_list *list_option_head, int option_index);
 int				option_parse(t_list *list_head,
 					t_option const **available_options,
 					char ***argv, size_t start);
-t_list			*list_node__option_alloc(t_option const *option_ref, char **argv, size_t i);
+t_list			*list_node__option_alloc(t_option const *option_ref,
+											char **argv, size_t i);
 void			option_free(t_option **opt);
 
 /*
@@ -211,11 +184,14 @@ int				path_get_new_cmd(char **commande, char *name, char *path);
 /*
 ** quoting
 */
-int				quoting_new_context(t_termcaps_context *context, int quot_value);
+
+int				quoting_new_context(t_termcaps_context *context,
+									int quot_value);
 
 /*
 ** signal/
 */
+
 int				signal_to_ignore(void);
 int				signal_to_default(void);
 int				signal_to_pgid(int pgid);
@@ -223,24 +199,29 @@ int				signal_to_pgid(int pgid);
 /*
 ** termcaps/
 */
-int				termcaps_initialize(t_sh *sh, const char *prompt, t_termcaps_context *context);
+
+int				termcaps_initialize(t_sh *sh, const char *prompt,
+									t_termcaps_context *context);
 int				termcaps_finalize(t_termcaps_context *context);
-int				termcaps_character_to_command_line(const size_t character_bytes_count,
-											 const char *character_bytes,
-											 t_list_head *command_line);
-int				termcaps_display_command_line(const t_termcaps_context *context);
-size_t			termcaps_get_character_bytes_count(const size_t input_bytes_count,
-								  const char *input_bytes,
-								  size_t *out_missing_bytes_count);
-int				termcaps_isunicode(const char c, size_t *out_character_bytes_count);
+int				termcaps_character_to_command_line(const size_t char_bytes_cnt,
+											const char *character_bytes,
+											t_list_head *command_line);
+int				termcaps_display_command_line(const t_termcaps_context *cont);
+size_t			termcaps_get_character_bytes_count(const size_t input_bytes_cnt,
+								const char *input_bytes,
+								size_t *out_missing_bytes_count);
+int				termcaps_isunicode(const char c, size_t *out_char_bytes_cnt);
 char			*termcaps_read_input(t_termcaps_context *context);
 int				termcaps_string_to_command_line(const size_t input_buffer_size,
-										  const char *input_buffer,
-										  t_list_head *command_line);
-int				termcaps_history_search(t_termcaps_context *context, t_buffer *out_match);
+										const char *input_buffer,
+										t_list_head *command_line);
+int				termcaps_history_search(t_termcaps_context *context,
+										t_buffer *out_match);
 int				termcaps_write(int fd, char *buffer, size_t buffer_size);
-int				termcaps_line_print(t_termcaps_context *context, t_buffer *history_search);
-void			termcaps_line_erase(t_termcaps_context *context, const t_buffer history_search);
+int				termcaps_line_print(t_termcaps_context *context,
+									t_buffer *history_search);
+void			termcaps_line_erase(t_termcaps_context *context,
+									const t_buffer history_search);
 void			termcaps_identify_input(const unsigned int c,
 										t_input_type *input_type,
 										size_t *input_size_missing);
@@ -254,6 +235,7 @@ void			list_dir__destroy(t_list *head);
 /*
 ** conf
 */
+
 int				conf_file_init(char **env);
 int				conf_check_color_mode(char **env);
 
