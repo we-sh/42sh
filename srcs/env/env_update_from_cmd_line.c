@@ -25,7 +25,7 @@ int			env_update_from_cmd_line(char ***argv, int *argc, char ***envp)
 
 	if (!argv)
 		return (ST_OK);
-	while ((*argv)[0] != NULL
+	while ((*argv)[0] != NULL && (*argv)[0][0] != '\0' && (*argv)[0][0] != '='
 		&& (value = s_get_value_and_remove_equal_sign((*argv)[0])) != NULL)
 	{
 		if (envp != NULL)
