@@ -1,7 +1,8 @@
 #!/bin/bash
 
-LOGIN=${1}
-EMAIL=${2}
+LOGIN="${1}"
+EMAIL="${2}"
+FOLDER="${3}"
 CREATED="2016/01/01 00:00:21"
 UPDATED="2016/01/01 00:00:42"
 
