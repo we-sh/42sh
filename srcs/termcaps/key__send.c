@@ -102,13 +102,12 @@ int						key__send(t_termcaps_context *context)
 
 	if (context->state == STATE_REGULAR)
 	{
-		ft_bzero(command_line_cur, TERMCAPS_BUFFER_MAX);
 		ASSERT(list_head__command_line_to_buffer(&context->command_line,
-		sizeof(command_line_cur) - 1, &command_line_cur_size, command_line_cur));
+	sizeof(command_line_cur) - 1, &command_line_cur_size, command_line_cur));
+		command_line_cur[command_line_cur_size] = 0;
 		if (context->option != OPTION_HEREDOC &&
-			command_line_cur_size != context->prompt.size && //Remove if the parser handle an empty string
-			(ret = parser(context->sh, command_line_cur + context->prompt.size,
-							F_PARSING_TERMCAPS, NULL)) != ST_OK)
+		(ret = parser(context->sh, command_line_cur + context->prompt.size,
+					F_PARSING_TERMCAPS, NULL)) != ST_OK)
 			quoting_new_context(context, ret);
 		if (g_child == 0)
 		{

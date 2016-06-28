@@ -30,21 +30,6 @@ static int			s_check_job_status(t_termcaps_context *context)
 	return (1);
 }
 
-static void			s_delete_line_context(t_termcaps_context *context,
-							const t_buffer history_search)
-{
-	if (context->state == STATE_SEARCH_HISTORY)
-	{
-		caps__delete_line(history_search.size +
-						context->command_line.size - context->prompt.size +
-						sizeof("reverse-i-search '' : ") - 2);
-	}
-	else
-	{
-		caps__delete_line(context->command_line.offset);
-	}
-}
-
 static int			s_termcaps_read_loop(t_termcaps_context *context,
 									size_t input_buffer_size,
 									size_t input_size_missing)
@@ -67,18 +52,18 @@ static int			s_termcaps_read_loop(t_termcaps_context *context,
 			if (input_size_missing)
 				input_buffer_size += read(context->fd, input_buffer + 1,
 					input_size_missing);
-			s_delete_line_context(context, history_search);
+			termcaps_line_erase(context, history_search);
 			s_termcaps_treat_input(input_type, input_buffer_size, input_buffer,
 									context);
-			ASSERT(termcaps_display_context(context, &history_search));
+			ASSERT(termcaps_line_print(context, &history_search));
 		}
 	}
 	return (1);
 }
 
-int			set_new_prompt(t_termcaps_context *context)
+int					set_new_prompt(t_termcaps_context *context)
 {
-	char 	*tmp;
+	char		*tmp;
 
 	free(context->prompt.bytes);
 	if ((tmp = env_get(context->sh->envp, "PS1")) == NULL)

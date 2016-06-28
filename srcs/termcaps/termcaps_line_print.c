@@ -3,8 +3,8 @@
 #define REVERSE_I_SEARCH					"reverse-i-search"
 #define REVERSE_I_SEARCH_SIZE		(sizeof("reverse-i-search") - 1)
 
-int		termcaps_display_context(t_termcaps_context *context,
-									t_buffer *history_search)
+int		termcaps_line_print(t_termcaps_context *context,
+							t_buffer *history_search)
 {
 	char		buffer[TERMCAPS_BUFFER_MAX];
 	size_t		buffer_size;
