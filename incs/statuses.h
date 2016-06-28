@@ -29,6 +29,7 @@ typedef enum	e_st
 	ST_PARSER_TOKEN,
 	ST_EXIT,
 	ST_CANCEL,
+	ST_BREAK,
 	ST_NOT_A_BUILTIN,
 	ST_CHDIR,
 	ST_ENOENT,

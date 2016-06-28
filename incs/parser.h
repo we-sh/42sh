@@ -171,7 +171,6 @@ int		parser_build_list_unstack_lexer_globing(t_parser *parser, t_lexer *lexer, i
 */
 
 int		expand(t_lexer *lexer, t_proc *p, int *i);
-char	*expand_escape_char(char *buf);
 
 /*
 ** Function pointers for the parser.
