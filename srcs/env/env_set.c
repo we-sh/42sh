@@ -80,5 +80,11 @@ int				env_set(char ***envp, char *key, char *value)
 		if ((ret = path_init_hasht(*envp)) != ST_OK)
 			return (ST_MALLOC);
 	}
+	if (key && ft_strcmp(key, "PATH") == 0)
+	{
+		path_free_hasht();
+		if ((ret = path_init_hasht(*envp)) != ST_OK)
+			return (ST_MALLOC);
+	}
 	return (ret);
 }
