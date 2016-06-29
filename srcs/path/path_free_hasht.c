@@ -6,7 +6,7 @@ void			path_free_hasht(void)
 	t_hasht		*tmp;
 
 	i = 0;
-	while (i < 5000)
+	while (i < HASH_TABLE_SIZE)
 	{
 		tmp = NULL;
 		while (bodies[i].head)
