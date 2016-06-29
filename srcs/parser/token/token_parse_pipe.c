@@ -11,7 +11,8 @@ static int	s_none(t_lexer *lexer, int *i)
 			return (ST_OK);
 		index--;
 	}
-	display_status(ST_PARSER_TOKEN, NULL, lexer->tokens[*i]->content);
+	if (lexer->notify == 1)
+		display_status(ST_PARSER_TOKEN, NULL, lexer->tokens[*i]->content);
 	return (ST_PARSER);
 }
 
@@ -27,7 +28,8 @@ static int	s_proc(t_proc *p, t_lexer *lexer, int *i)
 {
 	if (p->argc == 0)
 	{
-		display_status(ST_PARSER_TOKEN, NULL, TOKEN_CONTENT(*i));
+		if (lexer->notify == 1)
+			display_status(ST_PARSER_TOKEN, NULL, TOKEN_CONTENT(*i));
 		return (ST_PARSER);
 	}
 	return (ST_OK);

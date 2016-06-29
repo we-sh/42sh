@@ -9,12 +9,14 @@ static int	s_none(t_lexer *lexer, int *i)
 		k--;
 	if (k < 0)
 	{
-		display_status(ST_PARSER_TOKEN, NULL, TOKEN_CONTENT(*i));
+		if (lexer->notify == 1)
+			display_status(ST_PARSER_TOKEN, NULL, TOKEN_CONTENT(*i));
 		return (ST_PARSER);
 	}
 	if (*i + 1 < lexer->size && TOKEN_CODE(*i + 1) == TC_PIPE)
 	{
-		display_status(ST_PARSER_TOKEN, NULL, TOKEN_CONTENT(*i + 1));
+		if (lexer->notify == 1)
+			display_status(ST_PARSER_TOKEN, NULL, TOKEN_CONTENT(*i + 1));
 		return (ST_PARSER);
 	}
 	return (ST_OK);

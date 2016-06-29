@@ -83,6 +83,7 @@ struct					s_lexer
 	int				buf_index;
 	int				is_inhibited;
 	int				is_parenthesized;
+	int				notify;
 	t_sh			*sh;
 };
 
@@ -94,6 +95,7 @@ typedef enum			e_parsing_mode
 {
 	F_PARSING_NONE,
 	F_PARSING_TERMCAPS,
+	F_PARSING_NONE_TERMCAPS,
 	F_PARSING_JOBS,
 	F_PARSING_PROCS,
 	F_PARSING_GLOBING

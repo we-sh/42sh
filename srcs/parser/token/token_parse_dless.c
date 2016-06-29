@@ -9,7 +9,8 @@ static int		s_none_check(t_lexer *lexer, int *i)
 		k++;
 	if (k >= lexer->size || TOKEN_TYPE(k) != TT_NAME)
 	{
-		display_status(ST_PARSER_TOKEN, NULL, TOKEN_CONTENT(*i));
+		if (lexer->notify == 1)
+			display_status(ST_PARSER_TOKEN, NULL, TOKEN_CONTENT(*i));
 		return (ST_PARSER);
 	}
 	return (ST_OK);

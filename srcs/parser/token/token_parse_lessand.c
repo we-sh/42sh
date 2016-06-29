@@ -9,13 +9,15 @@ static int	s_none(t_lexer *lexer, int *i)
 	if (*i >= lexer->size || (TOKEN_CONTENT(*i)[0] != '-'
 								&& ft_strisnumeric(TOKEN_CONTENT(*i)) == 0))
 	{
-		display_status(ST_PARSER_TOKEN, NULL, content);
+		if (lexer->notify == 1)
+			display_status(ST_PARSER_TOKEN, NULL, content);
 		return (ST_PARSER);
 	}
 	token_parse_utils_skip_separators(lexer, i, NULL);
 	if (*i >= lexer->size || TOKEN_TYPE(*i) != TT_NAME)
 	{
-		display_status(ST_PARSER_TOKEN, NULL, content);
+		if (lexer->notify == 1)
+			display_status(ST_PARSER_TOKEN, NULL, content);
 		return (ST_PARSER);
 	}
 	(*i)--;
@@ -42,7 +44,8 @@ static int	s_proc(t_proc *p, t_parser *parser, t_lexer *lexer, int *i)
 		content = TOKEN_CONTENT(*i);
 		if ((ret = token_parse_utils_check_char_to_fd(content, &fd)) != ST_OK)
 		{
-			display_status(ST_PARSER_TOKEN, NULL, TOKEN_CONTENT(*i));
+			if (lexer->notify == 1)
+				display_status(ST_PARSER_TOKEN, NULL, TOKEN_CONTENT(*i));
 			return (ret);
 		}
 	}

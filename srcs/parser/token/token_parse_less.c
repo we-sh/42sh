@@ -10,7 +10,8 @@ static int	s_none(t_lexer *lexer, int *i)
 	token_parse_utils_skip_separators(lexer, i, NULL);
 	if (*i >= lexer->size || TOKEN_TYPE(*i) != TT_NAME)
 	{
-		display_status(ST_PARSER_TOKEN, NULL, content);
+		if (lexer->notify == 1)
+			display_status(ST_PARSER_TOKEN, NULL, content);
 		return (ST_PARSER);
 	}
 	return (ST_OK);

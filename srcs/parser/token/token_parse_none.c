@@ -26,7 +26,11 @@ int			token_parse_none(void *target, t_parser *parser, t_lexer *lexer,
 
 	ret = ST_OK;
 	if (TOKEN_TYPE(*i) == TT_ERROR)
+	{
+		if (lexer->notify == 1)
+			display_status(ST_PARSER_TOKEN, NULL, TOKEN_CONTENT(*i));
 		return (ST_PARSER);
+	}
 	if (lexer->tokens[*i]->is_redir_checked == 0
 		&& *i + 1 < lexer->size
 		&& TOKEN_TYPE(*i + 1) == TT_REDIR

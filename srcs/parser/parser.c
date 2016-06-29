@@ -38,19 +38,23 @@ static int		s_parser_callback(t_parser **parser)
 ** anything), it returns other code greater than 0.
 */
 
-static int		s_parser_process(t_sh *sh, t_parser *parser)
+static int		s_parser_process(t_sh *sh, t_parser *parser_obj)
 {
 	int			ret;
 
-	if (!sh || !parser)
+	if (!sh || !parser_obj)
 		return (ST_EINVAL);
-	if ((ret = lexer(parser, parser->in)) != ST_OK)
+	if ((ret = lexer(parser_obj, parser_obj->in)) != ST_OK)
+	{
+		if (parser(sh, parser_obj->in, F_PARSING_NONE_TERMCAPS, NULL) != ST_OK)
+			return (ST_OK);
 		return (ret);
-	if (!(parser->lexer))
+	}
+	if (!(parser_obj->lexer))
 		return (ST_EINVAL);
-	if (parser->mode == F_PARSING_TERMCAPS)
+	if (parser_obj->mode == F_PARSING_TERMCAPS)
 		return (ST_OK);
-	if ((ret = parser_build_list_unstack_lexer(parser)) != ST_OK)
+	if ((ret = parser_build_list_unstack_lexer(parser_obj)) != ST_OK)
 		return (ret);
 	return (ST_OK);
 }
@@ -72,6 +76,8 @@ int				parser(t_sh *sh, const char *in, int mode,
 		return (ST_OK);
 	if ((ret = parser_new(&parser, in, sh, mode)) != ST_OK)
 		return (ret);
+	if (mode == F_PARSING_NONE_TERMCAPS)
+		parser->mode = F_PARSING_NONE;
 	parser->target_list_head = target_list_head;
 	ret = s_parser_process(sh, parser);
 	s_parser_callback(&parser);

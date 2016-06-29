@@ -9,7 +9,14 @@ static int	s_none(t_lexer *lexer, int *i)
 		k--;
 	if (k < 0 || TOKEN_TYPE(k) == TT_JOBS)
 	{
-		display_status(ST_PARSER_TOKEN, NULL, TOKEN_CONTENT(*i));
+		if (lexer->notify == 1)
+			display_status(ST_PARSER_TOKEN, NULL, TOKEN_CONTENT(*i));
+		return (ST_PARSER);
+	}
+	if (*i + 1 < lexer->size && TOKEN_TYPE(*i + 1) == TT_SEPARATOR)
+	{
+		if (lexer->notify == 1)
+			display_status(ST_PARSER_TOKEN, NULL, TOKEN_CONTENT(*i));
 		return (ST_PARSER);
 	}
 	return (ST_OK);
