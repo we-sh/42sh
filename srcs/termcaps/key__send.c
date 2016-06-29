@@ -70,12 +70,8 @@ static int				s_key__search_hist(t_termcaps_context *context)
 	return (1);
 }
 
-int g_child = 0;
-int g_in_child = 0;
-
 int						s_key_send(t_termcaps_context *context)
 {
-	int					ret;
 	size_t				command_line_cur_size;
 	char				command_line_cur[TERMCAPS_BUFFER_MAX];
 
@@ -83,14 +79,15 @@ int						s_key_send(t_termcaps_context *context)
 sizeof(command_line_cur) - 1, &command_line_cur_size, command_line_cur));
 	command_line_cur[command_line_cur_size] = 0;
 	if (context->option != OPTION_HEREDOC &&
-	(ret = parser(context->sh, command_line_cur + context->prompt.size,
-				F_PARSING_TERMCAPS, NULL)) != ST_OK)
-		quoting_new_context(context, ret);
-	if (g_child == 0)
+	parser(context->sh, command_line_cur + context->prompt.size,
+				F_PARSING_TERMCAPS, NULL) != ST_OK)
+		quoting_new_context(context);
+	if (context->child == 0)
 	{
 		termcaps_display_command_line(context);
 		caps__print_cap(CAPS__CARRIAGE_RETURN, 0);
 	}
+	context->child = 0;
 	return (1);
 }
 
@@ -106,14 +103,7 @@ int						key__send(t_termcaps_context *context)
 			ASSERT(s_bufferize_input(context));
 		}
 		else
-		{
 			(void)write(context->fd, "\n", 1);
-			if (g_in_child == 2)
-			{
-				ASSERT((context->buffer = ft_strdup(" ")) != NULL);
-			}
-		}
-		g_child = 0;
 	}
 	else if (context->state == STATE_SEARCH_HISTORY)
 		s_key__search_hist(context);

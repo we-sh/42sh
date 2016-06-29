@@ -10,7 +10,4 @@ typedef struct			s_quoting
 	int					pipe;
 }						t_quoting;
 
-int g_child;
-int g_in_child;
-
 #endif
