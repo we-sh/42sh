@@ -203,7 +203,7 @@ LDLIBS		=	\
 				-llogger						\
 				-lcaps							\
 				-lft							\
-				-lncurses						\
+				-ltermcap						\
 
 # GLOBAL SETUP
 AR			=	ar

@@ -40,7 +40,6 @@
 # include <signal.h>
 # include <termios.h>
 # include <errno.h>
-# include <curses.h>
 # include <dirent.h>
 # include <sys/stat.h>
 # include <sys/ioctl.h>
