@@ -1,0 +1,13 @@
+./incs/builtins
+./incs
+./incs/termcaps
+./incs
+./libs/libft/incs
+./libs/logger/incs
+./libs/libcaps/incs
+./libs/libcaps/srcs
+./libs/libcaps/libs/libft
+./libs/libcaps/libs/ft_printf
+./libs/libcaps/libs/ft_printf/srcs
+./libs/libcaps/libs/ft_printf/includes
+./libs/libcaps/libs/ft_printf/libs/libft
