@@ -6,7 +6,7 @@
 /*   By: abombard <abombard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/01 00:00:21 by abombard          #+#    #+#             */
-/*   Updated: 2016/01/01 00:00:42 by abombard         ###   ########.fr       */
+/*   Updated: 2016/06/29 21:49:36 by abombard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,11 @@
 
 /*
 ** This function may parse options.
-**
 ** It considers:
 ** - multiple options with single characters (e.g. `rm -rf`, `ls -lRA`)
 ** - single options with multiple characters (e.g. `--unset`)
 ** - value that may follow the option (e.g. `-u PATH`)
 ** - delimiter of end of options `--`
-**
 ** For more information about POSIX options:
 ** http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html
 */

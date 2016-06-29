@@ -6,7 +6,7 @@
 /*   By: abombard <abombard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/01 00:00:21 by abombard          #+#    #+#             */
-/*   Updated: 2016/01/01 00:00:42 by abombard         ###   ########.fr       */
+/*   Updated: 2016/06/29 21:53:39 by abombard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,14 @@
 /*
 ** Generic structure for options.
 ** This structure may be used as a list or within a static array.
-**
 ** List use case:
 ** - parse and save options from `char **argv` at runtime
-**
 ** Static table use case:
 ** - configure available options for the Shell or a builtin at compilation
-**
 ** Convention:
 ** - an upcase-single-character option (e.g. `-P`) should be suffixed with `2`
 ** to differentiate with an optional existing other option with the same
 ** character in downcase (e.g. `-p`)
-**
 ** Here is the description of each member of the structure:
 ** - list_option:      pointers to prev and next
 ** - name:             name of the option (e.g. `u`, `unset`, `l`)
@@ -39,7 +35,6 @@
 ** - value_is_indexof: NULL or an array of possible values
 ** - value:            initialized during the parsing or the command line,
 **                     it contains a duplication of the next field
-**
 ** More info on how utility arguments should be implemented:
 ** http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html
 */

@@ -6,7 +6,7 @@
 /*   By: abombard <abombard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/01 00:00:21 by abombard          #+#    #+#             */
-/*   Updated: 2016/01/01 00:00:42 by abombard         ###   ########.fr       */
+/*   Updated: 2016/06/29 21:51:15 by abombard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,11 @@
 
 /*
 ** Put the terminal in POSIX raw mode
-**
 **		|c_iflag|
-**
 ** IGNBRK : If this bit is set, BREAK conditions are ignored.
 **		A break condition is defined in the context of asynchronous
 **		 serial data transmission
 **		as a series of zero-value bits longer than a single byte.
-**
 ** BRKINT : If IGNBRK is set, a BREAK is ignored. If it is not set
 ** 		but BRKINT is set, then a BREAK causes the input and output
 **		queues to be flushed, and if the terminal is the
@@ -30,54 +27,39 @@
 **		IGNBRK nor BRKINT are set, a BREAK reads as a null byte ('\0'),
 **		except when PARMRK is set, in which case it reads as the
 **		sequence \377 \0 \0.
-**
 ** PARMRK : If IGNPAR is not set, prefix a character with a parity error
 **		or framing error with \377 \0. If neither IGNPAR nor PARMRK is
 ** 		set, read a character with a parity error or framing error as \0
-**
 ** ISTRIP : If this bit is set, valid input bytes are stripped to seven bits;
 **			otherwise, all eight bits are available for programs to read.
-**
 ** INLCR : If this bit is set, newline characters ('\n') received as input
 **		are passed to the application as carriage return characters ('\r').
-**
 ** IGNCR : If this bit is set, carriage return characters ('\r')
 **		are discarded on input. Discarding carriage return may be
 **		useful on terminals that send both carriage return and
 **		linefeed when you type the RET key.
-**
 ** ICRNL : If this bit is set and IGNCR is not set, carriage return
 **		characters ('\r') received as input are passed to the application
 **		as newline characters ('\n').
-**
 ** IXON : If this bit is set, start/stop control on output is enabled.
 **		In other words, if the computer receives a STOP character, it
 **		suspends output until a START character is received. In this case,
 **		the STOP and START characters are never passed to the application
 **		program. If this bit is not set, then START and STOP can be read
 **		as ordinary characters. See section Special Characters for Flow Control.
-**
-**
 **		|c_oflag|
-**
 ** OPOST : If this bit is set, output data is processed in some unspecified
 **		way so that it is displayed appropriately on the terminal device.
 **		This typically includes mapping newline characters ('\n')
 **		onto carriage return and linefeed pairs. If this bit isn't set,
 **		the characters are transmitted as-is.
-**
-**
 **		|c_lflag|
-**
 ** ECHO : If this bit is set, echoing of input characters back to the
 **		terminal is enabled.
-**
 ** ECHONL : If this bit is set and the ICANON bit is also set, then the
 **		newline ('\n') character is echoed even if the ECHO bit is not set.
-**
 ** ICANON : This bit, if set, enables canonical input processing mode.
 **			Otherwise, input is processed in noncanonical mode
-**
 ** ISIG : This bit controls whether the INTR, QUIT, and SUSP characters
 **		are recognized. The functions associated with these characters
 **		are performed if and only if this bit is set.Being in canonical or
@@ -88,25 +70,18 @@
 **		provide some alternate interface that allows the user to
 **		interactively send the signals associated with these characters,
 **		or to escape from the program.
-**
 ** IEXTEN : POSIX.1 gives IEXTEN implementation-defined meaning, so you
 **		cannot rely on this interpretation on all systems. On BSD systems
 **		and the GNU system, it enables the LNEXT and DISCARD characters.
 **		See section Other Special Characters.
-**
-**
 **		|c_cflag|
-**
 **	CSIZE : This is a mask for the number of bits per character.
-**
 **	PARENB : If this bit is set, generation and detection of a parity
 **		bit are enabled. See section Input Modes, for information on how
 **		input parity errors are handled. If this bit is not set, no parity bit
 **		is added to output characters, and input characters are not checked
 **		for correct parity.
-**
 **	CS8 : This specifies eight bits per byte.
-**
 */
 
 static int	s_termios_init(t_termcaps_context *context)

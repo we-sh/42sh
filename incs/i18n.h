@@ -6,7 +6,7 @@
 /*   By: abombard <abombard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/01 00:00:21 by abombard          #+#    #+#             */
-/*   Updated: 2016/01/01 00:00:42 by abombard         ###   ########.fr       */
+/*   Updated: 2016/06/29 21:55:22 by abombard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,11 @@
 
 /*
 ** This file contains the translations of each status message.
-**
 ** The enumeration `e_language` contains the list of available languages.
 ** LANG_GET must be at top of the enumeration and set to 0.
 ** LANG_TOTAL must be at bottom to represent the count of languages.
-**
 ** Each language is associated to a static const char[] suffixed with `g_i18n_`.
 ** The first key `ST_OK`, or 0, must contain the name of the described language.
-**
 ** Use the function i18n_translate(int *status) to get a translation at runtime.
 */
 
