@@ -82,8 +82,7 @@ static int				s_qloop(t_termcaps_context *c,
 	return (ST_OK);
 }
 
-int						quoting_new_context(t_termcaps_context *context,
-											int quot_value)
+int						quoting_new_context(t_termcaps_context *context)
 {
 	t_termcaps_context	child_context;
 	int					ret;
@@ -91,20 +90,17 @@ int						quoting_new_context(t_termcaps_context *context,
 
 	tmp2 = NULL;
 	ret = 0;
-	(void)quot_value;
-	if (g_in_child == 0)
+	if (context->option == OPTION_NONE)
 	{
 		termcaps_display_command_line(context);
 		caps__print_cap(CAPS__DOWN, 0);
 		termcaps_initialize(context->sh, "> ", &child_context);
-		g_in_child = 1;
 		if ((ret = s_qloop(context, &child_context, tmp2)) != ST_OK)
 			return (ret);
-		g_in_child = 0;
 		caps__delete_line(context->command_line.offset);
 		caps__print_cap(CAPS__UP, 0);
 		termcaps_finalize(&child_context);
-		g_child = 1;
+		context->child = 1;
 	}
 	return (ret);
 }

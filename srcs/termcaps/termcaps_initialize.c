@@ -176,6 +176,7 @@ static int	s_termcaps_init_context(t_termcaps_context *context,
 	context->selection_offset_start = 0;
 	context->selection_offset_end = 0;
 	context->buffer = NULL;
+	context->child = 0;
 	context->is_initialized = 1;
 	return (ST_OK);
 }

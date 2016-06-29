@@ -44,6 +44,8 @@ typedef struct	s_termcaps_context
 	char									*buffer;
 
 	t_sh									*sh;
+
+	int										child;
 }				t_termcaps_context;
 
 #endif
