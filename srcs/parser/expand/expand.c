@@ -10,25 +10,6 @@
 ** 4. Escape character `\`
 */
 
-static char	*s_expand_escape_char_not_inhibited(char *str)
-{
-	size_t	i;
-	size_t	j;
-
-	i = 0;
-	j = 0;
-	while (str[j])
-	{
-		if (str[j] == '\\')
-			j++;
-		str[i] = str[j];
-		i++;
-		j++;
-	}
-	str[i] = '\0';
-	return (str);
-}
-
 static int	s_list_argv_to_char_argv(t_proc *p, t_list *argv_list)
 {
 	t_argv	*argument;
@@ -40,7 +21,7 @@ static int	s_list_argv_to_char_argv(t_proc *p, t_list *argv_list)
 	{
 		safe = safe->next;
 		argument = CONTAINER_OF(pos, t_argv, argv_list);
-		argument->buffer = s_expand_escape_char_not_inhibited(argument->buffer);
+		//argument->buffer = s_expand_escape_char_not_inhibited(argument->buffer);
 		if ((ft_array_push_back(&p->argv, argument->buffer)) < 0)
 			return (ST_MALLOC);
 		p->argc++;

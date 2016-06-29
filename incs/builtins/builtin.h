@@ -12,6 +12,7 @@ typedef enum		e_builtin_index
 	BLTIN_NONE,
 	BLTIN_BG,
 	BLTIN_CD,
+	BLTIN_ECHO,
 	BLTIN_EXIT,
 	BLTIN_HELP,
 	BLTIN_FG,
@@ -48,6 +49,8 @@ typedef struct		s_builtin
 int					builtin_bg(t_builtin const *builtin,
 								int callback, t_sh *sh, t_proc *p);
 int					builtin_cd(t_builtin const *builtin,
+								int callback, t_sh *sh, t_proc *p);
+int					builtin_echo(t_builtin const *builtin,
 								int callback, t_sh *sh, t_proc *p);
 int					builtin_exit(t_builtin const *builtin,
 								int callback, t_sh *sh, t_proc *p);

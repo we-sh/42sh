@@ -56,6 +56,8 @@ SRCS		=	\
 				builtins/cd/builtin_cd_chk_path.c\
 				builtins/cd/builtin_cd_readlink.c\
 				builtins/cd/builtin_cd_rm_dotdot.c\
+				builtins/echo/builtin_echo.c	\
+				builtins/echo/builtin_echo_escape.c	\
 				builtins/exit/builtin_exit.c	\
 				builtins/fg/builtin_fg.c		\
 				builtins/help/builtin_help.c	\
@@ -569,6 +571,16 @@ $(DIROBJ)builtin_cd_rm_dotdot.o: srcs/builtins/cd/builtin_cd_rm_dotdot.c     inc
 		@printf "compiling ./srcs/builtins/cd/builtin_cd_rm_dotdot.c\n"
 		@$(CC) -c ./srcs/builtins/cd/builtin_cd_rm_dotdot.c -o ./.objs/builtin_cd_rm_dotdot.o $(CPPFLAGS) $(CFLAGS) 
 
+$(DIROBJ)builtin_echo.o: srcs/builtins/echo/builtin_echo.c incs/shell.h     incs/shell_struct.h libs/libft/./incs/list.h     incs/termcaps/termcaps_struct.h incs/termcaps/list_head.h     libs/libcaps/./incs/types.h incs/option.h incs/statuses.h incs/htabl.h     incs/fnv.h incs/fnvhead32.h incs/termcaps/termcaps.h     incs/termcaps/log.h incs/termcaps/key.h incs/redirection.h     libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h     libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h     incs/job.h libs/libcaps/./incs/caps.h incs/i18n.h     libs/libft/./incs/get_next_line.h incs/parser.h incs/parser_struct.h     incs/builtins/builtin.h incs/quoting.h incs/builtins/builtin_echo.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/builtins/echo/builtin_echo.c\n"
+		@$(CC) -c ./srcs/builtins/echo/builtin_echo.c -o ./.objs/builtin_echo.o $(CPPFLAGS) $(CFLAGS) 
+
+$(DIROBJ)builtin_echo_escape.o: srcs/builtins/echo/builtin_echo_escape.c     incs/shell.h incs/shell_struct.h libs/libft/./incs/list.h     incs/termcaps/termcaps_struct.h incs/termcaps/list_head.h     libs/libcaps/./incs/types.h incs/option.h incs/statuses.h incs/htabl.h     incs/fnv.h incs/fnvhead32.h incs/termcaps/termcaps.h     incs/termcaps/log.h incs/termcaps/key.h incs/redirection.h     libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h     libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h     incs/job.h libs/libcaps/./incs/caps.h incs/i18n.h     libs/libft/./incs/get_next_line.h incs/parser.h incs/parser_struct.h     incs/builtins/builtin.h incs/quoting.h
+		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
+		@printf "compiling ./srcs/builtins/echo/builtin_echo_escape.c\n"
+		@$(CC) -c ./srcs/builtins/echo/builtin_echo_escape.c -o ./.objs/builtin_echo_escape.o $(CPPFLAGS) $(CFLAGS) 
+
 $(DIROBJ)builtin_exit.o: srcs/builtins/exit/builtin_exit.c incs/shell.h     incs/shell_struct.h libs/libft/./incs/list.h     incs/termcaps/termcaps_struct.h incs/termcaps/list_head.h     libs/libcaps/./incs/types.h incs/option.h incs/statuses.h incs/htabl.h     incs/fnv.h incs/fnvhead32.h incs/termcaps/termcaps.h     incs/termcaps/log.h incs/termcaps/key.h incs/redirection.h     libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h     libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h     incs/job.h libs/libcaps/./incs/caps.h incs/i18n.h     libs/libft/./incs/get_next_line.h incs/parser.h incs/parser_struct.h     incs/builtins/builtin.h incs/quoting.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/builtins/exit/builtin_exit.c\n"
@@ -579,7 +591,7 @@ $(DIROBJ)builtin_fg.o: srcs/builtins/fg/builtin_fg.c incs/shell.h     incs/shell
 		@printf "compiling ./srcs/builtins/fg/builtin_fg.c\n"
 		@$(CC) -c ./srcs/builtins/fg/builtin_fg.c -o ./.objs/builtin_fg.o $(CPPFLAGS) $(CFLAGS) 
 
-$(DIROBJ)builtin_help.o: srcs/builtins/help/builtin_help.c incs/shell.h     incs/shell_struct.h libs/libft/./incs/list.h     incs/termcaps/termcaps_struct.h incs/termcaps/list_head.h     libs/libcaps/./incs/types.h incs/option.h incs/statuses.h incs/htabl.h     incs/fnv.h incs/fnvhead32.h incs/termcaps/termcaps.h     incs/termcaps/log.h incs/termcaps/key.h incs/redirection.h     libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h     libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h     incs/job.h libs/libcaps/./incs/caps.h incs/i18n.h     libs/libft/./incs/get_next_line.h incs/parser.h incs/parser_struct.h     incs/builtins/builtin.h incs/quoting.h incs/builtins/builtin_struct.h     incs/builtins/builtin_bg.h incs/builtins/builtin_cd.h     incs/builtins/builtin_exit.h incs/builtins/builtin_fg.h     incs/builtins/builtin_help.h incs/builtins/builtin_jobs.h     incs/builtins/builtin_env.h incs/builtins/builtin_language.h     incs/builtins/builtin_setenv.h incs/builtins/builtin_termcaps.h     incs/builtins/builtin_unsetenv.h
+$(DIROBJ)builtin_help.o: srcs/builtins/help/builtin_help.c incs/shell.h     incs/shell_struct.h libs/libft/./incs/list.h     incs/termcaps/termcaps_struct.h incs/termcaps/list_head.h     libs/libcaps/./incs/types.h incs/option.h incs/statuses.h incs/htabl.h     incs/fnv.h incs/fnvhead32.h incs/termcaps/termcaps.h     incs/termcaps/log.h incs/termcaps/key.h incs/redirection.h     libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h     libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h     incs/job.h libs/libcaps/./incs/caps.h incs/i18n.h     libs/libft/./incs/get_next_line.h incs/parser.h incs/parser_struct.h     incs/builtins/builtin.h incs/quoting.h incs/builtins/builtin_struct.h     incs/builtins/builtin_bg.h incs/builtins/builtin_cd.h     incs/builtins/builtin_echo.h incs/builtins/builtin_exit.h     incs/builtins/builtin_fg.h incs/builtins/builtin_help.h     incs/builtins/builtin_jobs.h incs/builtins/builtin_env.h     incs/builtins/builtin_language.h incs/builtins/builtin_setenv.h     incs/builtins/builtin_termcaps.h incs/builtins/builtin_unsetenv.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/builtins/help/builtin_help.c\n"
 		@$(CC) -c ./srcs/builtins/help/builtin_help.c -o ./.objs/builtin_help.o $(CPPFLAGS) $(CFLAGS) 
@@ -619,7 +631,7 @@ $(DIROBJ)builtin_unsetenv.o: srcs/builtins/unsetenv/builtin_unsetenv.c     incs/
 		@printf "compiling ./srcs/builtins/unsetenv/builtin_unsetenv.c\n"
 		@$(CC) -c ./srcs/builtins/unsetenv/builtin_unsetenv.c -o ./.objs/builtin_unsetenv.o $(CPPFLAGS) $(CFLAGS) 
 
-$(DIROBJ)builtin_callback.o: srcs/builtins/builtin_callback.c incs/shell.h     incs/shell_struct.h libs/libft/./incs/list.h     incs/termcaps/termcaps_struct.h incs/termcaps/list_head.h     libs/libcaps/./incs/types.h incs/option.h incs/statuses.h incs/htabl.h     incs/fnv.h incs/fnvhead32.h incs/termcaps/termcaps.h     incs/termcaps/log.h incs/termcaps/key.h incs/redirection.h     libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h     libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h     incs/job.h libs/libcaps/./incs/caps.h incs/i18n.h     libs/libft/./incs/get_next_line.h incs/parser.h incs/parser_struct.h     incs/builtins/builtin.h incs/quoting.h incs/builtins/builtin_struct.h     incs/builtins/builtin_bg.h incs/builtins/builtin_cd.h     incs/builtins/builtin_exit.h incs/builtins/builtin_fg.h     incs/builtins/builtin_help.h incs/builtins/builtin_jobs.h     incs/builtins/builtin_env.h incs/builtins/builtin_language.h     incs/builtins/builtin_setenv.h incs/builtins/builtin_termcaps.h     incs/builtins/builtin_unsetenv.h
+$(DIROBJ)builtin_callback.o: srcs/builtins/builtin_callback.c incs/shell.h     incs/shell_struct.h libs/libft/./incs/list.h     incs/termcaps/termcaps_struct.h incs/termcaps/list_head.h     libs/libcaps/./incs/types.h incs/option.h incs/statuses.h incs/htabl.h     incs/fnv.h incs/fnvhead32.h incs/termcaps/termcaps.h     incs/termcaps/log.h incs/termcaps/key.h incs/redirection.h     libs/libft/./incs/libft.h libs/libft/./incs/libftprintf.h     libs/logger/./incs/logger.h libs/logger/./incs/logger_utils.h     incs/job.h libs/libcaps/./incs/caps.h incs/i18n.h     libs/libft/./incs/get_next_line.h incs/parser.h incs/parser_struct.h     incs/builtins/builtin.h incs/quoting.h incs/builtins/builtin_struct.h     incs/builtins/builtin_bg.h incs/builtins/builtin_cd.h     incs/builtins/builtin_echo.h incs/builtins/builtin_exit.h     incs/builtins/builtin_fg.h incs/builtins/builtin_help.h     incs/builtins/builtin_jobs.h incs/builtins/builtin_env.h     incs/builtins/builtin_language.h incs/builtins/builtin_setenv.h     incs/builtins/builtin_termcaps.h incs/builtins/builtin_unsetenv.h
 		@printf "$(C_GRE)[ 42sh ] [ %-6s ]$(C_DFL) " "clang"
 		@printf "compiling ./srcs/builtins/builtin_callback.c\n"
 		@$(CC) -c ./srcs/builtins/builtin_callback.c -o ./.objs/builtin_callback.o $(CPPFLAGS) $(CFLAGS) 

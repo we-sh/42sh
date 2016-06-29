@@ -275,14 +275,4 @@ static t_token g_token_globing_name_tilde = {
 	0
 };
 
-static t_token g_token_globing_name_backslash = {
-	"\\",
-	NULL,
-	1,
-	TT_NAME,
-	TC_BACKSLASH,
-	token_globing_parse_none,
-	0
-};
-
 #endif
