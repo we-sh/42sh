@@ -35,11 +35,6 @@ static int	s_after(t_sh *sh, t_proc *p)
 		while (p->argv[i])
 		{
 			env_unset(&sh->envp, p->argv[i]);
-			if (ft_strcmp(p->argv[i], "PATH") == 0)
-			{
-				path_free_hasht();
-				path_init_hasht(sh->envp);
-			}
 			i++;
 		}
 	}
