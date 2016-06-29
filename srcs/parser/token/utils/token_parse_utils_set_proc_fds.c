@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   token_parse_utils_set_proc_fds.c                   :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: abombard <abombard@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/01/01 00:00:21 by abombard          #+#    #+#             */
-/*   Updated: 2016/01/01 00:00:42 by abombard         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "parser.h"
 
 static void	s_set_and_close(int *fd, int *fd_compare, int std, int new_fd)
