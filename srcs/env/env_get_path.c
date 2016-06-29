@@ -6,16 +6,16 @@
 /*   By: abombard <abombard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/01 00:00:21 by abombard          #+#    #+#             */
-/*   Updated: 2016/01/01 00:00:42 by abombard         ###   ########.fr       */
+/*   Updated: 2016/06/29 21:48:00 by abombard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
 /*
-*  See "/etc/profile"
-*  (and so "/usr/libexec/path_helper -s")
-*  to retreive the default paths.
+** See "/etc/profile"
+** (and so "/usr/libexec/path_helper -s")
+** to retreive the default paths.
 */
 
 char				*env_get_path(char **envp)
