@@ -3,6 +3,7 @@
 
 # include "builtin_bg.h"
 # include "builtin_cd.h"
+# include "builtin_echo.h"
 # include "builtin_exit.h"
 # include "builtin_fg.h"
 # include "builtin_help.h"
@@ -21,6 +22,7 @@ static const t_builtin		*g_builtins[] = {
 	[BLTIN_NONE] = NULL,
 	[BLTIN_BG] = &g_builtin_bg,
 	[BLTIN_CD] = &g_builtin_cd,
+	[BLTIN_ECHO] = &g_builtin_echo,
 	[BLTIN_EXIT] = &g_builtin_exit,
 	[BLTIN_FG] = &g_builtin_fg,
 	[BLTIN_HELP] = &g_builtin_help,

@@ -115,21 +115,21 @@ int					option_parse(t_list *list_head,
 	while ((*argv)[i])
 	{
 		if (((*argv)[i][0] == '-' && (*argv)[i][1] == '\0')
-			|| (*argv)[i][0] != '-' || ft_strcmp((*argv)[i], "--") == 0)
+			|| (*argv)[i][0] != '-' || (ft_strcmp((*argv)[i], "--") == 0
+				&& ft_array_pop(argv, i, 1) == 1))
 			break ;
 		if ((*argv)[i][0] == '-' && (*argv)[i][1] != '-')
 		{
 			if ((ret = s_single(list_head, available_opt, argv, i)) != ST_OK)
 				return (ret);
-			i -= 1;
 		}
 		else if ((*argv)[i][0] == '-' && (*argv)[i][1] == '-')
 		{
 			if ((ret = s_multi(list_head, available_opt, argv, i)) != ST_OK)
 				return (ret);
-			i -= 1;
 		}
-		i++;
+		else
+			i++;
 	}
 	return (ST_OK);
 }
