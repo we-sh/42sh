@@ -39,6 +39,7 @@ static int	s_exec(t_builtin const *builtin, t_proc *p)
 	}
 	else
 	{
+		shell_language(-p->bltin_status);
 		ft_printf("%s: %s\n", i18n_translate(ST_BLTIN_LANGUAGE_OK),
 			i18n_translate(ST_OK));
 	}
