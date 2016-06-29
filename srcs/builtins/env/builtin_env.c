@@ -10,7 +10,9 @@ static int	s_exec_display(t_proc *p)
 	if ((ret = option_is_set(&p->bltin_opt_head, ST_BLTIN_ENV_OPT_I)) == 1)
 	{
 		ft_memdel_tab((void ***)&p->envp);
-		p->envp = NULL;
+		if ((p->envp = (char **)malloc(sizeof(char *) * 1)) == NULL)
+			return (ST_MALLOC);
+		p->envp[0] = NULL;
 	}
 	p->argc--;
 	ft_array_pop(&p->argv, 0, 1);
