@@ -41,16 +41,11 @@ static int	s_exec(t_builtin const *builtin, t_proc *p, t_sh *sh)
 
 static int	s_after(t_sh *sh, t_proc *p)
 {
+	int		ret;
+
 	if (p->bltin_status == ST_OK && (p->argc == 2 || p->argc == 3))
-	{
-		env_set(&sh->envp, p->argv[1], p->argv[2]);
-		log_info(p->argv[1]);
-		if (ft_strcmp(p->argv[1], "PATH") == 0)
-		{
-			path_free_hasht();
-			path_init_hasht(sh->envp);
-		}
-	}
+		if ((ret = env_set(&sh->envp, p->argv[1], p->argv[2])) != ST_OK)
+			return (ret);
 	return (ST_OK);
 }
 

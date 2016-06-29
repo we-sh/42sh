@@ -61,7 +61,7 @@ static int	s_add_color_to_cmd(t_proc *p)
 	return (ST_OK);
 }
 
-static int	s_proc_launch_execve(t_sh *sh, t_proc *p)
+static int	s_proc_launch_execve(t_proc *p)
 {
 	char	*lowerargv;
 	char	*match;
@@ -76,9 +76,9 @@ static int	s_proc_launch_execve(t_sh *sh, t_proc *p)
 		lowerargv = ft_strtolower(match);
 	else
 		lowerargv = match;
-	if ((ret = path_hash_finder(sh->envp, &lowerargv)) == ST_OK)
+	if ((ret = path_hash_finder(p->envp, &lowerargv)) == ST_OK)
 	{
-		if ((conf_check_color_mode(sh->envp) == ST_OK))
+		if ((conf_check_color_mode(p->envp) == ST_OK))
 			s_add_color_to_cmd(p);
 		if ((execve(lowerargv, p->argv, p->envp)) == -1)
 			return (ST_OK);
@@ -113,7 +113,7 @@ void		proc_launch(t_sh *sh, t_job *j, t_proc *p)
 	if (p->is_valid != 1)
 		exit(p->is_valid == 0 ? EXIT_SUCCESS : EXIT_FAILURE);
 	builtin_callback(BLTIN_CB_EXEC, sh, p);
-	if ((ret = (s_proc_launch_execve(sh, p))) != ST_OK)
+	if ((ret = (s_proc_launch_execve(p))) != ST_OK)
 		display_status(ret, p->argv[0], NULL);
 	exit(EXIT_FAILURE);
 }

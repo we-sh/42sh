@@ -29,11 +29,17 @@ static char		**s_env_unset(char **envp, int pos)
 	return (tmp);
 }
 
-int				env_unset(char ***envp, char *argv)
+int				env_unset(char ***envp, char *key)
 {
 	int			ret;
 
-	if ((ret = env_index_value(*envp, argv)) == -1)
+	if (key && ft_strcmp(key, "PATH") == 0)
+	{
+		path_free_hasht();
+		if ((ret = path_init_hasht(*envp)) != ST_OK)
+			return (ret);
+	}
+	if ((ret = env_index_value(*envp, key)) == -1)
 		return (ST_OK);
 	else
 	{

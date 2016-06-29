@@ -39,9 +39,7 @@ static int	s_proc(t_proc *p, t_lexer *lexer, int *i)
 	if ((ret = token_parse_utils_get_full_word(&path, lexer, i)) != ST_OK)
 		return (ret);
 	ret = ST_OK;
-	if ((ret = token_parse_utils_open_new_fd(p, path, &fd_r,
-														O_RDONLY)) != ST_OK)
-		return (ret);
+	token_parse_utils_open_new_fd(p, path, &fd_r, O_RDONLY);
 	free(path);
 	token_parse_utils_set_proc_fds(p, STDIN_FILENO, fd_r);
 	return (ST_OK);
