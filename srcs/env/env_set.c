@@ -73,10 +73,7 @@ int				env_set(char ***envp, char *key, char *value)
 			return (ST_MALLOC);
 	}
 	else
-	{
-		(value == NULL) ? (ret = (s_concat_variable(*envp, ret, key, NULL))) :
-		(ret = (s_concat_variable(*envp, ret, key, value)));
-	}
+		ret = s_concat_variable(*envp, ret, key, value);
 	if (key && ft_strcmp(key, "PATH") == 0)
 	{
 		path_free_hasht();
