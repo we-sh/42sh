@@ -33,18 +33,18 @@ int				env_unset(char ***envp, char *key)
 {
 	int			ret;
 
-	if (key && ft_strcmp(key, "PATH") == 0)
-	{
-		path_free_hasht();
-		if ((ret = path_init_hasht(*envp)) != ST_OK)
-			return (ret);
-	}
 	if ((ret = env_index_value(*envp, key)) == -1)
 		return (ST_OK);
 	else
 	{
 		if ((*envp = s_env_unset(*envp, ret)) == NULL)
 			return (ST_MALLOC);
+	}
+	if (key && ft_strcmp(key, "PATH") == 0)
+	{
+		path_free_hasht();
+		if ((ret = path_init_hasht(*envp)) != ST_OK)
+			return (ret);
 	}
 	return (ST_OK);
 }
