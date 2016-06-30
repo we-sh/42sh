@@ -33,11 +33,14 @@ static char	**s_environment_default(void)
 	return (defaultenv);
 }
 
-/*
-** if ((sh->envp = s_environment_default()) == NULL)
-**		return (ST_MALLOC);
-**	return (ST_OK); // set default returm
-*/
+static int	s_default_vars(char ***envp)
+{
+	if (env_get(*envp, "PATH") == NULL)
+	{
+		env_set(envp, "PATH", env_get_path(*envp));
+	}
+	return (ST_OK);
+}
 
 int			shell_environment(t_sh *sh, char **envp)
 {
@@ -62,5 +65,5 @@ int			shell_environment(t_sh *sh, char **envp)
 		i++;
 	}
 	sh->envp[i] = NULL;
-	return (ST_OK);
+	return (s_default_vars(&sh->envp));
 }
