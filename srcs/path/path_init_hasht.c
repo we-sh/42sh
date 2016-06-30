@@ -9,9 +9,8 @@ int						path_init_hasht(char **envp)
 	int					i;
 
 	i = 0;
-	if ((value = env_get(envp, "PATH")) == NULL)
-		return (ST_OK);
-	folders = ft_strsplit(value, ':');
+	value = env_get(envp, "PATH");
+	folders = ft_strsplit(!value || value[0] == '\0' ? "." : value, ':');
 	while (folders[i] != NULL)
 	{
 		if ((directory = opendir(folders[i])) != NULL)
