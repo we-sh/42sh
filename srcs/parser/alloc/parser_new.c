@@ -64,7 +64,7 @@ static int	s_parser_new_part2(t_parser **parser, int mode)
 		(*parser)->unstack_func = &parser_build_list_unstack_lexer_job;
 	else if (mode == F_PARSING_PROCS)
 		(*parser)->unstack_func = &parser_build_list_unstack_lexer_proc;
-	else if (mode == F_PARSING_NONE || mode == F_PARSING_NONE_TERMCAPS)
+	else if (mode == F_PARSING_NONE)
 		(*parser)->unstack_func = &parser_build_list_unstack_lexer_none;
 	else if (mode == F_PARSING_GLOBING)
 		(*parser)->unstack_func = &parser_build_list_unstack_lexer_globing;
@@ -83,7 +83,7 @@ int			parser_new(t_parser **parser, const char *in, t_sh *sh, int mode)
 		return (ST_MALLOC);
 	(*parser)->lexer->sh = sh;
 	(*parser)->lexer->size = 0;
-	(*parser)->lexer->notify = (mode == F_PARSING_NONE_TERMCAPS ? 0 : 1);
+	(*parser)->lexer->notify = 1;
 	(*parser)->mode = mode;
 	(*parser)->target_list_head = NULL;
 	(*parser)->sh = sh;
