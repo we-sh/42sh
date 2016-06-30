@@ -67,7 +67,7 @@ static int	s_shell_termcaps(t_sh *sh)
 
 	if (!caps__initialize(sh->fd))
 		return (ST_TERMCAPS_INIT);
-	if ((prompt = shell_set_prompt(sh->envp)) == NULL)
+	if ((prompt = shell_set_prompt(sh)) == NULL)
 		return (ST_MALLOC);
 	if (!termcaps_initialize(sh, prompt, &sh->termcaps_context))
 	{

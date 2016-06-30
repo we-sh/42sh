@@ -117,7 +117,7 @@ char const		*i18n_translate(int status);
 int				shell_init(t_sh *sh, char *envp[]);
 int				shell_language(int lang);
 int				shell_environment(t_sh *sh, char **envp);
-char			*shell_set_prompt(char **env);
+char			*shell_set_prompt(t_sh *sh);
 
 /*
 ** job/

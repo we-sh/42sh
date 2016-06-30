@@ -25,7 +25,7 @@ static int	s_fill_prompt(char **str, char *buf, char *home)
 	return (ST_OK);
 }
 
-char		*shell_set_prompt(char **env)
+char		*shell_set_prompt(t_sh *sh)
 {
 	char	*str;
 	char	*buf;
@@ -33,13 +33,17 @@ char		*shell_set_prompt(char **env)
 	char	*home;
 
 	i = 0;
-	buf = getcwd(NULL, 0);
-	home = env_get_home(env);
+	buf = sh->pwd ? sh->pwd : getcwd(NULL, 0);
+	if (!buf)
+		return (NULL);
+	if ((home = env_get_home(sh->envp)) == NULL)
+		return (NULL);
 	if ((s_fill_prompt(&str, buf, home)) == ST_MALLOC)
 	{
 		free(str);
 		return (NULL);
 	}
-	free(buf);
+	if (!sh->pwd)
+		free(buf);
 	return (str);
 }
