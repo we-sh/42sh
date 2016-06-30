@@ -31,9 +31,13 @@ int			path_commande_not_found_in_hasht(char **envp, char **cmd)
 	char	**folders;
 	int		i;
 	int		ret;
+	char	*value;
 
 	i = 0;
-	folders = ft_strsplit(env_get_path(envp), ':');
+	if ((value = env_get(envp, "PATH")) == NULL)
+		return (ST_CMD_NOT_FOUND);
+	if ((folders = ft_strsplit(value, ':')) == NULL)
+		return (ST_MALLOC);
 	while (folders[i] != NULL)
 	{
 		if ((ret = s_path_cmd_match_folder(cmd, folders[i])) == ST_OK)
