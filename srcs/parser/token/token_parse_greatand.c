@@ -45,6 +45,13 @@ static int	s_none(t_lexer *lexer, int *i)
 			display_status(ST_PARSER_TOKEN, NULL, content);
 		return (ST_PARSER);
 	}
+	else if (!((TOKEN_CONTENT(*i)[0] == '1' || TOKEN_CONTENT(*i)[0] == '2'
+		|| TOKEN_CONTENT(*i)[0] == '-') && TOKEN_CONTENT(*i)[1] == '\0'))
+	{
+		if (lexer->notify == 1)
+			display_status(ST_PARSER_TOKEN, NULL, content);
+		return (ST_PARSER);
+	}
 	return (ST_OK);
 }
 
