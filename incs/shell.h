@@ -65,7 +65,6 @@
 # include "get_next_line.h"
 # include "parser.h"
 # include "builtin.h"
-# include "quoting.h"
 
 /*
 ** List of current jobs

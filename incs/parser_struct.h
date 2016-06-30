@@ -10,6 +10,15 @@ typedef struct s_lexer	t_lexer;
 
 typedef struct s_parser	t_parser;
 
+typedef struct			s_quoting
+{
+	int					quote;
+	int					dbquote;
+	int					bkquote;
+	int					bkslash;
+	int					pipe;
+}						t_quoting;
+
 /*
 ** Tokens definition.
 */
