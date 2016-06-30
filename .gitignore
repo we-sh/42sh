@@ -6,6 +6,7 @@
 *.out
 *.a
 *.o
+*.d
 
 # editors
 .*.swp
