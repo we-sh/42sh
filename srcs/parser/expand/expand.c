@@ -21,7 +21,6 @@ static int	s_list_argv_to_char_argv(t_proc *p, t_list *argv_list)
 	{
 		safe = safe->next;
 		argument = CONTAINER_OF(pos, t_argv, argv_list);
-		//argument->buffer = s_expand_escape_char_not_inhibited(argument->buffer);
 		if ((ft_array_push_back(&p->argv, argument->buffer)) < 0)
 			return (ST_MALLOC);
 		p->argc++;
@@ -37,7 +36,8 @@ int			expand(t_lexer *lexer, t_proc *p, int *i)
 	t_list	argv_list;
 	char	*words;
 
-	if ((ret = token_parse_utils_get_word_and_inhib(&words, lexer, i)) != ST_OK)
+	if ((ret = token_parse_utils_get_word_and_inhib(&words,
+												lexer, i)) != ST_OK)
 		return (ret);
 	INIT_LIST_HEAD(&argv_list);
 	ret = parser(lexer->sh, words, F_PARSING_GLOBING, &argv_list);
