@@ -10,7 +10,6 @@ int						path_init_hasht(char **envp)
 
 	i = 0;
 	value = NULL;
-	log_error(env_get_path(envp));
 	folders = ft_strsplit(env_get_path(envp), ':');
 	while (folders[i] != NULL)
 	{
