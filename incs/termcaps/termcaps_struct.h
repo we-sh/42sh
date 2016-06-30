@@ -3,8 +3,7 @@
 
 # include "list_head.h"
 # include "types.h"
-
-typedef struct s_sh	t_sh;
+# include "shell_struct.h"
 
 /*
 ** termcaps context

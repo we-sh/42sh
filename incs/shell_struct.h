@@ -1,6 +1,7 @@
 #ifndef SHELL_STRUCT_H
 # define SHELL_STRUCT_H
 
+# include "shell_typedef.h"
 # include "list.h"
 # include <unistd.h>
 # include "termcaps_struct.h"
@@ -10,8 +11,6 @@
 /*
 ** Shell structure
 */
-
-typedef struct s_sh		t_sh;
 
 struct					s_sh
 {
