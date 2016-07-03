@@ -76,14 +76,15 @@ int						s_key_send(t_termcaps_context *context)
 	char				command_line_cur[TERMCAPS_BUFFER_MAX];
 	int					ret;
 
-	ret = 0;
-	ASSERT(list_head__command_line_to_buffer(&context->command_line,
-sizeof(command_line_cur) - 1, &command_line_cur_size, command_line_cur));
-	command_line_cur[command_line_cur_size] = 0;
-	if (context->option != OPTION_HEREDOC &&
-	(ret = parser(context->sh, command_line_cur + context->prompt.size,
-				F_PARSING_TERMCAPS, NULL)) != ST_OK)
-		quoting_new_context(context, ret);
+	if (list_head__command_line_to_buffer(&context->command_line,
+sizeof(command_line_cur) - 1, &command_line_cur_size, command_line_cur))
+	{
+		command_line_cur[command_line_cur_size] = 0;
+		if (context->option != OPTION_HEREDOC &&
+		parser(context->sh, command_line_cur + context->prompt.size,
+					F_PARSING_TERMCAPS, NULL) != ST_OK)
+			quoting_new_context(context);
+	}
 	if (context->child == 0)
 	{
 		termcaps_display_command_line(context);
@@ -105,11 +106,7 @@ int						key__send(t_termcaps_context *context)
 			ASSERT(s_bufferize_input(context));
 		}
 		else
-		{
-			termcaps_character_to_command_line(context->fd, "\n",
-			 	&context->command_line);
-			ASSERT(s_bufferize_input(context));
-		}
+			termcaps_write(context->fd, "\n", sizeof("\n") - 1);
 	}
 	else if (context->state == STATE_SEARCH_HISTORY)
 		s_key__search_hist(context);

@@ -57,7 +57,7 @@ int					termcaps_read_loop(t_termcaps_context *context,
 			termcaps_line_erase(context, history_search);
 			s_termcaps_treat_input(input_type, input_buffer_size, input_buffer,
 									context);
-			ASSERT(termcaps_line_print(context, &history_search));
+			termcaps_line_print(context, &history_search);
 		}
 	}
 	return (1);

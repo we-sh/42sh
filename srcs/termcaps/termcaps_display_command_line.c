@@ -24,22 +24,35 @@ static int	s_display_selection(const t_termcaps_context *context, char *buffer)
 	termcaps_write(context->fd, buffer + offset_min, offset_max - offset_min);
 	termcaps_write(context->fd, ANSI_COLOR_RESET, ANSI_COLOR_RESET_SIZE);
 	caps__cursor_to_offset(context->command_line.size, offset_max);
-	return (ST_OK);
+	return (1);
 }
 
 static int	s_termcaps_display_control(const t_termcaps_context *context,
 										char *buffer, size_t buffer_size)
 {
+	log_debug("buffer {%.*s}", (int)buffer_size, buffer);
+	if (!buffer)
+	{
+		log_error("buffer_size %zu buffer %p", buffer_size, (void *)buffer);
+		return (0);
+	}
 	if (buffer_size % caps__win(WIN_COLUMNS) == 0)
 	{
 		ft_memcpy(buffer + buffer_size, ENDL, ENDL_SIZE);
 		buffer_size += ENDL_SIZE;
 	}
-	ASSERT(termcaps_write(context->fd, buffer, buffer_size));
+	if (buffer_size >= context->prompt.size)
+	{
+		buffer += context->prompt.size;
+		buffer_size -= context->prompt.size;
+		termcaps_write(context->fd, ANSI_COLOR_LIGHT_BLUE, ANSI_COLOR_LIGHT_BLUE_SIZE);
+		termcaps_write(context->fd, context->prompt.bytes, context->prompt.size);
+		termcaps_write(context->fd, ANSI_COLOR_RESET, ANSI_COLOR_RESET_SIZE);
+	}
+	termcaps_write(context->fd, buffer, buffer_size);
 	if (context->state == STATE_SELECTION)
 		s_display_selection(context, buffer);
-	free(buffer);
-	return (ST_OK);
+	return (1);
 }
 
 int			termcaps_display_command_line(const t_termcaps_context *context)
@@ -49,7 +62,7 @@ int			termcaps_display_command_line(const t_termcaps_context *context)
 	char	*buffer;
 
 	buffer_size_max = context->command_line.size * CHARACTER_SIZE_MAX;
-	buffer = malloc(buffer_size_max);
+	buffer = (char *)malloc(buffer_size_max);
 	if (!buffer)
 	{
 		log_error("malloc() failed command_line->size %zu", buffer_size_max);
@@ -65,5 +78,6 @@ int			termcaps_display_command_line(const t_termcaps_context *context)
 		return (0);
 	}
 	s_termcaps_display_control(context, buffer, buffer_size);
+	free(buffer);
 	return (1);
 }
