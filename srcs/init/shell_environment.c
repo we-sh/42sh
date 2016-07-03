@@ -43,33 +43,6 @@ static char	**s_environment_default(void)
 	return (defaultenv);
 }
 
-static int	s_env_fill_shenv(t_sh *sh)
-{
-	int		i;
-
-	i = 0;
-	while (envp[i])
-	{
-		if (ft_strncmp(env_shlvl, "SHLVL", 5) == 0)
-		{
-			if (((s_env_set_new_shlvl(&sh->envp[i], envp[i]))) == ST_MALLOC)
-				return (ST_MALLOC);
-		}
-		else if (ft_strncmp(env_shlvl, "SHELL", 5) == 0)
-		{
-			if((sh-envp[i] = ft_strdup("SHELL=wesh")) == NULL)
-				return (ST_MALLOC);
-		}
-		else if ((sh->envp[i] = ft_strdup(envp[i])) == NULL)
-			return (ST_MALLOC);
-		i++;
-	}
-	sh->envp[i] = NULL;
-	if (env_get(*envp, "PATH") == NULL)
-		env_set(envp, "PATH", env_get_path(*envp));
-	return (ST_OK);
-}
-
 static int	s_env_set_new_shlvl(char **shenv, char *env_shlvl)
 {
 	int		value;
@@ -93,10 +66,34 @@ static int	s_env_set_new_shlvl(char **shenv, char *env_shlvl)
 	return (ST_OK);
 }
 
+static int	s_env_fill_shenv(t_sh *sh, char **envp)
+{
+	int		i;
+
+	i = 0;
+	while (envp[i])
+	{
+		if (ft_strncmp(envp[i], "SHLVL", 5) == 0)
+		{
+			if (((s_env_set_new_shlvl(&sh->envp[i], envp[i]))) == ST_MALLOC)
+				return (ST_MALLOC);
+		}
+		else if (ft_strncmp(envp[i], "SHELL", 5) == 0)
+		{
+			if((sh->envp[i] = ft_strdup("SHELL=wesh")) == NULL)
+				return (ST_MALLOC);
+		}
+		else if ((sh->envp[i] = ft_strdup(envp[i])) == NULL)
+			return (ST_MALLOC);
+		i++;
+	}
+	sh->envp[i] = NULL;
+	return (ST_OK);
+}
+
 int			shell_environment(t_sh *sh, char **envp)
 {
 	int		i;
-	int		ret;
 
 	i = 0;
 	if (envp[i] == NULL)
@@ -109,6 +106,8 @@ int			shell_environment(t_sh *sh, char **envp)
 		i++;
 	if ((sh->envp = (char **)malloc(sizeof(char *) * (i + 1))) == NULL)
 		return (ST_MALLOC);
-	s_env_fill_shenv(sh);
+	s_env_fill_shenv(sh, envp);
+	if (env_get(sh->envp, "PATH") == NULL)
+		env_set(&sh->envp, "PATH", env_get_path(sh->envp));
 	return (ST_OK);
 }
