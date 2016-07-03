@@ -5,7 +5,7 @@
 ** man 3 a verifier si seul moyen de le recuperer
 */
 
-static int s_env_set_default_pwd(char **defaultenv)
+static int	s_env_set_default_pwd(char **defaultenv)
 {
 	char	*tmp;
 
@@ -50,9 +50,35 @@ static int	s_default_vars(char ***envp)
 	return (ST_OK);
 }
 
+static int	s_env_set_new_shlvl(char **shenv, char *env_shlvl)
+{
+	int		value;
+	char	*strvalue;
+
+	if (ft_strncmp(env_shlvl, "SHLVL", 5) != 0)
+		return (ST_EXIT);
+	value = 0;
+	while (*env_shlvl != '\0')
+	{
+		if (*env_shlvl == '=')
+		{
+			value = ft_atoi(++env_shlvl) + 1;
+			break ;
+		}
+		env_shlvl += 1;
+	}
+	if ((strvalue = ft_itoa(value)) == NULL)
+		return (ST_MALLOC);
+	if ((*shenv = ft_strjoin("SHLVL=", strvalue)) == NULL)
+		return (ST_MALLOC);
+	free(strvalue);
+	return (ST_OK);
+}
+
 int			shell_environment(t_sh *sh, char **envp)
 {
 	int		i;
+	int		ret;
 
 	i = 0;
 	if (envp[i] == NULL)
@@ -68,7 +94,9 @@ int			shell_environment(t_sh *sh, char **envp)
 	i = 0;
 	while (envp[i])
 	{
-		if ((sh->envp[i] = ft_strdup(envp[i])) == NULL)
+		if ((ret = (s_env_set_new_shlvl(&sh->envp[i], envp[i]))) == ST_MALLOC)
+			return (ST_MALLOC);
+		else if (ret == ST_EXIT && (sh->envp[i] = ft_strdup(envp[i])) == NULL)
 			return (ST_MALLOC);
 		i++;
 	}
