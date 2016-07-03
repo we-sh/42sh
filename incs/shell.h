@@ -233,7 +233,7 @@ int				termcaps_read_loop(t_termcaps_context *context,
 									size_t input_buffer_size,
 									size_t input_size_missing);
 
-t_node_dir		*node_dir__create(const char *filename);
+t_node_dir		*node_dir__create(const struct dirent *ep);
 void			list_dir__destroy(t_list *head);
 
 /*

@@ -35,7 +35,9 @@ typedef enum	e_state_word
 */
 typedef struct	s_node_dir
 {
-	t_buffer		filename;
+	char			filename[256];
+	size_t			filename_size;
+	unsigned char	d_type;
 	t_list			list;
 }				t_node_dir;
 

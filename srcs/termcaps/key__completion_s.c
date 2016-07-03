@@ -1,19 +1,17 @@
 #include "shell.h"
 
-t_node_dir		*node_dir__create(const char *filename)
+t_node_dir		*node_dir__create(const struct dirent *ep)
 {
-	void		*addr;
 	t_node_dir	*new;
 	size_t		filename_size;
 
-	filename_size = ft_strlen(filename);
-	addr = malloc(sizeof(t_node_dir) + filename_size + 1);
-	if (!addr)
+	filename_size = ft_strlen(ep->d_name);
+	new = malloc(sizeof(t_node_dir));
+	if (!new)
 		return (NULL);
-	new = addr;
-	new->filename.bytes = addr + sizeof(t_node_dir);
-	new->filename.size = filename_size;
-	ft_memcpy(new->filename.bytes, filename, filename_size + 1);
+	new->filename_size = filename_size;
+	ft_memcpy(new->filename, ep->d_name, filename_size + 1);
+	new->d_type = ep->d_type;
 	return (new);
 }
 

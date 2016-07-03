@@ -1,7 +1,7 @@
 #include "shell.h"
 #include <dirent.h>
 
-static int			s_fill_the_match_variable(char **out_path,
+static void			s_fill_the_match_variable(char **out_path,
 									t_buffer *out_match,
 									size_t *cmd_size,
 									char *cmd)
@@ -25,10 +25,9 @@ static int			s_fill_the_match_variable(char **out_path,
 		out_match->bytes = match;
 		out_match->size = ft_strlen(match);
 	}
-	return (1);
 }
 
-static int			s_get_path_and_match(char **out_path,
+static void			s_get_path_and_match(char **out_path,
 									t_buffer *out_match,
 									size_t *cmd_size,
 									char *cmd)
@@ -39,7 +38,7 @@ static int			s_get_path_and_match(char **out_path,
 		*out_path = "./";
 		out_match->bytes = NULL;
 		out_match->size = 0;
-		return (1);
+		return ;
 	}
 	while (*cmd_size > 0)
 	{
@@ -51,10 +50,9 @@ static int			s_get_path_and_match(char **out_path,
 		*cmd_size = *cmd_size - 1;
 	}
 	s_fill_the_match_variable(out_path, out_match, cmd_size, cmd);
-	return (1);
 }
 
-static int			key__completion_search_cmd(t_list *head,
+static int			key__completion_search_match(t_list *head,
 												char *path,
 												t_buffer *match)
 {
@@ -68,17 +66,18 @@ static int			key__completion_search_cmd(t_list *head,
 	ref_size = 0;
 	while ((ep = readdir(dp)) != NULL)
 	{
-		if ((!(*match).size && ep->d_name[0] == '.') ||
-			ft_memcmp(ep->d_name, (*match).bytes, (*match).size))
+		if ((!match->size && ep->d_name[0] == '.') ||
+			ft_memcmp(ep->d_name, match->bytes, match->size))
 			continue ;
-		if (!(new = node_dir__create(ep->d_name)))
+		new = node_dir__create(ep);
+		if (!new)
 		{
 			list_dir__destroy(head);
 			return (0);
 		}
 		list_push_back(&new->list, head);
-		if (new->filename.size > ref_size)
-			ref_size = new->filename.size;
+		if (new->filename_size > ref_size)
+			ref_size = new->filename_size;
 	}
 	ASSERT(!closedir(dp));
 	return (ref_size);
@@ -101,7 +100,7 @@ size_t				key__completion_list_dir(t_termcaps_context *context,
 		log_error("list_head__command_line_to_buffer() failed");
 		return (-1);
 	}
-	ASSERT(s_get_path_and_match(&path, match, &cmd_size, cmd));
-	ref_size = key__completion_search_cmd(head, path, match);
+	s_get_path_and_match(&path, match, &cmd_size, cmd);
+	ref_size = key__completion_search_match(head, path, match);
 	return (ref_size);
 }

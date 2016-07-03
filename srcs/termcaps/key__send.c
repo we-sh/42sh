@@ -81,9 +81,9 @@ sizeof(command_line_cur) - 1, &command_line_cur_size, command_line_cur))
 	{
 		command_line_cur[command_line_cur_size] = 0;
 		if (context->option != OPTION_HEREDOC &&
-		parser(context->sh, command_line_cur + context->prompt.size,
-					F_PARSING_TERMCAPS, NULL) != ST_OK)
-			quoting_new_context(context);
+			(ret = parser(context->sh, command_line_cur + context->prompt.size,
+						  F_PARSING_TERMCAPS, NULL)) != ST_OK)
+			quoting_new_context(context, ret);
 	}
 	if (context->child == 0)
 	{
