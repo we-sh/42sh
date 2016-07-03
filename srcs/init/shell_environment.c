@@ -5,12 +5,23 @@
 ** man 3 a verifier si seul moyen de le recuperer
 */
 
+static int s_env_set_default_pwd(char **defaultenv)
+{
+	char	*tmp;
+
+	if ((tmp = getcwd(NULL, 0)) == NULL)
+		return (ST_MALLOC);
+	if ((*defaultenv = ft_strjoin("PWD=", tmp)) == NULL)
+		return (ST_MALLOC);
+	free(tmp);
+	return (ST_OK);
+}
+
 static char	**s_environment_default(void)
 {
 	char	**defaultenv;
-	char	*tmp;
 
-	if ((defaultenv = (char **)malloc(sizeof(char *) * 8)) == NULL)
+	if ((defaultenv = (char **)malloc(sizeof(char *) * 9)) == NULL)
 		return (NULL);
 	if ((defaultenv[0] = ft_strjoin("TERM=", env_get_term(NULL))) == NULL)
 		return (NULL);
@@ -22,23 +33,20 @@ static char	**s_environment_default(void)
 		return (NULL);
 	if ((defaultenv[4] = ft_strjoin("HOME=", env_get_home(NULL))) == NULL)
 		return (NULL);
-	if ((tmp = getcwd(NULL, 0)) == NULL)
+	if (s_env_set_default_pwd(&defaultenv[5]) != ST_OK)
 		return (NULL);
-	if ((defaultenv[5] = ft_strjoin("PWD=", tmp)) == NULL)
-		return (NULL);
-	free(tmp);
 	if ((defaultenv[6] = ft_strjoin("LOGNAME=", getlogin())) == NULL)
 		return (NULL);
-	defaultenv[7] = NULL;
+	if ((defaultenv[7] = ft_strdup("SHELL=wesh")) == NULL)
+		return (NULL);
+	defaultenv[8] = NULL;
 	return (defaultenv);
 }
 
 static int	s_default_vars(char ***envp)
 {
 	if (env_get(*envp, "PATH") == NULL)
-	{
 		env_set(envp, "PATH", env_get_path(*envp));
-	}
 	return (ST_OK);
 }
 
