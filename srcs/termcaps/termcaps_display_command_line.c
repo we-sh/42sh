@@ -62,14 +62,14 @@ int			termcaps_display_command_line(const t_termcaps_context *context)
 	char	*buffer;
 
 	buffer_size_max = context->command_line.size * CHARACTER_SIZE_MAX;
-	buffer = (char *)malloc(buffer_size_max);
+	buffer = (char *)malloc(buffer_size_max + ENDL_SIZE);
 	if (!buffer)
 	{
 		log_error("malloc() failed command_line->size %zu", buffer_size_max);
 		return (0);
 	}
 	if (!list_head__command_line_to_buffer(&context->command_line,
-											buffer_size_max - ENDL_SIZE,
+											buffer_size_max,
 											&buffer_size,
 											buffer))
 	{
