@@ -38,7 +38,7 @@ static int		s_path_iter_in_list(t_hasht *ptr, char **cmd)
 	return (ST_CMD_NOT_FOUND);
 }
 
-static int		path_look_inside_hast(char **cmd, int index, int *ret)
+static int		s_path_look_inside_hast(char **cmd, int index, int *ret)
 {
 	*ret = ST_OK;
 	if (bodies[index].head != NULL && !bodies[index].head->next)
@@ -94,16 +94,16 @@ int				path_hash_finder(char **envp, char **cmd)
 	ret = ST_CMD_NOT_FOUND;
 	index = fnv_a_str(*cmd) % HASH_TABLE_SIZE;
 	if (ft_strncmp(*cmd, "./", 2) != 0 && 
-		(ret = path_look_inside_hast(cmd, index, &ret)) != ST_CMD_NOT_FOUND)
+		(ret = s_path_look_inside_hast(cmd, index, &ret)) != ST_CMD_NOT_FOUND)
 		return (ret);
 	if (ft_strncmp(*cmd, "/", 1) != 0 && ft_strncmp(*cmd, ".", 1) != 0)
 	{
 		if ((ret = path_commande_not_found_in_hasht(envp, cmd)) != ST_OK)
 			return (ret);
 	}
-	if (ret != ST_OK && access(*cmd, X_OK) == -1)
-		return (ST_EACCES);
 	if ((ft_strncmp(*cmd, "/", 1) == 0 || ft_strncmp(*cmd, ".", 1) == 0))
 		return (s_path_full(&ret, cmd));
+	if (ret != ST_OK && access(*cmd, X_OK) == -1)
+		return (ST_EACCES);
 	return (ST_OK);
 }
