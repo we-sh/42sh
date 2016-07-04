@@ -1,13 +1,19 @@
 #include "shell.h"
 
-static int				s_clean_loop(t_termcaps_context *c, char **final_input)
+static char				*s_set_prompt_quoting(int tokenid)
 {
-	list_head__command_line_destroy(&c->command_line);
-	list_head__init(&c->command_line);
-	termcaps_string_to_command_line((ft_strlen(*final_input)),
-		*final_input, &c->command_line);
-	free(*final_input);
-	return (1);
+	if (tokenid == TC_QUOTE)
+		return ("quote> ");
+	else if (tokenid == TC_DQUOTE)
+		return ("dquote> ");
+	else if (tokenid == TC_PIPE)
+		return ("pipe> ");
+	else if (tokenid == TC_OR_IF)
+		return ("cmdor> ");
+	else if (tokenid == TC_AND_IF)
+		return ("cmdand> ");
+	else
+		return ("> ");
 }
 
 static int				s_concat_new_input(char **final_input,
@@ -31,7 +37,8 @@ static int				s_concat_new_input(char **final_input,
 	}
 	if ((*final_input = ft_strjoin(*tmp, buff_quote)) == NULL)
 	{
-		free(buff_quote);
+		free(*tmp);
+		ft_memdel((void **)&buff_quote);
 		return (ST_MALLOC);
 	}
 	free(*tmp);
@@ -63,7 +70,8 @@ static int				s_first_loop_check(char **final_input,
 
 static int				s_qloop(t_termcaps_context *c,
 								t_termcaps_context *child_context,
-								char *final_input, int tokenid)
+								char *final_input,
+								int tokenid)
 {
 	char				*buff_quote;
 	char				*tmp;
@@ -73,16 +81,24 @@ static int				s_qloop(t_termcaps_context *c,
 	if (s_first_loop_check(&final_input, child_context, c, tokenid) == -1)
 		return (ST_OK);
 	buff_quote = NULL;
-	while ((ret = parser(c->sh, final_input, F_PARSING_TERMCAPS, NULL)) != ST_OK)
+	while ((parser(c->sh, final_input, F_PARSING_TERMCAPS, NULL)) != ST_OK)
 	{
-		child_context->option = OPTION_QUOTING;	
+		child_context->option = OPTION_QUOTING;
 		tmp = ft_strjoin(final_input, "\n");
 		termcaps_string_to_command_line(ft_strlen(tmp), tmp,
 		&c->command_line);
-		if ((ret = s_concat_new_input(&final_input, child_context, tokenid, &tmp)) != ST_OK)
-			return (ret);
+		free(final_input);
+		if ((ret = s_concat_new_input(&final_input, child_context, tokenid, &tmp))
+			== ST_MALLOC)
+			return (ST_MALLOC);
+		else if (ret == -1)
+			return (ST_OK);
 	}
-	s_clean_loop(c, &final_input);
+	list_head__command_line_destroy(&c->command_line);
+	list_head__init(&c->command_line);
+	termcaps_string_to_command_line((ft_strlen(final_input)),
+		final_input, &c->command_line);
+	free(final_input);
 	return (ST_OK);
 }
 
@@ -98,8 +114,11 @@ int						quoting_new_context(t_termcaps_context *context, int tokenid)
 	{
 		termcaps_display_command_line(context);
 		caps__print_cap(CAPS__DOWN, 0);
-		termcaps_initialize(context->sh, "> ", &child_context);
-		if ((ret = s_qloop(context, &child_context, final_input, tokenid)) != ST_OK)
+		log_warn("Token ID %d ", tokenid);
+		termcaps_initialize(context->sh, s_set_prompt_quoting(tokenid),
+							&child_context);
+		if ((ret = s_qloop(context, &child_context, final_input, tokenid))
+					!= ST_OK)
 			return (ret);
 		caps__delete_line(context->command_line.offset);
 		caps__print_cap(CAPS__UP, 0);
