@@ -29,13 +29,11 @@ static int	s_bask_to_shell(t_sh *sh)
 int			job_foreground(t_sh *sh, t_job *j, int const sigcont)
 {
 	signal_to_pgid(j->pgid);
-	log_debug("put job to foreground (id: %d, pgid: %d)", j->id, j->pgid);
 	job_set_stopped(j, 0);
 	j->notified = 1;
 	j->foreground = 1;
 	if (sigcont == 1)
 	{
-		log_debug("sending SIGCONT to job %i", j->pgid);
 		if (kill(-j->pgid, SIGCONT) < 0)
 		{
 			log_error("failed to continue the stopped job %d", j->pgid);
