@@ -9,7 +9,8 @@ char				*env_get_home(char **envp)
 	if ((tmp = env_get(envp, "HOME")) == NULL)
 	{
 		uid = getuid();
-		passwd = getpwuid(uid);
+		if ((passwd = getpwuid(uid)) == NULL)
+			return (NULL);
 		free(tmp);
 		return (passwd->pw_dir);
 	}

@@ -7,7 +7,6 @@ void		redir_list_free(t_list *redir_head)
 	t_list	*pos;
 	t_redir	*redir;
 
-	log_error("freeing list of fds");
 	head = redir_head;
 	safe = head->next;
 	while ((pos = safe) && pos != head)

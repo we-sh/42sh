@@ -57,7 +57,7 @@ char				*termcaps_read_input(t_termcaps_context *context)
 											&context->command_line));
 	ASSERT(termcaps_display_command_line(context));
 	context->state = STATE_REGULAR;
-	context->buffer = NULL;
+	context->buffer = "";
 	ASSERT(termcaps_read_loop(context, input_buffer_size,
 		input_size_missing));
 	ASSERT(!tcsetattr(context->fd, TCSANOW, &context->termios_old));

@@ -74,14 +74,16 @@ int						s_key_send(t_termcaps_context *context)
 {
 	size_t				command_line_cur_size;
 	char				command_line_cur[TERMCAPS_BUFFER_MAX];
+	int					ret;
 
+	ret = 0;
 	ASSERT(list_head__command_line_to_buffer(&context->command_line,
 sizeof(command_line_cur) - 1, &command_line_cur_size, command_line_cur));
 	command_line_cur[command_line_cur_size] = 0;
 	if (context->option != OPTION_HEREDOC &&
-	parser(context->sh, command_line_cur + context->prompt.size,
-				F_PARSING_TERMCAPS, NULL) != ST_OK)
-		quoting_new_context(context);
+	(ret = parser(context->sh, command_line_cur + context->prompt.size,
+				F_PARSING_TERMCAPS, NULL)) != ST_OK)
+		quoting_new_context(context, ret);
 	if (context->child == 0)
 	{
 		termcaps_display_command_line(context);

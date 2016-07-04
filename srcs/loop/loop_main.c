@@ -104,7 +104,8 @@ int				loop_main(t_sh *sh)
 		}
 		if (ret != ST_OK)
 			sh->last_exit_status = EXIT_FAILURE;
-		ft_strdel(&input);
+		if (ft_strcmp(input, "") != 0)
+			ft_strdel(&input);
 	}
 	return (ST_END_OF_INPUT);
 }

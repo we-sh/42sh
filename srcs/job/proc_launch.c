@@ -107,7 +107,6 @@ void		proc_launch(t_sh *sh, t_job *j, t_proc *p)
 		s_dup2_and_close(STDOUT_FILENO, p->stdout);
 		s_dup2_and_close(STDERR_FILENO, p->stderr);
 	}
-	log_debug("argc:%d is_valid:%d", p->argc, p->is_valid);
 	if (p->is_valid == 1 && p->argc == 0)
 		p->is_valid = 0;
 	if (p->is_valid != 1)
