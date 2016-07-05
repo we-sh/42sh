@@ -38,7 +38,7 @@ int					termcaps_read_loop(t_termcaps_context *context,
 	t_input_type	input_type;
 	t_buffer		history_search;
 
-	while (ft_strcmp(context->buffer, "") == 0)
+	while (context->buffer == NULL)
 	{
 		input_buffer_size = 0;
 		ft_bzero(input_buffer, ft_strlen(input_buffer));

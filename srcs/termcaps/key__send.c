@@ -74,7 +74,7 @@ int						s_key_send(t_termcaps_context *context)
 {
 	size_t				command_line_cur_size;
 	char				command_line_cur[TERMCAPS_BUFFER_MAX];
-	int					ret;//virer ret
+	int					ret;
 
 	ret = 0;
 	ASSERT(list_head__command_line_to_buffer(&context->command_line,
@@ -100,24 +100,15 @@ int						key__send(t_termcaps_context *context)
 	if (context->state == STATE_REGULAR)
 	{
 		s_key_send(context);
-		log_success("context buffer : '%s'", context->buffer);
-		log_success("longueur de tmp %u", context->prompt.size);
-		log_success("longueur de line size %u", context->command_line.size);
 		if (context->command_line.size > context->prompt.size)
 		{
-			log_warn("INPUT");
 			ASSERT(s_bufferize_input(context));
 		}
 		else
 		{
-			log_warn("PAS INPUT");
-			//context->command_line.size++;
 			termcaps_character_to_command_line(1, "\n",
-			 	&context->command_line);
+				&context->command_line);
 			ASSERT(s_bufferize_input(context));
-			//termcaps_display_command_line(context);
-			//caps__print_cap(CAPS__CARRIAGE_RETURN, 0);
-			//(void)write(context->fd, "\n", 1);
 		}
 	}
 	else if (context->state == STATE_SEARCH_HISTORY)
