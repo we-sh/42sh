@@ -47,6 +47,7 @@ char				*termcaps_read_input(t_termcaps_context *context)
 
 	input_buffer_size = 0;
 	input_size_missing = 0;
+	log_warn("Flag 1");
 	ASSERT(context != NULL && context->is_initialized);
 	ASSERT(!tcsetattr(context->fd, TCSADRAIN, &context->termios_new));
 	ASSERT(s_check_cursor_pos(context));
@@ -58,8 +59,10 @@ char				*termcaps_read_input(t_termcaps_context *context)
 	ASSERT(termcaps_display_command_line(context));
 	context->state = STATE_REGULAR;
 	context->buffer = "";
+	log_warn("Flag 6");
 	ASSERT(termcaps_read_loop(context, input_buffer_size,
 		input_size_missing));
+	log_warn("Flag 7");
 	ASSERT(!tcsetattr(context->fd, TCSANOW, &context->termios_old));
 	return (context->buffer);
 }

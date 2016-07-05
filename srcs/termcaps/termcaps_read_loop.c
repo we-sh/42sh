@@ -40,6 +40,8 @@ int					termcaps_read_loop(t_termcaps_context *context,
 
 	while (ft_strcmp(context->buffer, "") == 0)
 	{
+		input_buffer_size = 0;
+		ft_bzero(input_buffer, ft_strlen(input_buffer));
 		input_buffer_size = read(context->fd, input_buffer, 1);
 		if (input_buffer_size == 0)
 			s_check_job_status(context);

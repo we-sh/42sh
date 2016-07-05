@@ -26,10 +26,14 @@ static int				s_concat_new_input(char **final_input,
 	buff_quote = NULL;
 	if (tokenid == TC_BACKSLASH)
 	{
-		termcaps_string_to_command_line(1, " ",
-	&child_c->command_line);
+		termcaps_string_to_command_line(1, "\0",
+	 &child_c->command_line);
 	}
+	log_warn("Before buff_quote ");
 	buff_quote = termcaps_read_input(child_c);
+	log_warn("REtour of buff_quote '%s'", buff_quote);
+	if (tokenid == TC_BACKSLASH && ft_strcmp(buff_quote, "") == 0)//a virer
+		return (ST_OK);
 	if (ft_strcmp(buff_quote, "^C\n") == 0)
 	{
 		child_c->state = STATE_REGULAR;
@@ -56,11 +60,19 @@ static int				s_first_loop_check(char **final_input,
 	char				*tmp;
 	int					ret;
 
+		log_success("FIRST LOOP CHECK");
 	ft_bzero(command_str, TERMCAPS_BUFFER_MAX);
 	ASSERT(list_head__command_line_to_buffer(&c->command_line,
 		(sizeof(command_str) - 1), &command_str_size, command_str));
 	child_c->option = OPTION_QUOTING;
-	tmp = ft_strjoin(command_str, "\n");
+	if (ft_strcmp(command_str, "\n") != 0)
+		tmp = ft_strjoin(command_str, "\n");
+	else
+		tmp = ft_strdup(command_str);
+//	*c->command_line.size++;
+	log_success("Valeur de tmp 11: '%s'", tmp);
+	log_fatal("longueur de tmp %u", ft_strlen(tmp));
+	log_fatal("longueur de line size %u", c->command_line.size);
 	termcaps_string_to_command_line(ft_strlen(tmp), tmp,
 	&c->command_line);
 	if ((ret = s_concat_new_input(final_input, child_c, tokenid, &tmp)) != ST_OK)
@@ -78,14 +90,15 @@ static int				s_qloop(t_termcaps_context *c,
 	int					ret;
 
 	ret = 0;
-	if (s_first_loop_check(&final_input, child_context, c, tokenid) == -1)
-		return (ST_OK);
 	buff_quote = NULL;
 	while ((parser(c->sh, final_input, F_PARSING_TERMCAPS, NULL)) != ST_OK)
 	{
 		child_context->option = OPTION_QUOTING;
-		tmp = ft_strjoin(final_input, "\n");
-		termcaps_string_to_command_line(ft_strlen(tmp), tmp,
+		if (final_input[ft_strlen(final_input)-1] == '\n')
+			tmp = ft_strdup(final_input);
+		else
+			tmp = ft_strjoin(final_input, "\n");
+		termcaps_string_to_command_line(ft_strlen(final_input), final_input,
 		&c->command_line);
 		free(final_input);
 		if ((ret = s_concat_new_input(&final_input, child_context, tokenid, &tmp))
@@ -117,6 +130,8 @@ int						quoting_new_context(t_termcaps_context *context, int tokenid)
 		log_warn("Token ID %d ", tokenid);
 		termcaps_initialize(context->sh, s_set_prompt_quoting(tokenid),
 							&child_context);
+		if (s_first_loop_check(&final_input, &child_context, context, tokenid) == -1)
+			return (ST_OK);
 		if ((ret = s_qloop(context, &child_context, final_input, tokenid))
 					!= ST_OK)
 			return (ret);
