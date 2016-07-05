@@ -53,7 +53,7 @@ static int				s_concat_new_input(char **cmd,
 		chld->state = STATE_REGULAR;
 		ret = -1;
 	}
-	if (ret != -1 && (*cmd = ft_strjoin(*tmp, buff_quote)) == NULL)
+	if ((*cmd = ft_strjoin(*tmp, buff_quote)) == NULL)
 		ret = ST_MALLOC;
 	free(*tmp);
 	ft_memdel((void **)&buff_quote);
@@ -83,9 +83,9 @@ static int				s_first_loop_check(char **cmd,
 	return (ST_OK);
 }
 
-static int				s_qloop(t_termcaps_context *c,
-								t_termcaps_context *child_context,
-								char *cmd,
+static int				s_qloop(char *cmd,
+								t_termcaps_context *child_c,
+								t_termcaps_context *c,
 								int tokenid)
 {
 	char				*buff_quote;
@@ -100,15 +100,21 @@ static int				s_qloop(t_termcaps_context *c,
 			(tmp = ft_strjoin(cmd, "\n"));
 		termcaps_string_to_command_line(ft_strlen(cmd), cmd, &c->command_line);
 		free(cmd);
-		if ((ret = s_concat_new_input(&cmd, child_context, tokenid, &tmp))
+		if ((ret = s_concat_new_input(&cmd, child_c, tokenid, &tmp))
 			== ST_MALLOC)
 			return (ST_MALLOC);
 		else if (ret == -1)
+		{
+			list_head__command_line_destroy(&child_c->command_line);
+			list_head__init(&child_c->command_line);
+			termcaps_string_to_command_line((ft_strlen(cmd)), cmd, &child_c->command_line);
 			return (ST_OK);
+		}
 	}
 	list_head__command_line_destroy(&c->command_line);
 	list_head__init(&c->command_line);
 	termcaps_string_to_command_line((ft_strlen(cmd)), cmd, &c->command_line);
+	free(cmd);
 	return (ST_OK);
 }
 
@@ -124,14 +130,11 @@ int						quoting_new_context(t_termcaps_context *context, int tokenid)
 		caps__print_cap(CAPS__DOWN, 0);
 		termcaps_initialize(context->sh, s_set_prompt_quoting(tokenid),
 							&child_context);
-		if (s_first_loop_check(&cmd, &child_context, context, tokenid) == -1)
-			return (ST_OK);
-		if ((ret = s_qloop(context, &child_context, cmd, tokenid))
+		if (s_first_loop_check(&cmd, &child_context, context, tokenid) == ST_MALLOC)
+			return (ST_MALLOC);
+		if ((ret = s_qloop(cmd, &child_context, context, tokenid))
 					!= ST_OK)
-		{
-			free(cmd);
 			return (ret);
-		}
 		caps__delete_line(context->command_line.offset);
 		caps__print_cap(CAPS__UP, 0);
 		termcaps_finalize(&child_context);
