@@ -11,11 +11,14 @@ static char	*s_expand_escape_char_inhibited(char *str)
 	{
 		if (str[j] == '\\' && str[j + 1] == '\n')
 			j += 2;
-		if (str[j] == '\\' && str[j + 1] == '\\')
+		else
+		{
+			if (str[j] == '\\' && str[j + 1] == '\\')
+				j++;
+			str[i] = str[j];
+			i++;
 			j++;
-		str[i] = str[j];
-		i++;
-		j++;
+		}
 	}
 	str[i] = '\0';
 	return (str);
@@ -32,11 +35,14 @@ static char	*s_expand_escape_char_not_inhibited(char *str)
 	{
 		if (str[j] == '\\' && str[j + 1] == '\n')
 			j += 2;
-		if (str[j] == '\\' && str[j + 1] != '\\')
+		else
+		{
+			if (str[j] == '\\' && str[j + 1] != '\\')
+				j++;
+			str[i] = str[j];
+			i++;
 			j++;
-		str[i] = str[j];
-		i++;
-		j++;
+		}
 	}
 	str[i] = '\0';
 	return (str);
