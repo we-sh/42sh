@@ -16,36 +16,48 @@ static char				*s_set_prompt_quoting(int tokenid)
 		return ("> ");
 }
 
+static int				s_realloc_buff(char **buff_quote)
+{
+	char				*tmpbuff;
+
+	if ((tmpbuff = ft_strdup(*buff_quote + 1)) == NULL)
+		return (ST_MALLOC);
+	free(*buff_quote);
+	if ((*buff_quote = ft_strdup(tmpbuff)) == NULL)
+		return (ST_MALLOC);
+	free(tmpbuff);	
+	return (ST_OK);
+}
+
 static int				s_concat_new_input(char **cmd,
-										t_termcaps_context *child_c,
+										t_termcaps_context *chld,
 										int tokenid,
 										char **tmp)
 {
 	char				*buff_quote;
+	int ret;
 
+	ret = 0;
 	buff_quote = NULL;
 	if (tokenid == TC_BACKSLASH)
-	{
 		termcaps_string_to_command_line(1, "\0",
-	 &child_c->command_line);
+			&chld->command_line);
+	buff_quote = termcaps_read_input(chld);
+	if (tokenid == TC_BACKSLASH)
+	{
+		if ((s_realloc_buff(&buff_quote)) == ST_MALLOC)
+			return (ST_MALLOC);
 	}
-	buff_quote = termcaps_read_input(child_c);
 	if (ft_strcmp(buff_quote, "^C\n") == 0)
 	{
-		child_c->state = STATE_REGULAR;
-		free(*tmp);
-		ft_memdel((void **)&buff_quote);
-		return (-1);
+		chld->state = STATE_REGULAR;
+		ret = -1;
 	}
-	if ((*cmd = ft_strjoin(*tmp, buff_quote)) == NULL)
-	{
-		free(*tmp);
-		ft_memdel((void **)&buff_quote);
-		return (ST_MALLOC);
-	}
+	if (ret != -1 && (*cmd = ft_strjoin(*tmp, buff_quote)) == NULL)
+		ret = ST_MALLOC;
 	free(*tmp);
 	ft_memdel((void **)&buff_quote);
-	return (ST_OK);
+	return (ret);
 }
 
 static int				s_first_loop_check(char **cmd,
