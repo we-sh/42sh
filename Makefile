@@ -343,7 +343,7 @@ clean		:
 fclean		:	clean
 	$(RM) $(NAME)
 
-re			:	fclean all
+re			:	fcleanlibs fclean all
 
 # ---------------------------------------------------------------------------- #
 # CUSTOM RULES                                                                 #
