@@ -346,6 +346,24 @@ fclean		:	clean
 re			:	fclean all
 
 # ---------------------------------------------------------------------------- #
+# CUSTOM RULES                                                                 #
+# ---------------------------------------------------------------------------- #
+
+test		:	re
+	@cd $(DIRTST) && sh 42ShellTester.sh $$PWD/../$(NAME) --hard
+
+submodule	:
+	@git submodule init && git submodule update
+	@git submodule foreach git checkout master
+	@git submodule foreach git pull --rebase origin master
+
+norme		:
+	@printf "\033[31m[ WARNING ] norminette ran without 'CheckTopCommentHeader'\033[0m\n"
+	@/usr/bin/norminette -R CheckTopCommentHeader	\
+		$$(find * -name "*.[ch]" ! -path "libs/logger/*" ! -path "test/*")
+	@printf "\033[31m[ WARNING ] norminette ran without 'CheckTopCommentHeader'\033[0m\n"
+
+# ---------------------------------------------------------------------------- #
 # /!\ PRIVATE RULES /!\                                                        #
 # ---------------------------------------------------------------------------- #
 
