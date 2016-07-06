@@ -104,12 +104,7 @@ static int				s_qloop(char *cmd,
 			== ST_MALLOC)
 			return (ST_MALLOC);
 		else if (ret == -1)
-		{
-			list_head__command_line_destroy(&child_c->command_line);
-			list_head__init(&child_c->command_line);
-			termcaps_string_to_command_line((ft_strlen(cmd)), cmd, &child_c->command_line);
 			return (ST_OK);
-		}
 	}
 	list_head__command_line_destroy(&c->command_line);
 	list_head__init(&c->command_line);
@@ -130,9 +125,9 @@ int						quoting_new_context(t_termcaps_context *context, int tokenid)
 		caps__print_cap(CAPS__DOWN, 0);
 		termcaps_initialize(context->sh, s_set_prompt_quoting(tokenid),
 							&child_context);
-		if (s_first_loop_check(&cmd, &child_context, context, tokenid) == ST_MALLOC)
+		if ((ret = s_first_loop_check(&cmd, &child_context, context, tokenid)) == ST_MALLOC)
 			return (ST_MALLOC);
-		if ((ret = s_qloop(cmd, &child_context, context, tokenid))
+		if (ret != -1 && (ret = s_qloop(cmd, &child_context, context, tokenid))
 					!= ST_OK)
 			return (ret);
 		caps__delete_line(context->command_line.offset);

@@ -10,11 +10,11 @@ static char	*s_expand_escape_char_inhibited(char *str)
 	while (str[j])
 	{
 		if (str[j] == '\\' && str[j + 1] == '\n')
-			j += 2;
+			j++;
 		else
 		{
 			if (str[j] == '\\' && str[j + 1] == '\\')
-				j += 2;
+				j++;
 			str[i] = str[j];
 			i++;
 			j++;
@@ -34,7 +34,7 @@ static char	*s_expand_escape_char_not_inhibited(char *str)
 	while (str[j])
 	{
 		if (str[j] == '\\' && str[j + 1] == '\n')
-			j += 2;
+			j++;
 		else
 		{
 			if (str[j] == '\\' && str[j + 1] != '\\')
