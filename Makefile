@@ -310,6 +310,7 @@ $(DIRDEP)	:
 # - libs       build static libraries                                          #
 # - clean      remove binaries                                                 #
 # - fclean     remove binaries and target                                      #
+# - fcleanlibs apply fclean rule on libraries                                  #
 # - re         remove binaries, target and libraries and build the target      #
 #                                                                              #
 # To compile a static library, the $(NAME) rule should be :                    #
@@ -321,9 +322,10 @@ $(DIRDEP)	:
 # ---------------------------------------------------------------------------- #
 
 all			:	libs $(NAME)
+	@printf "\033[32m[ %s ]\033[0m %s\n" "$(NAME)" "finish to build $(NAME)"
 
 $(NAME)		:	$(DIROBJ) $(DIRDEP) $(OBJ)
-	@printf "linking objects...\n"
+	@printf "\033[32m[ %s ]\033[0m %s\n" "$(NAME)" "link objects..."
 	@$(CC) $(OBJ) -o $(NAME) $(LDFLAGS) $(LDLIBS)
 
 libs		:
@@ -337,11 +339,14 @@ fcleanlibs	:
 	@make -C $(DIRLIB)/libcaps fclean
 
 clean		:
-	$(RM) -r $(DIROBJ)
-	$(RM) -r $(DIRDEP)
+	@printf "\033[32m[ %s ]\033[0m %s\n" "$(NAME)" "remove objects..."
+	@$(RM) -r $(DIROBJ)
+	@printf "\033[32m[ %s ]\033[0m %s\n" "$(NAME)" "remove dependencies..."
+	@$(RM) -r $(DIRDEP)
 
 fclean		:	clean
-	$(RM) $(NAME)
+	@printf "\033[32m[ %s ]\033[0m %s\n" "$(NAME)" "remove target..."
+	@$(RM) $(NAME)
 
 re			:	fcleanlibs fclean all
 
@@ -350,18 +355,22 @@ re			:	fcleanlibs fclean all
 # ---------------------------------------------------------------------------- #
 
 test		:	re
+	@printf "\033[32m[ %s ]\033[0m %s\n" "$(NAME)" "run tests..."
 	@cd $(DIRTST) && sh 42ShellTester.sh $$PWD/../$(NAME) --hard
 
 submodule	:
+	@printf "\033[32m[ %s ]\033[0m %s\n" "$(NAME)" "retrieve submodules..."
 	@git submodule init && git submodule update
 	@git submodule foreach git checkout master
 	@git submodule foreach git pull --rebase origin master
 
 norme		:
-	@printf "\033[31m[ WARNING ] norminette ran without 'CheckTopCommentHeader'\033[0m\n"
+	@printf "\033[32m[ %s ]\033[0m %s\n" "$(NAME)" "run norminette..."
+	@printf "\033[33m[ %s ]\033[0m %s\n" "$(NAME)" "missing headers not check"
 	@/usr/bin/norminette -R CheckTopCommentHeader	\
-		$$(find * -name "*.[ch]" ! -path "libs/logger/*" ! -path "test/*")
-	@printf "\033[31m[ WARNING ] norminette ran without 'CheckTopCommentHeader'\033[0m\n"
+		$$(find * -name "*.[ch]" ! -path "test/*")
+	@printf "\033[32m[ %s ]\033[0m %s\n" "$(NAME)" "run norminette..."
+	@printf "\033[33m[ %s ]\033[0m %s\n" "$(NAME)" "missing headers not check"
 
 # ---------------------------------------------------------------------------- #
 # /!\ PRIVATE RULES /!\                                                        #
@@ -371,7 +380,7 @@ $(DIROBJ)/%.o	:	$($(DIRSRC)/%.c
 $(DIROBJ)/%.o	:	$(DIRSRC)/%.c $(DIRDEP)/%.d
 	@mkdir -p $(dir $@)
 	@mkdir -p $(dir $(word 2,$^))
-	@printf "compiling $<...\n"
+	@printf "\033[32m[ %s ]\033[0m %s\n" "$(NAME)" "compiling $<..."
 	@$(COMPILE.c) $(OUTPUT_OPTION) $<
 	@$(POSTCOMPILE)
 
