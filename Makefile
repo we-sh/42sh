@@ -1,5 +1,46 @@
 # ---------------------------------------------------------------------------- #
+# The purpose of the Makefile is to provide a tool which optimizes the build   #
+# of a project, The common problems are bad management of dependencies, relink #
+# build, uncompiled modified sources...                                        #
+#                                                                              #
+# ---------------------------------------------------------------------------- #
+#                                                                              #
+# USAGE                                                                        #
+#                                                                              #
+# ---------------------------------------------------------------------------- #
+# First, the user must configure its environment settings.                     #
+# - see 'PROJECT CONFIGURATION' to configure project directories               #
+# - see 'EXTERNAL TOOLS SETTINGS' to setup default programs to use             #
+#                                                                              #
+# Second, configure the sources.                                               #
+# - see 'TARGET SETUP' to set the name of the target and the sources           #
+#                                                                              #
+# Third, configure the build options.                                          #
+# - see 'PROJECT COMPILATION' to setup prepocessor, flags and libraries        #
+#                                                                              #
+# Fourth, setup the linking rule.                                              #
+# - see 'PUBLIC RULES' to modify the $(NAME) rule                              #
+#                                                                              #
+# ---------------------------------------------------------------------------- #
+# The project must compile at this step.                                       #
+# ---------------------------------------------------------------------------- #
+#                                                                              #
+# To add custom rules, the concerned section is 'PUBLIC RULES'. Be sure to     #
+# keep at least the rules all, $(NAME), libs, clean, fclean and re.            #
+#                                                                              #
+# ---------------------------------------------------------------------------- #
+#                                                                              #
+#                               /!\ WARNING /!\                                #
+#                                                                              #
+# The sections commented with '/!\' are critical, and must not be modified.    # 
+#                                                                              #
+# ---------------------------------------------------------------------------- #
+
+
+# ---------------------------------------------------------------------------- #
+#                                                                              #
 # TARGET SETUP                                                                 #
+#                                                                              #
 # ---------------------------------------------------------------------------- #
 # - The 'NAME' variable must contain the expected name of the output target.   #
 # - The 'SRCS' variable must contain the list of the source files without the  #
@@ -213,9 +254,6 @@ RM		=	rm -f
 # - The 'CFLAGS' configures the compiler options.                              #
 # ---------------------------------------------------------------------------- #
 
-DIRINCCAPS	=	
-DIRINCBLTIN	=	./incs/builtins/
-
 LDFLAGS		=	\
 				-L $(DIRLIB)/logger				\
 				-L $(DIRLIB)/libcaps			\
@@ -267,14 +305,17 @@ $(DIRDEP)	:
 # PUBLIC RULES                                                                 #
 # ---------------------------------------------------------------------------- #
 # The rules must contain at least :                                            #
-# - all                                                                        #
-# - $(NAME)                                                                    #
-# - clean                                                                      #
-# - fclean                                                                     #
-# - re                                                                         #
+# - all        make libs and target                                            #
+# - $(NAME)    make binaries and target                                        #
+# - libs       build static libraries                                          #
+# - clean      remove binaries                                                 #
+# - fclean     remove binaries and target                                      #
+# - re         remove binaries, target and libraries and build the target      #
+#                                                                              #
 # To compile a static library, the $(NAME) rule should be :                    #
 #     '$(AR) $(ARFLAGS) $(NAME) $(OBJ)'                                        #
 #     'ranlib $(NAME)'                                                         #
+#                                                                              #
 # To compile a C binary, the $(NAME) rule should be :                          #
 #     '$(CC) $(OBJ) -o $(NAME) $(LDFLAGS) $(LDLIBS)'                           #
 # ---------------------------------------------------------------------------- #
@@ -324,3 +365,5 @@ $(DIRDEP)/%.d	:	;
 # ---------------------------------------------------------------------------- #
 
 .PHONY	:	all clean fclean re $(DIROBJ)/%.o $(DIRDEP)/%.d libs
+
+# ---------------------------------------------------------------------------- #
