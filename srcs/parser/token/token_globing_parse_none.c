@@ -10,10 +10,12 @@ static char	*s_expand_escape_char_inhibited(char *str)
 	while (str[j])
 	{
 		if (str[j] == '\\' && str[j + 1] == '\n')
-			j++;
+			j += 2;
 		else
 		{
 			if (str[j] == '\\' && str[j + 1] == '\\')
+				j++;
+			else if (str[j] == '\\' && str[j + 1] == '"' )
 				j++;
 			str[i] = str[j];
 			i++;
@@ -53,6 +55,7 @@ static int	s_suite(t_parser *parser, t_lexer *lexer, int *i)
 	int		ret;
 	char	*tmp;
 
+	ret = 0;
 	if (TOKEN_CODE(*i) == TC_LASTEXITSTATUS)
 	{
 		if ((tmp = ft_itoa(parser->sh->last_exit_status)) == NULL)
@@ -63,12 +66,15 @@ static int	s_suite(t_parser *parser, t_lexer *lexer, int *i)
 	}
 	else
 	{
-		if (*i > 0 && TOKEN_TYPE(*i - 1) == TT_INHIBITOR)
+		if (*i > 0 && TOKEN_TYPE(*i - 1) == TT_INHIBITOR){
 			ret = token_globing_parse_utils_push_str(parser->target_list_head,
 							s_expand_escape_char_inhibited(TOKEN_CONTENT(*i)));
-		else
+		}
+		else{
+			log_warn("NON INIB");
 			ret = token_globing_parse_utils_push_str(parser->target_list_head,
 						s_expand_escape_char_not_inhibited(TOKEN_CONTENT(*i)));
+		}
 	}
 	return (ret);
 }
