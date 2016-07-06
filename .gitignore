@@ -1,11 +1,14 @@
 # project specific
-*.log
 42sh
+
+# logs
+*.log
 
 # C program
 *.out
 *.a
 *.o
+*.d
 
 # editors
 .*.swp
