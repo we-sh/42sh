@@ -255,17 +255,11 @@ RM		=	rm -f
 # ---------------------------------------------------------------------------- #
 # PROJECT COMPILATION                                                          #
 # ---------------------------------------------------------------------------- #
-# - The 'LIBS' lists the libaries path.                                        #
 # - The 'LDFLAGS' tells the linker where to find external libraries (-L flag). #
 # - The 'LDLIBS' tells the linker the prefix of external libraries (-l flag).  #
 # - The 'CPPFLAGS' tells the compiler where to find preprocessors (-I flag).   #
 # - The 'CFLAGS' configures the compiler options.                              #
 # ---------------------------------------------------------------------------- #
-
-LIBS		=	\
-				$(DIRLIB)/libft/libft.a			\
-				$(DIRLIB)/logger/liblogger.a	\
-				$(DIRLIB)/libcaps/libcaps.a		\
 
 LDFLAGS		=	\
 				-L $(DIRLIB)/logger				\
@@ -337,7 +331,7 @@ $(DIRDEP)	:
 all			:	libs $(NAME)
 	@printf "\033[32m[ %s ]\033[0m %s\n" "$(NAME)" "finish to build $(NAME)"
 
-$(NAME)		:	$(DIROBJ) $(DIRDEP) $(OBJ) $(LIBS)
+$(NAME)		:	$(DIROBJ) $(DIRDEP) $(OBJ)
 	@printf "\033[32m[ %s ]\033[0m %s\n" "$(NAME)" "link objects..."
 	@$(CC) $(OBJ) -o $(NAME) $(LDFLAGS) $(LDLIBS)
 
@@ -400,7 +394,7 @@ $(DIROBJ)/%.o	:	$(DIRSRC)/%.c $(DIRDEP)/%.d
 $(DIRDEP)/%.d	:	;
 .PRECIOUS		:	$(DIRDEP)/%.d
 
--include $(patsubst %,$(DIRDEP)/%.d,$(basename $(SRCS)))
+-include $(patsubst %,$(DIRDEP)/%.d,$(basename $(SRC)))
 
 # ---------------------------------------------------------------------------- #
 
