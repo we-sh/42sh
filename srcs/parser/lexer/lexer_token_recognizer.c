@@ -5,7 +5,7 @@ t_token			*lexer_token_recognizer(t_parser *parser, const char *s, int i)
 	int			is_escaped;
 	int			l;
 
-	if (i > 0)
+	if (i > 0 && parser->lexer->is_inhibited != TC_QUOTE)
 	{
 		l = 0;
 		is_escaped = 0;
