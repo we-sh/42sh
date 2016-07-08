@@ -1,5 +1,33 @@
 #include "parser.h"
 
+static int	s_none(t_lexer *lexer, int *i)
+{
+	int		index;
+	int		parenthesis_count;
+	int		has_tt_name;
+
+	if (TOKEN_CODE(*i) != TC_RPAREN)
+		return (ST_OK);
+	index = *i - 1;
+	parenthesis_count = 1;
+	has_tt_name = 0;
+	while (index >= 0 && parenthesis_count > 0)
+	{
+		if (TOKEN_TYPE(index) == TT_NAME)
+			has_tt_name = 1;
+		if (TOKEN_CODE(index) == TC_LPAREN)
+			parenthesis_count -= 1;
+		else if (TOKEN_CODE(index) == TC_RPAREN)
+			parenthesis_count += 1;
+		index--;
+	}
+	if (has_tt_name > 0 && parenthesis_count == 0)
+		return (ST_OK);
+	if (lexer->notify == 1)
+		display_status(ST_PARSER_TOKEN, NULL, lexer->tokens[*i]->content);
+	return (ST_PARSER);
+}
+
 static int	s_proc(t_proc *p, t_lexer *lexer, int *i)
 {
 	int		ret;
@@ -66,7 +94,9 @@ int			token_parse_subshell(void *target, t_parser *parser, t_lexer *lexer,
 
 	(void)parser;
 	ret = ST_OK;
-	if (parser->mode == F_PARSING_JOBS)
+	if (parser->mode == F_PARSING_NONE)
+		ret = s_none(lexer, i);
+	else if (parser->mode == F_PARSING_JOBS)
 		ret = s_jobs((t_job *)target, lexer, i);
 	else if (parser->mode == F_PARSING_PROCS)
 		ret = s_proc((t_proc *)target, lexer, i);
