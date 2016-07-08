@@ -140,6 +140,7 @@ t_proc			*proc_alloc(t_job *j);
 int				job_wait(t_job *j);
 int				job_kill(t_sh *sh, t_job *j, int status);
 void			job_list_clean(int notified);
+void			job_list_clean_except_job(t_job *j);
 void			job_free(t_job **j);
 void			proc_free(t_proc **p);
 t_job			*job_by_name(char const *name, int const foreground);
@@ -151,7 +152,7 @@ void			job_set_stopped(t_job *j, int const stopped);
 t_redir			*redir_alloc(int fd);
 void			redir_free(t_redir **redir);
 void			redir_list_free(t_list *redir_head);
-void			proc_subshell(t_sh *sh, t_proc *p);
+void			proc_subshell(t_sh *sh, t_job *j, t_proc *p);
 
 /*
 ** loop/

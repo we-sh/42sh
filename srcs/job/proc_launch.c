@@ -112,7 +112,7 @@ void		proc_launch(t_sh *sh, t_job *j, t_proc *p)
 	if (p->is_valid != 1)
 		exit(p->is_valid == 0 ? EXIT_SUCCESS : EXIT_FAILURE);
 	if (p->is_subshell == 1)
-		proc_subshell(sh, p);
+		proc_subshell(sh, j, p);
 	builtin_callback(BLTIN_CB_EXEC, sh, p);
 	if ((ret = (s_proc_launch_execve(p))) != ST_OK)
 		display_status(ret, p->argv[0], NULL);
