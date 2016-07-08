@@ -86,6 +86,7 @@ SRCS	=	\
 			parser/token/token_parse_dgreat.c							\
 			parser/token/token_parse_inhib.c							\
 			parser/token/token_parse_separator.c						\
+			parser/token/token_parse_subshell.c							\
 			parser/token/utils/token_parse_utils_get_full_word.c		\
 			parser/token/utils/token_parse_utils_get_word_and_inhib.c	\
 			parser/token/utils/token_parse_utils_open_new_fd.c			\
@@ -152,10 +153,12 @@ SRCS	=	\
 			job/proc_find.c												\
 			job/proc_free.c												\
 			job/proc_launch.c											\
+			job/proc_subshell.c											\
 			job/proc_update_status.c									\
 			job/redir_alloc.c											\
 			job/redir_free.c											\
 			job/redir_list_free.c										\
+			loop/loop_job_launcher.c									\
 			loop/loop_main.c											\
 			options/option_get_value.c									\
 			options/option_is_set.c										\

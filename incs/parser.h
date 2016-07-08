@@ -86,6 +86,8 @@ int		token_parse_greatand(void *target, t_parser *parser, t_lexer *lexer,
 			int *i);
 int		token_parse_lessand(void *target, t_parser *parser, t_lexer *lexer,
 			int *i);
+int		token_parse_subshell(void *target, t_parser *parser, t_lexer *lexer,
+			int *i);
 
 int		token_parse_utils_skip_separators(t_lexer *lexer, int *i,
 			char **command);
