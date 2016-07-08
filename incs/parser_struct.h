@@ -28,16 +28,17 @@ typedef enum			e_token_type
 	TT_NONE,
 	TT_SEPARATOR,
 	TT_INHIBITOR,
-	TT_ESCAPE,
 	TT_JOBS,
 	TT_REDIR,
 	TT_SPECIAL,
 	TT_NAME,
+	TT_SUBSHELL,
 	TT_ERROR
 }						t_token_type;
 
 typedef enum			e_token_code
 {
+	TC_NONE,
 	TC_DLESS,
 	TC_DGREAT,
 	TC_OR_IF,
@@ -64,7 +65,8 @@ typedef enum			e_token_code
 	TC_TAB,
 	TC_NEWLINE,
 	TC_TILDE,
-	TC_NONE,
+	TC_LPAREN,
+	TC_RPAREN,
 	TC_TOTAL
 }						t_token_code;
 
@@ -93,6 +95,7 @@ struct					s_lexer
 	int				buf_index;
 	int				is_inhibited;
 	int				is_parenthesized;
+	int				parenthesis_count;
 	int				notify;
 	t_sh			*sh;
 };

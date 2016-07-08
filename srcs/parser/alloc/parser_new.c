@@ -48,6 +48,8 @@ static int	s_build_token_command_line(t_parser *parser)
 	parser->token_list[i++] = &g_token_redir_less;
 	parser->token_list[i++] = &g_token_redir_pipe;
 	parser->token_list[i++] = &g_token_special_and;
+	parser->token_list[i++] = &g_token_subshell_lparen;
+	parser->token_list[i++] = &g_token_subshell_rparen;
 	parser->token_list[i++] = &g_token_inhibitor_dquote;
 	parser->token_list[i++] = &g_token_inhibitor_quote;
 	parser->token_list[i++] = &g_token_name_backslash;
@@ -82,6 +84,7 @@ int			parser_new(t_parser **parser, const char *in, t_sh *sh, int mode)
 	(*parser)->lexer->sh = sh;
 	(*parser)->lexer->size = 0;
 	(*parser)->lexer->notify = 1;
+	(*parser)->lexer->parenthesis_count = 0;
 	(*parser)->mode = mode;
 	(*parser)->target_list_head = NULL;
 	(*parser)->sh = sh;

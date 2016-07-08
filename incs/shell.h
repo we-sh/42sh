@@ -151,12 +151,14 @@ void			job_set_stopped(t_job *j, int const stopped);
 t_redir			*redir_alloc(int fd);
 void			redir_free(t_redir **redir);
 void			redir_list_free(t_list *redir_head);
+void			proc_subshell(t_sh *sh, t_job *j, t_proc *p);
 
 /*
 ** loop/
 */
 
 int				loop_main(t_sh *sh);
+int				loop_job_launcher(t_sh *sh, char *input);
 
 /*
 ** options/

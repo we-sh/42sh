@@ -201,6 +201,26 @@ static t_token g_token_name_backslash = {
 	0
 };
 
+static t_token g_token_subshell_lparen = {
+	"(",
+	NULL,
+	1,
+	TT_SUBSHELL,
+	TC_LPAREN,
+	token_parse_subshell,
+	0
+};
+
+static t_token g_token_subshell_rparen = {
+	")",
+	NULL,
+	1,
+	TT_SUBSHELL,
+	TC_RPAREN,
+	token_parse_subshell,
+	0
+};
+
 static t_token g_token_name_bquote = {
 	"`",
 	NULL,

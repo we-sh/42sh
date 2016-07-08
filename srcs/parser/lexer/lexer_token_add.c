@@ -4,6 +4,7 @@ int		lexer_token_add(t_lexer *lexer, const char *str, t_token token)
 {
 	t_token		*item;
 
+	log_trace("token content: %s", str);
 	if ((item = (t_token *)malloc(sizeof(t_token))) == NULL)
 		return (ST_MALLOC);
 	if ((item->content = ft_strdup(str)) == NULL)
