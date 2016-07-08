@@ -29,7 +29,6 @@ int			token_parse_and(void *target, t_parser *parser, t_lexer *lexer,
 {
 	int		ret;
 
-		log_success("&");
 	ret = ST_OK;
 	if (parser->mode == F_PARSING_NONE)
 		ret = s_none(lexer, i);
