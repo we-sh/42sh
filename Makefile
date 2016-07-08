@@ -148,6 +148,7 @@ SRCS	=	\
 			job/job_kill.c												\
 			job/job_launch.c											\
 			job/job_list_clean.c										\
+			job/job_list_clean_except_job.c								\
 			job/job_set_stopped.c										\
 			job/job_wait.c												\
 			job/proc_find.c												\
