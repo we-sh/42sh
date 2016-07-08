@@ -40,10 +40,8 @@ static int	s_proc(t_proc *p, t_lexer *lexer, int *i)
 	parenthesis_count = 1;
 	while (*i < lexer->size && parenthesis_count > 0)
 	{
-		if (TOKEN_CODE(*i) == TC_LPAREN)
-			parenthesis_count += 1;
-		else if (TOKEN_CODE(*i) == TC_RPAREN)
-			parenthesis_count -= 1;
+		if (TOKEN_CODE(*i) == TC_LPAREN || TOKEN_CODE(*i) == TC_RPAREN)
+			parenthesis_count += (TOKEN_CODE(*i) == TC_LPAREN ? 1 : -1);
 		if (parenthesis_count == 0)
 			break ;
 		ret = token_parse_utils_push_command(TOKEN_CONTENT(*i), &cmd);
@@ -51,7 +49,6 @@ static int	s_proc(t_proc *p, t_lexer *lexer, int *i)
 			return (ret);
 		(*i)++;
 	}
-	//(*i)--;
 	if ((ft_array_push_back(&p->argv, cmd)) < 0)
 		return (ST_MALLOC);
 	p->argc++;
