@@ -54,8 +54,8 @@ static int	s_shell_job_control(t_sh *sh)
 	}
 	if ((ret = signal_to_ignore()) != ST_OK)
 		return (ret);
-	if (setpgid(sh->pgid, sh->pgid) < 0)
-		return (ST_SETPGID);
+	//if (setpgid(sh->pgid, sh->pgid) < 0)
+	//	return (ST_SETPGID);
 	if (ioctl(STDIN_FILENO, TIOCSPGRP, &sh->pgid) < 0)
 		return (ST_TCSETPGRP);
 	return (ST_OK);
