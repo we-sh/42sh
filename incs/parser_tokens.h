@@ -225,7 +225,7 @@ static t_token g_token_name_bquote = {
 	"`",
 	NULL,
 	1,
-	TT_NAME,
+	TT_INHIBITOR,
 	TC_BQUOTE,
 	token_parse_none,
 	0
