@@ -250,11 +250,17 @@ RM		=	rm -f
 # ---------------------------------------------------------------------------- #
 # PROJECT COMPILATION                                                          #
 # ---------------------------------------------------------------------------- #
+# - The 'LIBS' lists the libaries path.                                        #
 # - The 'LDFLAGS' tells the linker where to find external libraries (-L flag). #
 # - The 'LDLIBS' tells the linker the prefix of external libraries (-l flag).  #
 # - The 'CPPFLAGS' tells the compiler where to find preprocessors (-I flag).   #
 # - The 'CFLAGS' configures the compiler options.                              #
 # ---------------------------------------------------------------------------- #
+
+LIBS		=	\
+				$(DIRLIB)/libft/libft.a			\
+				$(DIRLIB)/logger/liblogger.a	\
+				$(DIRLIB)/libcaps/libcaps.a		\
 
 LDFLAGS		=	\
 				-L $(DIRLIB)/logger				\
@@ -326,7 +332,7 @@ $(DIRDEP)	:
 all			:	libs $(NAME)
 	@printf "\033[32m[ %s ]\033[0m %s\n" "$(NAME)" "finish to build $(NAME)"
 
-$(NAME)		:	$(DIROBJ) $(DIRDEP) $(OBJ)
+$(NAME)		:	$(DIROBJ) $(DIRDEP) $(OBJ) $(LIBS)
 	@printf "\033[32m[ %s ]\033[0m %s\n" "$(NAME)" "link objects..."
 	@$(CC) $(OBJ) -o $(NAME) $(LDFLAGS) $(LDLIBS)
 
