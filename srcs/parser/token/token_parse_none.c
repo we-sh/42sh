@@ -11,8 +11,6 @@ static int	s_proc(t_proc *p, t_lexer *lexer, int *i)
 {
 	int		ret;
 
-	if (*i > 0 && TOKEN_TYPE(*i - 1) == TT_INHIBITOR)
-		(*i)--;
 	if ((ret = expand(lexer, p, i)) != ST_OK)
 		return (ret);
 	(*i)--;

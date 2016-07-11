@@ -10,7 +10,7 @@ static char	*s_expand_escape_char_not_inhibited(char *str)
 	while (str[j])
 	{
 		if (str[j] == '\\' && str[j + 1] == '\n')
-			j++;
+			j += 2;
 		else
 		{
 			if (str[j] == '\\' && str[j + 1] != '\\')
@@ -39,11 +39,8 @@ static int	s_suite(t_parser *parser, t_lexer *lexer, int *i)
 		free(tmp);
 	}
 	else
-	{
-		log_warn("Token Not inhibited");
 		ret = token_globing_parse_utils_push_str(parser->target_list_head,
 					s_expand_escape_char_not_inhibited(TOKEN_CONTENT(*i)));
-	}
 	return (ret);
 }
 
