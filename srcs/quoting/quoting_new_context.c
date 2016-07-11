@@ -40,7 +40,7 @@ static int				s_concat_new_input(char **cmd,
 	ret = 0;
 	buff_quote = NULL;
 	if (tokenid == TC_BACKSLASH)
-		termcaps_string_to_command_line(1, "\0",
+		termcaps_string_to_command_line(chld->fd, "\0",
 			&chld->command_line);
 	buff_quote = termcaps_read_input(chld);
 	if (tokenid == TC_BACKSLASH)
@@ -51,9 +51,13 @@ static int				s_concat_new_input(char **cmd,
 	if (ft_strcmp(buff_quote, "^C\n") == 0)
 	{
 		chld->state = STATE_REGULAR;
-		ret = 0;
+		ret = -1;
+		termcaps_string_to_command_line(chld->fd, "^C",
+			&chld->command_line);
+		if ((*cmd = ft_strjoin(*tmp,"\n")) == NULL)
+			ret = ST_MALLOC;
 	}
-	if ((*cmd = ft_strjoin(*tmp, buff_quote)) == NULL)
+	else if ((*cmd = ft_strjoin(*tmp, buff_quote)) == NULL)
 		ret = ST_MALLOC;
 	free(*tmp);
 	ft_memdel((void **)&buff_quote);
@@ -78,8 +82,20 @@ static int				s_first_loop_check(char **cmd,
 		(tmp = ft_strdup(command_str));
 	termcaps_string_to_command_line(ft_strlen(tmp), tmp,
 	&c->command_line);
-	if ((ret = s_concat_new_input(cmd, child_c, tokenid, &tmp)) != ST_OK)
+	if ((ret = s_concat_new_input(cmd, child_c, tokenid, &tmp)) == ST_MALLOC)
 		return (ret);
+	if (ret == -1)
+	{
+		log_warn("First loop return -1");
+		list_head__command_line_destroy(&child_c->command_line);
+		list_head__init(&child_c->command_line);
+		list_head__command_line_destroy(&c->command_line);
+		list_head__init(&c->command_line);
+		termcaps_string_to_command_line((ft_strlen(*cmd)), *cmd, &c->command_line);
+		free(*cmd);
+//		free(tmp);  //check le FREE
+		return (-1);
+	}
 	return (ST_OK);
 }
 
@@ -103,8 +119,8 @@ static int				s_qloop(char *cmd,
 		if ((ret = s_concat_new_input(&cmd, child_c, tokenid, &tmp))
 			== ST_MALLOC)
 			return (ST_MALLOC);
-		else if (ret == -1)
-			return (ST_OK);
+		if (ret == -1)
+			break ;
 	}
 	list_head__command_line_destroy(&c->command_line);
 	list_head__init(&c->command_line);
