@@ -83,12 +83,16 @@ static int	s_process_read(int fd, int width, int blank_character)
 	line = NULL;
 	while ((ret = get_next_line(fd, &line)) > 0)
 	{
-		if (loop_count > 0)
+		if (loop_count > 0 && fd != STDIN_FILENO)
 			ft_putchar('\n');
 		s_display_line(line, width, blank_character);
 		free(line);
 		loop_count++;
+		if (fd == STDIN_FILENO)
+			ft_putchar('\n');
 	}
+	if (fd != STDIN_FILENO)
+		close(fd);
 	if (ret < 0)
 		return (ST_READ);
 	return (ST_OK);
@@ -96,9 +100,9 @@ static int	s_process_read(int fd, int width, int blank_character)
 
 static int	s_exec(t_builtin const *builtin, t_proc *p)
 {
-	int		fd;
 	int		ret;
 	int		errors;
+	int		i;
 
 	if (p->bltin_status > ST_OK)
 	{
@@ -109,12 +113,18 @@ static int	s_exec(t_builtin const *builtin, t_proc *p)
 		exit(EXIT_FAILURE);
 	}
 	errors = 0;
-	fd = STDIN_FILENO;
-	if ((ret = s_process_read(fd, -p->bltin_status,
-			option_is_set(&p->bltin_opt_head, ST_BLTIN_FOLD_OPT_S))) != ST_OK)
+	i = 1;
+	while (i < p->argc || p->argc == 1)
 	{
-		errors++;
-		display_status(ret, "fold", NULL);
+		if ((ret = s_process_read(p->argc == 1 ? STDIN_FILENO : open(p->argv[i], O_RDONLY), -p->bltin_status,
+				option_is_set(&p->bltin_opt_head, ST_BLTIN_FOLD_OPT_S))) != ST_OK)
+		{
+			errors++;
+			display_status(ret, "fold", NULL);
+		}
+		if (p->argc == 1)
+			break ;
+		i++;
 	}
 	if (errors > 0)
 		return (EXIT_FAILURE);

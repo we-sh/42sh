@@ -2,27 +2,26 @@
 
 static int	s_conf_check_mode(char *content, int fd)
 {
+	int		ret;
 	char	*mode;
 
-	mode = content + 6;
-	if (mode && *mode && ft_strncmp(mode, "on", 2) == 0)
+	ret = -1;
+	if (content)
 	{
-		free(content);
+		mode = content + 6;
+		if (mode && *mode && ft_strncmp(mode, "on", 2) == 0)
+			ret = ST_OK;
 		close(fd);
-		return (ST_OK);
-	}
-	else
-	{
 		free(content);
-		close(fd);
-		return (-1);
 	}
+	return (ret);
 }
 
 int			conf_check_color_mode(char **env)
 {
 	int		fd;
 	char	*content;
+	char	*color;
 	char	*path;
 
 	env = NULL;
@@ -36,12 +35,13 @@ int			conf_check_color_mode(char **env)
 		return (ST_OK);
 	}
 	free(path);
+	content = NULL;
+	color = NULL;
 	while ((get_next_line(fd, &content)) == 1)
 	{
 		if (ft_strncmp(content, "color=", 6) == 0)
-			return (s_conf_check_mode(content, fd));
+			color = ft_strdup(content);
+		free(content);
 	}
-	free(content);
-	close(fd);
-	return (-1);
+	return (s_conf_check_mode(color, fd));
 }
