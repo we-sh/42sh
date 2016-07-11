@@ -105,6 +105,7 @@ SRCS	=	\
 			builtins/echo/builtin_echo_escape.c							\
 			builtins/exit/builtin_exit.c								\
 			builtins/fg/builtin_fg.c									\
+			builtins/fold/builtin_fold.c								\
 			builtins/help/builtin_help.c								\
 			builtins/jobs/builtin_jobs.c								\
 			builtins/env/builtin_env.c									\

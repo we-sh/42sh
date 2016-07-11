@@ -14,6 +14,7 @@ typedef enum		e_builtin_index
 	BLTIN_CD,
 	BLTIN_ECHO,
 	BLTIN_EXIT,
+	BLTIN_FOLD,
 	BLTIN_HELP,
 	BLTIN_FG,
 	BLTIN_JOBS,
@@ -55,6 +56,8 @@ int					builtin_echo(t_builtin const *builtin,
 int					builtin_exit(t_builtin const *builtin,
 								int callback, t_sh *sh, t_proc *p);
 int					builtin_fg(t_builtin const *builtin,
+								int callback, t_sh *sh, t_proc *p);
+int					builtin_fold(t_builtin const *builtin,
 								int callback, t_sh *sh, t_proc *p);
 int					builtin_help(t_builtin const *builtin,
 								int callback, t_sh *sh, t_proc *p);

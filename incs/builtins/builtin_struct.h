@@ -6,6 +6,7 @@
 # include "builtin_echo.h"
 # include "builtin_exit.h"
 # include "builtin_fg.h"
+# include "builtin_fold.h"
 # include "builtin_help.h"
 # include "builtin_jobs.h"
 # include "builtin_env.h"
@@ -25,6 +26,7 @@ static const t_builtin		*g_builtins[] = {
 	[BLTIN_ECHO] = &g_builtin_echo,
 	[BLTIN_EXIT] = &g_builtin_exit,
 	[BLTIN_FG] = &g_builtin_fg,
+	[BLTIN_FOLD] = &g_builtin_fold,
 	[BLTIN_HELP] = &g_builtin_help,
 	[BLTIN_JOBS] = &g_builtin_jobs,
 	[BLTIN_ENV] = &g_builtin_env,
