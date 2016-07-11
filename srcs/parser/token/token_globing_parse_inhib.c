@@ -30,7 +30,8 @@ int			token_globing_parse_inhib(void *target, t_parser *parser,
 				t_lexer *lexer, int *i)
 {
 	int		ret;
-
+	
+	ret = 0;
 	(void)target;
 	(*i)++;
 	if (TOKEN_CODE(*i - 1) == TC_QUOTE)

@@ -52,8 +52,6 @@ static int				s_concat_new_input(char **cmd,
 	{
 		chld->state = STATE_REGULAR;
 		ret = -1;
-		termcaps_string_to_command_line(chld->fd, "^C",
-			&chld->command_line);
 		if ((*cmd = ft_strjoin(*tmp,"\n")) == NULL)
 			ret = ST_MALLOC;
 	}
@@ -86,14 +84,12 @@ static int				s_first_loop_check(char **cmd,
 		return (ret);
 	if (ret == -1)
 	{
-		log_warn("First loop return -1");
 		list_head__command_line_destroy(&child_c->command_line);
 		list_head__init(&child_c->command_line);
 		list_head__command_line_destroy(&c->command_line);
 		list_head__init(&c->command_line);
 		termcaps_string_to_command_line((ft_strlen(*cmd)), *cmd, &c->command_line);
 		free(*cmd);
-//		free(tmp);  //check le FREE
 		return (-1);
 	}
 	return (ST_OK);
