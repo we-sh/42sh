@@ -68,6 +68,7 @@ int				parser(t_sh *sh, const char *in, int mode,
 
 	if (!sh || !in)
 		return (ST_EINVAL);
+	log_trace("parser mode: %d `%s'", mode, in);
 	if (mode == F_PARSING_TERMCAPS && in[0] == '\0')
 		return (ST_OK);
 	if ((ret = parser_new(&parser, in, sh, mode)) != ST_OK)
