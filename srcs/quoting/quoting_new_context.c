@@ -51,7 +51,7 @@ static int				s_concat_new_input(char **cmd,
 	if (ft_strcmp(buff_quote, "^C\n") == 0)
 	{
 		chld->state = STATE_REGULAR;
-		ret = -1;
+		ret = 0;
 	}
 	if ((*cmd = ft_strjoin(*tmp, buff_quote)) == NULL)
 		ret = ST_MALLOC;

@@ -21,18 +21,34 @@ static int				s_fill_context_buffer(t_termcaps_context *context,
 	return (1);
 }
 
-static int				s_bufferize_input(t_termcaps_context *context)
+static int				s_bufferize_input(t_termcaps_context *context, int mode)
 {
 	size_t		buffer_size;
 	char		buffer[TERMCAPS_BUFFER_MAX];
+	size_t		buffer_size2;
+	char		buffer2[TERMCAPS_BUFFER_MAX];
 
 	if (!list_head__command_line_to_buffer(&context->command_line,
-				sizeof(buffer) - 1, &buffer_size, buffer))
+				sizeof(buffer) - 1, &buffer_size, buffer) && mode == 0)
 	{
 		log_error("list_head__command_line_to_buffer() failed");
 		return (0);
 	}
+	// else if (mode == 1 &&
+	// 	!list_head__command_line_to_buffer(&context->command_line,
+	// 			sizeof(buffer2) - 1, &buffer_size, buffer2))
+	// {
+	// 	log_error("list_head__command_line_to_buffer() failed");
+	// 	return (0);	
+	// }
 	buffer[buffer_size] = '\0';
+
+	log_warn("Value of prompt size : %d", context->prompt.size);
+	*buffer2 = *buffer + context->prompt.size;
+	buffer_size2 = buffer_size - context->prompt.size;
+	buffer2[buffer_size2] = '\0';
+	log_warn("Value of buff : %s", buffer);
+	log_warn("Value of buff2 : %s", buffer2);
 	if (!s_fill_context_buffer(context, buffer))
 	{
 		log_error("(s_fill_context_buffer() failed");
@@ -102,13 +118,13 @@ int						key__send(t_termcaps_context *context)
 		s_key_send(context);
 		if (context->command_line.size > context->prompt.size)
 		{
-			ASSERT(s_bufferize_input(context));
+			ASSERT(s_bufferize_input(context, 0));
 		}
 		else
 		{
 			termcaps_character_to_command_line(1, "\n",
 			 	&context->command_line);
-			ASSERT(s_bufferize_input(context));
+			ASSERT(s_bufferize_input(context, 1));
 		}
 	}
 	else if (context->state == STATE_SEARCH_HISTORY)
