@@ -27,6 +27,7 @@ static void	s_display_line(char *line, int width, int blank_character)
 	int		pos_cur;
 	int		columns;
 	char	character;
+	int		i;
 
 	(void)blank_character;
 	pos_cur = 0;
@@ -37,17 +38,26 @@ static void	s_display_line(char *line, int width, int blank_character)
 		if (character == '\t')
 			columns += 7;
 		else if (character == '\b')
-		{
 			columns -= columns > 0 ? 2 : 1;
-		}
 		else if (character == '\r')
-		{
 			columns = -1;
-		}
 		columns++;
-		if (line[pos_cur + 1] != '\b' && columns > width)
+		if (columns > width)
 		{
-			if (pos_cur != pos_start)
+			if (pos_cur == 0)
+				ft_putchar('\n');
+			if (blank_character == 1)
+			{
+				i = pos_cur;
+				while (i > pos_start && line[i - 1] != ' ')
+					i--;
+				if (i != pos_start)
+				{
+					pos_cur = i;
+					character = line[pos_cur];
+				}
+			}
+			if (pos_start != pos_cur)
 			{
 				line[pos_cur] = '\0';
 				ft_putendl(line + pos_start);
@@ -66,13 +76,18 @@ static void	s_display_line(char *line, int width, int blank_character)
 static int	s_process_read(int fd, int width, int blank_character)
 {
 	int		ret;
+	int		loop_count;
 	char	*line;
 
+	loop_count = 0;
 	line = NULL;
 	while ((ret = get_next_line(fd, &line)) > 0)
 	{
+		if (loop_count > 0)
+			ft_putchar('\n');
 		s_display_line(line, width, blank_character);
 		free(line);
+		loop_count++;
 	}
 	if (ret < 0)
 		return (ST_READ);
