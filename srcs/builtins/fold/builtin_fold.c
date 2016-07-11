@@ -92,6 +92,8 @@ static int	s_process_read(int fd, int width, int blank_character)
 			ft_putchar('\n');
 	}
 	if (fd != STDIN_FILENO)
+		ft_putchar('\n');
+	if (fd != STDIN_FILENO)
 		close(fd);
 	if (ret < 0)
 		return (ST_READ);
