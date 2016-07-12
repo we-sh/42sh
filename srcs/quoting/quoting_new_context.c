@@ -12,14 +12,15 @@ static char				*s_set_prompt_quoting(int tokenid)
 		return ("cmdor> ");
 	else if (tokenid == TC_AND_IF)
 		return ("cmdand> ");
+	else if (tokenid ==TC_BACKSLASH)
+		return ("> ");
 	else
 		return ("> ");
 }
 
 static int				s_first_loop_check(char **cmd,
 											t_termcaps_context *child_c,
-											t_termcaps_context *c,
-											int tokenid)
+											t_termcaps_context *c)
 {
 	size_t				command_str_size;
 	char				command_str[TERMCAPS_BUFFER_MAX];
@@ -34,7 +35,7 @@ static int				s_first_loop_check(char **cmd,
 		(tmp = ft_strdup(command_str));
 	termcaps_string_to_command_line(ft_strlen(tmp), tmp,
 	&c->command_line);
-	if ((ret = concat_new_input(cmd, child_c, tokenid, &tmp)) == ST_MALLOC)
+	if ((ret = concat_new_input(cmd, child_c, &tmp)) == ST_MALLOC)
 		return (ret);
 	if (ret == -1)
 	{
@@ -50,8 +51,7 @@ static int				s_first_loop_check(char **cmd,
 
 static int				s_qloop(char *cmd,
 								t_termcaps_context *child_c,
-								t_termcaps_context *c,
-								int tokenid)
+								t_termcaps_context *c)
 {
 	char				*buff_quote;
 	char				*tmp;
@@ -65,7 +65,7 @@ static int				s_qloop(char *cmd,
 			(tmp = ft_strjoin(cmd, "\n"));
 		termcaps_string_to_command_line(ft_strlen(cmd), cmd, &c->command_line);
 		free(cmd);
-		if ((ret = concat_new_input(&cmd, child_c, tokenid, &tmp))
+		if ((ret = concat_new_input(&cmd, child_c, &tmp))
 			== ST_MALLOC)
 			return (ST_MALLOC);
 		if (ret == -1)
@@ -90,9 +90,9 @@ int						quoting_new_context(t_termcaps_context *context, int tokenid)
 		caps__print_cap(CAPS__DOWN, 0);
 		termcaps_initialize(context->sh, s_set_prompt_quoting(tokenid),
 							&child_context);
-		if ((ret = s_first_loop_check(&cmd, &child_context, context, tokenid)) == ST_MALLOC)
+		if ((ret = s_first_loop_check(&cmd, &child_context, context)) == ST_MALLOC)
 			return (ST_MALLOC);
-		if (ret != -1 && (ret = s_qloop(cmd, &child_context, context, tokenid))
+		if (ret != -1 && (ret = s_qloop(cmd, &child_context, context))
 					!= ST_OK)
 			return (ret);
 		caps__delete_line(context->command_line.offset);
