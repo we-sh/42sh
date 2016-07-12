@@ -185,6 +185,10 @@ int				path_get_new_cmd(char **commande, char *name, char *path);
 */
 
 int				quoting_new_context(t_termcaps_context *context, int tokenid);
+int				concat_new_input(char **cmd,
+									t_termcaps_context *chld,
+									int tokenid,
+									char **tmp);
 
 /*
 ** signal/

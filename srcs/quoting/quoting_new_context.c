@@ -16,52 +16,6 @@ static char				*s_set_prompt_quoting(int tokenid)
 		return ("> ");
 }
 
-static int				s_realloc_buff(char **buff_quote)
-{
-	char				*tmpbuff;
-
-	if ((tmpbuff = ft_strdup(*buff_quote + 1)) == NULL)
-		return (ST_MALLOC);
-	free(*buff_quote);
-	if ((*buff_quote = ft_strdup(tmpbuff)) == NULL)
-		return (ST_MALLOC);
-	free(tmpbuff);	
-	return (ST_OK);
-}
-
-static int				s_concat_new_input(char **cmd,
-										t_termcaps_context *chld,
-										int tokenid,
-										char **tmp)
-{
-	char				*buff_quote;
-	int ret;
-
-	ret = 0;
-	buff_quote = NULL;
-	if (tokenid == TC_BACKSLASH)
-		termcaps_string_to_command_line(chld->fd, "\0",
-			&chld->command_line);
-	buff_quote = termcaps_read_input(chld);
-	if (tokenid == TC_BACKSLASH)
-	{
-		if ((s_realloc_buff(&buff_quote)) == ST_MALLOC)
-			return (ST_MALLOC);
-	}
-	if (ft_strcmp(buff_quote, "^C\n") == 0)
-	{
-		chld->state = STATE_REGULAR;
-		ret = -1;
-		if ((*cmd = ft_strjoin(*tmp,"\n")) == NULL)
-			ret = ST_MALLOC;
-	}
-	else if ((*cmd = ft_strjoin(*tmp, buff_quote)) == NULL)
-		ret = ST_MALLOC;
-	free(*tmp);
-	ft_memdel((void **)&buff_quote);
-	return (ret);
-}
-
 static int				s_first_loop_check(char **cmd,
 											t_termcaps_context *child_c,
 											t_termcaps_context *c,
@@ -80,7 +34,7 @@ static int				s_first_loop_check(char **cmd,
 		(tmp = ft_strdup(command_str));
 	termcaps_string_to_command_line(ft_strlen(tmp), tmp,
 	&c->command_line);
-	if ((ret = s_concat_new_input(cmd, child_c, tokenid, &tmp)) == ST_MALLOC)
+	if ((ret = concat_new_input(cmd, child_c, tokenid, &tmp)) == ST_MALLOC)
 		return (ret);
 	if (ret == -1)
 	{
@@ -90,9 +44,8 @@ static int				s_first_loop_check(char **cmd,
 		list_head__init(&c->command_line);
 		termcaps_string_to_command_line((ft_strlen(*cmd)), *cmd, &c->command_line);
 		free(*cmd);
-		return (-1);
 	}
-	return (ST_OK);
+	return (ret);
 }
 
 static int				s_qloop(char *cmd,
@@ -112,7 +65,7 @@ static int				s_qloop(char *cmd,
 			(tmp = ft_strjoin(cmd, "\n"));
 		termcaps_string_to_command_line(ft_strlen(cmd), cmd, &c->command_line);
 		free(cmd);
-		if ((ret = s_concat_new_input(&cmd, child_c, tokenid, &tmp))
+		if ((ret = concat_new_input(&cmd, child_c, tokenid, &tmp))
 			== ST_MALLOC)
 			return (ST_MALLOC);
 		if (ret == -1)
