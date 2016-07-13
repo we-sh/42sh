@@ -23,6 +23,7 @@ int			token_parse_none(void *target, t_parser *parser, t_lexer *lexer,
 	int		ret;
 
 	ret = ST_OK;
+	log_warn("Token NONE debug lexer number %d", lexer->size);
 	if (TOKEN_TYPE(*i) == TT_ERROR)
 	{
 		if (lexer->notify == 1)

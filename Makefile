@@ -104,6 +104,12 @@ SRCS	=	\
 			builtins/echo/builtin_echo.c								\
 			builtins/echo/builtin_echo_escape.c							\
 			builtins/exit/builtin_exit.c								\
+			builtins/export/builtin_export.c							\
+			builtins/export/builtin_export_n_option.c					\
+			builtins/export/builtin_export_set.c						\
+			builtins/export/builtin_export_set_no_value.c				\
+			builtins/export/builtin_export_set_local_and_env.c			\
+			builtins/export/builtin_export_update_local_with_value.c	\
 			builtins/fg/builtin_fg.c									\
 			builtins/help/builtin_help.c								\
 			builtins/jobs/builtin_jobs.c								\
@@ -111,8 +117,14 @@ SRCS	=	\
 			builtins/language/builtin_language.c						\
 			builtins/setenv/builtin_setenv.c							\
 			builtins/setenv/builtin_setenv_argv_is_valid.c				\
+			builtins/set_local/builtin_set_local.c						\
+			builtins/set_local/builtin_local_var_set_local_loop.c		\
+			builtins/set_local/builtin_local_var_add.c					\
+			builtins/set_local/builtin_local_var_update.c				\
+			builtins/set_local/builtin_local_var_delete.c				\
 			builtins/termcaps/builtin_termcaps.c						\
 			builtins/unsetenv/builtin_unsetenv.c						\
+			builtins/unset/builtin_unset.c								\
 			builtins/builtin_callback.c									\
 			builtins/builtin_usage.c									\
 			env/env_get.c												\
@@ -123,7 +135,8 @@ SRCS	=	\
 			env/env_set.c												\
 			env/env_unset.c												\
 			env/env_index_value.c										\
-			env/env_update_from_cmd_line.c								\
+			env/env_or_var_update_from_cmd_line.c						\
+			env/env_get_value_and_remove_equal_sign.c					\
 			display/display_status.c									\
 			i18n/i18n_translate.c										\
 			init/shell_init.c											\
@@ -157,6 +170,7 @@ SRCS	=	\
 			job/redir_free.c											\
 			job/redir_list_free.c										\
 			loop/loop_main.c											\
+			local_var/local_var_replace.c								\
 			options/option_get_value.c									\
 			options/option_is_set.c										\
 			options/list_node__option_alloc.c							\
@@ -365,7 +379,7 @@ re			:	fcleanlibs fclean all
 
 test		:	re
 	@printf "\033[32m[ %s ]\033[0m %s\n" "$(NAME)" "run tests..."
-	@cd $(DIRTST) && sh 42ShellTester.sh $$PWD/../$(NAME) --hard
+	@cd $(DIRTST) && bash 42ShellTester.sh $$PWD/../$(NAME) --hard
 
 submodule	:
 	@printf "\033[32m[ %s ]\033[0m %s\n" "$(NAME)" "retrieve submodules..."

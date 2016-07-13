@@ -12,20 +12,20 @@ static int				s_join_tmp(t_termcaps_context *chld,
 	{
 		chld->state = STATE_REGULAR;
 		ret = -1;
-		if ((*cmd = ft_strjoin(*tmp,"\n")) == NULL)
+		if ((*cmd = ft_strjoin(*tmp, "\n")) == NULL)
 			ret = ST_MALLOC;
 	}
 	else if ((*cmd = ft_strjoin(*tmp, buff_quote)) == NULL)
 		ret = ST_MALLOC;
-	return (ret);	
+	return (ret);
 }
 
-int				concat_new_input(char **cmd,
+int						concat_new_input(char **cmd,
 									t_termcaps_context *chld,
 									char **tmp)
 {
 	char				*buff_quote;
-	int ret;
+	int					ret;
 
 	buff_quote = NULL;
 	buff_quote = termcaps_read_input(chld);
