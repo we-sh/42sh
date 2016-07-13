@@ -91,6 +91,7 @@ int				path_hash_finder(char **envp, char **cmd)
 
 	if (*cmd == NULL)
 		return (ST_OK);
+//	log_success("VALUE CMD inside hash finder %s", *cmd); // debug
 	ret = ST_CMD_NOT_FOUND;
 	index = fnv_a_str(*cmd) % HASH_TABLE_SIZE;
 	if (ft_strncmp(*cmd, "./", 2) != 0 && 
