@@ -240,4 +240,10 @@ void			list_dir__destroy(t_list *head);
 int				conf_file_init(char **env);
 int				conf_check_color_mode(char **env);
 
+/*
+** local_var
+*/
+int				local_var_insert(t_sh *sh, t_job **j);
+
+
 #endif
