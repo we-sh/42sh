@@ -170,7 +170,7 @@ SRCS	=	\
 			path/path_add_folder_content_to_hasht.c						\
 			path/path_commande_not_found_in_hasht.c						\
 			quoting/quoting_new_context.c								\
-			quoting/quoting_concat_new_input.c								\
+			quoting/quoting_concat_new_input.c							\
 			signal/signal_to_default.c									\
 			signal/signal_to_ignore.c									\
 			signal/signal_to_pgid.c										\
@@ -396,7 +396,7 @@ $(DIROBJ)/%.o	:	$(DIRSRC)/%.c $(DIRDEP)/%.d
 $(DIRDEP)/%.d	:	;
 .PRECIOUS		:	$(DIRDEP)/%.d
 
--include $(patsubst %,$(DIRDEP)/%.d,$(basename $(SRC)))
+-include $(patsubst %,$(DIRDEP)/%.d,$(basename $(SRCS)))
 
 # ---------------------------------------------------------------------------- #
 
