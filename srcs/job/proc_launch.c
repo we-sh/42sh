@@ -93,6 +93,22 @@ void		proc_launch(t_sh *sh, t_job *j, t_proc *p)
 {
 	int		ret;
 
+	// TODO : remove, this is a part just for debug
+	int		i = 0;
+	char	*tmp = ft_strdup("");
+	char	*tmp2;
+	while (i < p->argc)
+	{
+		tmp2 = ft_strjoin(tmp, (p->argv)[i]);
+		free(tmp);
+		tmp = ft_strjoin(tmp2, " ");
+		free(tmp2);
+		i++;
+	}
+	log_success("processus command received       : `%s'", p->command);
+	log_success("processus command after globbing : `%s'", tmp);
+	free(tmp);
+
 	ret = 0;
 	p->pid = getpid();
 	s_interactive_mode_callback(sh, j, p);
