@@ -403,11 +403,7 @@ $(DIROBJ)/%.o	:	$(DIRSRC)/%.c $(DIRDEP)/%.d
 $(DIRDEP)/%.d	:	;
 .PRECIOUS		:	$(DIRDEP)/%.d
 
-<<<<<<< HEAD
 -include $(patsubst %,$(DIRDEP)/%.d,$(basename $(SRCS)))
-=======
--include $(patsubst %,$(DIRDEP)/%.d,$(basename $(SRC)))
->>>>>>> add setlocal if var is valid
 
 # ---------------------------------------------------------------------------- #
 
