@@ -87,6 +87,7 @@ int			shell_init(t_sh *sh, char *envp[])
 
 	INIT_LIST_HEAD(&g_current_jobs_list_head);
 	INIT_LIST_HEAD(&sh->redir_head);
+	sh->local_vars = NULL;
 	sh->last_exit_status = 0;
 	sh->pgid = getpid();
 	if ((ret = s_shell_environment(sh, envp)) != ST_OK)

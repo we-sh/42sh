@@ -21,38 +21,111 @@
 ** current directory.
 */
 
-static int	s_before(t_builtin const *builtin, t_sh *sh, t_proc *p)
+static int		s_add_new_local(char *local)
 {
-	(void)builtin;
-	(void)sh;
-	(void)p;
+	char		*value;
+
+	value = env_get_value_and_remove_equal_sign(local);
+	newvar = s_initvar();
+	if (!((*sh)->local_vars))
+		(*sh)->local_vars = newvar;
+	ptrvar = (*sh)->local_vars;
+	if (!(newvar) || !newvar)
+		return (ST_OK);
+	while (ptrvar->next)
+	{
+		ptrvar = ptrvar->next;
+	}
+	ptrvar->next = newvar;
+	newvar->key = ft_strdup(local);
+	newvar->value = ft_strdup(value);
+	newvar->next = NULL;
+	log_success("Flag 0 Add key->%s and value->%s", ptrvar->key, ptrvar->value);
+}
+
+static t_var 	*s_initvar(void)
+{
+	t_var		*newvar;
+
+	newvar = (t_var *)malloc(sizeof(t_var));
+	if (!(newvar))
+		return (NULL);
+	newvar->key = NULL;
+	newvar->value = NULL;
+	newvar->next = NULL;
+	return (newvar);
+}
+
+static int	s_before(void)
+{
 	return (ST_OK);
 }
 
-static int	s_exec(t_builtin const *builtin, t_sh *sh, t_proc *p)
+static int	s_exec(t_sh *sh, t_proc *p)
 {
-	(void)builtin;
-	(void)sh;
-	(void)p;
-	return (EXIT_SUCCESS);
+	t_var	*ptrvar;
+
+	if (p->bltin_status == ST_OK && p->argc == 1)
+	{
+		ft_putendl_fd("Local value :", STDOUT_FILENO);
+		ptrvar = sh->local_vars;
+		while (ptrvar)
+		{
+			ft_putstr_fd(ptrvar->key, STDOUT_FILENO);
+			ft_putchar_fd('=', STDOUT_FILENO);
+			ft_putendl_fd(ptrvar->value, STDOUT_FILENO);
+			ptrvar = ptrvar->next;
+		}
+	}
+	return (ST_OK);
 }
 
-static int	s_after(t_builtin const *builtin, t_sh *sh, t_proc *p)
+static int	s_after(t_sh **sh, t_proc *p)
 {
-	(void)builtin;
-	(void)sh;
-	(void)p;
+	t_var 		*ptrvar;
+	t_var 		*newvar;
+	char		*value;
+	int			i;
+	int			flag;
+
+	i = 1;
+	while (p->argv[i])
+	{
+		log_info("p->argv[%d] = %s", i, p->argv[i]);
+		flag = 0;
+		ptrvar = (*sh)->local_vars;
+		while (ptrvar)
+		{
+			log_success("Browse ptrvar");
+			if (ft_strncmp(ptrvar->key, p->argv[i], ft_strlen(ptrvar->key)) == 0)
+			{
+				if ((value = env_get_value_and_remove_equal_sign(p->argv[i])) != NULL)
+				{
+					free(ptrvar->value);
+					ptrvar->value = ft_strdup(value);
+					flag = 1;
+					log_success("Flag 1 Add key->%s and value->%s", ptrvar->key, ptrvar->value);
+					break ;
+				}
+			}
+			ptrvar = ptrvar->next;
+		}
+		if (flag == 0)
+			s_add_new_local(p->argv[i]);
+		i++;
+	}
 	return (ST_OK);
 }
 
 int			builtin_set_local(t_builtin const *builtin,
 							int callback, t_sh *sh, t_proc *p)
 {
+	(void)builtin;
 	if (callback == BLTIN_CB_BEFORE)
-		return (s_before(builtin, sh, p));
+		return (s_before());
 	if (callback == BLTIN_CB_EXEC)
-		exit(s_exec(builtin, sh, p));
+		exit(s_exec(sh, p));
 	if (callback == BLTIN_CB_AFTER)
-		return (s_after(builtin, sh, p));
+		return (s_after(&sh, p));
 	return (ST_OK);
 }
