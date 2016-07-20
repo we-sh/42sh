@@ -8,8 +8,6 @@
 ** 2.
 ** 3.
 ** 4. Escape character `\`
-** Globbing :
-** consider `ls "*" *', the loop will receive `\*' and `*'
 */
 
 static int	s_list_argv_to_char_argv(t_proc *p, t_list *argv_list)
@@ -19,7 +17,7 @@ static int	s_list_argv_to_char_argv(t_proc *p, t_list *argv_list)
 	t_list	*safe;
 	int		st;
 
-	if ((st = globbing_brackets(&argv_list)) != ST_OK)
+	if ((st = globbing(&argv_list)) != ST_OK)
 		return (st);
 	safe = argv_list->next;
 	while ((pos = safe) && safe != argv_list)
