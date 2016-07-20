@@ -12,6 +12,8 @@ static int			s_fork_it(t_sh *sh, t_job *j, t_proc *p)
 
 	if ((p->envp = ft_array_dup(sh->envp)) == NULL)
 		return (ST_MALLOC);
+	if ((ret = local_var_replace(p->argv, sh)) != ST_OK)//modifier position avant expand
+		return (ret);
 	if ((ret = env_update_from_cmd_line(&p->argv, &p->argc, &p->envp)) != ST_OK)
 		return (ret);
 	if ((ret = builtin_callback(BLTIN_CB_BEFORE, sh, p)) != ST_OK)
