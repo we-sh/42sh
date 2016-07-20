@@ -48,7 +48,7 @@ static int		s_job_launcher(t_sh *sh, char *input)
 	while ((j_ptr = j_ptr->next) && j_ptr != &g_current_jobs_list_head)
 	{
 		j = CONTAINER_OF(j_ptr, t_job, list_job);
-		local_var_insert(sh, &j);
+		local_var_insert(&sh, &j);
 		if (j->launched == 0)
 		{
 			if ((ret = s_process_job(sh, &j_prev, j)) != ST_OK)

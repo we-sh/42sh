@@ -243,7 +243,6 @@ int				conf_check_color_mode(char **env);
 /*
 ** local_var
 */
-int				local_var_insert(t_sh *sh, t_job **j);
-
+int				local_var_insert(t_sh **sh, t_job **j);
 
 #endif

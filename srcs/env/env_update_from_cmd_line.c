@@ -37,31 +37,62 @@ int			env_update_from_cmd_line(char ***argv, int *argc, char ***envp)
 	return (ST_OK);
 }
 
-int local_var_insert(t_sh *sh, t_job **j)
-{
-	char **tab;
+/* PUT IT IN A NEW FILE */
 
-	log_warn("Value of job %s", (*j)->command);
-	tab = ft_strplit((*j)->command);
-	// while ((*envp)[i] != NULL)
-	// {
-	// 	log_info("Value of env[%d] : %s", i, (*envp)[i]);
-	// 	i++;
-	// }
-	// i = 0;
-	// log_info("Value ARGC : %d", *argc);
-	
-	// while ((*argv)[i] != NULL && (*argv)[i][0] != '\0' && (*argv)[i][0] != '=')
-	// {
-	// 	tmp = *argv[i];
-	// 	if (path_hash_finder(*envp, &tmp) == ST_OK)
-	// 	{
-	// 		flag = 1;
-	// 		log_success("IS a binary so add to env %s", tmp);
-	// 	}
-	// 	else
-	// 		log_fatal("NOT a binary so add to env %s", tmp);
-	// 	log_warn("POS: %d Value of ARGV[%d] : %s", pos, i, tmp);
-	// 	i++;
-	// }
+// static int s_add_to_local(t_sh **sh, char *key)
+// {
+// 	t_var		*ptr;
+// 	t_var		*newptr;
+// 	char		*value;
+// 	char		*tmp;
+
+// 	if ((value = s_get_value_and_remove_equal_sign(key)) != NULL)
+// 		tmp = ft_strdup(key);
+// 	ptr = (*sh)->local_vars;
+// //	head = &(*sh)->local_vars.var_list;
+// 	newptr = (t_var *)malloc(sizeof(t_var) + 1);
+// 	while (ptr)
+// 	{
+// 		if (ft_strcmp(ptr->key == ) == 0)
+// 		ptr = ptr->next;
+// 	}
+// 	ptr = newptr;
+
+// 	log_warn("ptr -> %s",ptr->key);
+// 	log_warn("value -> %s",ptr->value);
+// //		local->key = ft_strdup(key);
+// 	return (ST_OK);
+// }
+
+static int s_local_is_valid(t_sh *sh, t_job **j, int *i)
+{
+	char	**test;
+	char	*value;
+
+	test = ft_strsplit((*j)->command, ' ');
+	while (test[*i] != '\0')
+	{
+		if (path_hash_finder(sh->envp, &test[*i]) == ST_OK)
+			return (-1);
+		if ((value = s_get_value_and_remove_equal_sign(test[*i])) == NULL)
+			return (-1);
+		*i += 1;
+	}
+	ft_memdel_tab((void ***)&test);
+	return (0);
+}
+
+int			local_var_insert(t_sh **sh, t_job **j)
+{
+	char	*tmp;
+
+	i = 0;
+	log_info("Value of job %s", (*j)->command);
+	if (s_local_is_valid(*sh, j, &i) != ST_OK)
+		return (ST_OK);
+	tmp = ft_strdup((*j)->command);
+	ft_memdel((void **)&((*j)->command));
+	(*j)->command = ft_strjoin("setlocal ", tmp);
+	log_success("final output :%s",(*j)->command);
+	return (0);
 }
