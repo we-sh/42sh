@@ -111,6 +111,7 @@ SRCS	=	\
 			builtins/language/builtin_language.c						\
 			builtins/setenv/builtin_setenv.c							\
 			builtins/setenv/builtin_setenv_argv_is_valid.c				\
+			builtins/set_local/builtin_set_local.c						\
 			builtins/termcaps/builtin_termcaps.c						\
 			builtins/unsetenv/builtin_unsetenv.c						\
 			builtins/builtin_callback.c									\
