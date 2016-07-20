@@ -124,6 +124,7 @@ SRCS	=	\
 			env/env_unset.c												\
 			env/env_index_value.c										\
 			env/env_update_from_cmd_line.c								\
+			env/env_get_value_and_remove_equal_sign.c					\
 			display/display_status.c									\
 			i18n/i18n_translate.c										\
 			init/shell_init.c											\
@@ -157,6 +158,7 @@ SRCS	=	\
 			job/redir_free.c											\
 			job/redir_list_free.c										\
 			loop/loop_main.c											\
+			local_var/local_var_insert.c								\
 			options/option_get_value.c									\
 			options/option_is_set.c										\
 			options/list_node__option_alloc.c							\

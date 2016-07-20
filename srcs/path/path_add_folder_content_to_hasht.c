@@ -30,6 +30,7 @@ int				path_add_folder_content_to_hasht(char *name, char *dirname)
 		index = fnv_a_str(name) % HASH_TABLE_SIZE;
 		if (!bodies[index].head)
 		{
+//			log_info("Index %d, name:%s, dirname: %s", index, name, dirname);
 			if ((bodies[index].head = (t_hasht *)malloc(sizeof(t_hasht)))
 					== NULL)
 				return (ST_MALLOC);
@@ -41,6 +42,7 @@ int				path_add_folder_content_to_hasht(char *name, char *dirname)
 		}
 		else
 		{
+//			log_info("Index %d, name:%s, dirname: %s", index, name, dirname);
 			if (s_add_new_node(name, dirname, index) == ST_MALLOC)
 				return (ST_MALLOC);
 		}
