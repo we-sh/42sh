@@ -5,31 +5,36 @@
 ** line and set them into the local variable struc if no binary are found.
 */
 
-int local_var_insert(t_sh *sh, t_job **j)
+static int s_local_is_valid(t_sh *sh, t_job **j, int *i)
 {
-	char **tab;
+	char	**test;
+	char	*value;
 
-	log_warn("Value of job %s", (*j)->command);
-	tab = ft_strplit((*j)->command);
-	// while ((*envp)[i] != NULL)
-	// {
-	// 	log_info("Value of env[%d] : %s", i, (*envp)[i]);
-	// 	i++;
-	// }
-	// i = 0;
-	// log_info("Value ARGC : %d", *argc);
-	
-	// while ((*argv)[i] != NULL && (*argv)[i][0] != '\0' && (*argv)[i][0] != '=')
-	// {
-	// 	tmp = *argv[i];
-	// 	if (path_hash_finder(*envp, &tmp) == ST_OK)
-	// 	{
-	// 		flag = 1;
-	// 		log_success("IS a binary so add to env %s", tmp);
-	// 	}
-	// 	else
-	// 		log_fatal("NOT a binary so add to env %s", tmp);
-	// 	log_warn("POS: %d Value of ARGV[%d] : %s", pos, i, tmp);
-	// 	i++;
-	// }
+	test = ft_strsplit((*j)->command, ' ');
+	while (test[*i] != '\0')
+	{
+		if (path_hash_finder(sh->envp, &test[*i]) == ST_OK)
+			return (-1);
+		if ((value = env_get_value_and_remove_equal_sign(test[*i])) == NULL)
+			return (-1);
+		*i += 1;
+	}
+	ft_memdel_tab((void ***)&test);
+	return (0);
+}
+
+int			local_var_insert(t_sh **sh, t_job **j)
+{
+	char	*tmp;
+	int		i;
+
+	i = 0;
+	log_info("Value of job %s", (*j)->command);
+	if (s_local_is_valid(*sh, j, &i) != ST_OK)
+		return (ST_OK);
+	tmp = ft_strdup((*j)->command);
+	ft_memdel((void **)&((*j)->command));
+	(*j)->command = ft_strjoin("setlocal ", tmp);
+	log_success("final output :%s",(*j)->command);
+	return (0);
 }
