@@ -29,12 +29,10 @@ int			local_var_insert(t_sh **sh, t_job **j)
 	int		i;
 
 	i = 0;
-	log_info("Value of job %s", (*j)->command);
 	if (s_local_is_valid(*sh, j, &i) != ST_OK)
 		return (ST_OK);
 	tmp = ft_strdup((*j)->command);
 	ft_memdel((void **)&((*j)->command));
 	(*j)->command = ft_strjoin("setlocal ", tmp);
-	log_success("final output :%s",(*j)->command);
 	return (0);
 }
