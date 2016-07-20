@@ -20,6 +20,7 @@ typedef enum		e_builtin_index
 	BLTIN_ENV,
 	BLTIN_LANGUAGE,
 	BLTIN_SETENV,
+	BLTIN_SET_LOCAL,
 	BLTIN_TERMCAPS,
 	BLTIN_UNSETENV,
 	BLTIN_TOTAL
@@ -65,6 +66,8 @@ int					builtin_env(t_builtin const *builtin,
 int					builtin_language(t_builtin const *builtin,
 								int callback, t_sh *sh, t_proc *p);
 int					builtin_setenv(t_builtin const *builtin,
+								int callback, t_sh *sh, t_proc *p);
+int					builtin_set_local(t_builtin const *builtin,
 								int callback, t_sh *sh, t_proc *p);
 int					builtin_termcaps(t_builtin const *builtin,
 								int callback, t_sh *sh, t_proc *p);

@@ -11,6 +11,7 @@
 # include "builtin_env.h"
 # include "builtin_language.h"
 # include "builtin_setenv.h"
+# include "builtin_set_local.h"
 # include "builtin_termcaps.h"
 # include "builtin_unsetenv.h"
 
@@ -30,6 +31,7 @@ static const t_builtin		*g_builtins[] = {
 	[BLTIN_ENV] = &g_builtin_env,
 	[BLTIN_LANGUAGE] = &g_builtin_language,
 	[BLTIN_SETENV] = &g_builtin_setenv,
+	[BLTIN_SET_LOCAL] = &g_builtin_set_local,
 	[BLTIN_TERMCAPS] = &g_builtin_termcaps,
 	[BLTIN_UNSETENV] = &g_builtin_unsetenv,
 	[BLTIN_TOTAL] = NULL
