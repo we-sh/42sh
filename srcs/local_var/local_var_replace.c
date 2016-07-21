@@ -1,10 +1,68 @@
 #include "shell.h"
 
+int		local_var_replace_recursive(char **argv, t_sh *sh, int i)
+{
+	int	j;
+	int	k;
+	int	z;
+	char **tab;
+	t_var *ptr;
+
+	j = 0;
+	k = 0;
+	z = 0;
+	while (argv[i][j] != '$' && argv[i][j] != '\0')
+		j++;
+	if (j == (int)ft_strlen(argv[i]))
+		return (ST_OK);
+
+
+	tab = ft_strsplit(argv[i], '$');
+	while (tab[z])
+	{
+		log_info("TAB[%d]->%s", z, tab[z]);
+		ptr = sh->local_vars;
+		while (ptr)
+		{
+			log_success("BROWSE PTR");
+			if (ft_strcmp(tab[z], ptr->key) == 0)
+			{
+				free(tab[z]);
+				tab[z] = ft_strdup(ptr->value);
+			}
+			ptr = ptr->next;
+		}
+		log_success("TAB[%d]->%s", z, tab[z]);
+		z++;
+	}
+
+	char *tmp;
+	char *tmp2;
+
+	tmp = NULL;
+	z = 0;
+	while (tab[z])
+	{
+		if (tmp == NULL)
+			tmp = ft_strdup(tab[z]);
+		else
+		{
+			tmp2 = ft_strjoin(tmp, tab[z]);
+			free(tmp);
+			tmp = ft_strdup(tmp2);
+			free(tmp2);
+		}
+		z++;
+	}
+	free(argv[i]);
+	argv[i] = ft_strdup(tmp);
+	free(tmp);
+	return (ST_OK);
+}
+
 int		local_var_replace(char **argv, t_sh *sh)
 {
 	int	i;
-	int	j;
-	int	k;
 	t_var	*ptr;
 	char *tmp;
 
@@ -13,39 +71,8 @@ int		local_var_replace(char **argv, t_sh *sh)
 	tmp = NULL;
 	while (argv[i])
 	{
-		j = 0;
-		k = 0;
 		log_warn("Value of ARGV[%d] %s",i , argv[i]);
-		while (argv[i][j] != '$' && argv[i][j] != '\0')
-			j++;
-		log_warn("Value of J %d et STRLEN %d",j , ft_strlen(argv[i]));
-		if (j != (int)ft_strlen(argv[i]))
-		{
-			log_success("Go into j");
-			while (ptr)
-			{
-				log_success("BROWSE PTR");
-				if (j != 0 && ft_strcmp(argv[i] + j + 1, ptr->key) == 0)
-				{
-					tmp = (char *)malloc(sizeof(char) * (j + 1));
-					while (k < j)
-					{
-						tmp[k] = argv[i][k];
-						k++;
-					}
-					free(argv[i]);
-					argv[i] = ft_strjoin(tmp, ptr->value);
-					free(tmp);
-					break ;
-				}
-				else
-				{
-					free(argv[i]);
-					argv[i] = ft_strdup(ptr->value);
-				}
-				ptr = ptr->next;
-			}
-		}
+		local_var_replace_recursive(argv, sh, i);
 		i++;
 	}
 	return (ST_OK);
