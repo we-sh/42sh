@@ -161,7 +161,6 @@ SRCS	=	\
 			job/redir_free.c											\
 			job/redir_list_free.c										\
 			loop/loop_main.c											\
-			local_var/local_var_insert.c								\
 			local_var/local_var_replace.c								\
 			options/option_get_value.c									\
 			options/option_is_set.c										\
