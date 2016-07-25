@@ -22,7 +22,7 @@
 ** line and set them into the specified environment.
 */
 
-int			env_update_from_cmd_line(char ***argv, int *argc, char ***envp)
+int			env_update_from_cmd_line(char ***argv, int *argc, char ***envp, int loc)
 {
 	char	*value;
 	char 	**tmptab;
@@ -41,6 +41,7 @@ int			env_update_from_cmd_line(char ***argv, int *argc, char ***envp)
 	tmptab = (char **)malloc(sizeof(char *)* (*argc + 1));
 	while (nbr > 0 && (*argv)[0] != NULL && (*argv)[0][0] != '\0')
 	{
+		log_info("Value of ARGV %s", *argv[0]);
 		if (*argv[0] && ft_strcmp(*argv[0], "env") == 0)
 			add_to_env = 1;
 		tmptab[i] = ft_strdup(*argv[0]);
@@ -62,6 +63,8 @@ int			env_update_from_cmd_line(char ***argv, int *argc, char ***envp)
 	test[i] = NULL;
 	//*argv = tmptab;
 	i = 0;
+	if (loc == 1)
+		add_to_env = 1;
 	if (add_to_env == 0)
 	{
 		while (test[i] != NULL && test[i][0] != '\0' && test[i][0] != '=')
@@ -107,5 +110,44 @@ int			env_update_from_cmd_line(char ***argv, int *argc, char ***envp)
 		log_success("Out 1");
 	*argv = tmptab;
 		log_success("Out 2 ");
+	return (ST_OK);
+
+
+
+
+
+
+// 		char	*value;
+// 		char **tmp;
+// 	int		ret;
+// 	int i=0;
+
+// 	tmp = *argv;
+
+// 	while (tmp[i])
+// 	{
+// 		log_success(tmp[i]);
+// 		i++;
+// 	}
+// 	if (!argv)
+// 		return (ST_OK);
+// 	while ((*argv)[0] != NULL && (*argv)[0][0] != '\0' && (*argv)[0][0] != '='
+// 		&& (value = env_get_value_and_remove_equal_sign((*argv)[0])) != NULL)
+// 	{
+// 		if (envp != NULL)
+// 			if ((ret = env_set(envp, (*argv)[0], value)) != ST_OK)
+// 				return (ret);
+// 		*argc -= 1;
+// 		ft_array_pop(argv, 0, 1);
+// 	}
+
+// i =0;
+// 		tmp = *argv;
+
+// 	while (tmp[i])
+// 	{
+// 		log_success(tmp[i]);
+// 		i++;
+// 	}
 	return (ST_OK);
 }
