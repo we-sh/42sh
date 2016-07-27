@@ -247,6 +247,8 @@ int				conf_check_color_mode(char **env);
 /*
 ** local_var
 */
-int				local_var_replace(char **argv, t_sh *sh);
+# include "parser_struct.h"
+
+int 		local_var_replace(t_parser **parser, t_lexer *lexer, int *i);
 
 #endif

@@ -265,6 +265,16 @@ static t_token g_token_globing_name_lastexitstatus = {
 	0
 };
 
+static t_token g_token_globing_name_dollar = {
+	"$",
+	NULL,
+	1,
+	TT_NONE,
+	TC_DOLLAR,
+	token_globing_parse_none,
+	0
+};
+
 static t_token g_token_globing_inhibitor_dquote = {
 	"\"",
 	NULL,

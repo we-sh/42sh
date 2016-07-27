@@ -1,79 +1,109 @@
 #include "shell.h"
 
-int		local_var_replace_recursive(char **argv, t_sh *sh, int i)
+
+static int s_local_var_replace_checkfirst_value(t_parser **parser, int *i, char **input)
+{// checker le retour des malloc
+	int pos;
+	int ret;
+	char *firstvalue;
+
+	pos = 0;
+	ret = 0;
+	if (ft_strncmp((*parser)->in, "$", 1) != 0)
+	{
+		while (ft_strncmp((*parser)->in + pos, "$", 1) != 0)
+			pos++;
+		firstvalue = (char *)malloc(sizeof(char)* pos + 1);
+		firstvalue = ft_strncpy(firstvalue, (*parser)->in, pos);
+		firstvalue[pos] = '\0';
+		if ((ret = token_globing_parse_utils_push_str((*parser)->target_list_head,
+			firstvalue)) != ST_OK)
+		{
+			free(firstvalue);
+			return (ret);
+		}
+		*i += 1;
+		free(firstvalue);
+		*input = ft_strdup((*parser)->in + pos); 
+	}
+	else
+		*input = ft_strdup((*parser)->in);
+	return (ST_OK);
+}
+
+static int		s_local_var_replace_loop(t_parser **parser, int *i)
 {
-	int	j;
-	int	k;
-	int	z;
-	char **tab;
+	char *input;
+
+	input = NULL;
+	s_local_var_replace_checkfirst_value(parser, i, &input);
+
+//	log_info("Value of input=%s", input);
+
 	t_var *ptr;
+	char **tab;
+	int	z;
+	int	ret;
+	int	nbrptr;
+	int	nbrvar;
 
-	j = 0;
-	k = 0;
+	nbrptr = 0;
+	nbrvar = 0;
+	ptr = (*parser)->sh->local_vars;
+	while (ptr)
+	{
+		nbrvar++;
+		ptr = ptr->next;
+	}
 	z = 0;
-	while (argv[i][j] != '$' && argv[i][j] != '\0')
-		j++;
-	if (j == (int)ft_strlen(argv[i]))
-		return (ST_OK);
-
-
-	tab = ft_strsplit(argv[i], '$');
+	tab = ft_strsplit(input, '$');
+	log_warn("INPUT before replace %s et *i=%d", input, *i);
+	free(input);
 	while (tab[z])
 	{
 		log_info("TAB[%d]->%s", z, tab[z]);
-		ptr = sh->local_vars;
+		ptr = (*parser)->sh->local_vars;
+		nbrptr = 0;
 		while (ptr)
 		{
 			log_success("BROWSE PTR");
 			if (ft_strcmp(tab[z], ptr->key) == 0)
 			{
-				free(tab[z]);
-				tab[z] = ft_strdup(ptr->value);
+				if ((ret = token_globing_parse_utils_push_str((*parser)->target_list_head,
+					ptr->value)) != ST_OK)
+				{
+					ft_memdel_tab((void ***)&tab);
+					return (ret);
+				}
+				else
+					break ;
 			}
+			nbrptr++;
 			ptr = ptr->next;
 		}
+		*i += 2;
 		log_success("TAB[%d]->%s", z, tab[z]);
 		z++;
 	}
-
-	char *tmp;
-	char *tmp2;
-
-	tmp = NULL;
-	z = 0;
-	while (tab[z])
-	{
-		if (tmp == NULL)
-			tmp = ft_strdup(tab[z]);
-		else
-		{
-			tmp2 = ft_strjoin(tmp, tab[z]);
-			free(tmp);
-			tmp = ft_strdup(tmp2);
-			free(tmp2);
-		}
-		z++;
-	}
-	free(argv[i]);
-	argv[i] = ft_strdup(tmp);
-	free(tmp);
+	ft_memdel_tab((void ***)&tab);
 	return (ST_OK);
 }
 
-int		local_var_replace(char **argv, t_sh *sh)
+int 		local_var_replace(t_parser **parser, t_lexer *lexer, int *i)
 {
-	int	i;
-	t_var	*ptr;
-	char *tmp;
+	int		ret;
+	char	*input;
 
-	ptr = sh->local_vars;
-	i = 0;
-	tmp = NULL;
-	while (argv[i])
+	input = NULL;
+	ret = ST_OK;
+	if (!(*parser)->sh->local_vars)
 	{
-		log_warn("Value of ARGV[%d] %s",i , argv[i]);
-		local_var_replace_recursive(argv, sh, i);
-		i++;
+		if ((ret = s_local_var_replace_checkfirst_value(parser, i, &input)) != ST_OK)
+			return (ret);
+		*i += lexer->size - 1;
+		return (ST_OK);
 	}
+	else if ((ret = s_local_var_replace_loop(parser, i)) != ST_OK)
+		return (ret);
 	return (ST_OK);
 }
