@@ -44,6 +44,7 @@ typedef enum			e_token_code
 	TC_AND_IF,
 	TC_DSEMI,
 	TC_LASTEXITSTATUS,
+	TC_DOLLAR,
 	TC_CLOBBER,
 	TC_SEMI,
 	TC_GREAT,
