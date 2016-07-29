@@ -32,7 +32,6 @@ static int	s_suite(t_parser *parser, t_lexer *lexer, int *i)
 	ret = 0;
 	if (TOKEN_CODE(*i) == TC_LASTEXITSTATUS)
 	{
-		log_fatal("there is a last exit stat yeah");
 		if ((tmp = ft_itoa(parser->sh->last_exit_status)) == NULL)
 			return (ST_MALLOC);
 		ret = token_globing_parse_utils_push_str(parser->target_list_head,
@@ -41,27 +40,10 @@ static int	s_suite(t_parser *parser, t_lexer *lexer, int *i)
 	}
 	else if (TOKEN_CODE(*i) == TC_DOLLAR ||
 		((*i + 1) < lexer->size && TOKEN_CODE(*i + 1) == TC_DOLLAR))
-	{
-		log_warn("Lexer size %d valeur du token=%s", lexer->size, TOKEN_CONTENT(*i + 1));
-		log_warn("input value=%s", parser->in);
-		local_var_replace(&parser, lexer, i);
-		log_success("Valule of *i = %d", *i);
-		// if ((tmp = local_var_replace(&parser->in, parser->sh)) != NULL)
-		// {
-		// 	log_warn("Parser-in %s", parser->in); //put this inside var replace et incrementer
-		// 	ret = token_globing_parse_utils_push_str(parser->target_list_head, tmp);
-		// 	free(tmp);
-		// 	if (*i < lexer->size)
-		// 		*i += lexer->size - 1;
-		// }
-		// else
-		// 	*i += 1;
-	}
+		ret = local_var_replace(&parser, lexer, i);
 	else
-	{
 		ret = token_globing_parse_utils_push_str(parser->target_list_head,
 					s_expand_escape_char_not_inhibited(TOKEN_CONTENT(*i)));
-	}
 	return (ret);
 }
 

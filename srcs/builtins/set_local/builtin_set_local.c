@@ -21,18 +21,16 @@
 ** current directory.
 */
 
-static int		s_add_new_local(char *local)
+static int		s_set_local_loop(t_sh **sh, char *local)
 {
-	char		*value;
+	int			flag;
+	int			ret;
+	t_var		*ptrvar;
 
-	value = env_get_value_and_remove_equal_sign(local);
-	newvar = s_initvar();
-	if (!((*sh)->local_vars))
-		(*sh)->local_vars = newvar;
 	ptrvar = (*sh)->local_vars;
-	if (!(newvar) || !newvar)
-		return (ST_OK);
-	while (ptrvar->next)
+	ret = 0;
+	flag = 0;
+	while (ptrvar)
 	{
 		ptrvar = ptrvar->next;
 	}
@@ -82,36 +80,14 @@ static int	s_exec(t_sh *sh, t_proc *p)
 
 static int	s_after(t_sh **sh, t_proc *p)
 {
-	t_var 		*ptrvar;
-	t_var 		*newvar;
-	char		*value;
 	int			i;
 	int			flag;
 
 	i = 1;
 	while (p->argv[i])
 	{
-		log_info("p->argv[%d] = %s", i, p->argv[i]);
-		flag = 0;
-		ptrvar = (*sh)->local_vars;
-		while (ptrvar)
-		{
-			log_success("Browse ptrvar");
-			if (ft_strncmp(ptrvar->key, p->argv[i], ft_strlen(ptrvar->key)) == 0)
-			{
-				if ((value = env_get_value_and_remove_equal_sign(p->argv[i])) != NULL)
-				{
-					free(ptrvar->value);
-					ptrvar->value = ft_strdup(value);
-					flag = 1;
-					log_success("Flag 1 Add key->%s and value->%s", ptrvar->key, ptrvar->value);
-					break ;
-				}
-			}
-			ptrvar = ptrvar->next;
-		}
-		if (flag == 0)
-			s_add_new_local(p->argv[i]);
+		if ((s_set_local_loop(sh, p->argv[i])) == ST_MALLOC)
+			return (ST_MALLOC);
 		i++;
 	}
 	return (ST_OK);
