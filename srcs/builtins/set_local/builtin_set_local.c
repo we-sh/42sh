@@ -22,11 +22,13 @@
 ** current directory.
 */
 
-static int		s_set_local_loop(t_sh **sh, char *local, t_var *ptrvar)
+static int		s_set_local_loop(t_sh **sh, char *local)
 {
 	int			flag;
 	int			ret;
+	t_var		*ptrvar;
 
+	ptrvar = (*sh)->local_vars;
 	ret = 0;
 	flag = 0;
 	while (ptrvar)
@@ -67,14 +69,12 @@ static int		s_exec(t_sh *sh, t_proc *p)
 
 static int		s_after(t_sh **sh, t_proc *p)
 {
-	t_var		*ptrvar;
 	int			i;
 
 	i = 1;
-	ptrvar = (*sh)->local_vars;
 	while (p->argv[i])
 	{
-		if ((s_set_local_loop(sh, p->argv[i], ptrvar)) == ST_MALLOC)
+		if ((s_set_local_loop(sh, p->argv[i])) == ST_MALLOC)
 			return (ST_MALLOC);
 		i++;
 	}

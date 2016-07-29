@@ -16,7 +16,7 @@ static int	s_exec_display(t_proc *p)
 	}
 	p->argc--;
 	ft_array_pop(&p->argv, 0, 1);
-	env_update_from_cmd_line(&p->argv, &p->argc, &p->envp, 1);
+	env_or_var_update_from_cmd_line(&p->argv, &p->argc, &p->envp, 1);
 	if (p->argc == 0)
 	{
 		while (p->envp[i])
