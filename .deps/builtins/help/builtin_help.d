@@ -11,11 +11,12 @@
   incs/parser_struct.h incs/builtins/builtin.h \
   incs/builtins/builtin_struct.h incs/builtins/builtin_bg.h \
   incs/builtins/builtin_cd.h incs/builtins/builtin_echo.h \
-  incs/builtins/builtin_exit.h incs/builtins/builtin_fg.h \
-  incs/builtins/builtin_help.h incs/builtins/builtin_jobs.h \
-  incs/builtins/builtin_env.h incs/builtins/builtin_language.h \
-  incs/builtins/builtin_setenv.h incs/builtins/builtin_set_local.h \
-  incs/builtins/builtin_termcaps.h incs/builtins/builtin_unsetenv.h
+  incs/builtins/builtin_exit.h incs/builtins/builtin_export.h \
+  incs/builtins/builtin_fg.h incs/builtins/builtin_help.h \
+  incs/builtins/builtin_jobs.h incs/builtins/builtin_env.h \
+  incs/builtins/builtin_language.h incs/builtins/builtin_setenv.h \
+  incs/builtins/builtin_set_local.h incs/builtins/builtin_termcaps.h \
+  incs/builtins/builtin_unsetenv.h
 
 incs/shell.h:
 
@@ -82,6 +83,8 @@ incs/builtins/builtin_cd.h:
 incs/builtins/builtin_echo.h:
 
 incs/builtins/builtin_exit.h:
+
+incs/builtins/builtin_export.h:
 
 incs/builtins/builtin_fg.h:
 
