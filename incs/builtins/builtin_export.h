@@ -3,9 +3,9 @@
 
 # include "builtin.h"
 
-static t_option				g_builtin_export_option_n = {
-	.name = "n",
-	.index = ST_BLTIN_EXPORT_OPT_N,
+static t_option				g_builtin_export_option_p = {
+	.name = "p",
+	.index = ST_BLTIN_EXPORT_OPT_P,
 	.is_single_char = 1,
 	.has_value = 0,
 	.value_is_numeric = 0,
@@ -15,7 +15,7 @@ static t_option				g_builtin_export_option_n = {
 };
 
 static const t_option		*g_builtin_export_options[] = {
-	[0] = &g_builtin_export_option_n,
+	[0] = &g_builtin_export_option_p,
 	[1] = NULL
 };
 
