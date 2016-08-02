@@ -65,6 +65,7 @@
 # include "get_next_line.h"
 # include "parser.h"
 # include "builtin.h"
+# include "parser_struct.h"
 
 /*
 ** List of current jobs
@@ -247,8 +248,8 @@ int				conf_check_color_mode(char **env);
 /*
 ** local_var
 */
-# include "parser_struct.h"
 
-int 		local_var_replace(t_parser **parser, t_lexer *lexer, int *i);
+int				local_var_replace(t_parser **parser, t_lexer *lexer, int *i);
+char			*local_var_register(t_sh *sh, char *value);
 
 #endif

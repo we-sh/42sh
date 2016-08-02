@@ -105,7 +105,7 @@ SRCS	=	\
 			builtins/echo/builtin_echo.c								\
 			builtins/echo/builtin_echo_escape.c							\
 			builtins/exit/builtin_exit.c								\
-			builtins/export/builtin_export.c								\
+			builtins/export/builtin_export.c							\
 			builtins/fg/builtin_fg.c									\
 			builtins/help/builtin_help.c								\
 			builtins/jobs/builtin_jobs.c								\
@@ -114,6 +114,9 @@ SRCS	=	\
 			builtins/setenv/builtin_setenv.c							\
 			builtins/setenv/builtin_setenv_argv_is_valid.c				\
 			builtins/set_local/builtin_set_local.c						\
+			builtins/set_local/builtin_local_var_set_local_loop.c		\
+			builtins/set_local/builtin_local_var_add.c					\
+			builtins/set_local/builtin_local_var_update.c				\
 			builtins/termcaps/builtin_termcaps.c						\
 			builtins/unsetenv/builtin_unsetenv.c						\
 			builtins/builtin_callback.c									\
@@ -126,7 +129,7 @@ SRCS	=	\
 			env/env_set.c												\
 			env/env_unset.c												\
 			env/env_index_value.c										\
-			env/env_or_var_update_from_cmd_line.c								\
+			env/env_or_var_update_from_cmd_line.c						\
 			env/env_get_value_and_remove_equal_sign.c					\
 			display/display_status.c									\
 			i18n/i18n_translate.c										\
@@ -165,6 +168,7 @@ SRCS	=	\
 			loop/loop_job_launcher.c									\
 			loop/loop_main.c											\
 			local_var/local_var_replace.c								\
+			local_var/local_var_register.c								\
 			options/option_get_value.c									\
 			options/option_is_set.c										\
 			options/list_node__option_alloc.c							\

@@ -21,45 +21,7 @@
 ** current directory.
 */
 
-static int		s_set_local_loop(t_sh **sh, char *local)
-{
-	int			flag;
-	int			ret;
-	t_var		*ptrvar;
-
-	ptrvar = (*sh)->local_vars;
-	ret = 0;
-	flag = 0;
-	while (ptrvar)
-	{
-		ptrvar = ptrvar->next;
-	}
-	ptrvar->next = newvar;
-	newvar->key = ft_strdup(local);
-	newvar->value = ft_strdup(value);
-	newvar->next = NULL;
-	log_success("Flag 0 Add key->%s and value->%s", ptrvar->key, ptrvar->value);
-}
-
-static t_var 	*s_initvar(void)
-{
-	t_var		*newvar;
-
-	newvar = (t_var *)malloc(sizeof(t_var));
-	if (!(newvar))
-		return (NULL);
-	newvar->key = NULL;
-	newvar->value = NULL;
-	newvar->next = NULL;
-	return (newvar);
-}
-
-static int	s_before(void)
-{
-	return (ST_OK);
-}
-
-static int	s_exec(t_sh *sh, t_proc *p)
+static int		s_exec(t_sh *sh, t_proc *p)
 {
 	t_var	*ptrvar;
 
@@ -86,7 +48,7 @@ static int	s_after(t_sh **sh, t_proc *p)
 	i = 1;
 	while (p->argv[i])
 	{
-		if ((s_set_local_loop(sh, p->argv[i])) == ST_MALLOC)
+		if ((builtin_local_var_set_local_loop(sh, p->argv[i])) == ST_MALLOC)
 			return (ST_MALLOC);
 		i++;
 	}
