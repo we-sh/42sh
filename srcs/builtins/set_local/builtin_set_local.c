@@ -22,32 +22,6 @@
 ** current directory.
 */
 
-static int		s_set_local_loop(t_sh **sh, char *local)
-{
-	int			flag;
-	int			ret;
-	t_var		*ptrvar;
-
-	ptrvar = (*sh)->local_vars;
-	ret = 0;
-	flag = 0;
-	while (ptrvar)
-	{
-		if ((ret = builtin_local_var_update(ptrvar, local, &flag))
-			== ST_OK)
-			break ;
-		else if (ret == ST_MALLOC)
-			return (ret);
-		ptrvar = ptrvar->next;
-	}
-	if (flag == 0)
-	{
-		if ((builtin_local_var_add(sh, local)) == ST_MALLOC)
-			return (ST_MALLOC);
-	}
-	return (ST_OK);
-}
-
 static int		s_exec(t_sh *sh, t_proc *p)
 {
 	t_var		*ptrvar;
@@ -74,7 +48,7 @@ static int		s_after(t_sh **sh, t_proc *p)
 	i = 1;
 	while (p->argv[i])
 	{
-		if ((s_set_local_loop(sh, p->argv[i])) == ST_MALLOC)
+		if ((builtin_local_var_set_local_loop(sh, p->argv[i])) == ST_MALLOC)
 			return (ST_MALLOC);
 		i++;
 	}

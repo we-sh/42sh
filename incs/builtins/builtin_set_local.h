@@ -5,6 +5,7 @@
 
 int		builtin_local_var_update(t_var *ptrvar, char *local, int *flag);
 int		builtin_local_var_add(t_sh **sh, char *local);
+int		builtin_local_var_set_local_loop(t_sh **sh, char *local);
 
 static const t_builtin		g_builtin_set_local = {
 	.index = BLTIN_SET_LOCAL,
