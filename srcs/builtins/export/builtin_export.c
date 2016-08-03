@@ -71,66 +71,6 @@ static int	s_exec(t_sh *sh, t_builtin const *builtin, t_proc *p)
 	return (ST_OK);
 }
 
-static int	s_builtin_export_n_option(t_sh **sh, t_proc *p)
-{
-	char *value;
-	char *tmp;
-	int i;
-	
-	i = 1;
-	while (p->argv[i])
-	{
-		if ((tmp = ft_strdup(p->argv[i])) == NULL)
-			return (ST_MALLOC);
-		if ((value = env_get_value_and_remove_equal_sign(tmp)) != NULL)
-			env_unset(&(*sh)->envp, tmp);
-		else
-			env_unset(&(*sh)->envp, p->argv[i]);
-		free(tmp);
-		i++;
-	}
-	return (ST_OK);
-}
-
-static int s_builtin_export_set(t_sh **sh, t_proc *p)
-{
-	char *value;
-	char *tmp;
-	int ret;
-	int i;
-
-	i = 1;
-	ret = 0;
-	while (p->argv[i])
-	{
-		if ((value = local_var_register(*sh, p->argv[i])) != NULL)
-		{
-			if ((tmp = ft_strjoin3_safe(p->argv[i],"=",value)) == NULL)
-				return (ST_MALLOC);
-			if ((builtin_local_var_set_local_loop(sh, tmp)) == ST_MALLOC)
-				return (ST_MALLOC);
-			if ((ret = env_set(&(*sh)->envp, p->argv[i], value)) != ST_OK)
-				return (ret);
-			free(tmp);
-		}
-		else
-		{
-			if ((tmp = ft_strdup(p->argv[i])) == NULL)
-				return (ST_MALLOC);
-			if ((value = env_get_value_and_remove_equal_sign(tmp)) != NULL)
-			{
-				if ((builtin_local_var_set_local_loop(sh, p->argv[i])) == ST_MALLOC)
-					return (ST_MALLOC);
-				if ((ret = env_set(&(*sh)->envp, tmp, value)) != ST_OK)
-					return (ret);
-			}
-			free(tmp);
-		}
-		i++;
-	}
-	return (ST_OK);
-}
-
 static int	s_after(t_sh **sh, t_proc *p)
 {
 	int i;
@@ -138,15 +78,19 @@ static int	s_after(t_sh **sh, t_proc *p)
 	i = 1;
 	if (p->bltin_status == ST_OK)
 	{
-		if ((option_is_set(&p->bltin_opt_head, ST_BLTIN_EXPORT_OPT_N)) == 1)
+		while (p->argv[i])
 		{
-			if ((s_builtin_export_n_option(sh, p)) == ST_MALLOC)
-				return (ST_MALLOC);
-		}
-		else
-		{
-			if ((s_builtin_export_set(sh, p)) == ST_MALLOC)
-				return (ST_MALLOC);
+			if ((option_is_set(&p->bltin_opt_head, ST_BLTIN_EXPORT_OPT_N)) == 1)
+			{
+				if ((builtin_export_n_option(sh, p->argv[i])) == ST_MALLOC)
+					return (ST_MALLOC);
+			}
+			else
+			{
+				if ((builtin_export_set(sh, p->argv[i])) == ST_MALLOC)
+					return (ST_MALLOC);
+			}
+			i++;
 		}
 	}
 	return (ST_OK);
