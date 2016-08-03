@@ -40,7 +40,10 @@ static int	s_suite(t_parser *parser, t_lexer *lexer, int *i)
 	}
 	else if (TOKEN_CODE(*i) == TC_DOLLAR ||
 		((*i + 1) < lexer->size && TOKEN_CODE(*i + 1) == TC_DOLLAR))
+	{
 		ret = local_var_replace(&parser, lexer, i);
+		lexer->size--;//Temp Debug which avoid segfault
+	}
 	else
 		ret = token_globing_parse_utils_push_str(parser->target_list_head,
 					s_expand_escape_char_not_inhibited(TOKEN_CONTENT(*i)));
@@ -57,6 +60,7 @@ int			token_globing_parse_none(void *target, t_parser *parser,
 
 	ret = ST_OK;
 	argument = (t_argv *)target;
+	log_warn("Token GLOBING PARSE-NONE debug lexer number %d", lexer->size);
 	if (*i == 0 && TOKEN_CODE(*i) == TC_TILDE)
 	{
 		tmp = env_get_home(parser->sh->envp);
