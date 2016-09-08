@@ -7,20 +7,20 @@
 #define ISSPACE(node) (node->character_size==1&&ft_isspace(node->character[0]))
 
 void				key__share__prev_word_offset(
-										const t_list_head *command_line,
+										const t_list_head *command,
 										size_t current_offset,
 										size_t prompt_size,
 										size_t *out_offset)
 {
 	t_list			*pos;
-	t_list_node_cmd	*node_cmd;
+	t_node_cmd	*node_cmd;
 	t_state_word	state;
 
-	pos = list_nth(&command_line->list, current_offset);
+	pos = list_nth(&command->list, current_offset);
 	state = STATE_UNDEFINED;
 	while (current_offset > prompt_size)
 	{
-		node_cmd = CONTAINER_OF(pos, t_list_node_cmd, list);
+		node_cmd = CONTAINER_OF(pos, t_node_cmd, list);
 		if (state == STATE_UNDEFINED && !ISSPACE(node_cmd))
 			state = STATE_ALNUM;
 		if (state == STATE_ALNUM && ISSPACE(node_cmd))
@@ -32,19 +32,19 @@ void				key__share__prev_word_offset(
 }
 
 void				key__share__next_word_offset(
-										const t_list_head *command_line,
+										const t_list_head *command,
 										size_t current_offset,
 										size_t *out_offset)
 {
 	t_list			*pos;
-	t_list_node_cmd	*node_cmd;
+	t_node_cmd	*node_cmd;
 	t_state_word	state;
 
-	pos = list_nth(&command_line->list, current_offset + 1);
+	pos = list_nth(&command->list, current_offset + 1);
 	state = STATE_UNDEFINED;
-	while (current_offset < command_line->size)
+	while (current_offset < command->size)
 	{
-		node_cmd = CONTAINER_OF(pos, t_list_node_cmd, list);
+		node_cmd = CONTAINER_OF(pos, t_node_cmd, list);
 		if (state == STATE_UNDEFINED && ISSPACE(node_cmd))
 			state = STATE_ISSPACE;
 		if (state == STATE_ISSPACE && !ISSPACE(node_cmd))

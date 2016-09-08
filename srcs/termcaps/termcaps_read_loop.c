@@ -7,9 +7,9 @@ static int			s_termcaps_treat_input(const t_input_type input_type,
 {
 	if (input_type == MINISHELL__INPUT_TYPE_PRINT)
 	{
-		ASSERT(termcaps_string_to_command_line(input_buffer_size,
+		ASSERT(command_add_string(input_buffer_size,
 											input_buffer,
-											&context->command_line));
+											&context->command));
 	}
 	else if (input_type == MINISHELL__INPUT_TYPE_CAPS)
 	{
@@ -22,10 +22,10 @@ static int			s_check_job_status(t_termcaps_context *context)
 {
 	if (job_background_update_status() > 0)
 	{
-		caps__delete_line(context->command_line.offset);
-		ASSERT(termcaps_display_command_line(context));
-		caps__cursor_to_offset(context->command_line.offset,
-								context->command_line.size);
+		caps__delete_line(context->command.offset);
+		ASSERT(termcaps_display_command(context));
+		caps__cursor_to_offset(context->command.offset,
+								context->command.size);
 	}
 	return (1);
 }

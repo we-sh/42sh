@@ -11,14 +11,14 @@ int		termcaps_line_print(t_termcaps_context *context,
 
 	if (context->state == STATE_REGULAR || context->state == STATE_SELECTION)
 	{
-		ASSERT(termcaps_display_command_line(context));
-		caps__cursor_to_offset(context->command_line.offset,
-							context->command_line.size);
+		ASSERT(termcaps_display_command(context));
+		caps__cursor_to_offset(context->command.offset,
+							context->command.size);
 	}
 	else if (context->state == STATE_SEARCH_HISTORY)
 	{
 		termcaps_write(context->fd, REVERSE_I_SEARCH, REVERSE_I_SEARCH_SIZE);
-		if (list_head__command_line_to_buffer(&context->command_line,
+		if (command_to_buffer(&context->command,
 								sizeof(buffer), &buffer_size, buffer))
 		{
 			termcaps_write(context->fd, " '", sizeof(" '") - 1);

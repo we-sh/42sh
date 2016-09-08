@@ -92,11 +92,11 @@ int				key__completion(t_termcaps_context *context)
 	if (list_dir_size == 1)
 	{
 		node_dir = CONTAINER_OF(head.next, t_node_dir, list);
-		termcaps_string_to_command_line(node_dir->filename_size - match.size,
+		command_add_string(node_dir->filename_size - match.size,
 										node_dir->filename + match.size,
-										&context->command_line);
+										&context->command);
 		if (node_dir->d_type == DT_DIR)
-			termcaps_string_to_command_line(sizeof ("/") - 1, "/", &context->command_line);
+			command_add_string(sizeof ("/") - 1, "/", &context->command);
 	}
 	else
 	{

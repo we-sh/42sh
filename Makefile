@@ -185,9 +185,8 @@ SRCS	=	\
 			termcaps/termcaps_read_input.c								\
 			termcaps/termcaps_read_loop.c								\
 			termcaps/termcaps_get_character_bytes_count.c				\
-			termcaps/termcaps_string_to_command_line.c					\
-			termcaps/termcaps_character_to_command_line.c				\
-			termcaps/termcaps_display_command_line.c					\
+			termcaps/command_add_string.c					\
+			termcaps/termcaps_display_command.c					\
 			termcaps/termcaps_isunicode.c								\
 			termcaps/termcaps_identify_input.c							\
 			termcaps/list_head.c										\
@@ -207,12 +206,11 @@ SRCS	=	\
 			termcaps/key__cursor_to_prev_word.c							\
 			termcaps/key__cut.c											\
 			termcaps/key__cut_to_end_of_line.c							\
-			termcaps/key__delete_command_line.c							\
+			termcaps/key__delete_command.c							\
 			termcaps/key__delete_under_cursor.c							\
 			termcaps/key__paste.c										\
 			termcaps/key__select.c										\
 			termcaps/key__send.c										\
-			termcaps/key__share__command_line_to_history.c				\
 			termcaps/key__share__copy_build_copy.c						\
 			termcaps/key__share__cut_build_copy.c						\
 			termcaps/key__share__selection_get.c						\

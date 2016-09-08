@@ -92,12 +92,12 @@ size_t				key__completion_list_dir(t_termcaps_context *context,
 	char			cmd[1024];
 	size_t			ref_size;
 
-	if (!list_head__command_line_to_buffer(&context->command_line,
+	if (!command_to_buffer(&context->command,
 				sizeof(cmd) - 1,
 				&cmd_size,
 				cmd))
 	{
-		log_error("list_head__command_line_to_buffer() failed");
+		log_error("command_to_buffer() failed");
 		return (-1);
 	}
 	s_get_path_and_match(&path, match, &cmd_size, cmd);

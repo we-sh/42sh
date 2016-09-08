@@ -207,18 +207,18 @@ int				signal_to_pgid(int pgid);
 int				termcaps_initialize(t_sh *sh, const char *prompt,
 									t_termcaps_context *context);
 int				termcaps_finalize(t_termcaps_context *context);
-int				termcaps_character_to_command_line(const size_t char_bytes_cnt,
+int				command_add(const size_t char_bytes_cnt,
 											const char *character_bytes,
-											t_list_head *command_line);
-int				termcaps_display_command_line(const t_termcaps_context *cont);
+											t_list_head *command);
+int				termcaps_display_command(const t_termcaps_context *cont);
 size_t			termcaps_get_character_bytes_count(const size_t input_bytes_cnt,
 								const char *input_bytes,
 								size_t *out_missing_bytes_count);
 int				termcaps_isunicode(const char c, size_t *out_char_bytes_cnt);
 char			*termcaps_read_input(t_termcaps_context *context);
-int				termcaps_string_to_command_line(const size_t input_buffer_size,
+int				command_add_string(const size_t input_buffer_size,
 										const char *input_buffer,
-										t_list_head *command_line);
+										t_list_head *command);
 int				termcaps_history_search(t_termcaps_context *context,
 										t_buffer *out_match);
 int				termcaps_write(int fd, char *buffer, size_t buffer_size);
