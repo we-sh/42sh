@@ -6,8 +6,8 @@ int						key__share__copy_build_copy(
 											size_t copy_size,
 											t_list_head *out_copy)
 {
-	t_list				*pos;
-	size_t				copy_offset;
+	t_list			*pos;
+	size_t			copy_offset;
 	t_node_cmd		*node;
 
 	command_clear(out_copy);

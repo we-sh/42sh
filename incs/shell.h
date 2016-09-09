@@ -21,10 +21,19 @@
 #  define LSOPTCOLOR "-G"
 # endif
 
-# define ANSI_COLOR_RESET_SIZE (sizeof("\033[0m") - 1)
-# define ANSI_COLOR_RESET "\033[0m"
-# define ANSI_COLOR_LIGHT_BLUE_SIZE (sizeof("\033[94m") - 1)
-# define ANSI_COLOR_LIGHT_BLUE "\033[94m"
+# define PROMPT_COLOR
+
+# ifdef PROMPT_COLOR
+#  define ANSI_COLOR_RESET_SIZE (sizeof("\033[0m") - 1)
+#  define ANSI_COLOR_RESET "\033[0m"
+#  define ANSI_COLOR_LIGHT_BLUE_SIZE (sizeof("\033[94m") - 1)
+#  define ANSI_COLOR_LIGHT_BLUE "\033[94m"
+# else
+#  define ANSI_COLOR_RESET_SIZE (0)
+#  define ANSI_COLOR_RESET ""
+#  define ANSI_COLOR_LIGHT_BLUE_SIZE (0)
+#  define ANSI_COLOR_LIGHT_BLUE ""
+# endif
 
 # define MIN(x, y) (x < y ? x : y)
 # define MAX(x, y) (x > y ? x : y)
@@ -219,8 +228,6 @@ char			*termcaps_read_input(t_termcaps_context *context);
 int				command_add_string(const size_t input_buffer_size,
 										const char *input_buffer,
 										t_list_head *command);
-int				termcaps_history_search(t_termcaps_context *context,
-										t_buffer *out_match);
 int				termcaps_write(int fd, char *buffer, size_t buffer_size);
 int				termcaps_line_print(t_termcaps_context *context,
 									t_buffer *history_search);

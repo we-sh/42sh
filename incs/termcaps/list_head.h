@@ -76,8 +76,8 @@ void				command_del(t_list *entry);
 /*
 ** list head command line dup
 */
-t_list_head	*command_dup(t_list_head *dst,
-												t_list_head *src);
+t_list_head			*command_dup(t_list_head *dst,
+								t_list_head *src);
 
 /*
 ** list head command line destroy
@@ -102,16 +102,38 @@ typedef struct		s_node_history
 /*
 ** add history
 */
-int								history_add(const char *str, t_list_head *history);
+int					history_add(const char *str, t_list_head *history);
 
 /*
 ** clear history
 */
-void							history_clear(t_list_head *history);
+void				history_clear(t_list_head *history);
 
 /*
 ** history search
 */
-int								history_search(t_list_head *history, const char *str);
+int					history_search(t_list_head *history,
+									const char *str,
+									const size_t size,
+									int direction);
+
+/*
+** history search prefix
+*/
+int					history_search_prefix(t_list_head *history,
+											const char *str,
+											const size_t size,
+											int direction);
+
+/*
+** history get
+*/
+int					history_get(t_list_head *history, const int index,
+								t_buffer *out_history_elem);
+
+/*
+** history remove
+*/
+void				history_remove(t_list_head *history, const int index);
 
 #endif

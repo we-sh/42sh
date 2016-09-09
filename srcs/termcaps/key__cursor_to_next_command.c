@@ -2,7 +2,7 @@
 
 static int				s_get_next_command(t_termcaps_context *context)
 {
-	t_list				*history_entry;
+	t_list			*history_entry;
 	t_node_history	*history_node;
 
 	history_entry = list_nth(&context->history.list,

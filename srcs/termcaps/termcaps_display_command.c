@@ -31,11 +31,6 @@ static int	s_termcaps_display_control(const t_termcaps_context *context,
 										char *buffer, size_t buffer_size)
 {
 	log_debug("buffer {%.*s}", (int)buffer_size, buffer);
-	if (!buffer)
-	{
-		log_error("buffer_size %zu buffer %p", buffer_size, (void *)buffer);
-		return (0);
-	}
 	if (buffer_size % caps__win(WIN_COLUMNS) == 0)
 	{
 		ft_memcpy(buffer + buffer_size, ENDL, ENDL_SIZE);
@@ -43,13 +38,18 @@ static int	s_termcaps_display_control(const t_termcaps_context *context,
 	}
 	if (buffer_size >= context->prompt.size)
 	{
-		buffer += context->prompt.size;
-		buffer_size -= context->prompt.size;
-		termcaps_write(context->fd, ANSI_COLOR_LIGHT_BLUE, ANSI_COLOR_LIGHT_BLUE_SIZE);
-		termcaps_write(context->fd, context->prompt.bytes, context->prompt.size);
-		termcaps_write(context->fd, ANSI_COLOR_RESET, ANSI_COLOR_RESET_SIZE);
+		termcaps_write(context->fd,
+				ANSI_COLOR_LIGHT_BLUE, ANSI_COLOR_LIGHT_BLUE_SIZE);
+		termcaps_write(context->fd,
+				context->prompt.bytes, context->prompt.size);
+		termcaps_write(context->fd,
+				ANSI_COLOR_RESET, ANSI_COLOR_RESET_SIZE);
+		termcaps_write(context->fd,
+				buffer + context->prompt.size,
+				buffer_size - context->prompt.size);
 	}
-	termcaps_write(context->fd, buffer, buffer_size);
+	else
+		termcaps_write(context->fd, buffer, buffer_size);
 	if (context->state == STATE_SELECTION)
 		s_display_selection(context, buffer);
 	return (1);

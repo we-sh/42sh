@@ -4,9 +4,9 @@
 ** command add
 */
 
-int						command_add(const size_t character_size,
-													const char *character,
-													t_list_head *command)
+int					command_add(const size_t character_size,
+								const char *character,
+								t_list_head *command)
 {
 	t_node_cmd	*new;
 
@@ -63,10 +63,10 @@ void				command_clear(t_list_head *command)
 */
 
 t_list_head			*command_dup(t_list_head *dst,
-														t_list_head *src)
+								t_list_head *src)
 {
 	t_list			*pos;
-	t_node_cmd	*cur;
+	t_node_cmd		*cur;
 	t_list			*safe;
 
 	list_head__init(dst);
@@ -81,13 +81,13 @@ t_list_head			*command_dup(t_list_head *dst,
 }
 
 int					command_to_buffer(const t_list_head *head,
-												const size_t buffer_size_max,
-												size_t *buffer_size,
-												char *buffer)
+									const size_t buffer_size_max,
+									size_t *buffer_size,
+									char *buffer)
 {
 	size_t			buffer_offset;
 	t_list			*pos;
-	t_node_cmd *node_cmd;
+	t_node_cmd		*node_cmd;
 	t_list			*safe;
 
 	buffer_offset = 0;

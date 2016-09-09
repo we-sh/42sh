@@ -36,7 +36,7 @@ int					termcaps_read_loop(t_termcaps_context *context,
 {
 	char			input_buffer[INPUT_SIZE_MAX];
 	t_input_type	input_type;
-	t_buffer		history_search;
+	t_buffer		history_elem;
 
 	while (context->buffer == NULL)
 	{
@@ -54,10 +54,10 @@ int					termcaps_read_loop(t_termcaps_context *context,
 			if (input_size_missing)
 				input_buffer_size += read(context->fd, input_buffer + 1,
 					input_size_missing);
-			termcaps_line_erase(context, history_search);
+			termcaps_line_erase(context, history_elem);
 			s_termcaps_treat_input(input_type, input_buffer_size, input_buffer,
 									context);
-			termcaps_line_print(context, &history_search);
+			termcaps_line_print(context, &history_elem);
 		}
 	}
 	return (1);

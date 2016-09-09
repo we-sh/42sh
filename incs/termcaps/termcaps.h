@@ -41,4 +41,14 @@ typedef struct	s_node_dir
 	t_list			list;
 }				t_node_dir;
 
+int				replace_events(t_termcaps_context *context,
+								const size_t buffer_size_max,
+								t_buffer *buffer);
+int				event_info(t_list_head *history,
+							const char *pt,
+							size_t *token_size,
+							int *history_index);
+void			termcaps_error(t_termcaps_context *context,
+							char *cmd, size_t cmd_size, char *msg);
+
 #endif

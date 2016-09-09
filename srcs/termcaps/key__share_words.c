@@ -13,7 +13,7 @@ void				key__share__prev_word_offset(
 										size_t *out_offset)
 {
 	t_list			*pos;
-	t_node_cmd	*node_cmd;
+	t_node_cmd		*node_cmd;
 	t_state_word	state;
 
 	pos = list_nth(&command->list, current_offset);
@@ -37,7 +37,7 @@ void				key__share__next_word_offset(
 										size_t *out_offset)
 {
 	t_list			*pos;
-	t_node_cmd	*node_cmd;
+	t_node_cmd		*node_cmd;
 	t_state_word	state;
 
 	pos = list_nth(&command->list, current_offset + 1);

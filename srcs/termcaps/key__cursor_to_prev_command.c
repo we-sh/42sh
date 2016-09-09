@@ -2,7 +2,7 @@
 
 int			key__cursor_to_prev_command(t_termcaps_context *in_context)
 {
-	t_list				*history_entry;
+	t_list			*history_entry;
 	t_node_history	*history_node;
 
 	if (in_context->state == STATE_REGULAR)

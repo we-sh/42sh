@@ -7,7 +7,7 @@
 int					history_add(const char *cmd, t_list_head *history)
 {
 	t_node_history	*new;
-	size_t					cmd_size;
+	size_t			cmd_size;
 
 	cmd_size = ft_strlen(cmd);
 	new = malloc(sizeof(t_node_history) + cmd_size + 1);
@@ -25,10 +25,10 @@ int					history_add(const char *cmd, t_list_head *history)
 ** history clear
 */
 
-void					history_clear(t_list_head *history)
+void				history_clear(t_list_head *history)
 {
-	t_list				*pos;
-	t_list				*pos_safe;
+	t_list			*pos;
+	t_list			*pos_safe;
 	t_node_history	*node_history;
 
 	pos_safe = history->list.next;
@@ -41,23 +41,41 @@ void					history_clear(t_list_head *history)
 }
 
 /*
-** history search
+** history get
 */
 
-int						history_search(t_list_head *history, const char *str)
-{
-	t_list				*pos;
-	t_node_history	*node_history;
-	size_t				history_offset;
+#define ABS(x) (size_t)((x) < 0 ? -(x) : (x))
 
-	history_offset = history->offset;
-	pos = list_nth(&history->list, history_offset + 1);
-	while ((pos = pos->prev) && pos != &history->list)
+int					history_get(t_list_head *history, const int index,
+													t_buffer *out_history_elem)
+{
+	t_list			*pos;
+	t_node_history	*node_history;
+
+	out_history_elem->size = 0;
+	out_history_elem->bytes = NULL;
+	ASSERT(ABS(index) <= history->size);
+	pos = list_nth(&history->list, index);
+	ASSERT(pos != &history->list);
+	node_history = CONTAINER_OF(pos, t_node_history, list);
+	*out_history_elem = node_history->command;
+	return (1);
+}
+
+/*
+** history remove
+*/
+
+void				history_remove(t_list_head *history, const int index)
+{
+	t_list			*pos;
+	t_node_history	*node_history;
+
+	pos = list_nth(&history->list, index);
+	if (pos != &history->list)
 	{
 		node_history = CONTAINER_OF(pos, t_node_history, list);
-		if (ft_strstr(node_history->command.bytes, str))
-			return (history_offset);
-		history_offset--;
+		list_del(pos);
+		free(node_history);
 	}
-	return (0);
 }

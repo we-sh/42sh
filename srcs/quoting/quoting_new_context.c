@@ -18,7 +18,7 @@ static char				*s_set_prompt_quoting(int tokenid)
 		return ("> ");
 }
 
-static int				s_first_loop_check(char **final_input,
+static int				s_first_loop_check(char **cmd,
 											t_termcaps_context *child_c,
 											t_termcaps_context *c)
 {
@@ -31,22 +31,23 @@ static int				s_first_loop_check(char **final_input,
 	ASSERT(command_to_buffer(&c->command,
 		(sizeof(command_str) - 1), &command_str_size, command_str));
 	child_c->option = OPTION_QUOTING;
-	tmp = ft_strjoin(command_str, "\n");
+	(ft_strcmp(command_str, "\n") != 0) ? (tmp = ft_strjoin(command_str, "\n")):
+		(tmp = ft_strdup(command_str));
 	command_add_string(ft_strlen(tmp), tmp,
 	&c->command);
-	if ((ret = concat_new_input(final_input, child_c, &tmp)) != ST_OK)
+	if ((ret = concat_new_input(cmd, child_c, &tmp)) == ST_MALLOC)
 		return (ret);
 	if (ret == -1)
 	{
 		command_clear(&child_c->command);
 		command_clear(&c->command);
-		command_add_string((ft_strlen(*final_input)), *final_input, &c->command);
-		free(*final_input);
+		command_add_string((ft_strlen(*cmd)), *cmd, &c->command);
+		free(*cmd);
 	}
 	return (ret);
 }
 
-static int				s_qloop(char *final_input,
+static int				s_qloop(char *cmd,
 								t_termcaps_context *child_c,
 								t_termcaps_context *c)
 {
@@ -56,21 +57,21 @@ static int				s_qloop(char *final_input,
 
 	ret = 0;
 	buff_quote = NULL;
-	while ((parser(c->sh, final_input, F_PARSING_TERMCAPS, NULL)) != ST_OK)
+	while ((parser(c->sh, cmd, F_PARSING_TERMCAPS, NULL)) != ST_OK)
 	{
-		command_add_string(ft_strlen(final_input), final_input, &c->command);
-		free(final_input);
-		if ((ret = concat_new_input(&final_input, child_c, &tmp))
+		(cmd[ft_strlen(cmd)-1] == '\n') ? (tmp = ft_strdup(cmd)) :
+			(tmp = ft_strjoin(cmd, "\n"));
+		command_add_string(ft_strlen(cmd), cmd, &c->command);
+		free(cmd);
+		if ((ret = concat_new_input(&cmd, child_c, &tmp))
 			== ST_MALLOC)
 			return (ST_MALLOC);
 		if (ret == -1)
 			break ;
 	}
 	command_clear(&c->command);
-	list_head__init(&c->command);
-	command_add_string((ft_strlen(final_input)),
-		final_input, &c->command);
-	free(final_input);
+	command_add_string((ft_strlen(cmd)), cmd, &c->command);
+	free(cmd);
 	return (ST_OK);
 }
 

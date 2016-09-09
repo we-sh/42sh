@@ -10,17 +10,17 @@ static void		s_concat_buffer(size_t ref_size,
 								t_buffer *buffer)
 {
 	ft_memcpy(buffer->bytes + buffer->size,
-			  filename,
-			  filename_size);
+			filename,
+			filename_size);
 	buffer->size += filename_size;
 	ft_memset(buffer->bytes + buffer->size, ' ',
-			  ref_size - filename_size);
+			ref_size - filename_size);
 	buffer->size += ref_size - filename_size;
 }
 
 static int		s_fill_buffer(t_list *head,
-							  const int ref_size,
-							  t_buffer *buffer)
+							const int ref_size,
+							t_buffer *buffer)
 {
 	t_node_dir	*node_dir;
 	t_list		*pos;
@@ -42,8 +42,7 @@ static int		s_fill_buffer(t_list *head,
 		}
 		node_dir = CONTAINER_OF(pos, t_node_dir, list);
 		s_concat_buffer(ref_size,
-						node_dir->filename_size,
-						node_dir->filename,
+						node_dir->filename_size, node_dir->filename,
 						buffer);
 		filename_count += 1;
 	}
@@ -96,7 +95,7 @@ int				key__completion(t_termcaps_context *context)
 										node_dir->filename + match.size,
 										&context->command);
 		if (node_dir->d_type == DT_DIR)
-			command_add_string(sizeof ("/") - 1, "/", &context->command);
+			command_add_string(sizeof("/") - 1, "/", &context->command);
 	}
 	else
 	{

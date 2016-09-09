@@ -192,6 +192,7 @@ SRCS	=	\
 			termcaps/list_head.c										\
 			termcaps/list_head_command.c								\
 			termcaps/list_head_history.c								\
+			termcaps/list_head_history_search.c							\
 			termcaps/key__backspace.c									\
 			termcaps/key__copy.c										\
 			termcaps/key__cursor_to_begin_of_line.c						\
@@ -221,9 +222,11 @@ SRCS	=	\
 			termcaps/key__ctrl_c.c										\
 			termcaps/key__clear.c										\
 			termcaps/key__search_history.c								\
-			termcaps/termcaps_history_search.c							\
 			termcaps/termcaps_write.c									\
+			termcaps/events.c											\
+			termcaps/events_info.c										\
 			conf/conf_check_color_mode.c								\
+			termcaps/termcaps_error.c									\
 			conf/conf_file_init.c										\
 
 # ---------------------------------------------------------------------------- #
