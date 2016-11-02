@@ -157,7 +157,7 @@ void			proc_subshell(t_sh *sh, t_job *j, t_proc *p);
 */
 
 int				loop_main(t_sh *sh);
-int				loop_job_launcher(t_sh *sh, char *input);
+int				loop_job_launcher(t_sh *sh, char *input, int is_subshell);
 
 /*
 ** options/
