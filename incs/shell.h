@@ -249,7 +249,7 @@ int				conf_check_color_mode(char **env);
 ** local_var
 */
 
-int				local_var_replace(t_parser **parser, t_lexer *lexer, int *i);
+int				local_var_replace(t_parser *parser, int *i);
 char			*local_var_register(t_sh *sh, char *value);
 
 #endif

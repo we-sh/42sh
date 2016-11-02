@@ -27,22 +27,12 @@ static char	*s_expand_escape_char_not_inhibited(char *str)
 static int	s_suite(t_parser *parser, t_lexer *lexer, int *i)
 {
 	int		ret;
-	char	*tmp;
 
 	ret = 0;
-	if (TOKEN_CODE(*i) == TC_LASTEXITSTATUS)
+	if (TOKEN_CODE(*i) == TC_DOLLAR && (*i + 1) < lexer->size)
 	{
-		if ((tmp = ft_itoa(parser->sh->last_exit_status)) == NULL)
-			return (ST_MALLOC);
-		ret = token_globing_parse_utils_push_str(parser->target_list_head,
-														tmp);
-		free(tmp);
-	}
-	else if (TOKEN_CODE(*i) == TC_DOLLAR ||
-		((*i + 1) < lexer->size && TOKEN_CODE(*i + 1) == TC_DOLLAR))
-	{
-		ret = local_var_replace(&parser, lexer, i);
-		lexer->size--;//Temp Debug which avoid segfault
+		ret = local_var_replace(parser, i);
+		(*i)++;
 	}
 	else
 		ret = token_globing_parse_utils_push_str(parser->target_list_head,
