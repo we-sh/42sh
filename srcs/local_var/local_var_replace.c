@@ -1,56 +1,100 @@
 #include "shell.h"
 
-static int		s_local_var_replace_checkfirst_value(t_parser *parser, int *i, char **input)
-{
-	if (P_TOKEN_CODE(*i + 1) != TC_DOLLAR)
-	{
-		if ((*input = ft_strdup(P_TOKEN_CONTENT(*i + 1))) == NULL)
-		 return (ST_MALLOC);
-	}
-	return (ST_OK);
-}
-
-static int		s_local_var_replace_loop(t_parser *parser, char *input)
+static char		*s_local_var_replace_loop(t_sh *sh, char *input, int *i)
 {
 	t_var		*ptr;
-	int			ret;
+	int			pos;
+	char		*tmp;
 
-	ptr = parser->sh->local_vars;
+	pos = 0;
+	ptr = sh->local_vars;
+	while (ft_isalnum(input[pos]) || input[pos] == '_')
+		pos++;
+	if ((tmp = ft_strnew(pos)) == NULL)
+		return (NULL);
+	tmp = ft_strncpy(tmp, input, pos);
+	*i = *i + pos;
 	while (ptr)
 	{
-		if (ft_strcmp(input, ptr->key) == 0)
+		if (ft_strcmp(tmp, ptr->key) == 0)
 		{
-			if ((ret = token_globing_parse_utils_push_str(parser->target_list_head,
-				ptr->value)) != ST_OK)
-				return (ret);
-			break ;
+			//free(tmp);
+			return (ft_strdup(ptr->value));
 		}
 		ptr = ptr->next;
 	}
-	return (ST_OK);
+	return (ft_strnew(0));
 }
 
-int				local_var_replace(t_parser *parser, int *i)
+char			*s_concat_input_output(char **output, char *input, int len)
 {
-	int			ret;
-	char		*input;
+	int 		old_len;
+	char		*tmp;
 
-	ret = ST_OK;
-	if (P_TOKEN_CODE(*i + 1) == TC_DOLLAR || P_TOKEN_CONTENT(*i + 1)[0] == '?')
+	if (*output)
+		old_len = ft_strlen(*output);
+	else
+		old_len = 0;
+	tmp = *output;
+	if ((*output = ft_strnew(old_len + len)) == NULL)
+		return (NULL);
+	if (tmp)
+		*output = ft_strcpy(*output, tmp);
+	*output = ft_strncpy(*output + old_len, input, len);
+	//free(tmp);
+	return (*output);
+}
+
+int				local_var_replace(t_sh *sh, char *input, char **output)
+{
+	int			i;
+	int			i2;
+	int			ret;
+	char 		*tmp;
+
+	i = 0;
+	i2 = 0;
+	while(input[i])
 	{
-		if (P_TOKEN_CODE(*i + 1) == TC_DOLLAR)
-			ret = parser->sh->pgid;
+		if (input[i] == '$')
+		{
+
+			if (i2 != i)
+			{
+				if ((*output = s_concat_input_output(output, input + i2, i - i2)) == NULL)
+					return (ST_MALLOC);
+			}
+
+			if (input[i+1] == '$' || input[i+1] == '?')
+			{
+				if (input[i+1] == '$')
+					ret = sh->pgid;
+				else
+					ret = sh->last_exit_status;
+				if((tmp = ft_itoa(ret)) == NULL)
+					return (ST_MALLOC);
+				i++;
+			}
+			else if ((tmp = s_local_var_replace_loop(sh, input + i + 1, &i)) == NULL)
+				return (ST_MALLOC);
+			if ((*output = s_concat_input_output(output, tmp, ft_strlen(tmp))) == NULL)
+				return (ST_MALLOC);
+			i++;
+			//free(tmp);
+			i2 = i;
+		}
 		else
-			ret = parser->sh->last_exit_status;
-		if((input = ft_itoa(ret)) == NULL)
-			return (ST_MALLOC);
-		ret = token_globing_parse_utils_push_str(parser->target_list_head,
-														input);
+			i++;
 	}
-	else if ((ret = s_local_var_replace_checkfirst_value(parser, i, &input)) != ST_OK)
-		return (ret);
-	if (parser->sh->local_vars && (ret = s_local_var_replace_loop(parser, input)) != ST_OK)
-		return (ret);
-	free(input);
-	return (ret);
+	if (i2 != i)
+	{
+		if ((*output = s_concat_input_output(output, input + i2, i - i2)) == NULL)
+			return (ST_MALLOC);
+	}
+	else if (i == 0)
+	{
+		if ((*output = ft_strnew(0)) == NULL)
+			return (ST_MALLOC);
+	}
+	return (ST_OK);
 }

@@ -10,10 +10,6 @@ static int	s_build_token_globing(t_parser *parser)
 	int		i;
 
 	i = 0;
-	parser->token_list[i++] = &g_token_globing_separator_space;
-	parser->token_list[i++] = &g_token_globing_separator_tab;
-	parser->token_list[i++] = &g_token_globing_separator_newline;
-	parser->token_list[i++] = &g_token_globing_name_dollar;
 	parser->token_list[i++] = &g_token_globing_inhibitor_dquote;
 	parser->token_list[i++] = &g_token_globing_inhibitor_quote;
 	parser->token_list[i++] = &g_token_globing_name_tilde;
