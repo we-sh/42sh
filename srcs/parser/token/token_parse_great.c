@@ -92,7 +92,7 @@ int			token_parse_great(void *target, t_parser *parser, t_lexer *lexer,
 	{
 		ret = s_proc((t_proc *)target, parser, lexer, i);
 		if (ret != ST_OK)
-			((t_proc *)target)->is_valid = 1;
+			((t_proc *)target)->is_valid = -1;
 	}
 	else if (parser->mode == F_PARSING_JOBS)
 		ret = s_jobs((t_job *)target, parser, lexer, i);
