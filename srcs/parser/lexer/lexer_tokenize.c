@@ -54,13 +54,13 @@ static int		s_analyse_char(t_parser *parser, t_lexer *lexer, char const *s,
 	token = lexer_token_recognizer(parser, s + *i, *i);
 	is_inhibited = s_inhibited_code(lexer, token);
 	s_parenthesis_code(lexer, token);
-	if (token != NULL && is_inhibited != 0)
+	if (token != NULL && is_inhibited != 0 && token->code != TC_DOLLAR)
 	{
 		if (lexer_bufferize(lexer, token->op, token->len) != ST_OK)
 			return (ST_MALLOC);
 		*i += token->len;
 	}
-	else if (token != NULL && is_inhibited == 0)
+	else if (token != NULL && (is_inhibited == 0 || token->code == TC_DOLLAR))
 	{
 		if ((ret = lexer_buffer_dump(parser, lexer)) != ST_OK)
 			return (ret);

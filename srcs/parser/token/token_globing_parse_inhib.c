@@ -33,14 +33,11 @@ int			token_globing_parse_inhib(void *target, t_parser *parser,
 	
 	ret = 0;
 	(void)target;
-	log_warn("Token GLOBING INIB debug lexer number %d", lexer->size);
 	(*i)++;
 	if (TOKEN_CODE(*i - 1) == TC_QUOTE)
 	{
-		log_info("Break 1");
 		if (TOKEN_CODE(*i) != TC_QUOTE)
 		{
-		log_info("Break 2");
 			ret = token_globing_parse_utils_push_str(parser->target_list_head,
 															TOKEN_CONTENT(*i));
 			(*i)++;
@@ -48,11 +45,12 @@ int			token_globing_parse_inhib(void *target, t_parser *parser,
 	}
 	else if (TOKEN_CODE(*i - 1) == TC_DQUOTE)
 	{
-		log_info("Break 3");
 		if (TOKEN_CODE(*i) != TC_DQUOTE)
 		{
-		log_info("Break 4");
-			ret = token_globing_parse_utils_push_str(parser->target_list_head,
+			if (TOKEN_CODE(*i) == TC_DOLLAR)
+				ret = local_var_replace(parser, i);
+			else
+				ret = token_globing_parse_utils_push_str(parser->target_list_head,
 							s_expand_escape_char_inhibited(TOKEN_CONTENT(*i)));
 			(*i)++;
 		}
