@@ -17,8 +17,8 @@ int				s_launch(t_sh *sh, t_job *j, t_proc *p)
 	free(shlvl_char);
 	sh->is_interactive = 0;
 	job_list_clean_except_job(j);
-	//TODO free list of jobs
-	if ((ret = loop_job_launcher(sh, p->argv[0])) != ST_OK)
+	log_debug("%s", p->argv[0]);
+	if ((ret = loop_job_launcher(sh, p->argv[0], 1)) != ST_OK)
 		return (ret);
 	return (ST_OK);
 }
@@ -27,7 +27,6 @@ void			proc_subshell(t_sh *sh, t_job *j, t_proc *p)
 {
 	int			ret;
 
-	log_success("subshell: %s", p->argv[0]);
 	if ((ret = s_launch(sh, j, p)) != ST_OK)
 	{
 		display_status(ret, NULL, NULL);

@@ -39,7 +39,7 @@ int				loop_main(t_sh *sh)
 			return (ret);
 		else if (ret == ST_OK)
 		{
-			if ((ret = loop_job_launcher(sh, input)) != ST_OK)
+			if ((ret = loop_job_launcher(sh, input, 0)) != ST_OK)
 				return (ret);
 		}
 		if (ret != ST_OK)
