@@ -255,16 +255,6 @@ static t_token g_token_name_rbrace = {
 ** Tokens for parameters expansion (globing)
 */
 
-static t_token g_token_globing_name_dollar = {
-	"$",
-	NULL,
-	1,
-	TT_NAME,
-	TC_DOLLAR,
-	token_globing_parse_none,
-	0
-};
-
 static t_token g_token_globing_inhibitor_dquote = {
 	"\"",
 	NULL,
@@ -291,36 +281,6 @@ static t_token g_token_globing_name_tilde = {
 	1,
 	TT_NAME,
 	TC_TILDE,
-	token_globing_parse_none,
-	0
-};
-
-static t_token g_token_globing_separator_space = {
-	" ",
-	NULL,
-	1,
-	TT_SEPARATOR,
-	TC_SPACE,
-	token_globing_parse_none,
-	0
-};
-
-static t_token g_token_globing_separator_tab = {
-	"\t",
-	NULL,
-	1,
-	TT_SEPARATOR,
-	TC_TAB,
-	token_globing_parse_none,
-	0
-};
-
-static t_token g_token_globing_separator_newline = {
-	"\n",
-	NULL,
-	1,
-	TT_SEPARATOR,
-	TC_NEWLINE,
 	token_globing_parse_none,
 	0
 };

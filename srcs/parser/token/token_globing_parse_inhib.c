@@ -30,8 +30,10 @@ int			token_globing_parse_inhib(void *target, t_parser *parser,
 				t_lexer *lexer, int *i)
 {
 	int		ret;
-	
+	char	*tmp;
+
 	ret = 0;
+	tmp = NULL;
 	(void)target;
 	(*i)++;
 	if (TOKEN_CODE(*i - 1) == TC_QUOTE)
@@ -47,11 +49,11 @@ int			token_globing_parse_inhib(void *target, t_parser *parser,
 	{
 		if (TOKEN_CODE(*i) != TC_DQUOTE)
 		{
-			if (TOKEN_CODE(*i) == TC_DOLLAR)
-				ret = local_var_replace(parser, i);
-			else
-				ret = token_globing_parse_utils_push_str(parser->target_list_head,
-							s_expand_escape_char_inhibited(TOKEN_CONTENT(*i)));
+			if ((ret = local_var_replace(parser->sh, TOKEN_CONTENT(*i), &tmp)) != ST_OK)
+				return (ret);
+			ret = token_globing_parse_utils_push_str(parser->target_list_head,
+				s_expand_escape_char_inhibited(tmp));
+			//free(tmp);
 			(*i)++;
 		}
 	}

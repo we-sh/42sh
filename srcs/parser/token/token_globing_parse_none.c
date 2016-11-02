@@ -27,16 +27,15 @@ static char	*s_expand_escape_char_not_inhibited(char *str)
 static int	s_suite(t_parser *parser, t_lexer *lexer, int *i)
 {
 	int		ret;
+	char	*output;
 
 	ret = 0;
-	if (TOKEN_CODE(*i) == TC_DOLLAR && (*i + 1) < lexer->size)
-	{
-		ret = local_var_replace(parser, i);
-		(*i)++;
-	}
-	else
-		ret = token_globing_parse_utils_push_str(parser->target_list_head,
-					s_expand_escape_char_not_inhibited(TOKEN_CONTENT(*i)));
+	output = NULL;
+	if((ret = local_var_replace(parser->sh, TOKEN_CONTENT(*i), &output)) != ST_OK)
+		return (ret);
+	ret = token_globing_parse_utils_push_str(parser->target_list_head,
+					s_expand_escape_char_not_inhibited(output));
+	free(output);
 	return (ret);
 }
 
