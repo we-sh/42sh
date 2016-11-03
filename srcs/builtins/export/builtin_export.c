@@ -24,24 +24,23 @@ static int	s_exec_display(t_proc *p)
 static int	s_before(t_sh *sh, t_proc *p)
 {
 	char	*tmp;
-	char	*tmp2;
 	char	*value;
 	int		i;
 
 	i = 1;
 	tmp = NULL;
+	log_success("value inside s_before %s", p->argv[i]);
 	if (p->bltin_status == ST_OK)
 	{
 		while(p->argv[i])
 		{
 			if ((tmp = ft_strdup(p->argv[i])) == NULL)
 				return (ST_MALLOC);
-			if ((tmp2 = ft_strdup(p->argv[i])) == NULL)
-				return (ST_MALLOC);
 			if ((value = env_get_value_and_remove_equal_sign(tmp)) != NULL)
-				builtin_local_var_set_local_loop(&sh, tmp2);
+				builtin_local_var_set_local_loop(&sh, tmp, value);
+			else if (tmp[0] != '$')
+				builtin_local_var_add(&sh, tmp, value);
 			free(tmp);
-			free(tmp2);
 			i++;
 		}
 	}

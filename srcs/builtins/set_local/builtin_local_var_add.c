@@ -1,8 +1,8 @@
 #include "shell.h"
 
-static t_var 			*s_local_var_init(void)
+static t_var	*s_local_var_init(void)
 {
-	t_var		*newvar;
+	t_var				*newvar;
 
 	newvar = (t_var *)malloc(sizeof(t_var));
 	if (!(newvar))
@@ -13,13 +13,11 @@ static t_var 			*s_local_var_init(void)
 	return (newvar);
 }
 
-int				builtin_local_var_add(t_sh **sh, char *local)
+int						builtin_local_var_add(t_sh **sh, char *key, char *value)
 {
-	char		*value;
-	t_var 		*newvar;
-	t_var 		*ptrvar;
+	t_var				*newvar;
+	t_var				*ptrvar;
 
-	value = env_get_value_and_remove_equal_sign(local);
 	if ((newvar = s_local_var_init()) == NULL)
 		return (ST_MALLOC);
 	if (!((*sh)->local_vars))
@@ -30,8 +28,10 @@ int				builtin_local_var_add(t_sh **sh, char *local)
 	while (ptrvar->next)
 		ptrvar = ptrvar->next;
 	ptrvar->next = newvar;
-	newvar->key = ft_strdup(local);
-	newvar->value = ft_strdup(value);
+	if ((newvar->key = ft_strdup(key)) == NULL)
+		return (ST_MALLOC);
+	if (value && (newvar->value = ft_strdup(value)) == NULL)
+		return (ST_MALLOC);
 	newvar->next = NULL;
 	return (ST_OK);
 }

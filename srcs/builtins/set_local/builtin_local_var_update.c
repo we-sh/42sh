@@ -1,20 +1,9 @@
 #include "shell.h"
 
-int			builtin_local_var_update(t_var *ptrvar, char *local, int *flag)
+int			builtin_local_var_update(t_var **ptrvar, char *value)
 {
-	char	*value;
-
-	value = NULL;
-	if (ft_strncmp(ptrvar->key, local, ft_strlen(ptrvar->key)) == 0)
-	{
-		if ((value = env_get_value_and_remove_equal_sign(local)) != NULL)
-		{
-			free(ptrvar->value);
-			if ((ptrvar->value = ft_strdup(value)) == NULL)
-				return (ST_MALLOC);
-			*flag = 1;
-			return (ST_OK);
-		}
-	}
-	return (-1);
+	free((*ptrvar)->value);
+	if (((*ptrvar)->value = ft_strdup(value)) == NULL)
+		return (ST_MALLOC);
+  return (ST_OK);
 }
