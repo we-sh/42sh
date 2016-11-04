@@ -33,11 +33,11 @@ static int		s_exec(t_sh *sh, t_proc *p)
 		{
 			ft_putstr_fd(ptrvar->key, STDOUT_FILENO);
 			ft_putchar_fd('=', STDOUT_FILENO);
-      if (ptrvar->value)
-  			ft_putendl_fd(ptrvar->value, STDOUT_FILENO);
+			if (ptrvar->value)
+				ft_putendl_fd(ptrvar->value, STDOUT_FILENO);
 			else
-        ft_putendl_fd("\0", STDOUT_FILENO);
-      ptrvar = ptrvar->next;
+				ft_putendl_fd("\0", STDOUT_FILENO);
+			ptrvar = ptrvar->next;
 		}
 	}
 	return (ST_OK);
@@ -52,12 +52,12 @@ static int	s_after(t_sh **sh, t_proc *p)
 	i = 1;
 	while (p->argv[i])
 	{
-    if ((tmp = ft_strdup(p->argv[i])) == NULL)
-      return (ST_MALLOC);
-    value = env_get_value_and_remove_equal_sign(tmp);
+	if ((tmp = ft_strdup(p->argv[i])) == NULL)
+	  return (ST_MALLOC);
+	value = env_get_value_and_remove_equal_sign(tmp);
 		if ((builtin_local_var_set_local_loop(sh, tmp, value)) == ST_MALLOC)
 			return (ST_MALLOC);
-    free(tmp);
+	free(tmp);
 		i++;
 	}
 	return (ST_OK);

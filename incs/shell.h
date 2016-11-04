@@ -96,7 +96,7 @@ char			*env_get_term(char **envp);
 int				env_set(char ***envp, char *key, char *value);
 int				env_unset(char ***envp, char *argv);
 int				env_index_value(char **envp, char *variable);
-int				env_or_var_update_from_cmd_line(char ***argv, int *argc, char ***envp, int loc);
+int				env_or_var_update_from_cmd_line(t_proc **p, t_sh **sh);
 char			*env_get_value_and_remove_equal_sign(char *arg);
 
 /*
