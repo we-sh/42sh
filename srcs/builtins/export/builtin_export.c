@@ -1,10 +1,12 @@
 #include "shell.h"
 #include "builtin_set_local.h"
 
-static int	s_exec_display(t_proc *p)
+static int	s_exec_display(t_sh *sh, t_proc *p)
 {
 	int		i;
+	t_var	*ptrvar;
 
+	ptrvar = sh->local_vars;
 	i = 0;
 	if (p->argc == 1)
 		p->argc--;
@@ -14,6 +16,17 @@ static int	s_exec_display(t_proc *p)
 		{
 			ft_putendl_fd(p->envp[i], STDOUT_FILENO);
 			i++;
+		}
+		i = 0;
+		while (ptrvar)
+		{
+			ft_putstr_fd(ptrvar->key, STDOUT_FILENO);
+			ft_putchar_fd('=', STDOUT_FILENO);
+			if (ptrvar->value)
+				ft_putendl_fd(ptrvar->value, STDOUT_FILENO);
+			else
+				ft_putendl_fd("\0", STDOUT_FILENO);
+			ptrvar = ptrvar->next;
 		}
 		exit(EXIT_SUCCESS);
 	}
@@ -29,7 +42,6 @@ static int	s_before(t_sh *sh, t_proc *p)
 
 	i = 1;
 	tmp = NULL;
-	log_success("value inside s_before %s", p->argv[i]);
 	if (p->bltin_status == ST_OK)
 	{
 		while(p->argv[i])
@@ -58,9 +70,9 @@ static int	s_exec(t_sh *sh, t_builtin const *builtin, t_proc *p)
 	{
 		if ((ret = option_is_set(&p->bltin_opt_head, ST_BLTIN_EXPORT_OPT_P)) == 1
 			&& p->argc == 1)
-			s_exec_display(p);
+			s_exec_display(sh, p);
 		else if (p->argc == 1)
-			s_exec_display(p);
+			s_exec_display(sh, p);
 	}
 	else
 	{
