@@ -30,7 +30,7 @@ static int		s_exec(t_sh *sh, t_proc *p)
 	{
 		ft_putendl_fd("Local variables", STDOUT_FILENO);
 		ptrvar = sh->local_vars;
-		while (ptrvar)
+		while (ptrvar != NULL)
 		{
 			ft_putstr_fd(ptrvar->key, STDOUT_FILENO);
 			ft_putchar_fd('=', STDOUT_FILENO);
