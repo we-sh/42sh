@@ -18,7 +18,7 @@ static int	s_exec_display(t_sh *sh, t_proc *p)
 			i++;
 		}
 		i = 0;
-		while (ptrvar)
+		while (ptrvar != NULL)
 		{
 			ft_putstr_fd(ptrvar->key, STDOUT_FILENO);
 			ft_putchar_fd('=', STDOUT_FILENO);
