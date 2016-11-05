@@ -33,5 +33,6 @@ int						builtin_local_var_add(t_sh **sh, char *key, char *value)
 	if (value && (newvar->value = ft_strdup(value)) == NULL)
 		return (ST_MALLOC);
 	newvar->next = NULL;
-	return (ST_OK);
+	log_success("newvar->key:%s, newvar->value:%s",newvar->key,newvar->value);
+  return (ST_OK);
 }

@@ -1,6 +1,22 @@
 #include "shell.h"
 #include "builtin_set_local.h"
 
+static int  s_check_if_in_env(char **envp, t_var *ptrvar)
+{
+  int i;
+  int key_len;
+
+  i = 0;
+  key_len = ft_strlen(ptrvar->key);
+  while (envp[i])
+  {
+    if (strncmp(ptrvar->key ,envp[i], key_len) == 0)
+      return (1);
+    i++;
+  }
+  return (0);
+}
+
 static int	s_exec_display(t_sh *sh, t_proc *p)
 {
 	int		i;
@@ -20,6 +36,11 @@ static int	s_exec_display(t_sh *sh, t_proc *p)
 		i = 0;
 		while (ptrvar != NULL)
 		{
+      if (s_check_if_in_env(p->envp, ptrvar) == 1)
+      {
+        ptrvar = ptrvar->next;
+        continue;
+      }
 			ft_putstr_fd(ptrvar->key, STDOUT_FILENO);
 			ft_putchar_fd('=', STDOUT_FILENO);
 			if (ptrvar->value)
@@ -33,32 +54,6 @@ static int	s_exec_display(t_sh *sh, t_proc *p)
 	return (ST_OK);
 }
 
-
-static int	s_before(t_sh *sh, t_proc *p)
-{
-	char	*tmp;
-	char	*value;
-	int		i;
-
-	i = 1;
-	tmp = NULL;
-	if (p->bltin_status == ST_OK)
-	{
-		while(p->argv[i])
-		{
-			if ((tmp = ft_strdup(p->argv[i])) == NULL)
-				return (ST_MALLOC);
-			if ((value = env_get_value_and_remove_equal_sign(tmp)) != NULL)
-				builtin_local_var_set_local_loop(&sh, tmp, value);
-			else if (tmp[0] != '$')
-				builtin_local_var_add(&sh, tmp, value);
-			free(tmp);
-			i++;
-		}
-	}
-	return (ST_OK);
-}
-
 static int	s_exec(t_sh *sh, t_builtin const *builtin, t_proc *p)
 {
 	int ret;
@@ -68,8 +63,10 @@ static int	s_exec(t_sh *sh, t_builtin const *builtin, t_proc *p)
 	ptr = sh->local_vars;
 	if (p->bltin_status == ST_OK)
 	{
-		if ((ret = option_is_set(&p->bltin_opt_head, ST_BLTIN_EXPORT_OPT_P)) == 1
-			&& p->argc == 1)
+		if ((ret = option_is_set(&p->bltin_opt_head,
+      ST_BLTIN_EXPORT_OPT_P)) == 1
+			&& p->argc == 1
+      && option_is_set(&p->bltin_opt_head, ST_BLTIN_EXPORT_OPT_N) == 0)
 			s_exec_display(sh, p);
 		else if (p->argc == 1)
 			s_exec_display(sh, p);
@@ -89,16 +86,18 @@ static int	s_after(t_sh **sh, t_proc *p)
 	i = 1;
 	if (p->bltin_status == ST_OK)
 	{
+    log_debug("After");
 		while (p->argv[i])
 		{
-			if ((option_is_set(&p->bltin_opt_head, ST_BLTIN_EXPORT_OPT_N)) == 1)
+			if (option_is_set(&p->bltin_opt_head, ST_BLTIN_EXPORT_OPT_N) == 1
+            && (option_is_set(&p->bltin_opt_head, ST_BLTIN_EXPORT_OPT_P)) == 0)
 			{
 				if ((builtin_export_n_option(sh, p->argv[i])) == ST_MALLOC)
 					return (ST_MALLOC);
 			}
 			else
 			{
-				if ((builtin_export_set(sh, p->argv[i])) == ST_MALLOC)
+				if ((builtin_export_set(sh, p, i)) == ST_MALLOC)
 					return (ST_MALLOC);
 			}
 			i++;
@@ -111,7 +110,7 @@ int			builtin_export(t_builtin const *builtin,
 						int callback, t_sh *sh, t_proc *p)
 {
 	if (callback == BLTIN_CB_BEFORE)
-		return (s_before(sh, p));
+		return (ST_OK);
 	if (callback == BLTIN_CB_EXEC)
 		exit (s_exec(sh, builtin, p));
 	if (callback == BLTIN_CB_AFTER)
