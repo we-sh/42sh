@@ -7,7 +7,7 @@ int		builtin_local_var_update(t_var **ptrvar, char *value);
 int		builtin_local_var_add(t_sh **sh, char *key, char *value);
 int		builtin_local_var_set_local_loop(t_sh **sh, char *key, char *value);
 int		builtin_export_n_option(t_sh **sh, char *argv);
-int		builtin_export_set(t_sh **sh, char *argv);
+int		builtin_export_set(t_sh **sh, t_proc *p, int pos);
 
 static const t_builtin		g_builtin_set_local = {
 	.index = BLTIN_SET_LOCAL,

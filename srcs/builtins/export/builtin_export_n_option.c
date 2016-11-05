@@ -13,11 +13,11 @@ int						s_builtin_local_var_delete(t_sh **sh, char *key)
 	{
 		log_success("Inside 3: %s ", ptrvar->key);
 		log_success("Inside 3 next: %s ", ptrvar->next);
+    if (ptrvar->next)
+      (*sh)->local_vars = ptrvar->next;
+    else
+      (*sh)->local_vars = NULL;
 		free(ptrvar);
-		if (ptrvar->next)
-			(*sh)->local_vars = ptrvar->next;
-		else
-			(*sh)->local_vars = NULL;
 		return (ST_OK);
 	}
 	while (ptrvar->next)
