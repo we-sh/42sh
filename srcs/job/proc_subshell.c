@@ -3,21 +3,9 @@
 int				s_launch(t_sh *sh, t_job *j, t_proc *p)
 {
 	int			ret;
-	char		*shlvl_char;
-	int			shlvl;
 
-	if ((shlvl_char = env_get(sh->envp, "SHLVL")) != NULL)
-		shlvl = ft_atoi(shlvl_char) + 1;
-	else
-		shlvl = 1;
-	if ((shlvl_char = ft_itoa(shlvl)) == NULL)
-		return (ST_MALLOC);
-	if ((ret = env_set(&sh->envp, "SHLVL", shlvl_char)) != ST_OK)
-		return (ret);
-	free(shlvl_char);
 	sh->is_interactive = 0;
 	job_list_clean_except_job(j);
-	log_debug("%s", p->argv[0]);
 	if ((ret = loop_job_launcher(sh, p->argv[0], 1)) != ST_OK)
 		return (ret);
 	return (ST_OK);
