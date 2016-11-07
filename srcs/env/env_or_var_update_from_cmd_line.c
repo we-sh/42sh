@@ -3,8 +3,8 @@
 
 /*
 ** This function may pop all valid variables placed at start of a command
-** line and set them into the local variable struct or if env is found on the input.
-** pop all valid variables placed at start of a command line and set them
+** line and set them into the local variable struct or if env is found on the
+** input. pop all valid variables placed at start of a command line and set them
 ** into the specified environment.
 */
 
@@ -24,7 +24,7 @@ static int		s_set_tab_return_action(char ***argv)
 		if ((env_get_value_and_remove_equal_sign(tmp) == NULL))
 		{
 			add_to_env = 1;
-			break;
+			break ;
 		}
 		i++;
 		free(tmp);
@@ -32,7 +32,8 @@ static int		s_set_tab_return_action(char ***argv)
 	return (add_to_env);
 }
 
-static int 		s_add_to_local_var(char ***argv, int *argc, t_sh **sh, char ***envp)
+static int		s_add_to_local_var(char ***argv, int *argc, t_sh **sh,
+									char ***envp)
 {
 	char		*value;
 	int			ret;
@@ -47,7 +48,8 @@ static int 		s_add_to_local_var(char ***argv, int *argc, t_sh **sh, char ***envp
 		}
 		else
 		{
-			if ((ret = builtin_local_var_set_local_loop(sh, (*argv)[0], value)) != ST_OK)
+			if ((ret = builtin_local_var_set_local_loop(sh, (*argv)[0], value))
+				!= ST_OK)
 				return (ret);
 		}
 		*argc -= 1;
@@ -56,10 +58,10 @@ static int 		s_add_to_local_var(char ***argv, int *argc, t_sh **sh, char ***envp
 	return (ST_OK);
 }
 
-static int s_add_to_env(char ***envp, int *argc, char ***argv)
+static int		s_add_to_env(char ***envp, int *argc, char ***argv)
 {
-	char	*value;
-	int 	ret;
+	char		*value;
+	int			ret;
 
 	ret = 0;
 	value = NULL;
@@ -77,11 +79,11 @@ static int s_add_to_env(char ***envp, int *argc, char ***argv)
 	return (ST_OK);
 }
 
-int			env_or_var_update_from_cmd_line(t_proc **p,
+int				env_or_var_update_from_cmd_line(t_proc **p,
 											t_sh **sh)
 {
-	int		ret;
-	int		add_to_env;
+	int			ret;
+	int			add_to_env;
 
 	if ((&(*p)->argv) == NULL)
 		return (ST_OK);
@@ -90,12 +92,14 @@ int			env_or_var_update_from_cmd_line(t_proc **p,
 	if (add_to_env == 0)
 	{
 		(*p)->is_valid = 0;
-		if ((ret = s_add_to_local_var(&(*p)->argv, &(*p)->argc, sh, &(*p)->envp)) != ST_OK)
+		if ((ret = s_add_to_local_var(&(*p)->argv, &(*p)->argc, sh,
+				&(*p)->envp)) != ST_OK)
 			return (ret);
 	}
 	else
 	{
-		if ((ret = s_add_to_env(&(*p)->envp, &(*p)->argc, &(*p)->argv)) != ST_OK)
+		if ((ret = s_add_to_env(&(*p)->envp, &(*p)->argc, &(*p)->argv))
+			!= ST_OK)
 			return (ret);
 	}
 	return (ST_OK);

@@ -166,7 +166,6 @@ SRCS	=	\
 			job/redir_list_free.c										\
 			loop/loop_main.c											\
 			local_var/local_var_replace.c								\
-			local_var/local_var_register.c								\
 			options/option_get_value.c									\
 			options/option_is_set.c										\
 			options/list_node__option_alloc.c							\
@@ -375,7 +374,7 @@ re			:	fcleanlibs fclean all
 
 test		:	re
 	@printf "\033[32m[ %s ]\033[0m %s\n" "$(NAME)" "run tests..."
-	@cd $(DIRTST) && sh 42ShellTester.sh $$PWD/../$(NAME) --hard
+	@cd $(DIRTST) && bash 42ShellTester.sh $$PWD/../$(NAME) --hard
 
 submodule	:
 	@printf "\033[32m[ %s ]\033[0m %s\n" "$(NAME)" "retrieve submodules..."

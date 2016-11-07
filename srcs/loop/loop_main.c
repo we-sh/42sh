@@ -42,7 +42,6 @@ static int		s_job_launcher(t_sh *sh, char *input)
 	ret = parser(sh, input, F_PARSING_JOBS, &g_current_jobs_list_head);
 	if (ret != ST_OK)
 		return (ret);
-
 	j_prev = NULL;
 	j_ptr = &g_current_jobs_list_head;
 	while ((j_ptr = j_ptr->next) && j_ptr != &g_current_jobs_list_head)
