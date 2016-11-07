@@ -56,37 +56,15 @@ static int		s_loop(t_sh *sh, char *input)
 	return (ST_OK);
 }
 
-int				loop_job_launcher(t_sh *sh, char *input, int is_subshell)
+int				loop_job_launcher(t_sh *sh, char *input)
 {
 	int			ret;
 
-	if (is_subshell == 1)
-	{
-		char **tab;
-		tab = ft_strsplit(input, '\n');
-		int i = 0;
-		while(tab[i])
-		{
-			log_debug("tab[i] '%s'", tab[i]);
-			ret = parser(sh, tab[i], F_PARSING_NONE, NULL);
-			if (ret != ST_OK && ret != ST_PARSER && ret != ST_LEXER)
-			{
-				log_debug("returned %d", ret);
-				return (ret);
-			}
-			if (ret == ST_OK)
-				if ((ret = s_loop(sh, tab[i])) != ST_OK)
-					return (ret);
-			i++;
-		}
-	} else
-	{
-		ret = parser(sh, input, F_PARSING_NONE, NULL);
-		if (ret != ST_OK && ret != ST_PARSER && ret != ST_LEXER)
+	ret = parser(sh, input, F_PARSING_NONE, NULL);
+	if (ret != ST_OK && ret != ST_PARSER && ret != ST_LEXER)
+		return (ret);
+	if (ret == ST_OK)
+		if ((ret = s_loop(sh, input)) != ST_OK)
 			return (ret);
-		if (ret == ST_OK)
-			if ((ret = s_loop(sh, input)) != ST_OK)
-				return (ret);
-	}
 	return (ST_OK);
 }
