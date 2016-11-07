@@ -1,17 +1,17 @@
 #include "shell.h"
 
-static int			s_termcaps_treat_input(const t_it it,
+static int			s_termcaps_treat_input(const t_input_type it,
 										const size_t ib_size,
 										const char *ib,
 										t_termcaps_context *context)
 {
-	if (it == MINISHELL__it_PRINT)
+	if (it == MINISHELL__INPUT_TYPE_PRINT)
 	{
 		ASSERT(termcaps_string_to_command_line(ib_size,
 											ib,
 											&context->command_line));
 	}
-	else if (it == MINISHELL__it_CAPS)
+	else if (it == MINISHELL__INPUT_TYPE_CAPS)
 	{
 		caps__exec_func(ib_size, ib, context);
 	}
@@ -35,7 +35,7 @@ int					termcaps_read_loop(t_termcaps_context *context,
 									size_t input_size_missing)
 {
 	char			ib[INPUT_SIZE_MAX];
-	t_it			it;
+	t_input_type	it;
 	t_buffer		history_search;
 
 	while (context->buffer == NULL)

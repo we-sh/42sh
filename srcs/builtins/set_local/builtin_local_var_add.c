@@ -2,7 +2,7 @@
 
 static t_var	*s_local_var_init(void)
 {
-	t_var				*newvar;
+	t_var		*newvar;
 
 	newvar = (t_var *)malloc(sizeof(t_var));
 	if (!(newvar))
@@ -13,10 +13,10 @@ static t_var	*s_local_var_init(void)
 	return (newvar);
 }
 
-int						builtin_local_var_add(t_sh **sh, char *key, char *value)
+int				builtin_local_var_add(t_sh **sh, char *key, char *value)
 {
-	t_var				*newvar;
-	t_var				*ptrvar;
+	t_var		*newvar;
+	t_var		*ptrvar;
 
 	if ((newvar = s_local_var_init()) == NULL)
 		return (ST_MALLOC);
@@ -33,6 +33,5 @@ int						builtin_local_var_add(t_sh **sh, char *key, char *value)
 	if (value && (newvar->value = ft_strdup(value)) == NULL)
 		return (ST_MALLOC);
 	newvar->next = NULL;
-	log_success("newvar->key:%s, newvar->value:%s",newvar->key,newvar->value);
-  return (ST_OK);
+	return (ST_OK);
 }

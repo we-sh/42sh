@@ -1,20 +1,27 @@
 #include "shell.h"
 #include "builtin_set_local.h"
 
-static int  s_check_if_in_env(char **envp, t_var *ptrvar)
+static int	s_display_local(t_proc *p, t_var *ptrvar)
 {
-  int i;
-  int key_len;
+	int		i;
+	int		key_len;
 
-  i = 0;
-  key_len = ft_strlen(ptrvar->key);
-  while (envp[i])
-  {
-    if (strncmp(ptrvar->key ,envp[i], key_len) == 0)
-      return (1);
-    i++;
-  }
-  return (0);
+	i = 0;
+	key_len = ft_strlen(ptrvar->key);
+	while (p->envp[i])
+	{
+		if (strncmp(ptrvar->key, p->envp[i], key_len) == 0)
+		{
+			ptrvar = ptrvar->next;
+			return (1);
+		}
+		i++;
+	}
+	ft_putstr_fd(ptrvar->key, STDOUT_FILENO);
+	ft_putchar_fd('=', STDOUT_FILENO);
+	if (ptrvar->value)
+		ft_putendl_fd(ptrvar->value, STDOUT_FILENO);
+	return (ST_OK);
 }
 
 static int	s_exec_display(t_sh *sh, t_proc *p)
@@ -36,17 +43,8 @@ static int	s_exec_display(t_sh *sh, t_proc *p)
 		i = 0;
 		while (ptrvar != NULL)
 		{
-			if (s_check_if_in_env(p->envp, ptrvar) == 1)
-			{
-			ptrvar = ptrvar->next;
-			continue;
-			}
-			ft_putstr_fd(ptrvar->key, STDOUT_FILENO);
-			ft_putchar_fd('=', STDOUT_FILENO);
-			if (ptrvar->value)
-				ft_putendl_fd(ptrvar->value, STDOUT_FILENO);
-			// else
-			// 	ft_putendl_fd("\0", STDOUT_FILENO);
+			if (s_display_local(p, ptrvar) == 1)
+				continue ;
 			ptrvar = ptrvar->next;
 		}
 		exit(EXIT_SUCCESS);
@@ -56,17 +54,17 @@ static int	s_exec_display(t_sh *sh, t_proc *p)
 
 static int	s_exec(t_sh *sh, t_builtin const *builtin, t_proc *p)
 {
-	int ret;
-	t_var *ptr;
+	int		ret;
+	t_var	*ptr;
 
 	ret = 0;
 	ptr = sh->local_vars;
 	if (p->bltin_status == ST_OK)
 	{
 		if ((ret = option_is_set(&p->bltin_opt_head,
-      ST_BLTIN_EXPORT_OPT_P)) == 1
-			&& p->argc == 1
-      && option_is_set(&p->bltin_opt_head, ST_BLTIN_EXPORT_OPT_N) == 0)
+		ST_BLTIN_EXPORT_OPT_P)) == 1
+		&& p->argc == 1
+		&& option_is_set(&p->bltin_opt_head, ST_BLTIN_EXPORT_OPT_N) == 0)
 			s_exec_display(sh, p);
 		else if (p->argc == 1)
 			s_exec_display(sh, p);
@@ -86,11 +84,10 @@ static int	s_after(t_sh **sh, t_proc *p)
 	i = 1;
 	if (p->bltin_status == ST_OK)
 	{
-    log_debug("After");
 		while (p->argv[i])
 		{
 			if (option_is_set(&p->bltin_opt_head, ST_BLTIN_EXPORT_OPT_N) == 1
-            && (option_is_set(&p->bltin_opt_head, ST_BLTIN_EXPORT_OPT_P)) == 0)
+			&& (option_is_set(&p->bltin_opt_head, ST_BLTIN_EXPORT_OPT_P)) == 0)
 			{
 				if ((builtin_export_n_option(sh, p->argv[i])) == ST_MALLOC)
 					return (ST_MALLOC);
@@ -112,7 +109,7 @@ int			builtin_export(t_builtin const *builtin,
 	if (callback == BLTIN_CB_BEFORE)
 		return (ST_OK);
 	if (callback == BLTIN_CB_EXEC)
-		exit (s_exec(sh, builtin, p));
+		exit(s_exec(sh, builtin, p));
 	if (callback == BLTIN_CB_AFTER)
 		return (s_after(&sh, p));
 	return (ST_OK);
