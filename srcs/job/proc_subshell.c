@@ -6,7 +6,7 @@ int				s_launch(t_sh *sh, t_job *j, t_proc *p)
 
 	sh->is_interactive = 0;
 	job_list_clean_except_job(j);
-	if ((ret = loop_job_launcher(sh, p->argv[0], 1)) != ST_OK)
+	if ((ret = loop_job_launcher(sh, p->argv[0])) != ST_OK)
 		return (ret);
 	return (ST_OK);
 }
