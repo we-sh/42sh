@@ -36,17 +36,17 @@ static int	s_exec_display(t_sh *sh, t_proc *p)
 		i = 0;
 		while (ptrvar != NULL)
 		{
-      if (s_check_if_in_env(p->envp, ptrvar) == 1)
-      {
-        ptrvar = ptrvar->next;
-        continue;
-      }
+			if (s_check_if_in_env(p->envp, ptrvar) == 1)
+			{
+			ptrvar = ptrvar->next;
+			continue;
+			}
 			ft_putstr_fd(ptrvar->key, STDOUT_FILENO);
 			ft_putchar_fd('=', STDOUT_FILENO);
 			if (ptrvar->value)
 				ft_putendl_fd(ptrvar->value, STDOUT_FILENO);
-			else
-				ft_putendl_fd("\0", STDOUT_FILENO);
+			// else
+			// 	ft_putendl_fd("\0", STDOUT_FILENO);
 			ptrvar = ptrvar->next;
 		}
 		exit(EXIT_SUCCESS);
