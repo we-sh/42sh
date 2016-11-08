@@ -24,6 +24,7 @@ static int		s_set_tab_return_action(char ***argv)
 		if ((env_get_value_and_remove_equal_sign(tmp) == NULL))
 		{
 			add_to_env = 1;
+			free(tmp);
 			break ;
 		}
 		i++;

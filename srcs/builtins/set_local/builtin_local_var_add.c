@@ -12,7 +12,7 @@ static t_var	*s_local_var_init(void)
 	newvar->next = NULL;
 	return (newvar);
 }
-
+=
 int				builtin_local_var_add(t_sh **sh, char *key, char *value)
 {
 	t_var		*newvar;
