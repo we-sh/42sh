@@ -40,5 +40,4 @@ static const t_builtin		g_builtin_export = {
 	.exe = &builtin_export,
 	.options = g_builtin_export_options
 };
-
 #endif
