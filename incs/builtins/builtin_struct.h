@@ -15,6 +15,7 @@
 # include "builtin_set_local.h"
 # include "builtin_termcaps.h"
 # include "builtin_unsetenv.h"
+# include "builtin_unset.h"
 
 /*
 ** Table of builtins
@@ -36,6 +37,7 @@ static const t_builtin		*g_builtins[] = {
 	[BLTIN_SET_LOCAL] = &g_builtin_set_local,
 	[BLTIN_TERMCAPS] = &g_builtin_termcaps,
 	[BLTIN_UNSETENV] = &g_builtin_unsetenv,
+	[BLTIN_UNSET] = &g_builtin_unset,
 	[BLTIN_TOTAL] = NULL
 };
 
