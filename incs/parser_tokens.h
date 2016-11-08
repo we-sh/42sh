@@ -235,16 +235,6 @@ static t_token g_token_name_rbrace = {
 ** Tokens for parameters expansion (globing)
 */
 
-static t_token g_token_globing_name_lastexitstatus = {
-	"$?",
-	NULL,
-	2,
-	TT_NAME,
-	TC_LASTEXITSTATUS,
-	token_globing_parse_none,
-	0
-};
-
 static t_token g_token_globing_inhibitor_dquote = {
 	"\"",
 	NULL,

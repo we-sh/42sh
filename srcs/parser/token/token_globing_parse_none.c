@@ -15,6 +15,8 @@ static char	*s_expand_escape_char_not_inhibited(char *str)
 		{
 			if (str[j] == '\\' && str[j + 1] != '\\')
 				j++;
+			else if (str[j] == '\\' && str[j - 1] != '\\')
+				j++;
 			str[i] = str[j];
 			i++;
 			j++;
@@ -24,49 +26,53 @@ static char	*s_expand_escape_char_not_inhibited(char *str)
 	return (str);
 }
 
-static int	s_suite(t_parser *parser, t_lexer *lexer, int *i)
+static int	s_suite(t_parser *parser, char *output)
 {
 	int		ret;
-	char	*tmp;
 
-	ret = 0;
-	if (TOKEN_CODE(*i) == TC_LASTEXITSTATUS)
-	{
-		if ((tmp = ft_itoa(parser->sh->last_exit_status)) == NULL)
-			return (ST_MALLOC);
-		ret = token_globing_parse_utils_push_str(parser->target_list_head,
-														tmp);
-		free(tmp);
-	}
-	else
-		ret = token_globing_parse_utils_push_str(parser->target_list_head,
-					s_expand_escape_char_not_inhibited(TOKEN_CONTENT(*i)));
+	ret = token_globing_parse_utils_push_str(parser->target_list_head,
+					s_expand_escape_char_not_inhibited(output));
 	return (ret);
+}
+
+static int	s_replace_tilde(t_parser *parser, void *target, char *output)
+{
+	t_argv	*argument;
+	char	*tmp;
+	char	*tmp2;
+
+	argument = (t_argv *)target;
+	tmp = env_get_home(parser->sh->envp);
+	if (tmp)
+	{
+		tmp2 = argument->buffer;
+		if ((argument->buffer = ft_strjoin(tmp, output + 1)) == NULL)
+			return (ST_MALLOC);
+		free(tmp2);
+	}
+	return (ST_OK);
 }
 
 int			token_globing_parse_none(void *target, t_parser *parser,
 				t_lexer *lexer, int *i)
 {
-	t_argv	*argument;
-	char	*tmp;
-	char	*tmp2;
 	int		ret;
+	char	*output;
 
 	ret = ST_OK;
-	argument = (t_argv *)target;
-	if (*i == 0 && TOKEN_CODE(*i) == TC_TILDE)
+	output = NULL;
+	if ((ret = local_var_replace(parser->sh, TOKEN_CONTENT(*i), &output))
+		!= ST_OK)
+		return (ret);
+	if (*i == 0 &&
+		(output[0] == '~' && (output[1] == '\0' || output[1] == '/')))
 	{
-		tmp = env_get_home(parser->sh->envp);
-		if (tmp)
-		{
-			tmp2 = argument->buffer;
-			if ((argument->buffer = ft_strdup(tmp)) == NULL)
-				return (ST_MALLOC);
-			free(tmp2);
-		}
+		if ((s_replace_tilde(parser, target, output)) == ST_MALLOC)
+			return (ST_MALLOC);
 	}
 	else
-		ret = s_suite(parser, lexer, i);
+		ret = s_suite(parser, output);
 	(*i)++;
+	free(output);
 	return (ret);
 }
