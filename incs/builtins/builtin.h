@@ -24,6 +24,7 @@ typedef enum		e_builtin_index
 	BLTIN_SET_LOCAL,
 	BLTIN_TERMCAPS,
 	BLTIN_UNSETENV,
+	BLTIN_UNSET,
 	BLTIN_TOTAL
 }					t_builtin_index;
 
@@ -76,5 +77,6 @@ int					builtin_termcaps(t_builtin const *builtin,
 								int callback, t_sh *sh, t_proc *p);
 int					builtin_unsetenv(t_builtin const *builtin,
 								int callback, t_sh *sh, t_proc *p);
-
+int					builtin_unset(t_builtin const *builtin,
+								int callback, t_sh *sh, t_proc *p);
 #endif
