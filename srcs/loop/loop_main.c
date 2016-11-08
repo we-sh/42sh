@@ -1,17 +1,27 @@
 #include "shell.h"
 
-static int		s_read_with_gnl_return(t_sh *sh, char **input)
+static int		s_read_with_gnl_concat_input(char **input, char **input_tmp)
 {
-	if (*input && parser(sh, *input, F_PARSING_TERMCAPS, NULL) != ST_OK)
-		return (ST_PARSER);
-	return (*input == NULL ? ST_EXIT : ST_OK);
+	char		*tmp;
+
+	if (*input != NULL)
+	{
+		tmp = *input;
+		*input = ft_strjoin(*input, *input_tmp);
+		free(tmp);
+	}
+	else
+		*input = ft_strdup(*input_tmp);
+	free(*input_tmp);
+	if (*input == NULL)
+		return (ST_MALLOC);
+	return (ST_OK);
 }
 
 static int		s_read_with_gnl(t_sh *sh, char **input)
 {
 	int			ret;
 	char		*input_tmp;
-	char		*tmp;
 
 	while (1)
 	{
@@ -20,16 +30,13 @@ static int		s_read_with_gnl(t_sh *sh, char **input)
 		if (ret < 0)
 			return (ST_READ);
 		if (ret == 0)
-			return (s_read_with_gnl_return(sh, input));
-		if (*input != NULL)
 		{
-			tmp = *input;
-			*input = ft_strjoin(*input, input_tmp);
-			free(tmp);
+			if (*input && parser(sh, *input, F_PARSING_TERMCAPS, NULL) != ST_OK)
+				return (ST_PARSER);
+			return (*input == NULL ? ST_EXIT : ST_OK);
 		}
-		else
-			*input = ft_strdup(input_tmp);
-		free(input_tmp);
+		if ((ret = s_read_with_gnl_concat_input(input, &input_tmp)) != ST_OK)
+			return (ret);
 		if (parser(sh, *input, F_PARSING_TERMCAPS, NULL) == ST_OK)
 			break ;
 	}
