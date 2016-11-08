@@ -47,24 +47,24 @@ static int		s_exec(t_sh *sh, t_proc *p)
 static int		s_after(t_sh **sh, t_proc *p)
 {
 	int			i;
-  char *tmp;
-  char *value;
+	char		*tmp;
+	char		*value;
 
 	i = 1;
 	while (p->argv[i])
 	{
-	if ((tmp = ft_strdup(p->argv[i])) == NULL)
-	  return (ST_MALLOC);
-	value = env_get_value_and_remove_equal_sign(tmp);
+		if ((tmp = ft_strdup(p->argv[i])) == NULL)
+			return (ST_MALLOC);
+		value = env_get_value_and_remove_equal_sign(tmp);
 		if ((builtin_local_var_set_local_loop(sh, tmp, value)) == ST_MALLOC)
 			return (ST_MALLOC);
-	free(tmp);
+		free(tmp);
 		i++;
 	}
 	return (ST_OK);
 }
 
-int			builtin_set_local(t_builtin const *builtin,
+int				builtin_set_local(t_builtin const *builtin,
 							int callback, t_sh *sh, t_proc *p)
 {
 	(void)builtin;

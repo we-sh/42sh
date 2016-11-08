@@ -1,7 +1,7 @@
 #include "shell.h"
 #include "builtin_set_local.h"
 
-static int	s_display_local(t_proc *p, t_var *ptrvar)
+static void	s_display_local(t_proc *p, t_var *ptrvar)
 {
 	int		i;
 	int		key_len;
@@ -13,7 +13,7 @@ static int	s_display_local(t_proc *p, t_var *ptrvar)
 		if (strncmp(ptrvar->key, p->envp[i], key_len) == 0)
 		{
 			ptrvar = ptrvar->next;
-			return (1);
+			return ;
 		}
 		i++;
 	}
@@ -21,7 +21,7 @@ static int	s_display_local(t_proc *p, t_var *ptrvar)
 	ft_putchar_fd('=', STDOUT_FILENO);
 	if (ptrvar->value)
 		ft_putendl_fd(ptrvar->value, STDOUT_FILENO);
-	return (ST_OK);
+	return ;
 }
 
 static int	s_exec_display(t_sh *sh, t_proc *p)
@@ -41,10 +41,9 @@ static int	s_exec_display(t_sh *sh, t_proc *p)
 			i++;
 		}
 		i = 0;
-		while (ptrvar != NULL)
+		while (ptrvar)
 		{
-			if (s_display_local(p, ptrvar) == 1)
-				continue ;
+			s_display_local(p, ptrvar);
 			ptrvar = ptrvar->next;
 		}
 		exit(EXIT_SUCCESS);

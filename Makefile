@@ -107,6 +107,9 @@ SRCS	=	\
 			builtins/export/builtin_export.c							\
 			builtins/export/builtin_export_n_option.c					\
 			builtins/export/builtin_export_set.c						\
+			builtins/export/builtin_export_set_no_value.c				\
+			builtins/export/builtin_export_set_local_and_env.c			\
+			builtins/export/builtin_export_update_local_with_value.c	\
 			builtins/fg/builtin_fg.c									\
 			builtins/help/builtin_help.c								\
 			builtins/jobs/builtin_jobs.c								\

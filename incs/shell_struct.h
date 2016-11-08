@@ -20,7 +20,7 @@ struct					s_sh
 	int					fd;
 	char				**argv;
 	char				**envp;
-	t_var 				*local_vars;
+	t_var				*local_vars;
 	t_termcaps_context	termcaps_context;
 	int					last_exit_status;
 	t_list				opt_head;
