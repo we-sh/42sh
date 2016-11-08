@@ -40,7 +40,9 @@ static int		s_update_env_from_local(t_sh **sh, t_var *ptrvar, char *argv)
 	return (ST_DONE);
 }
 
-int				builtin_export_set_with_no_value(t_sh **sh, t_proc *p, char *value,
+int				builtin_export_set_with_no_value(t_sh **sh,
+												t_proc *p,
+												char *value,
 												char *argv)
 {
 	t_var		*ptrvar;
