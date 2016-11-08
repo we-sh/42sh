@@ -21,6 +21,8 @@ static void	s_display_local(t_proc *p, t_var *ptrvar)
 	ft_putchar_fd('=', STDOUT_FILENO);
 	if (ptrvar->value)
 		ft_putendl_fd(ptrvar->value, STDOUT_FILENO);
+	else
+		ft_putendl_fd("\0", STDOUT_FILENO);
 	return ;
 }
 
