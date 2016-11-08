@@ -19,7 +19,8 @@ static char		*s_local_var_replace_loop(t_sh *sh, char *input, int *i)
 		if (ft_strcmp(tmp, ptr->key) == 0)
 		{
 			free(tmp);
-			return (ft_strdup(ptr->value));
+			if (ptr->value)
+				return (ft_strdup(ptr->value));
 		}
 		ptr = ptr->next;
 	}
@@ -68,6 +69,7 @@ static int		s_replace_char_or_loop(t_sh *sh, char *input,
 	char		*tmp;
 	int			ret;
 
+	log_debug("BREAK 2.1");
 	if (input[*i + 1] == '$' || input[*i + 1] == '?')
 	{
 		if (input[*i + 1] == '$')
@@ -80,8 +82,10 @@ static int		s_replace_char_or_loop(t_sh *sh, char *input,
 	}
 	else if ((tmp = s_local_var_replace_loop(sh, input + *i + 1, i)) == NULL)
 		return (ST_MALLOC);
+	log_debug("BREAK 2.2");
 	if (s_concat_input_output(output, tmp, ft_strlen(tmp)) != ST_OK)
 		return (ST_MALLOC);
+	log_debug("BREAK 2.3");
 	free(tmp);
 	return (ST_OK);
 }
@@ -93,24 +97,29 @@ int				local_var_replace(t_sh *sh, char *input, char **output)
 
 	i = 0;
 	i2 = 0;
+	log_debug("input: %s", input);
 	while (input[i])
 	{
 		if (input[i] == '$')
 		{
 			if (i2 != i)
 			{
+			log_debug("BREAK 1");
 				if (s_concat_input_output(output, input + i2, i - i2) != ST_OK)
 					return (ST_MALLOC);
 			}
+			log_debug("BREAK 2");
 			if ((s_replace_char_or_loop(sh, input, output, &i)) != ST_OK)
 				return (ST_MALLOC);
 			i++;
 			i2 = i;
+			log_debug("BREAK 3");
 		}
 		else
 			i++;
 	}
 	if ((s_local_var_replace_out_of_loop(input, output, i, i2)) == ST_MALLOC)
 		return (ST_MALLOC);
+	log_debug("OUT of local_var_replace");
 	return (ST_OK);
 }
