@@ -24,6 +24,7 @@ struct					s_sh
 	t_list				opt_head;
 	char				*pwd;
 	t_list				redir_head;
+	int					is_subshell;
 };
 
 /*

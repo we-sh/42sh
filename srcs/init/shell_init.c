@@ -90,6 +90,7 @@ int			shell_init(t_sh *sh, char *envp[])
 	INIT_LIST_HEAD(&sh->redir_head);
 	sh->last_exit_status = 0;
 	sh->pgid = getpid();
+	sh->is_subshell = 0;
 	if ((ret = s_shell_environment(sh, envp)) != ST_OK)
 		return (ret);
 	if ((ret = s_shell_fd_init(sh)) != ST_OK)
