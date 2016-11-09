@@ -6,20 +6,20 @@ static int	s_none(t_lexer *lexer, int *i)
 	int		parenthesis_count;
 	int		has_tt_name;
 
-	if (TOKEN_CODE(*i) != TC_RPAREN)
+	if (TOKEN_CODE(*i) != TC_LPAREN && TOKEN_CODE(*i) != TC_RPAREN)
 		return (ST_OK);
-	index = *i - 1;
+	index = *i + (TOKEN_CODE(*i) == TC_LPAREN ? 1 : -1);
 	parenthesis_count = 1;
 	has_tt_name = 0;
-	while (index >= 0 && parenthesis_count > 0)
+	while ((TOKEN_CODE(*i) == TC_LPAREN ? index < lexer->size : index >= 0)
+		&& parenthesis_count > 0)
 	{
 		if (TOKEN_TYPE(index) == TT_NAME)
 			has_tt_name = 1;
-		if (TOKEN_CODE(index) == TC_LPAREN)
-			parenthesis_count -= 1;
-		else if (TOKEN_CODE(index) == TC_RPAREN)
-			parenthesis_count += 1;
-		index--;
+		else if (TOKEN_CODE(index) == TC_LPAREN
+			|| TOKEN_CODE(index) == TC_RPAREN)
+			parenthesis_count += (TOKEN_CODE(index) == TOKEN_CODE(*i) ? 1 : -1);
+		index += (TOKEN_CODE(*i) == TC_LPAREN ? 1 : -1);
 	}
 	if (has_tt_name > 0 && parenthesis_count == 0)
 		return (ST_OK);
