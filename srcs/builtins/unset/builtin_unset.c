@@ -26,12 +26,12 @@ static int	s_after(t_sh **sh, t_proc *p)
 		if ((value = env_get_value_and_remove_equal_sign(tmp)) != NULL)
 		{
 			env_unset(&(*sh)->envp, tmp);
-			builtin_local_var_delete(sh, tmp);
+			builtin_local_var_delete(*sh, tmp);
 		}
 		else
 		{
 			env_unset(&(*sh)->envp, p->argv[i]);
-			builtin_local_var_delete(sh, tmp);
+			builtin_local_var_delete(*sh, tmp);
 		}
 		free(tmp);
 		i++;

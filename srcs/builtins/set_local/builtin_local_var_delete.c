@@ -1,25 +1,34 @@
 #include "shell.h"
 
-int			builtin_local_var_delete(t_sh **sh, char *key)
+static void	s_delete_first(t_sh *sh, t_var *ptrvar)
+{
+	free(sh->local_vars->key);
+	free(sh->local_vars->value);
+	if (ptrvar->next)
+		sh->local_vars = ptrvar->next;
+	else
+		sh->local_vars = NULL;
+	free(ptrvar);	
+}
+
+int			builtin_local_var_delete(t_sh *sh, char *key)
 {
 	t_var	*ptrvar;
 
-	if (!((*sh)->local_vars))
+	if (!(sh->local_vars))
 		return (ST_OK);
-	ptrvar = (*sh)->local_vars;
+	ptrvar = sh->local_vars;
 	if (ft_strcmp(ptrvar->key, key) == 0)
 	{
-		if (ptrvar->next)
-			(*sh)->local_vars = ptrvar->next;
-		else
-			(*sh)->local_vars = NULL;
-		free(ptrvar);
+		s_delete_first(sh, ptrvar);
 		return (ST_OK);
 	}
 	while (ptrvar->next)
 	{
 		if (ft_strcmp(ptrvar->next->key, key) == 0)
 		{
+			free(ptrvar->next->key);
+			free(ptrvar->next->value);
 			ptrvar->next = ptrvar->next->next;
 			free(ptrvar->next);
 			break ;
