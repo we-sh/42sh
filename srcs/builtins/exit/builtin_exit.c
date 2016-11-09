@@ -39,7 +39,8 @@ static int	s_after(t_sh *sh, t_proc *p)
 		return (ST_OK);
 	if (p->bltin_status > ST_OK)
 		sh->last_exit_status = EXIT_FAILURE;
-	ft_putendl_fd("exit", STDERR_FILENO);
+	if (sh->is_subshell == 0)
+		ft_putendl_fd("exit", STDERR_FILENO);
 	return (ST_EXIT);
 }
 
