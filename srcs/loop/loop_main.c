@@ -7,7 +7,7 @@ static int		s_read_with_gnl_concat_input(char **input, char **input_tmp)
 	if (*input != NULL)
 	{
 		tmp = *input;
-		*input = ft_strjoin(*input, *input_tmp);
+		*input = ft_strjoin3(*input, "\n", *input_tmp);
 		free(tmp);
 	}
 	else
@@ -80,7 +80,7 @@ int				loop_main(t_sh *sh)
 			if ((ret = loop_job_launcher(sh, input)) != ST_OK)
 				return (ret);
 		}
-		if (ret != ST_OK)
+		else
 			sh->last_exit_status = EXIT_FAILURE;
 		ft_strdel(&input);
 	}
