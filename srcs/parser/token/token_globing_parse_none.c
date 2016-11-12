@@ -64,14 +64,18 @@ int			token_globing_parse_none(void *target, t_parser *parser,
 	if ((ret = local_var_replace(parser->sh, TOKEN_CONTENT(*i), &output))
 		!= ST_OK)
 		return (ret);
-	if (*i == 0 &&
-		(output[0] == '~' && (output[1] == '\0' || output[1] == '/')))
+	if (ft_strlen(output) > 0)
 	{
-		if ((s_replace_tilde(parser, target, output)) == ST_MALLOC)
-			return (ST_MALLOC);
+		((t_argv *)target)->is_null = 0;
+		if (*i == 0 &&
+			(output[0] == '~' && (output[1] == '\0' || output[1] == '/')))
+		{
+			if ((s_replace_tilde(parser, target, output)) == ST_MALLOC)
+				return (ST_MALLOC);
+		}
+		else
+			ret = s_suite(parser, output);
 	}
-	else
-		ret = s_suite(parser, output);
 	(*i)++;
 	free(output);
 	return (ret);
