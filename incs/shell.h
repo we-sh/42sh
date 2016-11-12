@@ -65,6 +65,7 @@
 # include "get_next_line.h"
 # include "parser.h"
 # include "builtin.h"
+# include "parser_struct.h"
 
 /*
 ** List of current jobs
@@ -95,7 +96,8 @@ char			*env_get_term(char **envp);
 int				env_set(char ***envp, char *key, char *value);
 int				env_unset(char ***envp, char *argv);
 int				env_index_value(char **envp, char *variable);
-int				env_update_from_cmd_line(char ***argv, int *argc, char ***envp);
+int				env_or_var_update_from_cmd_line(t_proc **p, t_sh **sh);
+char			*env_get_value_and_remove_equal_sign(char *arg);
 
 /*
 ** log_status /
@@ -242,5 +244,10 @@ void			list_dir__destroy(t_list *head);
 
 int				conf_file_init(char **env);
 int				conf_check_color_mode(char **env);
+
+/*
+** local_var
+*/
+int				local_var_replace(t_sh *sh, char *input, char **output);
 
 #endif

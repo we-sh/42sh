@@ -1,19 +1,19 @@
 #include "shell.h"
 
-static int			s_termcaps_treat_input(const t_input_type input_type,
-										const size_t input_buffer_size,
-										const char *input_buffer,
+static int			s_termcaps_treat_input(const t_input_type it,
+										const size_t ib_size,
+										const char *ib,
 										t_termcaps_context *context)
 {
-	if (input_type == MINISHELL__INPUT_TYPE_PRINT)
+	if (it == MINISHELL__INPUT_TYPE_PRINT)
 	{
-		ASSERT(termcaps_string_to_command_line(input_buffer_size,
-											input_buffer,
+		ASSERT(termcaps_string_to_command_line(ib_size,
+											ib,
 											&context->command_line));
 	}
-	else if (input_type == MINISHELL__INPUT_TYPE_CAPS)
+	else if (it == MINISHELL__INPUT_TYPE_CAPS)
 	{
-		caps__exec_func(input_buffer_size, input_buffer, context);
+		caps__exec_func(ib_size, ib, context);
 	}
 	return (1);
 }
@@ -31,32 +31,30 @@ static int			s_check_job_status(t_termcaps_context *context)
 }
 
 int					termcaps_read_loop(t_termcaps_context *context,
-									size_t input_buffer_size,
+									size_t ib_size,
 									size_t input_size_missing)
 {
-	char			input_buffer[INPUT_SIZE_MAX];
-	t_input_type	input_type;
+	char			ib[INPUT_SIZE_MAX];
+	t_input_type	it;
 	t_buffer		history_search;
 
 	while (context->buffer == NULL)
 	{
-		input_buffer_size = 0;
-		ft_bzero(input_buffer, ft_strlen(input_buffer));
-		input_buffer_size = read(context->fd, input_buffer, 1);
-		if (input_buffer_size == 0)
+		ib_size = 0;
+		ft_bzero(ib, ft_strlen(ib));
+		ib_size = read(context->fd, ib, 1);
+		if (ib_size == 0)
 			s_check_job_status(context);
-		else if (input_buffer_size == 1)
+		else if (ib_size == 1)
 		{
-			termcaps_identify_input(input_buffer[0], &input_type,
+			termcaps_identify_input(ib[0], &it,
 										&input_size_missing);
-			ASSERT(input_buffer_size + input_size_missing <=
-				sizeof(input_buffer));
+			ASSERT(ib_size + input_size_missing <= sizeof(ib));
 			if (input_size_missing)
-				input_buffer_size += read(context->fd, input_buffer + 1,
+				ib_size += read(context->fd, ib + 1,
 					input_size_missing);
 			termcaps_line_erase(context, history_search);
-			s_termcaps_treat_input(input_type, input_buffer_size, input_buffer,
-									context);
+			s_termcaps_treat_input(it, ib_size, ib, context);
 			ASSERT(termcaps_line_print(context, &history_search));
 		}
 	}

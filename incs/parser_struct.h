@@ -45,6 +45,7 @@ typedef enum			e_token_code
 	TC_AND_IF,
 	TC_DSEMI,
 	TC_LASTEXITSTATUS,
+	TC_DOLLAR,
 	TC_CLOBBER,
 	TC_SEMI,
 	TC_GREAT,
@@ -135,6 +136,7 @@ typedef struct			s_argv
 {
 	t_list					argv_list;
 	char					*buffer;
+	int						is_null;
 }						t_argv;
 
 #endif

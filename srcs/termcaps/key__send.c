@@ -107,7 +107,7 @@ int						key__send(t_termcaps_context *context)
 		else
 		{
 			termcaps_character_to_command_line(context->fd, "\n",
-			 	&context->command_line);
+				&context->command_line);
 			ASSERT(s_bufferize_input(context));
 		}
 	}
