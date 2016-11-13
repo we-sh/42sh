@@ -31,10 +31,8 @@ int			token_parse_utils_open_new_fd(t_proc *p, char *f, int *fd, int flag)
 
 	if ((*fd = open(f, flag, 0644)) < 0)
 	{
-		status = ST_OK;
-		if (access(f, F_OK) == -1)
-			status = ST_ENOENT;
-		else if (access(f, X_OK) == -1)
+		status = ST_ENOENT;
+		if (access(f, X_OK) == -1)
 			status = ST_EACCES;
 		if (lstat(f, &stat) == 0)
 		{
