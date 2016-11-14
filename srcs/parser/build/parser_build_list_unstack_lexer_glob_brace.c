@@ -21,8 +21,7 @@ int				parser_build_list_unstack_lexer_glob_brace(t_parser *parser,
 	list_push_back(&argument->argv_list, parser->target_list_head);
 	while (*i < lexer->size)
 	{
-		//ret = lexer->tokens[*i]->parse((void *)argument, parser, lexer, i);
-		ret = lexer->tokens[*i]->parse(NULL, parser, lexer, i);
+		ret = lexer->tokens[*i]->parse((void *)parser->target_list_head, parser, lexer, i);
 		if (ret != ST_OK)
 			return (ret);
 	}

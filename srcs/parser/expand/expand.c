@@ -21,14 +21,12 @@ static int	s_list_argv_to_char_argv(t_proc *p, t_list *argv_list)
 	{
 		safe = safe->next;
 		argument = CONTAINER_OF(pos, t_argv, argv_list);
-		log_trace("pushing argv: `%s`", argument->buffer);
 		if ((ft_array_push_back(&p->argv, argument->buffer)) < 0)
 			return (ST_MALLOC);
 		p->argc++;
 		free(argument->buffer);
 		free(argument);
 	}
-	free(argv_list);
 	return (ST_OK);
 }
 
@@ -57,5 +55,6 @@ int			expand(t_lexer *lexer, t_proc *p, int *i)
 
 	if ((ret = s_list_argv_to_char_argv(p, argv_list)) != ST_OK)
 		return (ret);
+	free(argv_list);
 	return (ST_OK);
 }

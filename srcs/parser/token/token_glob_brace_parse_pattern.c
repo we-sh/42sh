@@ -17,7 +17,7 @@ static int	s_get_pattern(t_lexer *lexer, int i)
 	pattern_type = T_PATTERN_RANGE;
 	while (index + i < lexer->size && TOKEN_CODE(index + i) != TC_RBRACE)
 	{
-		if (TOKEN_CODE(index + i) == TC_VVIIRRGGUULLEE)
+		if (TOKEN_CODE(index + i) == TC_COMMA)
 			pattern_type = T_PATTERN_LIST;
 		odd = (odd == 1 ? 0 : 1);
 		if (pattern_type == T_PATTERN_RANGE)
@@ -58,14 +58,13 @@ static int	s_update_buffer_itoa(t_argv *el, char *original, int value)
 	return (ST_OK);
 }
 
-static int	s_process_range(t_parser *parser, int *i)
+static int	s_process_range(t_parser *parser, t_list *pos, int *i)
 {
 	int		start;
 	int		start_original;
 	int		end;
 	int		dir;
 
-	t_list	*pos;
 	t_list	*next;
 	t_list	*prev;
 	t_argv	*argument;
@@ -74,10 +73,8 @@ static int	s_process_range(t_parser *parser, int *i)
 	start_original = ft_atoi(P_TOKEN_CONTENT(*i + 1));
 	end = ft_atoi(P_TOKEN_CONTENT(*i + 3));
 
-	pos = parser->target_list_head;
 	while ((pos = pos->next) && pos != parser->target_list_head)
 	{
-		log_trace("|||||||||||||");
 		next = pos->next;
 		argument = CONTAINER_OF(pos, t_argv, argv_list);
 		if ((original_str = ft_strdup(argument->buffer)) == NULL)
@@ -114,7 +111,6 @@ static int	s_process_range(t_parser *parser, int *i)
 		pos = &argument->argv_list;
 		free(original_str);
 	}
-	log_trace("------------end");
 	*i += 4;
 	return (ST_OK);
 
@@ -128,16 +124,14 @@ int			token_glob_brace_parse_pattern(void *target, t_parser *parser,
 {
 	int		ret;
 	int		pattern_type;
+	t_list	*argv_list;
 
-	(void)target;
-	ret = ST_OK;
-	pattern_type = s_get_pattern(lexer, *i + 1);
-	log_trace("--------- `%s`", TOKEN_CONTENT(*i));
-	log_trace("pattern_type: %d", pattern_type);
-	if (pattern_type == T_PATTERN_RANGE)
-		ret = s_process_range(parser, i);
 	(void)lexer;
-	(void)parser;
+	ret = ST_OK;
+	argv_list = (t_list *)target;
+	pattern_type = s_get_pattern(lexer, *i + 1);
+	if (pattern_type == T_PATTERN_RANGE)
+		ret = s_process_range(parser, argv_list, i);
 	(*i)++;
 	return (ret);
 }

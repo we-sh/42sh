@@ -325,7 +325,7 @@ static t_token g_token_glob_brace_pattern_sep = {
 	NULL,
 	1,
 	TT_PATTERN,
-	TC_VVIIRRGGUULLEE,
+	TC_COMMA,
 	token_glob_brace_parse_pattern,
 	0
 };

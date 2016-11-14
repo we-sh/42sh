@@ -69,7 +69,7 @@ typedef enum			e_token_code
 	TC_LPAREN,
 	TC_RPAREN,
 	TC_RANGE,
-	TC_VVIIRRGGUULLEE, //TODO: to be translated
+	TC_COMMA,
 	TC_TOTAL
 }						t_token_code;
 
