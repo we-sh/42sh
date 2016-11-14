@@ -44,81 +44,6 @@ static int	s_get_pattern(t_lexer *lexer, int i)
 	return (pattern_type);
 }
 
-static int	s_update_buffer_itoa(t_argv *el, char *original, int value)
-{
-	char	*tmp;
-
-	if ((tmp = ft_itoa(value)) == NULL)
-		return (ST_MALLOC);
-	if (el->buffer != NULL)
-		free(el->buffer);
-	if ((el->buffer = ft_strjoin(original, tmp)) == NULL)
-		return (ST_MALLOC);
-	free(tmp);
-	return (ST_OK);
-}
-
-static int	s_process_range(t_parser *parser, t_list *pos, int *i)
-{
-	int		start;
-	int		start_original;
-	int		end;
-	int		dir;
-
-	t_list	*next;
-	t_list	*prev;
-	t_argv	*argument;
-	char	*original_str;
-
-	start_original = ft_atoi(P_TOKEN_CONTENT(*i + 1));
-	end = ft_atoi(P_TOKEN_CONTENT(*i + 3));
-
-	while ((pos = pos->next) && pos != parser->target_list_head)
-	{
-		next = pos->next;
-		argument = CONTAINER_OF(pos, t_argv, argv_list);
-		if ((original_str = ft_strdup(argument->buffer)) == NULL)
-			return (ST_MALLOC);
-
-		prev = pos;
-		start = start_original;
-		dir = start > end ? -1 : 1;
-		while (1)
-		{
-			if (start != start_original)
-			{
-				if ((argument = (t_argv *)malloc(sizeof(t_argv))) == NULL)
-					return (ST_MALLOC);
-				argument->buffer = NULL;
-			}
-			if (s_update_buffer_itoa(argument, original_str, start) != ST_OK)
-				return (ST_MALLOC);
-
-			prev->next = &argument->argv_list;
-			if (start != start_original)
-			{
-				argument->argv_list.prev = prev;
-			}
-			argument->argv_list.next = next;
-
-			if (start == end)
-				break ;
-			start += dir;
-			prev = &argument->argv_list;
-		}
-
-		next->prev = &argument->argv_list;
-		pos = &argument->argv_list;
-		free(original_str);
-	}
-	*i += 4;
-	return (ST_OK);
-
-
-
-	return (ST_OK);
-}
-
 int			token_glob_brace_parse_pattern(void *target, t_parser *parser,
 				t_lexer *lexer, int *i)
 {
@@ -131,7 +56,7 @@ int			token_glob_brace_parse_pattern(void *target, t_parser *parser,
 	argv_list = (t_list *)target;
 	pattern_type = s_get_pattern(lexer, *i + 1);
 	if (pattern_type == T_PATTERN_RANGE)
-		ret = s_process_range(parser, argv_list, i);
+		ret = token_glob_brace_parse_range(parser, argv_list, i);
 	(*i)++;
 	return (ret);
 }
