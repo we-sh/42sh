@@ -33,6 +33,7 @@ typedef enum			e_token_type
 	TT_SPECIAL,
 	TT_NAME,
 	TT_SUBSHELL,
+	TT_PATTERN,
 	TT_ERROR
 }						t_token_type;
 
@@ -67,6 +68,8 @@ typedef enum			e_token_code
 	TC_TILDE,
 	TC_LPAREN,
 	TC_RPAREN,
+	TC_RANGE,
+	TC_VVIIRRGGUULLEE, //TODO: to be translated
 	TC_TOTAL
 }						t_token_code;
 
@@ -110,7 +113,8 @@ typedef enum			e_parsing_mode
 	F_PARSING_TERMCAPS,
 	F_PARSING_JOBS,
 	F_PARSING_PROCS,
-	F_PARSING_GLOBING
+	F_PARSING_GLOBING,
+	F_PARSING_GLOB_BRACE
 }						t_parsing_mode;
 
 /*
