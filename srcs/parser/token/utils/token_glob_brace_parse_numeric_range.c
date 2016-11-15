@@ -1,10 +1,11 @@
 #include "shell.h"
 
-static int		s_update_buffer_itoa(t_argv *el, char *original, int value)
+static int		s_update_buffer_itoa(t_argv *el, char *original,
+															long long value)
 {
 	char	*tmp;
 
-	if ((tmp = ft_itoa(value)) == NULL)
+	if ((tmp = ft_lltoa(value)) == NULL)
 		return (ST_MALLOC);
 	if (el->buffer != NULL)
 		free(el->buffer);
@@ -27,12 +28,12 @@ static t_argv	*s_alloc_new_argv(t_list *prev)
 }
 
 static t_argv	*s_iterate_on_arguments(t_argv *argument, t_list *pos,
-										int start_original, int end)
+										long long start_original, long long end)
 {
-	int		start;
-	int		dir;
-	t_list	*prev;
-	char	*original_str;
+	long long	start;
+	int			dir;
+	t_list		*prev;
+	char		*original_str;
 
 	if ((original_str = ft_strdup(argument->buffer)) == NULL)
 		return (NULL);
@@ -59,13 +60,13 @@ static t_argv	*s_iterate_on_arguments(t_argv *argument, t_list *pos,
 int				token_glob_brace_parse_numeric_range(t_parser *parser,
 											t_list *pos, int *i)
 {
-	int		start_original;
-	int		end;
-	t_list	*next;
-	t_argv	*last_new;
+	long long	start_original;
+	long long	end;
+	t_list		*next;
+	t_argv		*last_new;
 
-	start_original = ft_atoi(P_TOKEN_CONTENT(*i + 1));
-	end = ft_atoi(P_TOKEN_CONTENT(*i + 3));
+	start_original = ft_atoll(P_TOKEN_CONTENT(*i + 1));
+	end = ft_atoll(P_TOKEN_CONTENT(*i + 3));
 	while ((pos = pos->next) && pos != parser->target_list_head)
 	{
 		next = pos->next;
