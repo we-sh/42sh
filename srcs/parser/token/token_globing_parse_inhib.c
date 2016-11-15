@@ -65,8 +65,8 @@ int			token_globing_parse_inhib(void *target, t_parser *parser,
 	}
 	else if (TOKEN_CODE(*i - 1) == TC_DQUOTE)
 	{
-		if ((s_double_quote(i, parser, lexer)) == ST_MALLOC)
-			return (ST_MALLOC);
+		if ((ret = s_double_quote(i, parser, lexer)) != ST_OK)
+			return (ret);
 	}
 	(*i)++;
 	return (ret);

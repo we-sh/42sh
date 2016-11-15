@@ -12,10 +12,8 @@ int		builtin_local_var_set_local_loop(t_sh **sh, char *key, char *value)
 	{
 		if (ft_strcmp(ptrvar->key, key) == 0)
 		{
-			if ((ret = builtin_local_var_update(&ptrvar, value)) == ST_MALLOC)
-				return (ret);
-			else
-				return (ST_OK);
+			ret = builtin_local_var_update(&ptrvar, value);
+			return (ret);
 		}
 		ptrvar = ptrvar->next;
 	}

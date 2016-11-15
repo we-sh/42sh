@@ -121,8 +121,10 @@ SRCS	=	\
 			builtins/set_local/builtin_local_var_set_local_loop.c		\
 			builtins/set_local/builtin_local_var_add.c					\
 			builtins/set_local/builtin_local_var_update.c				\
+			builtins/set_local/builtin_local_var_delete.c				\
 			builtins/termcaps/builtin_termcaps.c						\
 			builtins/unsetenv/builtin_unsetenv.c						\
+			builtins/unset/builtin_unset.c								\
 			builtins/builtin_callback.c									\
 			builtins/builtin_usage.c									\
 			env/env_get.c												\

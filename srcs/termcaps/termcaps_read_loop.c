@@ -40,15 +40,13 @@ int					termcaps_read_loop(t_termcaps_context *context,
 
 	while (context->buffer == NULL)
 	{
-		ib_size = 0;
 		ft_bzero(ib, ft_strlen(ib));
 		ib_size = read(context->fd, ib, 1);
 		if (ib_size == 0)
 			s_check_job_status(context);
 		else if (ib_size == 1)
 		{
-			termcaps_identify_input(ib[0], &it,
-										&input_size_missing);
+			termcaps_identify_input(ib[0], &it, &input_size_missing);
 			ASSERT(ib_size + input_size_missing <= sizeof(ib));
 			if (input_size_missing)
 				ib_size += read(context->fd, ib + 1,
@@ -57,6 +55,8 @@ int					termcaps_read_loop(t_termcaps_context *context,
 			s_termcaps_treat_input(it, ib_size, ib, context);
 			ASSERT(termcaps_line_print(context, &history_search));
 		}
+		else
+			return (ST_READ);
 	}
 	return (1);
 }
