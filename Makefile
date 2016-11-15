@@ -91,7 +91,7 @@ SRCS	=	\
 			parser/token/token_parse_inhib.c							\
 			parser/token/token_parse_separator.c						\
 			parser/token/token_parse_subshell.c							\
-			parser/token/utils/token_glob_brace_parse_range.c			\
+			parser/token/utils/token_glob_brace_parse_numeric_range.c	\
 			parser/token/utils/token_parse_utils_get_full_word.c		\
 			parser/token/utils/token_parse_utils_get_word_and_inhib.c	\
 			parser/token/utils/token_parse_utils_open_new_fd.c			\

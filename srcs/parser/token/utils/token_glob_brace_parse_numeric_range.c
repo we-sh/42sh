@@ -56,7 +56,7 @@ static t_argv	*s_iterate_on_arguments(t_argv *argument, t_list *pos,
 	return (argument);
 }
 
-int				token_glob_brace_parse_range(t_parser *parser,
+int				token_glob_brace_parse_numeric_range(t_parser *parser,
 											t_list *pos, int *i)
 {
 	int		start_original;
