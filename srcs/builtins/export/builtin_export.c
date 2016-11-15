@@ -75,7 +75,7 @@ static int	s_exec(t_sh *sh, t_builtin const *builtin, t_proc *p)
 		builtin_usage(builtin, p->bltin_status);
 		exit(EXIT_FAILURE);
 	}
-	return (ST_OK);
+	return (EXIT_SUCCESS);
 }
 
 static int	s_after(t_sh **sh, t_proc *p)

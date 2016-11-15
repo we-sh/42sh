@@ -42,7 +42,6 @@ static int		s_update_env_from_local(t_sh **sh, t_var *ptrvar, char *argv)
 
 int				builtin_export_set_with_no_value(t_sh **sh,
 												t_proc *p,
-												char *value,
 												char *argv)
 {
 	t_var		*ptrvar;
@@ -57,8 +56,7 @@ int				builtin_export_set_with_no_value(t_sh **sh,
 		return (ST_MALLOC);
 	else if (ret == ST_OK)
 		return (ST_OK);
-	if ((ret = builtin_local_var_add(sh, argv, value)) == ST_MALLOC)
+	if ((ret = builtin_local_var_add(sh, argv, NULL)) == ST_MALLOC)
 		return (ST_MALLOC);
-	else
-		return (ST_OK);
+	return (ret);
 }

@@ -41,7 +41,7 @@ static int		s_exec(t_sh *sh, t_proc *p)
 			ptrvar = ptrvar->next;
 		}
 	}
-	return (ST_OK);
+	return (EXIT_SUCCESS);
 }
 
 static int		s_after(t_sh **sh, t_proc *p)

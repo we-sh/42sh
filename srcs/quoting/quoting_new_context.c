@@ -70,6 +70,8 @@ static int				s_qloop(char *cmd,
 	{
 		(cmd[ft_strlen(cmd) - 1] == '\n') ? (tmp = ft_strdup(cmd)) :
 			(tmp = ft_strjoin(cmd, "\n"));
+		if (tmp == NULL)
+			return (ST_MALLOC);
 		termcaps_string_to_command_line(ft_strlen(cmd), cmd, &c->command_line);
 		free(cmd);
 		if ((ret = concat_new_input(&cmd, child_c, &tmp))

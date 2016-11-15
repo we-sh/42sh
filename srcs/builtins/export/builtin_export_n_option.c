@@ -10,12 +10,14 @@ int			builtin_export_n_option(t_sh **sh, char *argv)
 		return (ST_MALLOC);
 	if ((value = env_get_value_and_remove_equal_sign(tmp)) != NULL)
 	{
-		env_unset(&(*sh)->envp, tmp);
+		if ((env_unset(&(*sh)->envp, tmp)) == ST_MALLOC)
+			return (ST_MALLOC);
 		builtin_local_var_delete(*sh, tmp);
 	}
 	else
 	{
-		env_unset(&(*sh)->envp, argv);
+		if ((env_unset(&(*sh)->envp, tmp)) == ST_MALLOC)
+			return (ST_MALLOC);
 		builtin_local_var_delete(*sh, tmp);
 	}
 	free(tmp);

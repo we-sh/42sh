@@ -9,11 +9,12 @@ int					builtin_export_set(t_sh **sh, t_proc *p, int pos)
 	t_var			*ptrvar;
 
 	ptrvar = (*sh)->local_vars;
-	argv = ft_strdup(p->argv[pos]);
+	if ((argv = ft_strdup(p->argv[pos])) == NULL)
+		return (ST_MALLOC);
 	value = env_get_value_and_remove_equal_sign(argv);
 	if (!value)
 	{
-		if ((builtin_export_set_with_no_value(sh, p, value, argv)) == ST_MALLOC)
+		if ((builtin_export_set_with_no_value(sh, p, argv)) == ST_MALLOC)
 			return (ST_MALLOC);
 	}
 	else

@@ -24,6 +24,7 @@ static char		*s_local_var_replace_loop(t_sh *sh, char *input, int *i)
 		}
 		ptr = ptr->next;
 	}
+	free(tmp);
 	return (ft_strnew(0));
 }
 
