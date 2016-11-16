@@ -62,7 +62,11 @@ int s_globbing_interrogation_parse_argument(char *arg, t_list *list_globbing)
 		}
 		closedir(dp);
 	}
-	//add_node_to_list(list_globbing, arg);
+	if (list_is_empty(list_globbing))
+	{
+		log_debug("globbing list is empty (filled with input");
+		add_node_to_list(list_globbing, arg);
+	}
 	return (ST_OK);
 }
 
