@@ -11,17 +11,17 @@ static void	s_delete_first(t_sh *sh, t_var *ptrvar)
 	free(ptrvar);	
 }
 
-int			builtin_local_var_delete(t_sh *sh, char *key)
+void		builtin_local_var_delete(t_sh *sh, char *key)
 {
 	t_var	*ptrvar;
 
 	if (!(sh->local_vars))
-		return (ST_OK);
+		return ;
 	ptrvar = sh->local_vars;
 	if (ft_strcmp(ptrvar->key, key) == 0)
 	{
 		s_delete_first(sh, ptrvar);
-		return (ST_OK);
+		return ;
 	}
 	while (ptrvar->next)
 	{
@@ -35,5 +35,5 @@ int			builtin_local_var_delete(t_sh *sh, char *key)
 		}
 		ptrvar = ptrvar->next;
 	}
-	return (ST_OK);
+	return ;
 }
