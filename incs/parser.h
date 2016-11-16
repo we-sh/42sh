@@ -94,6 +94,8 @@ int		token_parse_subshell(void *target, t_parser *parser, t_lexer *lexer,
 
 int		token_glob_brace_parse_ascii_range(t_parser *parser, t_list *pos,
 			int *i);
+int		token_glob_brace_parse_list(t_parser *parser, t_list *pos,
+			int *i);
 int		token_glob_brace_parse_numeric_range(t_parser *parser, t_list *pos,
 			int *i);
 int		token_parse_utils_skip_separators(t_lexer *lexer, int *i,

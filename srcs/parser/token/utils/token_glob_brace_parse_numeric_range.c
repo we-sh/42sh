@@ -3,7 +3,7 @@
 static int		s_update_buffer_itoa(t_argv *el, char *original,
 															long long value)
 {
-	char	*tmp;
+	char		*tmp;
 
 	if ((tmp = ft_lltoa(value)) == NULL)
 		return (ST_MALLOC);
@@ -27,17 +27,15 @@ static t_argv	*s_alloc_new_argv(t_list *prev)
 	return (argument);
 }
 
-static t_argv	*s_iterate_on_arguments(t_argv *argument, t_list *pos,
+static t_argv	*s_iterate_on_arguments(t_argv *argument, t_list *prev,
 										long long start_original, long long end)
 {
 	long long	start;
 	int			dir;
-	t_list		*prev;
 	char		*original_str;
 
 	if ((original_str = ft_strdup(argument->buffer)) == NULL)
 		return (NULL);
-	prev = pos;
 	start = start_original;
 	dir = start > end ? -1 : 1;
 	while (1)

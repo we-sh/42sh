@@ -11,25 +11,25 @@ static int	s_get_pattern_check_token(int pattern_type, t_lexer *lexer,
 	int		is_numeric;
 
 	if (TOKEN_CODE(index + i) == TC_COMMA)
-		pattern_type = T_PATTERN_LIST;
+		return (T_PATTERN_LIST);
 	if (pattern_type == T_PATTERN_ASCII_RANGE
 		|| pattern_type == T_PATTERN_NUMERIC_RANGE)
 	{
-		if (index % 2 == 0)
+		if (index % 2)
 		{
 			if (TOKEN_TYPE(index + i) != TT_NAME)
-				pattern_type = T_PATTERN_NONE;
+				return (T_PATTERN_NONE);
 			is_numeric = ft_strisnumeric(TOKEN_CONTENT(index + i));
 			if (!(is_numeric == 1 || (ft_strlen(TOKEN_CONTENT(index + i)) == 1
 								&& ft_isascii(TOKEN_CONTENT(index + i)[0]))))
-				pattern_type = T_PATTERN_NONE;
+				return (T_PATTERN_NONE);
 			if (index == 0 && is_numeric == 1)
-				pattern_type = T_PATTERN_NUMERIC_RANGE;
+				return (T_PATTERN_NUMERIC_RANGE);
 			if (index == 2 && (ft_strisnumeric(TOKEN_CONTENT(i)) != is_numeric))
 				return (T_PATTERN_NONE);
 		}
 		else if (TOKEN_CODE(index + i) != TC_RANGE)
-			pattern_type = T_PATTERN_NONE;
+			return (T_PATTERN_NONE);
 	}
 	return (pattern_type);
 }
@@ -46,8 +46,6 @@ static int	s_get_pattern(t_lexer *lexer, int i)
 	while (index + i < lexer->size && TOKEN_CODE(index + i) != TC_RBRACE)
 	{
 		pattern_type = s_get_pattern_check_token(pattern_type, lexer, index, i);
-		if (pattern_type == T_PATTERN_NONE)
-			return (T_PATTERN_NONE);
 		index++;
 	}
 	if ((pattern_type == T_PATTERN_ASCII_RANGE
@@ -79,6 +77,8 @@ int			token_glob_brace_parse_pattern(void *target, t_parser *parser,
 			ret = token_glob_brace_parse_numeric_range(parser, argv_list, i);
 		else if (pattern_type == T_PATTERN_ASCII_RANGE)
 			ret = token_glob_brace_parse_ascii_range(parser, argv_list, i);
+		else if (pattern_type == T_PATTERN_LIST)
+			ret = token_glob_brace_parse_list(parser, argv_list, i);
 	}
 	(*i)++;
 	return (ret);
