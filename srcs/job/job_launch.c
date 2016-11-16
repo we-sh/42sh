@@ -13,7 +13,7 @@ static int			s_fork_it(t_sh *sh, t_job *j, t_proc *p)
 	if ((p->envp = ft_array_dup(sh->envp)) == NULL)
 		return (ST_MALLOC);
 	if (p->is_subshell == 0)
-		if ((ret = env_update_from_cmd_line(&p->argv, &p->argc, &p->envp)) != ST_OK)
+		if ((ret = env_or_var_update_from_cmd_line(&p, &sh)) != ST_OK)
 			return (ret);
 	if ((ret = builtin_callback(BLTIN_CB_BEFORE, sh, p)) != ST_OK)
 		return (ret);
