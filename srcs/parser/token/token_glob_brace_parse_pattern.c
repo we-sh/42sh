@@ -51,7 +51,7 @@ static int	s_get_pattern(t_lexer *lexer, int i)
 	if ((pattern_type == T_PATTERN_ASCII_RANGE
 		|| pattern_type == T_PATTERN_NUMERIC_RANGE) && index > 3)
 		return (T_PATTERN_NONE);
-	if (TOKEN_CODE(index + i) != TC_RBRACE)
+	if (index + i < lexer->size && TOKEN_CODE(index + i) != TC_RBRACE)
 		return (T_PATTERN_NONE);
 	return (pattern_type);
 }

@@ -1,32 +1,6 @@
 #include "shell.h"
 
-static char	*s_expand_escape_char_not_inhibited(char *str)
-{
-	size_t	i;
-	size_t	j;
-
-	i = 0;
-	j = 0;
-	while (str[j])
-	{
-		if (str[j] == '\\' && str[j + 1] == '\n')
-			j += 2;
-		else
-		{
-			if (str[j] == '\\' && str[j + 1] != '\\')
-				j++;
-			else if (str[j] == '\\' && str[j - 1] != '\\')
-				j++;
-			str[i] = str[j];
-			i++;
-			j++;
-		}
-	}
-	str[i] = '\0';
-	return (str);
-}
-
-static int	s_suite(t_parser *parser, char *output)
+static int	s_suite(t_parser *parser, t_lexer *lexer, int *i)
 {
 	int		ret;
 
@@ -50,7 +24,10 @@ static int	s_replace_tilde(t_parser *parser, void *target, char *output)
 			return (ST_MALLOC);
 		free(tmp2);
 	}
-	return (ST_OK);
+	else
+		ret = token_globing_parse_utils_push_str(parser->target_list_head,
+					TOKEN_CONTENT(*i));
+	return (ret);
 }
 
 int			token_globing_parse_none(void *target, t_parser *parser,
