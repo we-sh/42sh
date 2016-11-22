@@ -15,7 +15,7 @@ static int	s_get_pattern_check_token(int pattern_type, t_lexer *lexer,
 	if (pattern_type == T_PATTERN_ASCII_RANGE
 		|| pattern_type == T_PATTERN_NUMERIC_RANGE)
 	{
-		if (index % 2)
+		if (index % 2 == 0)
 		{
 			if (TOKEN_TYPE(index + i) != TT_NAME)
 				return (T_PATTERN_NONE);
