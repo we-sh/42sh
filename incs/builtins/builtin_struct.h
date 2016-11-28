@@ -8,6 +8,7 @@
 # include "builtin_export.h"
 # include "builtin_fg.h"
 # include "builtin_help.h"
+# include "builtin_history.h"
 # include "builtin_jobs.h"
 # include "builtin_env.h"
 # include "builtin_language.h"
@@ -30,6 +31,7 @@ static const t_builtin		*g_builtins[] = {
 	[BLTIN_EXPORT] = &g_builtin_export,
 	[BLTIN_FG] = &g_builtin_fg,
 	[BLTIN_HELP] = &g_builtin_help,
+	[BLTIN_HISTORY] = &g_builtin_history,
 	[BLTIN_JOBS] = &g_builtin_jobs,
 	[BLTIN_ENV] = &g_builtin_env,
 	[BLTIN_LANGUAGE] = &g_builtin_language,

@@ -20,9 +20,10 @@ static int				s_fill_context_buffer(t_termcaps_context *context,
 
 static int				s_bufferize_input(t_termcaps_context *context)
 {
-	size_t		buffer_size;
-	char		buffer[TERMCAPS_BUFFER_MAX];
-	t_buffer	buf;
+	size_t			buffer_size;
+	char			buffer[TERMCAPS_BUFFER_MAX];
+	t_buffer		buf;
+	t_node_history	*node;
 
 	if (!command_to_buffer(&context->command,
 				sizeof(buffer) - 1, &buffer_size, buffer))
@@ -38,7 +39,9 @@ static int				s_bufferize_input(t_termcaps_context *context)
 	if (!replace_events(context, sizeof(buffer), &buf))
 		return (0);
 	ASSERT(s_fill_context_buffer(context, buffer));
-	ASSERT(history_add(buffer, &context->history));
+	node = history_add(buffer, &context->history);
+	ASSERT(node != NULL);
+	node->is_modified = 1;
 	command_clear(&context->command);
 	context->history.offset = context->history.size;
 	log_debug("context->buffer %s", context->buffer);

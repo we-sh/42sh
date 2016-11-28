@@ -16,6 +16,7 @@ typedef enum		e_builtin_index
 	BLTIN_EXIT,
 	BLTIN_EXPORT,
 	BLTIN_HELP,
+	BLTIN_HISTORY,
 	BLTIN_FG,
 	BLTIN_JOBS,
 	BLTIN_ENV,
@@ -62,6 +63,8 @@ int					builtin_export(t_builtin const *builtin,
 int					builtin_fg(t_builtin const *builtin,
 								int callback, t_sh *sh, t_proc *p);
 int					builtin_help(t_builtin const *builtin,
+								int callback, t_sh *sh, t_proc *p);
+int					builtin_history(t_builtin const *builtin,
 								int callback, t_sh *sh, t_proc *p);
 int					builtin_jobs(t_builtin const *builtin,
 								int callback, t_sh *sh, t_proc *p);

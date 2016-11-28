@@ -120,6 +120,7 @@ SRCS	=	\
 			builtins/export/builtin_export_update_local_with_value.c	\
 			builtins/fg/builtin_fg.c									\
 			builtins/help/builtin_help.c								\
+			builtins/history/builtin_history.c							\
 			builtins/jobs/builtin_jobs.c								\
 			builtins/env/builtin_env.c									\
 			builtins/language/builtin_language.c						\
@@ -216,6 +217,8 @@ SRCS	=	\
 			termcaps/list_head_command.c								\
 			termcaps/list_head_history.c								\
 			termcaps/list_head_history_search.c							\
+			termcaps/history.c											\
+			termcaps/history_load.c										\
 			termcaps/key__backspace.c									\
 			termcaps/key__copy.c										\
 			termcaps/key__cursor_to_begin_of_line.c						\
