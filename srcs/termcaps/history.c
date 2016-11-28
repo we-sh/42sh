@@ -40,24 +40,16 @@ int		history_write(t_list_head *history, char *filename, int modified)
 
     log_debug("writing history to {%s} only modified ? %s", filename, modified ? "true":"false");
 	flags = O_CREAT | O_WRONLY;
-    if (modified)
-    {
+    if (!modified)
         flags |= O_TRUNC;
-
-        struct stat st;
-        if (stat(filename, &st))
-        {
-            log_error("stat failed filename {%s}", filename);
-            return (0);
-        }
-        size = st.st_size;
-    }
 	fd = open(filename, flags, 0666);
 	if (fd == -1)
 	{
 		log_error("open: %s failed", filename);
 		return (0);
 	}
+    if (modified)
+        size = lseek(fd, 0, SEEK_END);
 	size = 0;
 	pos = &history->list;
 	while ((pos = pos->next) && pos != &history->list)
@@ -74,14 +66,12 @@ int		history_write(t_list_head *history, char *filename, int modified)
 		}
 		size += node->command.size + sizeof("\n") - 1;
 	}
-    ftruncate(fd, size);
 	close(fd);
 	return (1);
 }
 
 int		history_init(t_termcaps_context *context)
 {
-
     log_debug("Hello wold");
 	INIT_LIST_HEAD(&context->history.list);
 	context->history.size = 0;
