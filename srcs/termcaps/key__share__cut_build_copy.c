@@ -5,11 +5,11 @@ void					key__share__cut_build_copy(
 											size_t selection_start,
 											size_t selection_size)
 {
-	list_head__command_line_destroy(&in_context->copy);
+	command_clear(&in_context->copy);
 	list_head__init(&in_context->copy);
 	list_head__slice(&in_context->copy,
-					&in_context->command_line,
+					&in_context->command,
 					selection_start,
 					selection_size);
-	in_context->command_line.offset = selection_start;
+	in_context->command.offset = selection_start;
 }

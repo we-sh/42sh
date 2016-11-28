@@ -22,12 +22,12 @@ static void				s_reset_line(char **cmd,
 										t_termcaps_context *child_c,
 										t_termcaps_context *c)
 {
-	list_head__command_line_destroy(&child_c->command_line);
-	list_head__init(&child_c->command_line);
-	list_head__command_line_destroy(&c->command_line);
-	list_head__init(&c->command_line);
-	termcaps_string_to_command_line((ft_strlen(*cmd)), *cmd,
-		&c->command_line);
+	command_clear(&child_c->command);
+	list_head__init(&child_c->command);
+	command_clear(&c->command);
+	list_head__init(&c->command);
+	command_add_string((ft_strlen(*cmd)), *cmd,
+		&c->command);
 	free(*cmd);
 }
 
@@ -41,14 +41,14 @@ static int				s_first_loop_check(char **cmd,
 	int					ret;
 
 	ft_bzero(command_str, TERMCAPS_BUFFER_MAX);
-	ASSERT(list_head__command_line_to_buffer(&c->command_line,
+	ASSERT(command_to_buffer(&c->command,
 		(sizeof(command_str) - 1), &command_str_size, command_str));
 	child_c->option = OPTION_QUOTING;
 	(ft_strcmp(command_str, "\n") != 0) ?
 		(tmp = ft_strjoin(command_str, "\n")) :
 			(tmp = ft_strdup(command_str));
-	termcaps_string_to_command_line(ft_strlen(tmp), tmp,
-	&c->command_line);
+	command_add_string(ft_strlen(tmp), tmp,
+	&c->command);
 	if ((ret = concat_new_input(cmd, child_c, &tmp)) == ST_MALLOC)
 		return (ret);
 	if (ret == -1)
@@ -72,7 +72,7 @@ static int				s_qloop(char *cmd,
 			(tmp = ft_strjoin(cmd, "\n"));
 		if (tmp == NULL)
 			return (ST_MALLOC);
-		termcaps_string_to_command_line(ft_strlen(cmd), cmd, &c->command_line);
+		command_add_string(ft_strlen(cmd), cmd, &c->command);
 		free(cmd);
 		if ((ret = concat_new_input(&cmd, child_c, &tmp))
 			== ST_MALLOC)
@@ -80,9 +80,8 @@ static int				s_qloop(char *cmd,
 		if (ret == -1)
 			break ;
 	}
-	list_head__command_line_destroy(&c->command_line);
-	list_head__init(&c->command_line);
-	termcaps_string_to_command_line((ft_strlen(cmd)), cmd, &c->command_line);
+	command_clear(&c->command);
+	command_add_string((ft_strlen(cmd)), cmd, &c->command);
 	free(cmd);
 	return (ST_OK);
 }
@@ -96,7 +95,7 @@ int						quoting_new_context(t_termcaps_context *context,
 
 	if (!(ret = 0) && context->option == OPTION_NONE)
 	{
-		termcaps_display_command_line(context);
+		termcaps_display_command(context);
 		caps__print_cap(CAPS__DOWN, 0);
 		termcaps_initialize(context->sh, s_set_prompt_quoting(tokenid),
 							&child_context);
@@ -106,7 +105,7 @@ int						quoting_new_context(t_termcaps_context *context,
 		if (ret != -1 && (ret = s_qloop(cmd, &child_context, context))
 					!= ST_OK)
 			return (ret);
-		caps__delete_line(context->command_line.offset);
+		caps__delete_line(context->command.offset);
 		caps__print_cap(CAPS__UP, 0);
 		termcaps_finalize(&child_context);
 		context->child = 1;

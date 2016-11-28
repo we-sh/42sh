@@ -31,7 +31,7 @@ typedef struct	s_termcaps_context
 
 	t_buffer								prompt;
 
-	t_list_head								command_line;
+	t_list_head								command;
 
 	size_t									selection_offset_start;
 	size_t									selection_offset_end;

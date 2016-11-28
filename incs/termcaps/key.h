@@ -8,13 +8,13 @@
 /*
 ** Feed command line
 */
-int		key__share__feed_command_line(const size_t input_buffer_size,
+int		key__share__feed_command(const size_t input_buffer_size,
 		const char *input_buffer, t_termcaps_context *in_context);
 
 /*
 ** Command line to history
 */
-int		key__share__command_line_to_history(t_termcaps_context *in_context);
+int		key__share__command_to_history(t_termcaps_context *in_context);
 
 /*
 ** Selection get
@@ -25,15 +25,15 @@ int		key__share__selection_get(t_termcaps_context *in_context,
 /*
 ** PREV / NEXT word offset
 */
-void	key__share__prev_word_offset(const t_list_head *command_line,
+void	key__share__prev_word_offset(const t_list_head *command,
 		size_t current_offset, size_t prompt_size, size_t *out_offset);
-void	key__share__next_word_offset(const t_list_head *command_line,
+void	key__share__next_word_offset(const t_list_head *command,
 		size_t current_offset, size_t *out_offset);
 
 /*
 ** Copy build copy
 */
-int		key__share__copy_build_copy(t_list_head *command_line,
+int		key__share__copy_build_copy(t_list_head *command,
 		size_t copy_start, size_t copy_size, t_list_head *out_copy);
 
 /*
@@ -54,7 +54,7 @@ int		key__select(t_termcaps_context *in_context);
 /*
 ** Delete command line
 */
-int		key__delete_command_line(t_termcaps_context *in_context);
+int		key__delete_command(t_termcaps_context *in_context);
 
 /*
 ** Send

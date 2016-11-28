@@ -199,14 +199,14 @@ SRCS	=	\
 			termcaps/termcaps_read_input.c								\
 			termcaps/termcaps_read_loop.c								\
 			termcaps/termcaps_get_character_bytes_count.c				\
-			termcaps/termcaps_string_to_command_line.c					\
-			termcaps/termcaps_character_to_command_line.c				\
-			termcaps/termcaps_display_command_line.c					\
+			termcaps/command_add_string.c					\
+			termcaps/termcaps_display_command.c					\
 			termcaps/termcaps_isunicode.c								\
 			termcaps/termcaps_identify_input.c							\
 			termcaps/list_head.c										\
 			termcaps/list_head_command.c								\
 			termcaps/list_head_history.c								\
+			termcaps/list_head_history_search.c							\
 			termcaps/key__backspace.c									\
 			termcaps/key__copy.c										\
 			termcaps/key__cursor_to_begin_of_line.c						\
@@ -221,12 +221,11 @@ SRCS	=	\
 			termcaps/key__cursor_to_prev_word.c							\
 			termcaps/key__cut.c											\
 			termcaps/key__cut_to_end_of_line.c							\
-			termcaps/key__delete_command_line.c							\
+			termcaps/key__delete_command.c							\
 			termcaps/key__delete_under_cursor.c							\
 			termcaps/key__paste.c										\
 			termcaps/key__select.c										\
 			termcaps/key__send.c										\
-			termcaps/key__share__command_line_to_history.c				\
 			termcaps/key__share__copy_build_copy.c						\
 			termcaps/key__share__cut_build_copy.c						\
 			termcaps/key__share__selection_get.c						\
@@ -237,9 +236,11 @@ SRCS	=	\
 			termcaps/key__ctrl_c.c										\
 			termcaps/key__clear.c										\
 			termcaps/key__search_history.c								\
-			termcaps/termcaps_history_search.c							\
 			termcaps/termcaps_write.c									\
+			termcaps/events.c											\
+			termcaps/events_info.c										\
 			conf/conf_check_color_mode.c								\
+			termcaps/termcaps_error.c									\
 			conf/conf_file_init.c										\
 
 # ---------------------------------------------------------------------------- #
@@ -269,17 +270,11 @@ RM		=	rm -f
 # ---------------------------------------------------------------------------- #
 # PROJECT COMPILATION                                                          #
 # ---------------------------------------------------------------------------- #
-# - The 'LIBS' lists the libaries path.                                        #
 # - The 'LDFLAGS' tells the linker where to find external libraries (-L flag). #
 # - The 'LDLIBS' tells the linker the prefix of external libraries (-l flag).  #
 # - The 'CPPFLAGS' tells the compiler where to find preprocessors (-I flag).   #
 # - The 'CFLAGS' configures the compiler options.                              #
 # ---------------------------------------------------------------------------- #
-
-LIBS		=	\
-				$(DIRLIB)/libft/libft.a			\
-				$(DIRLIB)/logger/liblogger.a	\
-				$(DIRLIB)/libcaps/libcaps.a		\
 
 LDFLAGS		=	\
 				-L $(DIRLIB)/logger				\
@@ -351,7 +346,7 @@ $(DIRDEP)	:
 all			:	libs $(NAME)
 	@printf "\033[32m[ %s ]\033[0m %s\n" "$(NAME)" "finish to build $(NAME)"
 
-$(NAME)		:	$(DIROBJ) $(DIRDEP) $(OBJ) $(LIBS)
+$(NAME)		:	$(DIROBJ) $(DIRDEP) $(OBJ)
 	@printf "\033[32m[ %s ]\033[0m %s\n" "$(NAME)" "link objects..."
 	@$(CC) $(OBJ) -o $(NAME) $(LDFLAGS) $(LDLIBS)
 
@@ -414,7 +409,7 @@ $(DIROBJ)/%.o	:	$(DIRSRC)/%.c $(DIRDEP)/%.d
 $(DIRDEP)/%.d	:	;
 .PRECIOUS		:	$(DIRDEP)/%.d
 
--include $(patsubst %,$(DIRDEP)/%.d,$(basename $(SRCS)))
+-include $(patsubst %,$(DIRDEP)/%.d,$(basename $(SRC)))
 
 # ---------------------------------------------------------------------------- #
 

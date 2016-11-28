@@ -4,10 +4,10 @@ int		key__cursor_to_prev_line(t_termcaps_context *context)
 {
 	int	distance;
 
-	distance = context->command_line.offset - caps__win(WIN_COLUMNS);
+	distance = context->command.offset - caps__win(WIN_COLUMNS);
 	if (distance > (int)context->prompt.size)
-		context->command_line.offset = distance;
+		context->command.offset = distance;
 	else
-		context->command_line.offset = context->prompt.size;
+		context->command.offset = context->prompt.size;
 	return (1);
 }

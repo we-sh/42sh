@@ -100,7 +100,7 @@ static int	s_initialize_key_map_meta(void)
 {
 	ASSERT(caps__init_func_by_keycode(CAPS__KEYCODE_CTRL_M, &key__send));
 	ASSERT(caps__init_func_by_keycode(CAPS__KEYCODE_CTRL_Q,
-	&key__delete_command_line));
+	&key__delete_command));
 	ASSERT(caps__init_func_by_keycode(CAPS__KEYCODE_CTRL_D,
 	&key__delete_under_cursor));
 	ASSERT(caps__init_func_by_keycode(CAPS__KEYCODE_CTRL_A,
@@ -171,7 +171,7 @@ static int	s_termcaps_init_context(t_termcaps_context *context,
 		return (ST_MALLOC);
 	}
 	list_head__init(&context->history);
-	list_head__init(&context->command_line);
+	list_head__init(&context->command);
 	list_head__init(&context->copy);
 	context->selection_offset_start = 0;
 	context->selection_offset_end = 0;

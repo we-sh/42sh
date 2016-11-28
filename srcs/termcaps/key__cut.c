@@ -25,11 +25,11 @@ int				key__cut(t_termcaps_context *in_context)
 	selection_start = 0;
 	if (in_context->state == STATE_REGULAR)
 	{
-		key__share__prev_word_offset(&in_context->command_line,
-									in_context->command_line.offset,
+		key__share__prev_word_offset(&in_context->command,
+									in_context->command.offset,
 									in_context->prompt.size,
 									&selection_start);
-		selection_size = in_context->command_line.offset - selection_start;
+		selection_size = in_context->command.offset - selection_start;
 	}
 	else if (in_context->state == STATE_SELECTION)
 	{
