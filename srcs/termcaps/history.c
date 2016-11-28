@@ -9,6 +9,7 @@ int		history_filename(size_t size_max, char *filename)
 	size_t		size;
 
 	home = env_get_home(NULL);
+    log_debug("home {%s}", home);
 	if (home == NULL)
 	{
 		log_error("getenv HOME failed");
@@ -25,6 +26,7 @@ int		history_filename(size_t size_max, char *filename)
 	ft_memcpy(filename + size, HISTORY_FILENAME, HISTORY_FILENAME_SIZE);
 	size += HISTORY_FILENAME_SIZE;
 	filename[size] = '\0';
+    log_debug("history file {%s}", filename);
 	return (1);
 }
 
@@ -36,9 +38,20 @@ int		history_write(t_list_head *history, char *filename, int modified)
 	size_t			size;
 	int				flags;
 
-	flags = O_CREAT | O_RDONLY;
-	if (modified)
-		flags |= O_TRUNC;
+    log_debug("writing history to {%s} only modified ? %s", filename, modified ? "true":"false");
+	flags = O_CREAT | O_WRONLY;
+    if (modified)
+    {
+        flags |= O_TRUNC;
+
+        struct stat st;
+        if (stat(filename, &st))
+        {
+            log_error("stat failed filename {%s}", filename);
+            return (0);
+        }
+        size = st.st_size;
+    }
 	fd = open(filename, flags, 0666);
 	if (fd == -1)
 	{
@@ -50,8 +63,8 @@ int		history_write(t_list_head *history, char *filename, int modified)
 	while ((pos = pos->next) && pos != &history->list)
 	{
 		node = CONTAINER_OF(pos, t_node_history, list);
-		if (!modified || node->is_modified)
-			continue ;
+        if (modified && !node->is_modified)
+            continue ;
 		if (!termcaps_write(fd, node->command.bytes, node->command.size) ||
 			!termcaps_write(fd, "\n", sizeof("\n") - 1))
 		{
@@ -61,26 +74,25 @@ int		history_write(t_list_head *history, char *filename, int modified)
 		}
 		size += node->command.size + sizeof("\n") - 1;
 	}
-	ftruncate(fd, size);
+    ftruncate(fd, size);
 	close(fd);
 	return (1);
 }
 
 int		history_init(t_termcaps_context *context)
 {
-	t_list_head	*history;
 
-	history = &context->history;
-	INIT_LIST_HEAD(&history->list);
-	history->size = 0;
-	history->offset = 0;
+    log_debug("Hello wold");
+	INIT_LIST_HEAD(&context->history.list);
+	context->history.size = 0;
+	context->history.offset = 0;
 	if (!history_filename(sizeof(context->history_file), context->history_file))
 	{
 		log_error("history_filename failed");
 		return (0);
 	}
 	context->history_initial_size = 0;
-	if (!history_load(context->history_file, history, &context->history_initial_size))
+	if (!history_load(context->history_file, &context->history, &context->history_initial_size))
 	{
 		log_error("history_load failed");
 		return (0);

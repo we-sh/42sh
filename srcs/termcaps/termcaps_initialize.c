@@ -203,10 +203,5 @@ int			termcaps_initialize(t_sh *sh, const char *prompt,
 	}
 	if ((s_termcaps_init_context(context, sh, prompt)) != ST_OK)
 		return (ST_MALLOC);
-	if (!history_init(context))
-	{
-		log_error("history_init failed");
-		return (0);
-	}
 	return (1);
 }

@@ -55,8 +55,7 @@ static int	s_before(t_builtin const *builtin, t_sh *sh, t_proc *p)
 		log_debug("history Option -r");
 		offset = 0;
 		history_load(sh->termcaps_context.history_file, &sh->termcaps_context.history, &offset);
-		if (offset > sh->termcaps_context.history_initial_size)
-			sh->termcaps_context.history_initial_size = offset;
+        sh->termcaps_context.history_initial_size = offset;
 	}
 	else if (option_is_set(&p->bltin_opt_head, ST_BLTIN_HISTORY_OPT_A) == 1)
 	{
