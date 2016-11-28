@@ -3,19 +3,18 @@
 static int				s_fill_context_buffer(t_termcaps_context *context,
 												char *buffer)
 {
-	t_node_cmd		*node_cmd;
-	t_list			*pos;
+	int	i;
 
+	i = 0;
+	while (buffer[i])
+	{
+		if (buffer[i] == '\n')
+			buffer[i] = ' ';
+		i++;
+	}
 	context->buffer = ft_strdup(buffer);
 	if (!context->buffer)
 		return (0);
-	pos = &context->command.list;
-	while ((pos = pos->next) && (pos != &context->command.list))
-	{
-		node_cmd = CONTAINER_OF(pos, t_node_cmd, list);
-		if (node_cmd->character[0] == '\n')
-			node_cmd->character[0] = ' ';
-	}
 	return (1);
 }
 
