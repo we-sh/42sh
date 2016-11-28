@@ -21,6 +21,30 @@
 ** current directory.
 */
 
+static void s_write_history(t_sh *sh, int append)
+{
+    t_node_history  *node;
+    t_list          *pos;
+
+    history_write(&sh->termcaps_context.history, sh->termcaps_context.history_file, append);
+    sh->termcaps_context.history_initial_size = sh->termcaps_context.history.size;
+    pos = &sh->termcaps_context.history.list;
+    while ((pos = pos->next) && pos != &sh->termcaps_context.history.list)
+    {
+        node = CONTAINER_OF(pos, t_node_history, list);
+        node->is_modified = 0;
+    }
+}
+
+static void s_read_history(t_sh *sh, int new)
+{
+    size_t  offset;
+
+    offset = new ? sh->termcaps_context.history_initial_size : 0;
+    history_load(sh->termcaps_context.history_file, &sh->termcaps_context.history, &offset);
+    sh->termcaps_context.history_initial_size = offset;
+}
+
 static int	s_before(t_builtin const *builtin, t_sh *sh, t_proc *p)
 {
 	t_node_history	*node;
@@ -48,26 +72,22 @@ static int	s_before(t_builtin const *builtin, t_sh *sh, t_proc *p)
 	else if (option_is_set(&p->bltin_opt_head, ST_BLTIN_HISTORY_OPT_W) == 1)
 	{
 		log_debug("history Option -w");
-		history_write(&sh->termcaps_context.history, sh->termcaps_context.history_file, 0);
+        s_write_history(sh, 0);
 	}
 	else if (option_is_set(&p->bltin_opt_head, ST_BLTIN_HISTORY_OPT_R) == 1)
 	{
 		log_debug("history Option -r");
-		offset = 0;
-		history_load(sh->termcaps_context.history_file, &sh->termcaps_context.history, &offset);
-        sh->termcaps_context.history_initial_size = offset;
+        s_read_history(sh, 0);
 	}
 	else if (option_is_set(&p->bltin_opt_head, ST_BLTIN_HISTORY_OPT_A) == 1)
 	{
 		log_debug("history Option -a");
-		history_write(&sh->termcaps_context.history, sh->termcaps_context.history_file, 1);
-		sh->termcaps_context.history_initial_size = sh->termcaps_context.history.size;
+        s_write_history(sh, 1);
 	}
 	else if (option_is_set(&p->bltin_opt_head, ST_BLTIN_HISTORY_OPT_N) == 1)
 	{
 		log_debug("history Option -n");
-		history_load(sh->termcaps_context.history_file, &sh->termcaps_context.history, &sh->termcaps_context.history_initial_size);
-		sh->termcaps_context.history_initial_size = sh->termcaps_context.history.size;
+        s_read_history(sh, 1);
 	}
 	else
 	{
