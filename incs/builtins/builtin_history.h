@@ -71,6 +71,17 @@ static t_option				g_builtin_history_option_n = {
 	.values = NULL
 };
 
+static t_option				g_builtin_history_option_s = {
+	.name = "s",
+	.index = ST_BLTIN_HISTORY_OPT_S,
+	.is_single_char = 1,
+	.has_value = 1,
+	.value_is_numeric = 0,
+	.value_is_alnum = 1,
+	.value_is_indexof = NULL,
+	.value = NULL
+};
+
 static const t_option		*g_builtin_history_options[] = {
 	[0] = &g_builtin_history_option_c,
 	[1] = &g_builtin_history_option_d,
@@ -78,7 +89,8 @@ static const t_option		*g_builtin_history_options[] = {
 	[3] = &g_builtin_history_option_r,
 	[4] = &g_builtin_history_option_a,
 	[5] = &g_builtin_history_option_n,
-	[6] = NULL
+	[6] = &g_builtin_history_option_s,
+	[7] = NULL
 };
 
 static const t_builtin		g_builtin_history = {

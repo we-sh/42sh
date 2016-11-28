@@ -89,6 +89,12 @@ static int	s_before(t_builtin const *builtin, t_sh *sh, t_proc *p)
 		log_debug("history Option -n");
         s_read_history(sh, 1);
 	}
+	else if (option_is_set(&p->bltin_opt_head, ST_BLTIN_HISTORY_OPT_S) == 1)
+	{
+		log_debug("history Option -s");
+        arg = option_get_value(&p->bltin_opt_head, ST_BLTIN_HISTORY_OPT_S);
+        history_add(arg, &sh->termcaps_context.history);
+	}
 	else
 	{
 		log_debug("history No Option");
