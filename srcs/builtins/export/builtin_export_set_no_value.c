@@ -11,7 +11,7 @@ static int		s_update_tmpenv_from_local(t_proc *p, char *argv, t_sh **sh)
 	{
 		if (ft_strncmp(p->envp[i], argv, ft_strlen(argv)) == 0)
 		{
-			ret = builtin_export_set_local_and_env(sh,p->envp[i]);
+			ret = builtin_export_set_local_and_env(sh, p->envp[i]);
 			return (ret);
 		}
 		i++;

@@ -20,7 +20,6 @@ static int	s_replace_event(t_termcaps_context *context,
 		termcaps_error(context, pt, token_size, EVENT_NOT_FOUND);
 		return (0);
 	}
-	log_debug("Found event {%.*s}", (int)event.size, event.bytes);
 	size_left = buf->size - buf_offset + token_size;
 	if (buf_offset + event.size + size_left >= buf_size_max)
 	{

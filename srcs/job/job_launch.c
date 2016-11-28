@@ -17,8 +17,7 @@ static int			s_fork_it(t_sh *sh, t_job *j, t_proc *p)
 			return (ret);
 	if ((ret = builtin_callback(BLTIN_CB_BEFORE, sh, p)) != ST_OK)
 		return (ret);
-	p->pid = fork();
-	if (p->pid < 0)
+	if ((p->pid = fork()) < 0)
 		return (ST_FORK);
 	else if (p->pid == 0)
 		proc_launch(sh, j, p);

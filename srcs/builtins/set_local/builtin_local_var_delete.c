@@ -8,7 +8,7 @@ static void	s_delete_first(t_sh *sh, t_var *ptrvar)
 		sh->local_vars = ptrvar->next;
 	else
 		sh->local_vars = NULL;
-	free(ptrvar);	
+	free(ptrvar);
 }
 
 void		builtin_local_var_delete(t_sh *sh, char *key)
