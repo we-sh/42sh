@@ -50,7 +50,7 @@ int				option_push(t_list *list_head, t_option const *option_ref,
 	}
 	if (option_ref->has_multiple_values == 1)
 		return (s_push_value(&option->values, argv[i + 1]));
-	if (option_ref->has_value == 1)
+	if (option_ref->has_value == 1 && option->value == NULL)
 		if ((option->value = ft_strdup(argv[i + 1])) == NULL)
 			return (ST_MALLOC);
 	return (ST_OK);
