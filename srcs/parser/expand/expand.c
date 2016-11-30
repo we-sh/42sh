@@ -15,7 +15,10 @@ static int	s_list_argv_to_char_argv(t_proc *p, t_list *argv_list)
 	t_argv	*argument;
 	t_list	*pos;
 	t_list	*safe;
+	int		st;
 
+	if ((st = globbing(&argv_list)) != ST_OK)
+		return (st);
 	safe = argv_list->next;
 	while ((pos = safe) && safe != argv_list)
 	{
