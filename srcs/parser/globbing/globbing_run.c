@@ -43,20 +43,6 @@ static int	check_globbing(char *pattern, char *input)
 	}
 }
 
-static void	s_delete_ctx(t_ctx *ctx)
-{
-	if (ctx)
-	{
-		if (ctx->l)
-			free(ctx->l);
-		if (ctx->m)
-			free(ctx->m);
-		if (ctx->r)
-			free(ctx->r);
-		free(ctx);
-	}
-}
-
 static char	*s_join_free(char *s1, char *s2)
 {
 	char *ret;
@@ -100,16 +86,7 @@ static void	s_globbing_run_parse(char *arg, t_list *list_glob)
 	if (list_is_empty(list_glob) && dp != NULL
 			&& !(ft_strchr(arg, '?') || ft_strchr(arg, '*')))
 		s_add_node_to_list(list_glob, arg);
-	s_delete_ctx(c);
-}
-
-static void	s_delete_arg(t_argv *arg)
-{
-	if (arg && arg->buffer)
-	{
-		free(arg->buffer);
-		free(arg);
-	}
+	globbing_context_delete(c);
 }
 
 /*
@@ -135,7 +112,10 @@ int			globbing_run(t_list **argv_list)
 			s_globbing_run_parse(arg->buffer, &list_glob);
 		else
 			s_add_node_to_list(&list_glob, arg->buffer);
-		s_delete_arg(arg);
+		if (arg->buffer)
+			free(arg->buffer);
+		if (arg)
+			free(arg);
 	}
 	list_del(*argv_list);
 	*argv_list = &list_glob;

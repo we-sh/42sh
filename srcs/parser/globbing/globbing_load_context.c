@@ -74,6 +74,20 @@ static char	*s_get_r_ctx(char **arg)
 	return (ret);
 }
 
+void		globbing_context_delete(t_ctx *ctx)
+{
+	if (ctx)
+	{
+		if (ctx->l)
+			free(ctx->l);
+		if (ctx->m)
+			free(ctx->m);
+		if (ctx->r)
+			free(ctx->r);
+		free(ctx);
+	}
+}
+
 /*
 ** Fill a structure with the context of the variable:
 ** Example: ls ../../?ello/name

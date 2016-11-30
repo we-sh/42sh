@@ -8,6 +8,8 @@ typedef struct	s_ctx
 	char		*r;
 }				t_ctx;
 
-int	globbing_load_context(t_ctx **ctx, char *arg);
+int				globbing_load_context(t_ctx **ctx, char *arg);
+
+void			globbing_context_delete(t_ctx *ctx);
 
 #endif
