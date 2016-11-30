@@ -100,8 +100,19 @@ static int	s_before(t_builtin const *builtin, t_sh *sh, t_proc *p)
 	else if (option_is_set(&p->bltin_opt_head, ST_BLTIN_HISTORY_OPT_S) == 1)
 	{
 		log_debug("history Option -s");
-        arg = option_get_value(&p->bltin_opt_head, ST_BLTIN_HISTORY_OPT_S);
-        history_add(arg, &sh->termcaps_context.history);
+		char	cmd[1024];
+		int		i;
+
+		cmd[0] = '\0';
+		i = 1;
+		while (i < p->argc)
+		{
+			log_info("argument %d: %s", i, p->argv[i]);
+			ft_strlcat(cmd, p->argv[i], sizeof(cmd));
+			ft_strlcat(cmd, " ", sizeof(cmd));
+			i++;
+		}
+		history_add(cmd, &sh->termcaps_context.history);
 	}
 	else
 	{

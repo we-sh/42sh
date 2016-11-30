@@ -75,9 +75,9 @@ static t_option				g_builtin_history_option_s = {
 	.name = "s",
 	.index = ST_BLTIN_HISTORY_OPT_S,
 	.is_single_char = 1,
-	.has_value = 1,
+	.has_value = 0,
 	.value_is_numeric = 0,
-	.value_is_alnum = 1,
+	.value_is_alnum = 0,
 	.value_is_indexof = NULL,
 	.value = NULL
 };
