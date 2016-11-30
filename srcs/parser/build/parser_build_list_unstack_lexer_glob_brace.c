@@ -8,6 +8,7 @@ static t_argv	*s_argv_alloc(void)
 		return (NULL);
 	if ((argument->buffer = ft_strnew(0)) == NULL)
 		return (NULL);
+	argument->is_null = 0;
 	return (argument);
 }
 

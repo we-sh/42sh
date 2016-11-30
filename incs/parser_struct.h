@@ -151,6 +151,7 @@ typedef struct			s_argv
 {
 	t_list					argv_list;
 	char					*buffer;
+	int						is_null;
 }						t_argv;
 
 #endif

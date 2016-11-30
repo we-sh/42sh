@@ -45,11 +45,14 @@ static int	s_list_argv_to_char_argv(t_proc *p, t_list *argv_list, int entry_toke
 	{
 		safe = safe->next;
 		argument = CONTAINER_OF(pos, t_argv, argv_list);
-		if (entry_token_type == TT_NAME)
-			s_expand_escape_char_not_inhibited(argument->buffer);
-		if ((ft_array_push_back(&p->argv, argument->buffer)) < 0)
-			return (ST_MALLOC);
-		p->argc++;
+		if (argument->is_null == 0)
+		{
+			if (entry_token_type == TT_NAME)
+				s_expand_escape_char_not_inhibited(argument->buffer);
+			if ((ft_array_push_back(&p->argv, argument->buffer)) < 0)
+				return (ST_MALLOC);
+			p->argc++;
+		}
 		free(argument->buffer);
 		free(argument);
 	}

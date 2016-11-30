@@ -24,6 +24,7 @@ static t_argv	*s_alloc_new_argv(t_list *prev)
 	argument->buffer = NULL;
 	argument->argv_list.prev = prev;
 	argument->argv_list.next = NULL;
+	argument->is_null = 0;
 	return (argument);
 }
 
