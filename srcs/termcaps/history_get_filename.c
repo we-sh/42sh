@@ -52,7 +52,7 @@ static int	s_history_default(char **envp, size_t size_max, char *filename)
 	return (1);
 }
 
-int		history_get_filename(char **envp, size_t size_max, char *filename)
+int			history_get_filename(char **envp, size_t size_max, char *filename)
 {
 	if (s_history_histfile(envp, size_max, filename))
 		return (1);

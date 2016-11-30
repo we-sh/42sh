@@ -31,7 +31,6 @@ static int				s_bufferize_input(t_termcaps_context *context)
 		termcaps_error(context, "", 0, "Command line too big");
 		return (0);
 	}
-	log_debug("YOLO buffer {%.*s}", (int)buffer_size, buffer);
 	buffer_size -= context->prompt.size;
 	ft_memmove(buffer, &buffer[context->prompt.size], buffer_size);
 	buffer[buffer_size] = '\0';
@@ -45,7 +44,6 @@ static int				s_bufferize_input(t_termcaps_context *context)
 	node->is_modified = 1;
 	command_clear(&context->command);
 	context->history.offset = context->history.size;
-	log_debug("context->buffer %s", context->buffer);
 	return (1);
 }
 

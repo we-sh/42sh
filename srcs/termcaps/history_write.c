@@ -9,19 +9,20 @@ static int		s_history_write(t_list_head *history, int fd, int append)
 	while ((pos = pos->next) && pos != &history->list)
 	{
 		node = CONTAINER_OF(pos, t_node_history, list);
-        if (append && !node->is_modified)
-            continue ;
+		if (append && !node->is_modified)
+			continue ;
 		if (!termcaps_write(fd, node->command.bytes, node->command.size) ||
 			!termcaps_write(fd, "\n", sizeof("\n") - 1))
 		{
-			log_error("termcaps_write failed command {%.*s}", (int)node->command.size, node->command.bytes);
+			log_error("termcaps_write failed command {%.*s}",
+					(int)node->command.size, node->command.bytes);
 			return (0);
 		}
 	}
 	return (1);
 }
 
-int			history_write(char **envp, t_list_head *history, int append)
+int				history_write(char **envp, t_list_head *history, int append)
 {
 	char	filename[255];
 	int		fd;
@@ -32,7 +33,8 @@ int			history_write(char **envp, t_list_head *history, int append)
 		log_error("history_filename failed");
 		return (0);
 	}
-    log_debug("writing history to {%s} append ? %s", filename, append ? "true":"false");
+	log_debug("writing history to {%s} append ? %s",
+			filename, append ? "true" : "false");
 	flags = append ? O_CREAT | O_WRONLY :
 					O_CREAT | O_WRONLY | O_TRUNC;
 	fd = open(filename, flags, 0666);
@@ -47,4 +49,3 @@ int			history_write(char **envp, t_list_head *history, int append)
 	close(fd);
 	return (1);
 }
-

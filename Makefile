@@ -121,6 +121,10 @@ SRCS	=	\
 			builtins/fg/builtin_fg.c									\
 			builtins/help/builtin_help.c								\
 			builtins/history/builtin_history.c							\
+			builtins/history/default_history.c							\
+			builtins/history/read_history.c								\
+			builtins/history/write_history.c							\
+			builtins/history/append_history.c							\
 			builtins/jobs/builtin_jobs.c								\
 			builtins/env/builtin_env.c									\
 			builtins/language/builtin_language.c						\
@@ -209,8 +213,8 @@ SRCS	=	\
 			termcaps/termcaps_read_input.c								\
 			termcaps/termcaps_read_loop.c								\
 			termcaps/termcaps_get_character_bytes_count.c				\
-			termcaps/command_add_string.c					\
-			termcaps/termcaps_display_command.c					\
+			termcaps/command_add_string.c								\
+			termcaps/termcaps_display_command.c							\
 			termcaps/termcaps_isunicode.c								\
 			termcaps/termcaps_identify_input.c							\
 			termcaps/list_head.c										\
@@ -235,7 +239,7 @@ SRCS	=	\
 			termcaps/key__cursor_to_prev_word.c							\
 			termcaps/key__cut.c											\
 			termcaps/key__cut_to_end_of_line.c							\
-			termcaps/key__delete_command.c							\
+			termcaps/key__delete_command.c								\
 			termcaps/key__delete_under_cursor.c							\
 			termcaps/key__paste.c										\
 			termcaps/key__select.c										\

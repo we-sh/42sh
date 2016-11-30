@@ -3,6 +3,11 @@
 
 # include "builtin.h"
 
+void	append_history(t_list_head *history, t_proc *p);
+void	default_history(t_list_head *history, char *arg);
+void	read_history(t_sh *sh, int new, char *filename);
+void	write_history(t_sh *sh, int append, char *filename);
+
 static t_option				g_builtin_history_option_c = {
 	.name = "c",
 	.index = ST_BLTIN_HISTORY_OPT_C,

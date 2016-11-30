@@ -24,7 +24,7 @@ static int	read_history(int fd, t_list_head *history, size_t *from)
 	return (1);
 }
 
-int		file_exists(char *filename)
+int			file_exists(char *filename)
 {
 	struct stat	st;
 
@@ -36,7 +36,7 @@ int		file_exists(char *filename)
 	return (1);
 }
 
-int		history_load(char **envp, t_list_head *history, size_t *from)
+int			history_load(char **envp, t_list_head *history, size_t *from)
 {
 	char	filename[255];
 	int		fd;

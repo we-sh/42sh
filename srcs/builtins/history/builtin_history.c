@@ -1,4 +1,5 @@
 #include "shell.h"
+#include "builtin_history.h"
 
 /*
 ** This is a template for a builtin implementation
@@ -21,136 +22,51 @@
 ** current directory.
 */
 
-static void s_write_history(t_sh *sh, int append, char *filename)
+static void	s_clear_history(t_sh *sh)
 {
-    t_node_history  *node;
-    t_list          *pos;
-
-	if (filename != NULL)
-		env_set(&sh->envp, "HISTFILE", filename);
-    history_write(sh->envp, &sh->termcaps_context.history, append);
-    sh->termcaps_context.history_initial_size = sh->termcaps_context.history.size;
-    pos = &sh->termcaps_context.history.list;
-    while ((pos = pos->next) && pos != &sh->termcaps_context.history.list)
-    {
-        node = CONTAINER_OF(pos, t_node_history, list);
-        node->is_modified = 0;
-    }
-	if (filename != NULL)
-		env_unset(&sh->envp, "HISTFILE");
+	history_clear(&sh->termcaps_context.history);
+	sh->termcaps_context.history_initial_size = 0;
 }
 
-static void s_read_history(t_sh *sh, int new, char *filename)
+static void	s_delete_entry(t_sh *sh, t_proc *p)
 {
-    size_t  offset;
+	char			*arg;
+	size_t			offset;
 
-	if (filename != NULL)
-		env_set(&sh->envp, "HISTFILE", filename);
-    offset = new ? sh->termcaps_context.history_initial_size : 0;
-    history_load(sh->envp, &sh->termcaps_context.history, &offset);
-    sh->termcaps_context.history_initial_size = offset;
-	if (filename != NULL)
-		env_unset(&sh->envp, "HISTFILE");
+	arg = option_get_value(&p->bltin_opt_head, ST_BLTIN_HISTORY_OPT_D);
+	offset = ft_atoi(arg);
+	history_remove(&sh->termcaps_context.history, offset + 1);
 }
 
 static int	s_before(t_builtin const *builtin, t_sh *sh, t_proc *p)
 {
-	t_node_history	*node;
-	t_list			*pos;
-	char			*arg;
-	size_t			offset;
-
 	(void)builtin;
 	log_debug("builtin status: %d argc %d\n", p->bltin_status, p->argc);
 	if (p->bltin_status != ST_OK)
 		return (EXIT_SUCCESS);
 	if (option_is_set(&p->bltin_opt_head, ST_BLTIN_HISTORY_OPT_C) == 1)
-	{
-		log_debug("history Option -c");
-		history_clear(&sh->termcaps_context.history);
-		sh->termcaps_context.history_initial_size = 0;
-	}
+		s_clear_history(sh);
 	else if (option_is_set(&p->bltin_opt_head, ST_BLTIN_HISTORY_OPT_D) == 1)
-	{
-		log_debug("history Option -d");
-		arg = option_get_value(&p->bltin_opt_head, ST_BLTIN_HISTORY_OPT_D);
-		offset = ft_atoi(arg);
-		history_remove(&sh->termcaps_context.history, offset + 1);
-	}
+		s_delete_entry(sh, p);
 	else if (option_is_set(&p->bltin_opt_head, ST_BLTIN_HISTORY_OPT_W) == 1)
-	{
-		log_debug("history Option -w");
-        s_write_history(sh, 0, p->argv[1]);
-	}
+		write_history(sh, 0, p->argv[1]);
 	else if (option_is_set(&p->bltin_opt_head, ST_BLTIN_HISTORY_OPT_R) == 1)
-	{
-		log_debug("history Option -r");
-        s_read_history(sh, 0, p->argv[1]);
-	}
+		read_history(sh, 0, p->argv[1]);
 	else if (option_is_set(&p->bltin_opt_head, ST_BLTIN_HISTORY_OPT_A) == 1)
-	{
-		log_debug("history Option -a");
-        s_write_history(sh, 1, p->argv[1]);
-	}
+		write_history(sh, 1, p->argv[1]);
 	else if (option_is_set(&p->bltin_opt_head, ST_BLTIN_HISTORY_OPT_N) == 1)
-	{
-		log_debug("history Option -n");
-        s_read_history(sh, 1, p->argv[1]);
-	}
+		read_history(sh, 1, p->argv[1]);
 	else if (option_is_set(&p->bltin_opt_head, ST_BLTIN_HISTORY_OPT_S) == 1)
-	{
-		log_debug("history Option -s");
-		char	cmd[1024];
-		int		i;
-
-		cmd[0] = '\0';
-		i = 1;
-		while (i < p->argc)
-		{
-			log_info("argument %d: %s", i, p->argv[i]);
-			ft_strlcat(cmd, p->argv[i], sizeof(cmd));
-			ft_strlcat(cmd, " ", sizeof(cmd));
-			i++;
-		}
-		history_add(cmd, &sh->termcaps_context.history);
-	}
+		append_history(&sh->termcaps_context.history, p);
 	else
-	{
-		log_debug("history No Option");
-		offset = 0;
-		pos = &sh->termcaps_context.history.list;
-		while ((pos = pos->next) && pos != &sh->termcaps_context.history.list)
-		{
-			node = CONTAINER_OF(pos, t_node_history, list);
-			ft_printf("%s %4d %.*s\n", node->is_modified ? "*" : " ", offset, (int)node->command.size, node->command.bytes);
-			offset++;
-		}
-	}
+		default_history(&sh->termcaps_context.history, p->argv[1]);
 	return (ST_OK);
 }
 
-static int		s_exec(t_sh *sh, t_proc *p)
-{
-	(void)sh;
-	(void)p;
-	return (EXIT_SUCCESS);
-}
-
-static int		s_after(t_sh **sh, t_proc *p)
-{
-	(void)sh;
-	(void)p;
-	return (ST_OK);
-}
-
-int				builtin_history(t_builtin const *builtin,
+int			builtin_history(t_builtin const *builtin,
 							int callback, t_sh *sh, t_proc *p)
 {
 	if (callback == BLTIN_CB_BEFORE)
 		return (s_before(builtin, sh, p));
-	if (callback == BLTIN_CB_EXEC)
-		exit(s_exec(sh, p));
-	if (callback == BLTIN_CB_AFTER)
-		return (s_after(&sh, p));
 	return (ST_OK);
 }

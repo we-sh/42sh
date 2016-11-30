@@ -102,7 +102,6 @@ int					command_to_buffer(const t_list_head *head,
 		ft_memcpy(buffer + buffer_offset, node_cmd->character,
 			node_cmd->character_size);
 		buffer_offset += node_cmd->character_size;
-		log_debug("node_cmd character {%.*s}", (int)node_cmd->character_size, node_cmd->character);
 	}
 	*buffer_size = buffer_offset;
 	return (1);
