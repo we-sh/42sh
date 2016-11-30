@@ -1,32 +1,28 @@
 #include "shell.h"
 
-/*
- * Y'a des leaks.
- */
-
 static char	*s_get_left_ctx(char **arg, int is_root)
 {
+	char	*ptr;
 	char	*ret;
 	int		i;
 
 	ret = NULL;
 	i = 0;
+	if (!arg)
+		return (NULL);
 	if (is_root == 1)
 		ret = ft_strdup("/");
 	while (arg[i])
 	{
 		if (ft_strchr(arg[i], '*') == NULL && ft_strchr(arg[i], '?') == NULL)
 		{
-			if (ret == NULL)
-				ret = ft_strdup(arg[i]);
-			else
-				ret = ft_strjoin(ret, arg[i]);
-			ret = ft_strjoin(ret, "/");
+			ptr = ret;
+			ret = ft_strjoin3_safe(ptr, arg[i], "/");
+			if (ptr)
+				ft_strdel(&ptr);
 		}
 		else
-		{
 			return (ret);
-		}
 		i++;
 	}
 	return (ret);
@@ -37,6 +33,8 @@ static char	*s_get_ctx(char **arg)
 	int i;
 
 	i = 0;
+	if (!arg)
+		return (NULL);
 	while (arg[i])
 	{
 		if (ft_strchr(arg[i], '*'))
@@ -53,6 +51,7 @@ static char	*s_get_right_ctx(char **arg)
 	char	*ret;
 	int		token_detected;
 	int		i;
+	char	*ptr;
 
 	if (!arg)
 		return (NULL);
@@ -63,11 +62,10 @@ static char	*s_get_right_ctx(char **arg)
 	{
 		if (token_detected == 1)
 		{
-			if (ret == NULL)
-				ret = ft_strdup("/");
-			else
-				ret = ft_strjoin(ret, "/");
-			ret = ft_strjoin(ret, arg[i]);
+			ptr = ret;
+			ret = ft_strjoin3_safe(ptr, arg[i], "/");
+			if (ptr)
+				ft_strdel(&ptr);
 		}
 		if (ft_strchr(arg[i], '*') != NULL || ft_strchr(arg[i], '?') != NULL)
 			token_detected = 1;
@@ -76,11 +74,21 @@ static char	*s_get_right_ctx(char **arg)
 	return (ret);
 }
 
+/*
+** Fill a structure with the context of the variable:
+** Example: ls ../../?ello/name
+** Will produce:
+** left_ctx: ../../
+** middle_ctx: ?ello
+** right_ctx: /name
+*/
+
 int			globbing_load_context(t_ctx **ctx, char *arg)
 {
 	char	**sp;
+	int		i;
 
-	if (!(*ctx = ft_memalloc(sizeof(t_ctx *))))
+	if (!(*ctx = ft_memalloc(sizeof(t_ctx))))
 		return (ST_MALLOC);
 	if (!arg)
 		return (ST_EINVAL);
@@ -92,6 +100,13 @@ int			globbing_load_context(t_ctx **ctx, char *arg)
 		(*ctx)->left = s_get_left_ctx(sp, 0);
 	(*ctx)->middle = s_get_ctx(sp);
 	(*ctx)->right = s_get_right_ctx(sp);
-	// delete array
+	i = 0;
+	while (sp[i])
+	{
+		ft_strdel((&sp[i]));
+		i++;
+	}
+	free(sp);
+	sp = NULL;
 	return (ST_OK);
 }
