@@ -43,7 +43,7 @@ static int	s_after(t_builtin const *builtin, t_sh *sh, t_proc *p)
 	(void)builtin;
 	log_debug("builtin status: %d argc %d\n", p->bltin_status, p->argc);
 	if (p->bltin_status != ST_OK)
-		return (EXIT_FAILURE);
+		return (EXIT_SUCCESS);
 	if (option_is_set(&p->bltin_opt_head, ST_BLTIN_HISTORY_OPT_C) == 1)
 		s_clear_history(sh);
 	else if (option_is_set(&p->bltin_opt_head, ST_BLTIN_HISTORY_OPT_D) == 1)
