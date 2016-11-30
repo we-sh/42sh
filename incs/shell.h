@@ -256,5 +256,5 @@ int				conf_check_color_mode(char **env);
 ** local_var
 */
 int				local_var_replace(t_sh *sh, char *input, char **output);
-
+int				local_var_concat_input_output(char **output, char *input, int len);
 #endif

@@ -1,19 +1,7 @@
 #include "shell.h"
 
-static char		*s_local_var_replace_loop(t_sh *sh, char *input, int *i)
+static char *s_replace_from_local(t_var *ptr, char *tmp)
 {
-	t_var		*ptr;
-	int			pos;
-	char		*tmp;
-
-	pos = 0;
-	ptr = sh->local_vars;
-	while (ft_isalnum(input[pos]) || input[pos] == '_')
-		pos++;
-	if ((tmp = ft_strnew(pos)) == NULL)
-		return (NULL);
-	tmp = ft_strncpy(tmp, input, pos);
-	*i = *i + pos;
 	while (ptr)
 	{
 		if (ft_strcmp(tmp, ptr->key) == 0)
@@ -24,28 +12,33 @@ static char		*s_local_var_replace_loop(t_sh *sh, char *input, int *i)
 		}
 		ptr = ptr->next;
 	}
-	free(tmp);
-	return (ft_strnew(0));
+	return (NULL);
 }
 
-static int		s_concat_input_output(char **output, char *input, int len)
+static char		*s_local_var_replace_loop(t_sh *sh, char *input, int *i)
 {
-	int			old_len;
+	t_var		*ptr;
+	int			pos;
 	char		*tmp;
+	char		*value;
 
-	if (*output)
-		old_len = ft_strlen(*output);
-	else
-		old_len = 0;
-	tmp = *output;
-	if ((*output = ft_strnew(old_len + len)) == NULL)
-		return (ST_MALLOC);
-	if (tmp)
-		*output = ft_strcpy(*output, tmp);
-	ft_strncpy(*output + old_len, input, len);
-	if (tmp)
+	pos = 0;
+	ptr = sh->local_vars;
+	while (ft_isalnum(input[pos]) || input[pos] == '_')
+		pos++;
+	if ((tmp = ft_strnew(pos)) == NULL)
+		return (NULL);
+	tmp = ft_strncpy(tmp, input, pos);
+	*i = *i + pos;
+	if ((value = (s_replace_from_local(ptr, tmp))) != NULL)
+		return (value);
+	else if ((value = env_get(sh->envp, tmp)) != NULL)
+	{
 		free(tmp);
-	return (ST_OK);
+		return (ft_strdup(value));
+	}
+	free(tmp);
+	return (ft_strnew(0));
 }
 
 static int		s_local_var_replace_out_of_loop(char *input, char **output,
@@ -53,7 +46,7 @@ static int		s_local_var_replace_out_of_loop(char *input, char **output,
 {
 	if (i2 != i)
 	{
-		if (s_concat_input_output(output, input + i2, i - i2) != ST_OK)
+		if (local_var_concat_input_output(output, input + i2, i - i2) != ST_OK)
 			return (ST_MALLOC);
 	}
 	else if (i == 0)
@@ -82,7 +75,7 @@ static int		s_replace_char_or_loop(t_sh *sh, char *input,
 	}
 	else if ((tmp = s_local_var_replace_loop(sh, input + *i + 1, i)) == NULL)
 		return (ST_MALLOC);
-	if (s_concat_input_output(output, tmp, ft_strlen(tmp)) != ST_OK)
+	if (local_var_concat_input_output(output, tmp, ft_strlen(tmp)) != ST_OK)
 		return (ST_MALLOC);
 	free(tmp);
 	return (ST_OK);
@@ -101,7 +94,7 @@ int				local_var_replace(t_sh *sh, char *input, char **output)
 		{
 			if (i2 != i)
 			{
-				if (s_concat_input_output(output, input + i2, i - i2) != ST_OK)
+				if (local_var_concat_input_output(output, input + i2, i - i2) != ST_OK)
 					return (ST_MALLOC);
 			}
 			if ((s_replace_char_or_loop(sh, input, output, &i)) != ST_OK)
