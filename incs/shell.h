@@ -12,6 +12,7 @@
 */
 
 # ifdef __linux__
+
 #  define SELECTBLANC "\e]12;white\a"
 #  define SELECTBLEU "\e]12;blue\a"
 #  define LSOPTCOLOR "--color=auto"

@@ -1,92 +1,77 @@
 #include "shell.h"
 #include "builtin_set_local.h"
 
-static void	s_display_local(t_proc *p, t_var *ptrvar)
+static int	s_check_argv_validity(t_proc *p, int flag, int *index)
 {
-	int		i;
-	int		key_len;
+	char	*tmp;
+	int		ret;
 
-	i = 0;
-	key_len = ft_strlen(ptrvar->key);
-	while (p->envp[i])
+	if ((tmp = ft_strdup(p->argv[*index])) == NULL)
+		return (ST_MALLOC);
+	env_get_value_and_remove_equal_sign(tmp);
+	if ((ret = setenv_argv_is_valid(tmp)) != ST_OK)
 	{
-		if (strncmp(ptrvar->key, p->envp[i], key_len) == 0)
-		{
-			ptrvar = ptrvar->next;
-			return ;
-		}
-		i++;
+		if (flag == BLTIN_CB_EXEC)
+			display_status(ST_BLTIN_SETENV_INVALID_IDENTIFIER, p->argv[*index], NULL);
+		*index += 1;
+		free(tmp);
+		return (ST_DONE);
 	}
-	ft_putstr_fd(ptrvar->key, STDOUT_FILENO);
-	ft_putchar_fd('=', STDOUT_FILENO);
-	if (ptrvar->value)
-		ft_putendl_fd(ptrvar->value, STDOUT_FILENO);
-	else
-		ft_putendl_fd("\0", STDOUT_FILENO);
-	return ;
+	free(tmp);
+	return (ST_OK);
 }
 
-static int	s_exec_display(t_sh *sh, t_proc *p)
+static void	s_display_and_usage(t_sh *sh, t_proc *p)
 {
-	int		i;
-	t_var	*ptrvar;
-
-	ptrvar = sh->local_vars;
-	i = 0;
-	if (p->argc == 1)
-		p->argc--;
-	if (p->argc == 0)
-	{
-		while (p->envp[i])
-		{
-			ft_putendl_fd(p->envp[i], STDOUT_FILENO);
-			i++;
-		}
-		i = 0;
-		while (ptrvar)
-		{
-			s_display_local(p, ptrvar);
-			ptrvar = ptrvar->next;
-		}
-		exit(EXIT_SUCCESS);
-	}
-	return (ST_OK);
+	if (option_is_set(&p->bltin_opt_head, ST_BLTIN_EXPORT_OPT_P) == 1
+	&& p->argc == 1
+	&& option_is_set(&p->bltin_opt_head, ST_BLTIN_EXPORT_OPT_N) == 0)
+		builtin_export_display(sh, p);
+	else if (p->argc == 1)
+		builtin_export_display(sh, p);
 }
 
 static int	s_exec(t_sh *sh, t_builtin const *builtin, t_proc *p)
 {
 	int		ret;
 	t_var	*ptr;
-
+	int		i;
+	
+	i = 0;
 	ret = 0;
 	ptr = sh->local_vars;
-	if (p->bltin_status == ST_OK)
+	while (p->argv[i])
 	{
-		if ((ret = option_is_set(&p->bltin_opt_head,
-		ST_BLTIN_EXPORT_OPT_P)) == 1
-		&& p->argc == 1
-		&& option_is_set(&p->bltin_opt_head, ST_BLTIN_EXPORT_OPT_N) == 0)
-			s_exec_display(sh, p);
-		else if (p->argc == 1)
-			s_exec_display(sh, p);
+		if ((ret = s_check_argv_validity(p, BLTIN_CB_EXEC, &i)) == ST_DONE)
+			continue ;
+		else if (ret == ST_MALLOC)
+			return (ST_MALLOC);
+		i++;
 	}
+	if (p->bltin_status == ST_OK)
+		s_display_and_usage(sh, p);
 	else
 	{
 		builtin_usage(builtin, p->bltin_status);
-		exit(EXIT_FAILURE);
+		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
 }
 
 static int	s_after(t_sh **sh, t_proc *p)
 {
-	int i;
+	int		i;
+	int		ret;
 
 	i = 1;
 	if (p->bltin_status == ST_OK)
 	{
 		while (p->argv[i])
 		{
+			if ((ret = s_check_argv_validity(p, BLTIN_CB_AFTER, &i)) == ST_DONE)
+				continue ;
+			else if (ret == ST_MALLOC)
+				return (ST_MALLOC);
 			if (option_is_set(&p->bltin_opt_head, ST_BLTIN_EXPORT_OPT_N) == 1
 			&& (option_is_set(&p->bltin_opt_head, ST_BLTIN_EXPORT_OPT_P)) == 0)
 			{
@@ -94,10 +79,8 @@ static int	s_after(t_sh **sh, t_proc *p)
 					return (ST_MALLOC);
 			}
 			else
-			{
 				if ((builtin_export_set(sh, p, i)) == ST_MALLOC)
 					return (ST_MALLOC);
-			}
 			i++;
 		}
 	}
