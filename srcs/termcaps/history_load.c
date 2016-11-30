@@ -1,5 +1,28 @@
 #include "shell.h"
 
+static int	s_stupidgetnextline(t_list_head *history, size_t *from, char *line, size_t offset)
+{
+	char	*pt;
+
+	pt = line;
+	while ((pt = ft_strchr(pt, '\t')))
+	{
+		*pt = ' ';
+		pt++;
+	}
+	if (offset >= *from && ft_strlen(line) > 0)
+	{
+		if (!history_add(line, history))
+		{
+			log_error("history_add failed line {%s}", line);
+			free(line);
+			return (0);
+		}
+	}
+	free(line);
+	return (1);
+}
+
 static int	read_history(int fd, t_list_head *history, size_t *from)
 {
 	char	*line;
@@ -8,18 +31,12 @@ static int	read_history(int fd, t_list_head *history, size_t *from)
 	offset = 0;
 	while (get_next_line(fd, &line))
 	{
-		if (offset >= *from && ft_strlen(line) > 0)
-		{
-			if (!history_add(line, history))
-			{
-				log_error("history_add failed line {%s}", line);
-				free(line);
-				return (0);
-			}
-		}
-		free(line);
+		if (!s_stupidgetnextline(history, from, line, offset))
+			return (0);
 		offset++;
 	}
+	if (!s_stupidgetnextline(history, from, line, offset))
+		return (0);
 	*from = offset;
 	return (1);
 }

@@ -3,8 +3,8 @@
 
 /*
 ** This is a template for a builtin implementation
-** `BLTIN_CB_BEFORE`
-** A callback called before the process is forked.
+** `BLTIN_CB_after`
+** A callback called after the process is forked.
 ** Used to parse arguments, check options and pop their arguments, and set the
 ** builtin status (p->bltin_status).
 ** The builtin status may be used to display errors and to give up behaviors
@@ -38,12 +38,12 @@ static void	s_delete_entry(t_sh *sh, t_proc *p)
 	history_remove(&sh->termcaps_context.history, offset + 1);
 }
 
-static int	s_before(t_builtin const *builtin, t_sh *sh, t_proc *p)
+static int	s_after(t_builtin const *builtin, t_sh *sh, t_proc *p)
 {
 	(void)builtin;
 	log_debug("builtin status: %d argc %d\n", p->bltin_status, p->argc);
 	if (p->bltin_status != ST_OK)
-		return (EXIT_SUCCESS);
+		return (EXIT_FAILURE);
 	if (option_is_set(&p->bltin_opt_head, ST_BLTIN_HISTORY_OPT_C) == 1)
 		s_clear_history(sh);
 	else if (option_is_set(&p->bltin_opt_head, ST_BLTIN_HISTORY_OPT_D) == 1)
@@ -63,10 +63,24 @@ static int	s_before(t_builtin const *builtin, t_sh *sh, t_proc *p)
 	return (ST_OK);
 }
 
+static int	s_exec(t_builtin const *builtin, t_proc *p)
+{
+	if (p->bltin_status == ST_OK)
+		return (EXIT_SUCCESS);
+	else
+	{
+		builtin_usage(builtin, p->bltin_status);
+		return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
+}
+
 int			builtin_history(t_builtin const *builtin,
 							int callback, t_sh *sh, t_proc *p)
 {
-	if (callback == BLTIN_CB_BEFORE)
-		return (s_before(builtin, sh, p));
+	if (callback == BLTIN_CB_EXEC)
+		exit(s_exec(builtin, p));
+	if (callback == BLTIN_CB_AFTER)
+		return (s_after(builtin, sh, p));
 	return (ST_OK);
 }
