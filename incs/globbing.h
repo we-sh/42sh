@@ -3,9 +3,9 @@
 
 typedef struct	s_ctx
 {
-	char		*left;
-	char		*middle;
-	char		*right;
+	char		*l;
+	char		*m;
+	char		*r;
 }				t_ctx;
 
 int	globbing_load_context(t_ctx **ctx, char *arg);

@@ -1,6 +1,6 @@
 #include "shell.h"
 
-static char	*s_get_left_ctx(char **arg, int is_root)
+static char	*s_get_l_ctx(char **arg, int is_root)
 {
 	char	*ptr;
 	char	*ret;
@@ -46,7 +46,7 @@ static char	*s_get_ctx(char **arg)
 	return (NULL);
 }
 
-static char	*s_get_right_ctx(char **arg)
+static char	*s_get_r_ctx(char **arg)
 {
 	char	*ret;
 	int		token_detected;
@@ -78,9 +78,9 @@ static char	*s_get_right_ctx(char **arg)
 ** Fill a structure with the context of the variable:
 ** Example: ls ../../?ello/name
 ** Will produce:
-** left_ctx: ../../
-** middle_ctx: ?ello
-** right_ctx: /name
+** l_ctx: ../../
+** m_ctx: ?ello
+** r_ctx: /name
 */
 
 int			globbing_load_context(t_ctx **ctx, char *arg)
@@ -95,11 +95,11 @@ int			globbing_load_context(t_ctx **ctx, char *arg)
 	if (!(sp = ft_strsplit(arg, '/')))
 		return (ST_MALLOC);
 	if (ft_strlen(arg) > 0 && arg[0] == '/')
-		(*ctx)->left = s_get_left_ctx(sp, 1);
+		(*ctx)->l = s_get_l_ctx(sp, 1);
 	else
-		(*ctx)->left = s_get_left_ctx(sp, 0);
-	(*ctx)->middle = s_get_ctx(sp);
-	(*ctx)->right = s_get_right_ctx(sp);
+		(*ctx)->l = s_get_l_ctx(sp, 0);
+	(*ctx)->m = s_get_ctx(sp);
+	(*ctx)->r = s_get_r_ctx(sp);
 	i = 0;
 	while (sp[i])
 	{

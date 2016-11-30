@@ -43,60 +43,65 @@ static int	check_globbing(char *pattern, char *input)
 	}
 }
 
+static void	s_delete_ctx(t_ctx *ctx)
+{
+	if (ctx)
+	{
+		if (ctx->l)
+			free(ctx->l);
+		if (ctx->m)
+			free(ctx->m);
+		if (ctx->r)
+			free(ctx->r);
+		free(ctx);
+	}
+}
+
+static char *s_join_free(char *s1, char *s2)
+{
+	char *ret;
+
+	ret = NULL;
+	if (s1 && s2)
+	{
+		ret = ft_strjoin(s1, s2);
+		ft_strdel(&s1);
+	}
+	return (ret);
+}
+
 /*
 ** This function create the list of what it must be compared
 */
 
-static int	s_globbing_run_parse(char *arg, t_list *list_glob)
+static void	s_globbing_run_parse(char *arg, t_list *list_glob)
 {
-	t_ctx			*ctx;
+	t_ctx			*c;
 	DIR				*dp;
-	struct dirent	*ep;
-	char			*full_match;
-	char			*ptr;
+	struct dirent	*e;
+	char			*m;
 
-	full_match = NULL;
-	globbing_load_context(&ctx, arg);
-	dp = (!(ctx->left)) ? opendir(".") : opendir(ctx->left);
-	if (dp != NULL)
+	globbing_load_context(&c, arg);
+	if ((dp = (!(c->l)) ? opendir(".") : opendir(c->l)))
 	{
-		while ((ep = readdir(dp)))
+		while ((e = readdir(dp)))
 		{
-			if (ep->d_name[0] != '.' || (ctx->middle && ctx->middle[0] == '.'))
+			if ((e->d_name[0] != '.' || (c->m && c->m[0] == '.'))
+					&& check_globbing(c->m, e->d_name))
 			{
-				if (check_globbing(ctx->middle, ep->d_name))
-				{
-					full_match = (ctx->left)
-						? ft_strjoin(ctx->left, ep->d_name)
-						: ft_strdup(ep->d_name);
-					if (ctx->right)
-					{
-						ptr = full_match;
-						full_match = ft_strjoin(ptr, ctx->right);
-						ft_strdel(&ptr);
-						s_globbing_run_parse(full_match, list_glob);
-					}
-					else
-						s_add_node_to_list(list_glob, full_match);
-					ft_strdel(&full_match);
-				}
+				m = (c->l) ? ft_strjoin(c->l, e->d_name) : ft_strdup(e->d_name);
+				c->r ?
+					s_globbing_run_parse(m = s_join_free(m, c->r), list_glob)
+					: s_add_node_to_list(list_glob, m);
+				ft_strdel(&m);
 			}
 		}
 		closedir(dp);
 	}
-	if (list_is_empty(list_glob) && dp != NULL)
+	if (list_is_empty(list_glob) && dp != NULL
+			&& !(ft_strchr(arg, '?') || ft_strchr(arg, '*')))
 		s_add_node_to_list(list_glob, arg);
-	if (ctx)
-	{
-		if (ctx->left)
-			free(ctx->left);
-		if (ctx->middle)
-			free(ctx->middle);
-		if (ctx->right)
-			free(ctx->right);
-		free(ctx);
-	}
-	return (ST_OK);
+	s_delete_ctx(c);
 }
 
 static void	s_delete_arg(t_argv *arg)
@@ -120,7 +125,6 @@ int			globbing_run(t_list **argv_list)
 	t_argv	*arg;
 	t_list	*pos;
 	t_list	*safe;
-	int		st;
 
 	INIT_LIST_HEAD(&list_glob);
 	safe = (*argv_list)->next;
@@ -129,10 +133,7 @@ int			globbing_run(t_list **argv_list)
 		safe = safe->next;
 		arg = CONTAINER_OF(pos, t_argv, argv_list);
 		if (ft_strchr(arg->buffer, '?') || ft_strchr(arg->buffer, '*'))
-		{
-			if ((st = s_globbing_run_parse(arg->buffer, &list_glob)) != ST_OK)
-				return (st);
-		}
+			s_globbing_run_parse(arg->buffer, &list_glob);
 		else
 			s_add_node_to_list(&list_glob, arg->buffer);
 		s_delete_arg(arg);
