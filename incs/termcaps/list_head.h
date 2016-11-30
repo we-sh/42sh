@@ -147,6 +147,6 @@ int					history_load(char *filename, t_list_head *history, size_t *from);
 ** history write
 */
 
-int					history_write(t_list_head *history, char *filename, int modified);
+int					history_write(t_list_head *history, char *filename, int append);
 
 #endif

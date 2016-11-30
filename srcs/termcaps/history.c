@@ -30,7 +30,7 @@ int		history_filename(size_t size_max, char *filename)
 	return (1);
 }
 
-int		history_write(t_list_head *history, char *filename, int modified)
+int		history_write(t_list_head *history, char *filename, int append)
 {
 	int				fd;
 	t_list			*pos;
@@ -38,9 +38,9 @@ int		history_write(t_list_head *history, char *filename, int modified)
 	size_t			size;
 	int				flags;
 
-    log_debug("writing history to {%s} only modified ? %s", filename, modified ? "true":"false");
+    log_debug("writing history to {%s} append ? %s", filename, append ? "true":"false");
 	flags = O_CREAT | O_WRONLY;
-    if (!modified)
+    if (!append)
         flags |= O_TRUNC;
 	fd = open(filename, flags, 0666);
 	if (fd == -1)
@@ -48,14 +48,14 @@ int		history_write(t_list_head *history, char *filename, int modified)
 		log_error("open: %s failed", filename);
 		return (0);
 	}
-    if (modified)
+    if (append)
         size = lseek(fd, 0, SEEK_END);
 	size = 0;
 	pos = &history->list;
 	while ((pos = pos->next) && pos != &history->list)
 	{
 		node = CONTAINER_OF(pos, t_node_history, list);
-        if (modified && !node->is_modified)
+        if (append && !node->is_modified)
             continue ;
 		if (!termcaps_write(fd, node->command.bytes, node->command.size) ||
 			!termcaps_write(fd, "\n", sizeof("\n") - 1))
