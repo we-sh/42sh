@@ -86,7 +86,7 @@ int				env_or_var_update_from_cmd_line(t_proc **p,
 	int			ret;
 	int			add_to_env;
 
-	if ((&(*p)->argv) == NULL)
+	if (((*p)->is_subshell == 1) || (&(*p)->argv) == NULL)
 		return (ST_OK);
 	if ((add_to_env = s_set_tab_return_action(&(*p)->argv)) == ST_MALLOC)
 		return (ST_MALLOC);
