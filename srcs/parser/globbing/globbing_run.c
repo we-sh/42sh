@@ -57,7 +57,7 @@ static void	s_delete_ctx(t_ctx *ctx)
 	}
 }
 
-static char *s_join_free(char *s1, char *s2)
+static char	*s_join_free(char *s1, char *s2)
 {
 	char *ret;
 
@@ -90,8 +90,7 @@ static void	s_globbing_run_parse(char *arg, t_list *list_glob)
 					&& check_globbing(c->m, e->d_name))
 			{
 				m = (c->l) ? ft_strjoin(c->l, e->d_name) : ft_strdup(e->d_name);
-				c->r ?
-					s_globbing_run_parse(m = s_join_free(m, c->r), list_glob)
+				c->r ? s_globbing_run_parse(m = s_join_free(m, c->r), list_glob)
 					: s_add_node_to_list(list_glob, m);
 				ft_strdel(&m);
 			}
