@@ -73,6 +73,18 @@ typedef enum			e_token_code
 }						t_token_code;
 
 /*
+* Patterns defintion for GLOB_BRACE
+*/
+
+typedef enum			e_glob_brace_pattern_type
+{
+	T_PATTERN_NONE,
+	T_PATTERN_LIST,
+	T_PATTERN_NUMERIC_RANGE,
+	T_PATTERN_ASCII_RANGE
+}						t_glob_brace_pattern_type;
+
+/*
 ** This structure is used to fill lexer.
 */
 

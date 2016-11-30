@@ -1,10 +1,5 @@
 #include "shell.h"
 
-#define T_PATTERN_NONE 0
-#define T_PATTERN_LIST 1
-#define T_PATTERN_NUMERIC_RANGE 2
-#define T_PATTERN_ASCII_RANGE 3
-
 static int	s_get_pattern_check_token(int pattern_type, t_lexer *lexer,
 										int index, int i)
 {

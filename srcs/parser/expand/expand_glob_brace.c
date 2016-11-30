@@ -24,7 +24,5 @@ int			expand_glob_brace(t_sh *sh, t_list **argv_list)
 	}
 	free(*argv_list);
 	*argv_list = new_argv_list;
-	if (ret != ST_OK)
-		return (ret);
-	return (ST_OK);
+	return (ret);
 }

@@ -4,7 +4,8 @@ static t_argv	*s_argv_alloc(void)
 {
 	t_argv		*argument;
 
-	argument = (t_argv *)malloc(sizeof(t_argv));
+	if ((argument = (t_argv *)malloc(sizeof(t_argv))) == NULL)
+		return (NULL);
 	if ((argument->buffer = ft_strnew(0)) == NULL)
 		return (NULL);
 	return (argument);
