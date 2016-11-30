@@ -141,12 +141,12 @@ void				history_remove(t_list_head *history, const int index);
 ** history load
 */
 
-int					history_load(char *filename, t_list_head *history, size_t *from);
+int					history_load(char **envp, t_list_head *history, size_t *from);
 
 /*
 ** history write
 */
 
-int					history_write(t_list_head *history, char *filename, int append);
+int					history_write(char **envp, t_list_head *history, int append);
 
 #endif

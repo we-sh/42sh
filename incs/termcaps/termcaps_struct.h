@@ -38,7 +38,6 @@ typedef struct	s_termcaps_context
 
 	t_list_head								copy;
 
-	char									history_file[255];
 	t_list_head								history;
 	size_t									history_initial_size;
 

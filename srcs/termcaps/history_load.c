@@ -36,10 +36,16 @@ int		file_exists(char *filename)
 	return (1);
 }
 
-int		history_load(char *filename, t_list_head *history, size_t *from)
+int		history_load(char **envp, t_list_head *history, size_t *from)
 {
+	char	filename[255];
 	int		fd;
 
+	if (!history_get_filename(envp, sizeof(filename), filename))
+	{
+		log_error("history_get_filename failed");
+		return (1);
+	}
 	if (!file_exists(filename))
 		return (1);
 	fd = open(filename, O_RDONLY);
