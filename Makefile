@@ -62,7 +62,7 @@ SRCS	=	\
 			parser/build/parser_build_list_unstack_lexer_globing.c		\
 			parser/expand/expand.c										\
 			parser/globbing/globbing.c									\
-			parser/globbing/globbing_interrogation.c					\
+			parser/globbing/globbing_run.c								\
 			parser/globbing/globbing_load_context.c						\
 			parser/lexer/lexer_bufferize.c								\
 			parser/lexer/lexer_token_add.c								\

@@ -25,6 +25,8 @@ static int	s_add_node_to_list(t_list *argv_list, char *content)
 
 static int	check_globbing(char *pattern, char *input)
 {
+	if (!pattern || !input)
+		return (0);
 	if (*pattern == '?')
 	{
 		return (*input && check_globbing(pattern + 1, input + 1));
@@ -43,54 +45,56 @@ static int	check_globbing(char *pattern, char *input)
 
 /*
 ** This function create the list of what it must be compared
-** Doesn't deal with '/'...
 */
 
-static int	s_globbing_interrogation_parse_argument(char *arg,
-		t_list *list_globbing)
+static int	s_globbing_run_parse(char *arg, t_list *list_glob)
 {
 	t_ctx			*ctx;
 	DIR				*dp;
 	struct dirent	*ep;
 	char			*full_match;
+	char			*ptr;
 
+	full_match = NULL;
 	globbing_load_context(&ctx, arg);
-	log_debug("left   ctx: ", ctx->left);
-	log_debug("middle ctx: ", ctx->middle);
-	log_debug("right  ctx: ", ctx->right);
-	if (ctx->left == NULL)
-		dp = opendir(".");
-	else
-		dp = opendir(ctx->left);
+	dp = (!(ctx->left)) ? opendir(".") : opendir(ctx->left);
 	if (dp != NULL)
 	{
 		while ((ep = readdir(dp)))
 		{
-			if (ep->d_name[0] != '.' || ctx->middle[0] == '.')
+			if (ep->d_name[0] != '.' || (ctx->middle && ctx->middle[0] == '.'))
 			{
 				if (check_globbing(ctx->middle, ep->d_name))
 				{
-					if (ctx->left)
-						full_match = ft_strjoin(ctx->left, ep->d_name);
-					else
-						full_match = ft_strdup(ep->d_name);
+					full_match = (ctx->left)
+						? ft_strjoin(ctx->left, ep->d_name)
+						: ft_strdup(ep->d_name);
 					if (ctx->right)
 					{
-						full_match = ft_strjoin(full_match, ctx->right);
-						s_globbing_interrogation_parse_argument(full_match,
-								list_globbing);
+						ptr = full_match;
+						full_match = ft_strjoin(ptr, ctx->right);
+						ft_strdel(&ptr);
+						s_globbing_run_parse(full_match, list_glob);
 					}
 					else
-						s_add_node_to_list(list_globbing, full_match);
+						s_add_node_to_list(list_glob, full_match);
+					ft_strdel(&full_match);
 				}
 			}
 		}
 		closedir(dp);
 	}
-	if (list_is_empty(list_globbing))
+	if (list_is_empty(list_glob) && dp != NULL)
+		s_add_node_to_list(list_glob, arg);
+	if (ctx)
 	{
-		log_debug("globbing list is empty (filled with input %s)", arg);
-		s_add_node_to_list(list_globbing, arg);
+		if (ctx->left)
+			free(ctx->left);
+		if (ctx->middle)
+			free(ctx->middle);
+		if (ctx->right)
+			free(ctx->right);
+		free(ctx);
 	}
 	return (ST_OK);
 }
@@ -101,31 +105,35 @@ static int	s_globbing_interrogation_parse_argument(char *arg,
 ** The goal is to expand the list of current arguments with the globbing.
 */
 
-int	globbing_interrogation(t_list **argv_list)
+int			globbing_run(t_list **argv_list)
 {
-	t_list	list_globbing;
+	t_list	list_glob;
 	t_argv	*arg;
 	t_list	*pos;
 	t_list	*safe;
 	int		st;
 
-	INIT_LIST_HEAD(&list_globbing);
+	INIT_LIST_HEAD(&list_glob);
 	safe = (*argv_list)->next;
-	while ((pos = safe) && safe != *argv_list)
+	while ((pos = safe) && pos != *argv_list)
 	{
 		safe = safe->next;
 		arg = CONTAINER_OF(pos, t_argv, argv_list);
 		if (ft_strchr(arg->buffer, '?') || ft_strchr(arg->buffer, '*'))
 		{
 			log_info("apply globbing on token : `%s'", arg->buffer);
-			if ((st = s_globbing_interrogation_parse_argument(
-							arg->buffer, &list_globbing)) != ST_OK)
+			if ((st = s_globbing_run_parse(arg->buffer, &list_glob)) != ST_OK)
 				return (st);
 		}
 		else
-			s_add_node_to_list(&list_globbing, arg->buffer);
+			s_add_node_to_list(&list_glob, arg->buffer);
+		if (arg && arg->buffer)
+		{
+			free(arg->buffer);
+			free(arg);
+		}
 	}
 	list_del(*argv_list);
-	*argv_list = &list_globbing;
+	*argv_list = &list_glob;
 	return (ST_OK);
 }
