@@ -176,10 +176,11 @@ int				loop_job_launcher(t_sh *sh, char *input);
 
 int				option_is_set(t_list *list_option_head, int option_index);
 char			*option_get_value(t_list *list_option_head, int option_index);
+char			**option_get_values(t_list *list_option_head, int option_index);
 int				option_parse(t_list *list_head,
 					t_option const **available_options,
 					char ***argv, size_t start);
-t_list			*list_node__option_alloc(t_option const *option_ref,
+int				option_push(t_list *list_head, t_option const *option_ref,
 											char **argv, size_t i);
 void			option_free(t_option **opt);
 

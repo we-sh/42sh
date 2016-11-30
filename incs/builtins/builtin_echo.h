@@ -10,10 +10,12 @@ static t_option				g_builtin_echo_option_n = {
 	.index = ST_BLTIN_ECHO_OPT_N,
 	.is_single_char = 1,
 	.has_value = 0,
+	.has_multiple_values = 0,
 	.value_is_numeric = 0,
 	.value_is_alnum = 0,
 	.value_is_indexof = NULL,
-	.value = NULL
+	.value = NULL,
+	.values = NULL
 };
 
 static t_option				g_builtin_echo_option_o = {
@@ -21,10 +23,12 @@ static t_option				g_builtin_echo_option_o = {
 	.index = ST_BLTIN_ECHO_OPT_O,
 	.is_single_char = 1,
 	.has_value = 0,
+	.has_multiple_values = 0,
 	.value_is_numeric = 0,
 	.value_is_alnum = 0,
 	.value_is_indexof = NULL,
-	.value = NULL
+	.value = NULL,
+	.values = NULL
 };
 
 static const t_option		*g_builtin_echo_options[] = {

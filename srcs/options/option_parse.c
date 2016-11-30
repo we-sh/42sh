@@ -61,18 +61,15 @@ static int			s_single(t_list *list_head,
 {
 	size_t			k;
 	int				opt;
-	t_list			*option_node;
+	int				ret;
 
 	k = 1;
 	while ((*argv)[i][k])
 	{
-		log_debug("parsing single character option %c", (*argv)[i][k]);
 		if ((opt = s_is_valid(available_opt, *argv, i, k)) < ST_OK)
 			return (-opt);
-		if ((option_node =
-			list_node__option_alloc(available_opt[opt], *argv, i)) == NULL)
-			return (ST_MALLOC);
-		list_push_back(option_node, list_head);
+		if ((ret = option_push(list_head, available_opt[opt], *argv, i)) != ST_OK)
+			return (ret);
 		k++;
 	}
 	ft_array_pop(argv, i, 1);
@@ -86,15 +83,12 @@ static int			s_multi(t_list *list_head,
 						char ***argv, size_t i)
 {
 	int				opt;
-	t_list			*option_node;
+	int				ret;
 
-	log_debug("parsing multi character option %s", (*argv)[i] + 2);
 	if ((opt = s_is_valid(available_opt, *argv, i, 0)) < ST_OK)
 		return (-opt);
-	if ((option_node =
-		list_node__option_alloc(available_opt[opt], *argv, i)) == NULL)
-		return (ST_MALLOC);
-	list_push_back(option_node, list_head);
+	if ((ret = option_push(list_head, available_opt[opt], *argv, i)) != ST_OK)
+		return (ret);
 	ft_array_pop(argv, i, 1);
 	if (available_opt[opt]->has_value == 1)
 		ft_array_pop(argv, i, 1);

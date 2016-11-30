@@ -176,8 +176,9 @@ SRCS	=	\
 			loop/loop_main.c											\
 			local_var/local_var_replace.c								\
 			options/option_get_value.c									\
+			options/option_get_values.c									\
 			options/option_is_set.c										\
-			options/list_node__option_alloc.c							\
+			options/option_push.c										\
 			options/option_free.c										\
 			options/option_parse.c										\
 			path/path_init_hasht.c										\
