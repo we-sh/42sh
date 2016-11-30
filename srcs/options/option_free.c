@@ -2,7 +2,10 @@
 
 void	option_free(t_option **opt)
 {
-	ft_memdel((void **)&(*opt)->value);
+	if ((*opt)->has_multiple_values == 1)
+		ft_memdel_tab((void ***)&(*opt)->values);
+	else
+		ft_memdel((void **)&(*opt)->value);
 	ft_memdel((void **)&(*opt));
 	*opt = NULL;
 }

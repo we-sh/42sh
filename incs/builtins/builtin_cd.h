@@ -15,10 +15,12 @@ static t_option				g_builtin_cd_option_p2 = {
 	.index = ST_BLTIN_CD_OPT_P2,
 	.is_single_char = 1,
 	.has_value = 0,
+	.has_multiple_values = 0,
 	.value_is_numeric = 0,
 	.value_is_alnum = 0,
 	.value_is_indexof = NULL,
-	.value = NULL
+	.value = NULL,
+	.values = NULL
 };
 
 static const t_option		*g_builtin_cd_options[] = {
