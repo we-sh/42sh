@@ -18,7 +18,7 @@ t_node_history		*history_add(const char *cmd, t_list_head *history)
 	ft_memcpy(new->command.bytes, cmd, cmd_size);
 	new->command.bytes[cmd_size] = '\0';
 	new->is_modified = 0;
-	list_head__insert(history, history->offset, &new->list);
+	list_head__insert(history, history->size, &new->list);
 	return (new);
 }
 
