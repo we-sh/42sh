@@ -63,7 +63,7 @@ static char	*s_get_right_ctx(char **arg)
 		if (token_detected == 1)
 		{
 			ptr = ret;
-			ret = ft_strjoin3_safe("/", ptr, arg[i] );
+			ret = ft_strjoin3_safe("/", ptr, arg[i]);
 			if (ptr)
 				ft_strdel(&ptr);
 		}
@@ -100,9 +100,6 @@ int			globbing_load_context(t_ctx **ctx, char *arg)
 		(*ctx)->left = s_get_left_ctx(sp, 0);
 	(*ctx)->middle = s_get_ctx(sp);
 	(*ctx)->right = s_get_right_ctx(sp);
-	log_debug("left ctx   : %s", (*ctx)->left);
-	log_debug("middle ctx : %s", (*ctx)->middle);
-	log_debug("right ctx  : %s", (*ctx)->right);
 	i = 0;
 	while (sp[i])
 	{

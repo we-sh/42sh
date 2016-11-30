@@ -99,6 +99,15 @@ static int	s_globbing_run_parse(char *arg, t_list *list_glob)
 	return (ST_OK);
 }
 
+static void	s_delete_arg(t_argv *arg)
+{
+	if (arg && arg->buffer)
+	{
+		free(arg->buffer);
+		free(arg);
+	}
+}
+
 /*
 ** The purpose of this function is to browse the current argument list, and to
 ** perform the globbing on each of them.
@@ -121,17 +130,12 @@ int			globbing_run(t_list **argv_list)
 		arg = CONTAINER_OF(pos, t_argv, argv_list);
 		if (ft_strchr(arg->buffer, '?') || ft_strchr(arg->buffer, '*'))
 		{
-			log_info("apply globbing on token : `%s'", arg->buffer);
 			if ((st = s_globbing_run_parse(arg->buffer, &list_glob)) != ST_OK)
 				return (st);
 		}
 		else
 			s_add_node_to_list(&list_glob, arg->buffer);
-		if (arg && arg->buffer)
-		{
-			free(arg->buffer);
-			free(arg);
-		}
+		s_delete_arg(arg);
 	}
 	list_del(*argv_list);
 	*argv_list = &list_glob;
