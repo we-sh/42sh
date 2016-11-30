@@ -21,12 +21,14 @@
 ** current directory.
 */
 
-static void s_write_history(t_sh *sh, int append)
+static void s_write_history(t_sh *sh, int append, char *filename)
 {
     t_node_history  *node;
     t_list          *pos;
 
-    history_write(&sh->termcaps_context.history, sh->termcaps_context.history_file, append);
+	if (filename != NULL)
+		env_set(&sh->envp, "HISTFILE", filename);
+    history_write(sh->envp, &sh->termcaps_context.history, append);
     sh->termcaps_context.history_initial_size = sh->termcaps_context.history.size;
     pos = &sh->termcaps_context.history.list;
     while ((pos = pos->next) && pos != &sh->termcaps_context.history.list)
@@ -34,15 +36,21 @@ static void s_write_history(t_sh *sh, int append)
         node = CONTAINER_OF(pos, t_node_history, list);
         node->is_modified = 0;
     }
+	if (filename != NULL)
+		env_unset(&sh->envp, "HISTFILE");
 }
 
-static void s_read_history(t_sh *sh, int new)
+static void s_read_history(t_sh *sh, int new, char *filename)
 {
     size_t  offset;
 
+	if (filename != NULL)
+		env_set(&sh->envp, "HISTFILE", filename);
     offset = new ? sh->termcaps_context.history_initial_size : 0;
-    history_load(sh->termcaps_context.history_file, &sh->termcaps_context.history, &offset);
+    history_load(sh->envp, &sh->termcaps_context.history, &offset);
     sh->termcaps_context.history_initial_size = offset;
+	if (filename != NULL)
+		env_unset(&sh->envp, "HISTFILE");
 }
 
 static int	s_before(t_builtin const *builtin, t_sh *sh, t_proc *p)
@@ -72,22 +80,22 @@ static int	s_before(t_builtin const *builtin, t_sh *sh, t_proc *p)
 	else if (option_is_set(&p->bltin_opt_head, ST_BLTIN_HISTORY_OPT_W) == 1)
 	{
 		log_debug("history Option -w");
-        s_write_history(sh, 0);
+        s_write_history(sh, 0, p->argv[1]);
 	}
 	else if (option_is_set(&p->bltin_opt_head, ST_BLTIN_HISTORY_OPT_R) == 1)
 	{
 		log_debug("history Option -r");
-        s_read_history(sh, 0);
+        s_read_history(sh, 0, p->argv[1]);
 	}
 	else if (option_is_set(&p->bltin_opt_head, ST_BLTIN_HISTORY_OPT_A) == 1)
 	{
 		log_debug("history Option -a");
-        s_write_history(sh, 1);
+        s_write_history(sh, 1, p->argv[1]);
 	}
 	else if (option_is_set(&p->bltin_opt_head, ST_BLTIN_HISTORY_OPT_N) == 1)
 	{
 		log_debug("history Option -n");
-        s_read_history(sh, 1);
+        s_read_history(sh, 1, p->argv[1]);
 	}
 	else if (option_is_set(&p->bltin_opt_head, ST_BLTIN_HISTORY_OPT_S) == 1)
 	{

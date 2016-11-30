@@ -27,12 +27,12 @@ int			history_write(char **envp, t_list_head *history, int append)
 	int		fd;
 	int		flags;
 
-    log_debug("writing history to {%s} append ? %s", filename, append ? "true":"false");
-	if (!history_get_filename(sh->envp, sizeof(filename), filename))
+	if (!history_get_filename(envp, sizeof(filename), filename))
 	{
 		log_error("history_filename failed");
 		return (0);
 	}
+    log_debug("writing history to {%s} append ? %s", filename, append ? "true":"false");
 	flags = append ? O_CREAT | O_WRONLY :
 					O_CREAT | O_WRONLY | O_TRUNC;
 	fd = open(filename, flags, 0666);
@@ -43,7 +43,7 @@ int			history_write(char **envp, t_list_head *history, int append)
 	}
 	if (append)
 		lseek(fd, 0, SEEK_END);
-	s_history_write(&sh->termcaps_context.history, filename, append);
+	s_history_write(history, fd, append);
 	close(fd);
 	return (1);
 }

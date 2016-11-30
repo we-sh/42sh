@@ -218,6 +218,7 @@ SRCS	=	\
 			termcaps/list_head_history.c								\
 			termcaps/list_head_history_search.c							\
 			termcaps/history_init.c										\
+			termcaps/history_get_filename.c								\
 			termcaps/history_load.c										\
 			termcaps/history_write.c									\
 			termcaps/key__backspace.c									\

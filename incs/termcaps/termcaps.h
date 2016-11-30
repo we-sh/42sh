@@ -51,7 +51,8 @@ int				event_info(t_list_head *history,
 void			termcaps_error(t_termcaps_context *context,
 							char *cmd, size_t cmd_size, char *msg);
 
-int				history_init(t_termcaps_context *context);
-int				history_filename(size_t size_max, char *filename);
+int				history_init(t_sh *sh);
+int				history_get_filename(char **envp,
+								size_t size_max, char *filename);
 
 #endif

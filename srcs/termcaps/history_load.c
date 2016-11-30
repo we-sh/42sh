@@ -8,7 +8,7 @@ static int	read_history(int fd, t_list_head *history, size_t *from)
 	offset = 0;
 	while (get_next_line(fd, &line))
 	{
-		if (offset >= *from)
+		if (offset >= *from && ft_strlen(line) > 0)
 		{
 			if (!history_add(line, history))
 			{

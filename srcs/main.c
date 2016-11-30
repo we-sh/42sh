@@ -48,13 +48,10 @@ int			main(int argc, char *argv[], char *envp[])
 		exit(display_status(ret, NULL, NULL));
 	if ((ret = loop_main(&sh)) != ST_END_OF_INPUT && ret != ST_EXIT)
 		exit(display_status(ret, NULL, NULL));
-	if (!history_write(&sh.termcaps_context.history, sh.termcaps_context.history_file, 0))
-	{
-		log_error("history_write failed");
-		return (0);
-	}
 	if (sh.is_interactive == 1)
 	{
+		if (!history_write(sh.envp, &sh.termcaps_context.history, 0))
+			log_error("history_write failed");
 		if (!termcaps_finalize(&sh.termcaps_context))
 			exit(display_status(ST_TERMCAPS_FINALIZE, NULL, NULL));
 		if (close(sh.fd) != 0)

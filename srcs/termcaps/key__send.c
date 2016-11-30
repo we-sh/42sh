@@ -31,6 +31,7 @@ static int				s_bufferize_input(t_termcaps_context *context)
 		termcaps_error(context, "", 0, "Command line too big");
 		return (0);
 	}
+	log_debug("YOLO buffer {%.*s}", (int)buffer_size, buffer);
 	buffer_size -= context->prompt.size;
 	ft_memmove(buffer, &buffer[context->prompt.size], buffer_size);
 	buffer[buffer_size] = '\0';
@@ -110,11 +111,7 @@ int						key__send(t_termcaps_context *context)
 				return (0);
 		}
 		else
-		{
-			command_add(context->fd, "\n",
-				&context->command);
-			ASSERT(s_bufferize_input(context));
-		}
+			termcaps_write(context->fd, "\n", sizeof("\n") - 1);
 	}
 	else if (context->state == STATE_SEARCH_HISTORY)
 		s_search_hist(context);

@@ -88,13 +88,11 @@ int					command_to_buffer(const t_list_head *head,
 	size_t			buffer_offset;
 	t_list			*pos;
 	t_node_cmd		*node_cmd;
-	t_list			*safe;
 
 	buffer_offset = 0;
-	safe = head->list.next;
-	while ((pos = safe) && pos != &head->list)
+	pos = &((t_list_head *)head)->list;
+	while ((pos = pos->next) && pos != &head->list)
 	{
-		safe = safe->next;
 		node_cmd = CONTAINER_OF(pos, t_node_cmd, list);
 		if (buffer_offset + node_cmd->character_size >= buffer_size_max)
 		{
@@ -104,6 +102,7 @@ int					command_to_buffer(const t_list_head *head,
 		ft_memcpy(buffer + buffer_offset, node_cmd->character,
 			node_cmd->character_size);
 		buffer_offset += node_cmd->character_size;
+		log_debug("node_cmd character {%.*s}", (int)node_cmd->character_size, node_cmd->character);
 	}
 	*buffer_size = buffer_offset;
 	return (1);
