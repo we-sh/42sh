@@ -220,6 +220,20 @@ static const char		*g_i18n_en[] = {
 	[ST_TERMCAPS_INIT] = "failed to initialize termcaps",
 	[ST_HISTORY_INIT] = "failed to initialize history",
 	[ST_HISTORY_FILE_TOO_BIG] = "the historic file is too big",
+	[ST_BLTIN_HISTORY_OPT_C] = "Clear the history list.",
+	[ST_BLTIN_HISTORY_OPT_D] = "Delete the history entry at position offset.",
+	[ST_BLTIN_HISTORY_OPT_A] = "Append the new history lines Append "
+	"the new history lines.",
+	[ST_BLTIN_HISTORY_OPT_N] = "Append the history lines not already read "
+	"from the history file to the current history list.",
+	[ST_BLTIN_HISTORY_OPT_R] = "Read the current history file and append its "
+	"contents to the history list.",
+	[ST_BLTIN_HISTORY_OPT_W] = "Write out the current history to the "
+	"history file.",
+	[ST_BLTIN_HISTORY_OPT_P] = "Perform history substitution on the args "
+	"and display the result on the standard output.",
+	[ST_BLTIN_HISTORY_OPT_S] = "The args are added to the end of the "
+	"history list as a single entry.",
 	[ST_TERMCAPS_FINALIZE] = "failed to finalize termcaps",
 	[ST_UNEXPECTED_TOKEN] = "Unexpected token near ",
 	[ST_SIGNAL] = "failed catching signal",
