@@ -106,6 +106,7 @@ SRCS	=	\
 			builtins/echo/builtin_echo_escape.c							\
 			builtins/exit/builtin_exit.c								\
 			builtins/export/builtin_export.c							\
+			builtins/export/builtin_export_display.c							\
 			builtins/export/builtin_export_n_option.c					\
 			builtins/export/builtin_export_set.c						\
 			builtins/export/builtin_export_set_no_value.c				\

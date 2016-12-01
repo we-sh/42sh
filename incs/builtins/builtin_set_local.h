@@ -13,7 +13,7 @@ int		builtin_export_set_with_no_value(t_sh **sh, t_proc *p, char *argv);
 int		builtin_export_update_local_with_value(t_sh **sh, char *argv,
 										char *value);
 int		builtin_export_set_local_and_env(t_sh **sh, char *envp_tmp);
-int		builtin_export_display(t_sh *sh, t_proc *p);
+void 	builtin_export_display(t_sh *sh, t_proc *p);
 
 static const t_builtin		g_builtin_set_local = {
 	.index = BLTIN_SET_LOCAL,

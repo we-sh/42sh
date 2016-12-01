@@ -3,8 +3,8 @@
 
 static void	s_display_local(t_proc *p, t_var *ptrvar)
 {
-	int		i;
-	int		key_len;
+	int				i;
+	int				key_len;
 
 	i = 0;
 	key_len = ft_strlen(ptrvar->key);
@@ -26,10 +26,10 @@ static void	s_display_local(t_proc *p, t_var *ptrvar)
 	return ;
 }
 
-int			builtin_export_display(t_sh *sh, t_proc *p)
+void			builtin_export_display(t_sh *sh, t_proc *p)
 {
-	int		i;
-	t_var	*ptrvar;
+	int			i;
+	t_var		*ptrvar;
 
 	ptrvar = sh->local_vars;
 	i = 0;
@@ -49,5 +49,4 @@ int			builtin_export_display(t_sh *sh, t_proc *p)
 			ptrvar = ptrvar->next;
 		}
 	}
-	return (ST_OK);
 }
