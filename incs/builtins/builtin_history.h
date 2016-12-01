@@ -5,8 +5,10 @@
 
 void	append_history(t_list_head *history, t_proc *p);
 void	default_history(t_list_head *history, char *arg);
-void	read_history(t_sh *sh, int new, char *filename);
-void	write_history(t_sh *sh, int append, char *filename);
+void	read_history(t_sh *sh, int new);
+void	write_history(t_sh *sh, int append);
+void	wrap_histfile(t_sh *sh, int opt, char *filename,
+						void (*fun)(t_sh *, int));
 void	print_history(t_sh *sh, t_proc *p);
 
 static t_option				g_builtin_history_option_c = {

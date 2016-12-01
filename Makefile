@@ -126,6 +126,7 @@ SRCS	=	\
 			builtins/history/write_history.c							\
 			builtins/history/append_history.c							\
 			builtins/history/print_history.c							\
+			builtins/history/wrap_histfile.c							\
 			builtins/jobs/builtin_jobs.c								\
 			builtins/env/builtin_env.c									\
 			builtins/language/builtin_language.c						\

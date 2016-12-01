@@ -35,7 +35,7 @@ static void	s_delete_entry(t_sh *sh, t_proc *p)
 
 	arg = option_get_value(&p->bltin_opt_head, ST_BLTIN_HISTORY_OPT_D);
 	offset = ft_atoi(arg);
-	history_remove(&sh->termcaps_context.history, offset + 1);
+	history_remove(&sh->termcaps_context.history, offset);
 }
 
 static int	s_after(t_builtin const *builtin, t_sh *sh, t_proc *p)
@@ -48,13 +48,13 @@ static int	s_after(t_builtin const *builtin, t_sh *sh, t_proc *p)
 	else if (option_is_set(&p->bltin_opt_head, ST_BLTIN_HISTORY_OPT_D) == 1)
 		s_delete_entry(sh, p);
 	else if (option_is_set(&p->bltin_opt_head, ST_BLTIN_HISTORY_OPT_W) == 1)
-		write_history(sh, 0, p->argv[1]);
+		wrap_histfile(sh, 0, p->argv[1], write_history);
 	else if (option_is_set(&p->bltin_opt_head, ST_BLTIN_HISTORY_OPT_R) == 1)
-		read_history(sh, 0, p->argv[1]);
+		wrap_histfile(sh, 0, p->argv[1], read_history);
 	else if (option_is_set(&p->bltin_opt_head, ST_BLTIN_HISTORY_OPT_A) == 1)
-		write_history(sh, 1, p->argv[1]);
+		wrap_histfile(sh, 1, p->argv[1], write_history);
 	else if (option_is_set(&p->bltin_opt_head, ST_BLTIN_HISTORY_OPT_N) == 1)
-		read_history(sh, 1, p->argv[1]);
+		wrap_histfile(sh, 1, p->argv[1], read_history);
 	else if (option_is_set(&p->bltin_opt_head, ST_BLTIN_HISTORY_OPT_S) == 1)
 		append_history(&sh->termcaps_context.history, p);
 	else if (option_is_set(&p->bltin_opt_head, ST_BLTIN_HISTORY_OPT_P) == 1)
