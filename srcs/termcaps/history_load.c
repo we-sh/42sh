@@ -1,6 +1,7 @@
 #include "shell.h"
 
-static int	s_stupidgetnextline(t_list_head *history, size_t *from, char *line, size_t offset)
+static int	s_stupidgetnextline(t_list_head *history, size_t *from,
+								char *line, size_t offset)
 {
 	char	*pt;
 

@@ -125,6 +125,7 @@ SRCS	=	\
 			builtins/history/read_history.c								\
 			builtins/history/write_history.c							\
 			builtins/history/append_history.c							\
+			builtins/history/print_history.c							\
 			builtins/jobs/builtin_jobs.c								\
 			builtins/env/builtin_env.c									\
 			builtins/language/builtin_language.c						\
@@ -257,8 +258,10 @@ SRCS	=	\
 			termcaps/termcaps_write.c									\
 			termcaps/events.c											\
 			termcaps/events_info.c										\
+			termcaps/events_word.c										\
 			conf/conf_check_color_mode.c								\
 			termcaps/termcaps_error.c									\
+			termcaps/count_func.c										\
 			conf/conf_file_init.c										\
 
 # ---------------------------------------------------------------------------- #

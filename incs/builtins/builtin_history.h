@@ -7,6 +7,7 @@ void	append_history(t_list_head *history, t_proc *p);
 void	default_history(t_list_head *history, char *arg);
 void	read_history(t_sh *sh, int new, char *filename);
 void	write_history(t_sh *sh, int append, char *filename);
+void	print_history(t_sh *sh, t_proc *p);
 
 static t_option				g_builtin_history_option_c = {
 	.name = "c",
@@ -87,6 +88,17 @@ static t_option				g_builtin_history_option_s = {
 	.value = NULL
 };
 
+static t_option				g_builtin_history_option_p = {
+	.name = "p",
+	.index = ST_BLTIN_HISTORY_OPT_P,
+	.is_single_char = 1,
+	.has_value = 0,
+	.value_is_numeric = 0,
+	.value_is_alnum = 0,
+	.value_is_indexof = NULL,
+	.value = NULL
+};
+
 static const t_option		*g_builtin_history_options[] = {
 	[0] = &g_builtin_history_option_c,
 	[1] = &g_builtin_history_option_d,
@@ -95,13 +107,15 @@ static const t_option		*g_builtin_history_options[] = {
 	[4] = &g_builtin_history_option_a,
 	[5] = &g_builtin_history_option_n,
 	[6] = &g_builtin_history_option_s,
-	[7] = NULL
+	[7] = &g_builtin_history_option_p,
+	[8] = NULL
 };
 
 static const t_builtin		g_builtin_history = {
 	.index = BLTIN_HISTORY,
 	.name = "history",
-	.usage = "history: usage: history [-c] [-d offset] [n] or history -awrn [filename] or history -s arg [arg...] ",
+	.usage = "history: usage: history [-c] [-d offset] [n] or"
+	"history -awrn [filename] or history -ps arg [arg...] ",
 	.usage_multiline = NULL,
 	.description = ST_BLTIN_HISTORY,
 	.exe = &builtin_history,

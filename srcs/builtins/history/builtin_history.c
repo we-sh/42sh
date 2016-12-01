@@ -41,7 +41,6 @@ static void	s_delete_entry(t_sh *sh, t_proc *p)
 static int	s_after(t_builtin const *builtin, t_sh *sh, t_proc *p)
 {
 	(void)builtin;
-	log_debug("builtin status: %d argc %d\n", p->bltin_status, p->argc);
 	if (p->bltin_status != ST_OK)
 		return (EXIT_SUCCESS);
 	if (option_is_set(&p->bltin_opt_head, ST_BLTIN_HISTORY_OPT_C) == 1)
@@ -58,6 +57,8 @@ static int	s_after(t_builtin const *builtin, t_sh *sh, t_proc *p)
 		read_history(sh, 1, p->argv[1]);
 	else if (option_is_set(&p->bltin_opt_head, ST_BLTIN_HISTORY_OPT_S) == 1)
 		append_history(&sh->termcaps_context.history, p);
+	else if (option_is_set(&p->bltin_opt_head, ST_BLTIN_HISTORY_OPT_P) == 1)
+		print_history(sh, p);
 	else
 		default_history(&sh->termcaps_context.history, p->argv[1]);
 	return (ST_OK);

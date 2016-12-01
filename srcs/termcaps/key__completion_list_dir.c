@@ -101,7 +101,6 @@ size_t				key__completion_list_dir(t_termcaps_context *context,
 		return (-1);
 	}
 	s_get_path_and_match(&path, match, &cmd_size, cmd);
-	log_debug("path {%s} match {%->*s}", path, (int)match->size, match->bytes);
 	ref_size = key__completion_search_match(head, path, match);
 	return (ref_size);
 }

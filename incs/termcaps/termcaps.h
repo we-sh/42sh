@@ -48,4 +48,6 @@ int				history_init(t_sh *sh);
 int				history_get_filename(char **envp,
 								size_t size_max, char *filename);
 
+int				count_func(const char *s, int (*test)(int c), int expected);
+
 #endif
