@@ -40,8 +40,8 @@ static int				s_bufferize_input(t_termcaps_context *context)
 		return (0);
 	ASSERT(s_fill_context_buffer(context, buffer));
 	node = history_add(buffer, &context->history);
-	ASSERT(node != NULL);
-	node->is_modified = 1;
+	if (node != NULL)
+		node->is_modified = 1;
 	command_clear(&context->command);
 	context->history.offset = context->history.size;
 	return (1);

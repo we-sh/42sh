@@ -70,13 +70,13 @@ int			history_load(char **envp, t_list_head *history, size_t *from)
 	if (fd == -1)
 	{
 		log_error("open: %s failed errno %d", filename, errno);
-		return (0);
+		return (ST_OPEN);
 	}
 	if (!read_history(fd, history, from))
 	{
 		log_error("read_history %s failed", filename);
 		close(fd);
-		return (0);
+		return (ST_HISTORY_FILE_TOO_BIG);
 	}
 	close(fd);
 	return (1);

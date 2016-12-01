@@ -10,10 +10,7 @@ t_node_history		*history_add(const char *cmd, t_list_head *history)
 	size_t			cmd_size;
 
 	if (history->size > EVENTS_COUNT_MAX)
-	{
-		termcaps_error(NULL, NULL, 0, "History is full");
 		return (NULL);
-	}
 	cmd_size = ft_strlen(cmd);
 	new = malloc(sizeof(t_node_history) + cmd_size + 1);
 	if (!new)

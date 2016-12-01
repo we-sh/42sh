@@ -1,7 +1,7 @@
 #ifndef EVENTS_H
 # define EVENTS_H
 
-# define EVENTS_COUNT_MAX	10000
+# define EVENTS_COUNT_MAX	1000
 
 # define WORD_ALL	 -42
 # define WORD_ARGS	 -2
