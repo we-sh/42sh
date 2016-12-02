@@ -30,7 +30,6 @@ static int	s_display_selection(const t_termcaps_context *context, char *buffer)
 static int	s_termcaps_display_control(const t_termcaps_context *context,
 										char *buffer, size_t buffer_size)
 {
-	log_debug("buffer {%.*s}", (int)buffer_size, buffer);
 	if (buffer_size % caps__win(WIN_COLUMNS) == 0)
 	{
 		ft_memcpy(buffer + buffer_size, ENDL, ENDL_SIZE);

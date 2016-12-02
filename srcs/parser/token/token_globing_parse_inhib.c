@@ -54,6 +54,7 @@ int			token_globing_parse_inhib(void *target, t_parser *parser,
 	ret = 0;
 	(void)target;
 	(*i)++;
+	((t_argv *)target)->is_null = 0;
 	if (TOKEN_CODE(*i - 1) == TC_QUOTE)
 	{
 		if (TOKEN_CODE(*i) != TC_QUOTE)

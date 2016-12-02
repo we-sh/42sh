@@ -4,21 +4,24 @@
 ** history add
 */
 
-int					history_add(const char *cmd, t_list_head *history)
+t_node_history		*history_add(const char *cmd, t_list_head *history)
 {
 	t_node_history	*new;
 	size_t			cmd_size;
 
+	if (history->size > EVENTS_COUNT_MAX)
+		return (NULL);
 	cmd_size = ft_strlen(cmd);
 	new = malloc(sizeof(t_node_history) + cmd_size + 1);
 	if (!new)
-		return (0);
+		return (NULL);
 	new->command.size = cmd_size;
 	new->command.bytes = (void *)new + sizeof(t_node_history);
 	ft_memcpy(new->command.bytes, cmd, cmd_size);
 	new->command.bytes[cmd_size] = '\0';
-	list_head__insert(history, history->offset, &new->list);
-	return (1);
+	new->is_modified = 0;
+	list_head__insert(history, history->size, &new->list);
+	return (new);
 }
 
 /*
@@ -38,6 +41,7 @@ void				history_clear(t_list_head *history)
 		node_history = CONTAINER_OF(pos, t_node_history, list);
 		free(node_history);
 	}
+	list_head__init(history);
 }
 
 /*
@@ -71,11 +75,16 @@ void				history_remove(t_list_head *history, const int index)
 	t_list			*pos;
 	t_node_history	*node_history;
 
+	if ((size_t)index > history->size)
+		return ;
 	pos = list_nth(&history->list, index);
 	if (pos != &history->list)
 	{
 		node_history = CONTAINER_OF(pos, t_node_history, list);
 		list_del(pos);
 		free(node_history);
+		history->size -= 1;
+		if (history->offset >= (size_t)index)
+			history->offset -= 1;
 	}
 }

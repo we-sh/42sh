@@ -60,7 +60,9 @@ SRCS	=	\
 			parser/build/parser_build_list_unstack_lexer_job.c			\
 			parser/build/parser_build_list_unstack_lexer_proc.c			\
 			parser/build/parser_build_list_unstack_lexer_globing.c		\
+			parser/build/parser_build_list_unstack_lexer_glob_brace.c	\
 			parser/expand/expand.c										\
+			parser/expand/expand_glob_brace.c							\
 			parser/lexer/lexer_bufferize.c								\
 			parser/lexer/lexer_token_add.c								\
 			parser/lexer/lexer_tokens_alloc.c							\
@@ -69,6 +71,8 @@ SRCS	=	\
 			parser/lexer/lexer.c										\
 			parser/lexer/lexer_tokenize.c								\
 			parser/lexer/lexer_token_recognizer.c						\
+			parser/token/token_glob_brace_parse_none.c					\
+			parser/token/token_glob_brace_parse_pattern.c				\
 			parser/token/token_globing_parse_none.c						\
 			parser/token/token_globing_parse_inhib.c					\
 			parser/token/token_parse_none.c								\
@@ -87,6 +91,9 @@ SRCS	=	\
 			parser/token/token_parse_inhib.c							\
 			parser/token/token_parse_separator.c						\
 			parser/token/token_parse_subshell.c							\
+			parser/token/utils/token_glob_brace_parse_ascii_range.c		\
+			parser/token/utils/token_glob_brace_parse_list.c			\
+			parser/token/utils/token_glob_brace_parse_numeric_range.c	\
 			parser/token/utils/token_parse_utils_get_full_word.c		\
 			parser/token/utils/token_parse_utils_get_word_and_inhib.c	\
 			parser/token/utils/token_parse_utils_open_new_fd.c			\
@@ -114,6 +121,13 @@ SRCS	=	\
 			builtins/export/builtin_export_update_local_with_value.c	\
 			builtins/fg/builtin_fg.c									\
 			builtins/help/builtin_help.c								\
+			builtins/history/builtin_history.c							\
+			builtins/history/default_history.c							\
+			builtins/history/read_history.c								\
+			builtins/history/write_history.c							\
+			builtins/history/append_history.c							\
+			builtins/history/print_history.c							\
+			builtins/history/wrap_histfile.c							\
 			builtins/jobs/builtin_jobs.c								\
 			builtins/env/builtin_env.c									\
 			builtins/language/builtin_language.c						\
@@ -202,14 +216,18 @@ SRCS	=	\
 			termcaps/termcaps_read_input.c								\
 			termcaps/termcaps_read_loop.c								\
 			termcaps/termcaps_get_character_bytes_count.c				\
-			termcaps/command_add_string.c					\
-			termcaps/termcaps_display_command.c					\
+			termcaps/command_add_string.c								\
+			termcaps/termcaps_display_command.c							\
 			termcaps/termcaps_isunicode.c								\
 			termcaps/termcaps_identify_input.c							\
 			termcaps/list_head.c										\
 			termcaps/list_head_command.c								\
 			termcaps/list_head_history.c								\
 			termcaps/list_head_history_search.c							\
+			termcaps/history_init.c										\
+			termcaps/history_get_filename.c								\
+			termcaps/history_load.c										\
+			termcaps/history_write.c									\
 			termcaps/key__backspace.c									\
 			termcaps/key__copy.c										\
 			termcaps/key__cursor_to_begin_of_line.c						\
@@ -224,7 +242,7 @@ SRCS	=	\
 			termcaps/key__cursor_to_prev_word.c							\
 			termcaps/key__cut.c											\
 			termcaps/key__cut_to_end_of_line.c							\
-			termcaps/key__delete_command.c							\
+			termcaps/key__delete_command.c								\
 			termcaps/key__delete_under_cursor.c							\
 			termcaps/key__paste.c										\
 			termcaps/key__select.c										\
@@ -242,8 +260,10 @@ SRCS	=	\
 			termcaps/termcaps_write.c									\
 			termcaps/events.c											\
 			termcaps/events_info.c										\
+			termcaps/events_word.c										\
 			conf/conf_check_color_mode.c								\
 			termcaps/termcaps_error.c									\
+			termcaps/count_func.c										\
 			conf/conf_file_init.c										\
 
 # ---------------------------------------------------------------------------- #

@@ -41,14 +41,13 @@ typedef struct	s_node_dir
 	t_list			list;
 }				t_node_dir;
 
-int				replace_events(t_termcaps_context *context,
-								const size_t buffer_size_max,
-								t_buffer *buffer);
-int				event_info(t_list_head *history,
-							const char *pt,
-							size_t *token_size,
-							int *history_index);
 void			termcaps_error(t_termcaps_context *context,
 							char *cmd, size_t cmd_size, char *msg);
+
+int				history_init(t_sh *sh);
+int				history_get_filename(char **envp,
+								size_t size_max, char *filename);
+
+int				count_func(const char *s, int (*test)(int c), int expected);
 
 #endif

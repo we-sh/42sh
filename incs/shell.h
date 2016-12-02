@@ -63,6 +63,7 @@
 # include "list.h"
 # include "htabl.h"
 # include "termcaps.h"
+# include "events.h"
 # include "redirection.h"
 # include "libft.h"
 # include "libftprintf.h"

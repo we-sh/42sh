@@ -72,6 +72,7 @@ static const char		*g_i18n_fr[] = {
 	[ST_BLTIN_FG] = "envoie des jobs en avant-plan",
 	[ST_BLTIN_FG_ERR_JOBNOTFOUND] = "job introuvable",
 	[ST_BLTIN_HELP] = "montre le manuel d'un builtin",
+	[ST_BLTIN_HISTORY] = "affiche l'historique",
 	[ST_BLTIN_JOBS] = "affiche le status des jobs de la session courante",
 	[ST_BLTIN_JOBS_OPT_L] = "affiche plus d'informations sur les jobs",
 	[ST_BLTIN_JOBS_OPT_P] = "affiche seulement les IDs maîtres",
@@ -103,6 +104,8 @@ static const char		*g_i18n_fr[] = {
 	[ST_TERMINATED] = "interrompu",
 	[ST_USAGE] = "mode d'emploi",
 	[ST_TERMCAPS_INIT] = "erreur lors de l'initialisation des termcaps",
+	[ST_HISTORY_INIT] = "erreur lors de l'initialisation de l'historique",
+	[ST_HISTORY_FILE_TOO_BIG] = "le fichier d'historique est trop gros",
 	[ST_TERMCAPS_FINALIZE] = "erreur lors de la finalisation des termcaps",
 	[ST_UNEXPECTED_TOKEN] = "Invalid token pres de ",
 	[ST_SIGNAL] = "impossible d'intercepter le signal",
@@ -185,6 +188,7 @@ static const char		*g_i18n_en[] = {
 	[ST_BLTIN_FG] = "place jobs in the foreground",
 	[ST_BLTIN_FG_ERR_JOBNOTFOUND] = "job not found",
 	[ST_BLTIN_HELP] = "show the manual of a builtin",
+	[ST_BLTIN_HISTORY] = "display historic",
 	[ST_BLTIN_JOBS] = "display status of jobs in the current session",
 	[ST_BLTIN_JOBS_OPT_L] = "provide more information about each job listed",
 	[ST_BLTIN_JOBS_OPT_P] = "display only the leaders process IDs",
@@ -216,6 +220,22 @@ static const char		*g_i18n_en[] = {
 	[ST_TERMINATED] = "terminated",
 	[ST_USAGE] = "usage",
 	[ST_TERMCAPS_INIT] = "failed to initialize termcaps",
+	[ST_HISTORY_INIT] = "failed to initialize history",
+	[ST_HISTORY_FILE_TOO_BIG] = "the historic file is too big",
+	[ST_BLTIN_HISTORY_OPT_C] = "Clear the history list.",
+	[ST_BLTIN_HISTORY_OPT_D] = "Delete the history entry at position offset.",
+	[ST_BLTIN_HISTORY_OPT_A] = "Append the new history lines Append "
+	"the new history lines.",
+	[ST_BLTIN_HISTORY_OPT_N] = "Append the history lines not already read "
+	"from the history file to the current history list.",
+	[ST_BLTIN_HISTORY_OPT_R] = "Read the current history file and append its "
+	"contents to the history list.",
+	[ST_BLTIN_HISTORY_OPT_W] = "Write out the current history to the "
+	"history file.",
+	[ST_BLTIN_HISTORY_OPT_P] = "Perform history substitution on the args "
+	"and display the result on the standard output.",
+	[ST_BLTIN_HISTORY_OPT_S] = "The args are added to the end of the "
+	"history list as a single entry.",
 	[ST_TERMCAPS_FINALIZE] = "failed to finalize termcaps",
 	[ST_UNEXPECTED_TOKEN] = "Unexpected token near ",
 	[ST_SIGNAL] = "failed catching signal",

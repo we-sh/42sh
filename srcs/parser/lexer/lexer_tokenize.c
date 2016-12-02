@@ -30,22 +30,19 @@ static int		s_parenthesis_code(t_lexer *lexer, t_token *token)
 	int			code;
 
 	code = token == NULL ? 0 : token->code;
-	if (token != NULL && lexer->is_inhibited == 0 && (code == TC_LBRACE
-		|| code == TC_RBRACE || code == TC_LPAREN || code == TC_RPAREN))
+	if (token != NULL && lexer->is_inhibited == 0
+		&& (code == TC_LPAREN || code == TC_RPAREN))
 	{
-		if (lexer->is_parenthesized == 0
-			&& (code == TC_LBRACE || code == TC_LPAREN))
+		if (lexer->is_parenthesized == 0 && code == TC_LPAREN)
 		{
 			lexer->is_parenthesized = code;
 			lexer->parenthesis_count += 1;
 		}
 		else if (lexer->is_parenthesized != 0)
 		{
-			if ((lexer->is_parenthesized == TC_LBRACE && code == TC_RBRACE)
-				|| (lexer->is_parenthesized == TC_LPAREN && code == TC_RPAREN))
+			if (lexer->is_parenthesized == TC_LPAREN && code == TC_RPAREN)
 				lexer->parenthesis_count -= 1;
-			else if ((lexer->is_parenthesized == TC_LBRACE && code == TC_LBRACE)
-				|| (lexer->is_parenthesized == TC_LPAREN && code == TC_LPAREN))
+			else if (lexer->is_parenthesized == TC_LPAREN && code == TC_LPAREN)
 				lexer->parenthesis_count += 1;
 		}
 		if (lexer->parenthesis_count == 0)

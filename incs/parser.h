@@ -46,12 +46,15 @@ int		parser_build_list_unstack_lexer_proc(t_parser *parser,
 										t_lexer *lexer, int *i);
 int		parser_build_list_unstack_lexer_globing(t_parser *parser,
 										t_lexer *lexer, int *i);
+int		parser_build_list_unstack_lexer_glob_brace(t_parser *parser,
+										t_lexer *lexer, int *i);
 
 /*
 ** Expansion.
 */
 
 int		expand(t_lexer *lexer, t_proc *p, int *i);
+int		expand_glob_brace(t_sh *sh, t_list **argv_list);
 
 /*
 ** Function pointers for the parser.
@@ -89,6 +92,12 @@ int		token_parse_lessand(void *target, t_parser *parser, t_lexer *lexer,
 int		token_parse_subshell(void *target, t_parser *parser, t_lexer *lexer,
 			int *i);
 
+int		token_glob_brace_parse_ascii_range(t_parser *parser, t_list *pos,
+			int *i);
+int		token_glob_brace_parse_list(t_parser *parser, t_list *pos,
+			int *i);
+int		token_glob_brace_parse_numeric_range(t_parser *parser, t_list *pos,
+			int *i);
 int		token_parse_utils_skip_separators(t_lexer *lexer, int *i,
 			char **command);
 int		token_parse_utils_get_full_word(char **content, t_lexer *lexer, int *i);
@@ -120,6 +129,11 @@ int		token_parse_rbrace(void *target, t_parser *parser, t_lexer *lexer,
 int		token_globing_parse_none(void *target, t_parser *parser,
 			t_lexer *lexer, int *i);
 int		token_globing_parse_inhib(void *target, t_parser *parser,
+			t_lexer *lexer, int *i);
+
+int		token_glob_brace_parse_none(void *target, t_parser *parser,
+			t_lexer *lexer, int *i);
+int		token_glob_brace_parse_pattern(void *target, t_parser *parser,
 			t_lexer *lexer, int *i);
 
 #endif

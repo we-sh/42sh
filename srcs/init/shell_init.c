@@ -102,6 +102,8 @@ int			shell_init(t_sh *sh, char *envp[])
 			return (ret);
 		if ((ret = s_shell_termcaps(sh)) != ST_OK)
 			return (ret);
+		if (!history_init(sh))
+			return (ST_HISTORY_INIT);
 	}
 	return (ST_OK);
 }

@@ -5,6 +5,19 @@
 ** Functions to initialize a new parser
 */
 
+static int	s_build_token_glob_brace(t_parser *parser)
+{
+	int		i;
+
+	i = 0;
+	parser->token_list[i++] = &g_token_glob_brace_pattern_range;
+	parser->token_list[i++] = &g_token_glob_brace_pattern_rbrace;
+	parser->token_list[i++] = &g_token_glob_brace_pattern_lbrace;
+	parser->token_list[i++] = &g_token_glob_brace_pattern_sep;
+	parser->token_list[i++] = NULL;
+	return (ST_OK);
+}
+
 static int	s_build_token_globing(t_parser *parser)
 {
 	int		i;
@@ -68,6 +81,8 @@ static int	s_parser_new_part2(t_parser **parser, int mode)
 		(*parser)->unstack_func = &parser_build_list_unstack_lexer_none;
 	else if (mode == F_PARSING_GLOBING)
 		(*parser)->unstack_func = &parser_build_list_unstack_lexer_globing;
+	else if (mode == F_PARSING_GLOB_BRACE)
+		(*parser)->unstack_func = &parser_build_list_unstack_lexer_glob_brace;
 	else
 		return (ST_EINVAL);
 	return (ST_OK);
@@ -97,6 +112,8 @@ int			parser_new(t_parser **parser, const char *in, t_sh *sh, int mode)
 		return (ST_MALLOC);
 	if (mode == F_PARSING_GLOBING)
 		s_build_token_globing(*parser);
+	else if (mode == F_PARSING_GLOB_BRACE)
+		s_build_token_glob_brace(*parser);
 	else
 		s_build_token_command(*parser);
 	return (s_parser_new_part2(parser, mode));

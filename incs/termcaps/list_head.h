@@ -97,12 +97,13 @@ typedef struct		s_node_history
 {
 	t_list		list;
 	t_buffer	command;
+	int			is_modified;
 }					t_node_history;
 
 /*
 ** add history
 */
-int					history_add(const char *str, t_list_head *history);
+t_node_history		*history_add(const char *str, t_list_head *history);
 
 /*
 ** clear history
@@ -135,5 +136,19 @@ int					history_get(t_list_head *history, const int index,
 ** history remove
 */
 void				history_remove(t_list_head *history, const int index);
+
+/*
+** history load
+*/
+
+int					history_load(char **envp, t_list_head *history,
+								size_t *from);
+
+/*
+** history write
+*/
+
+int					history_write(char **envp, t_list_head *history,
+								int append);
 
 #endif

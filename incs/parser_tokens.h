@@ -285,4 +285,49 @@ static t_token g_token_globing_name_tilde = {
 	0
 };
 
+
+/*
+** Tokens for glob brace expansion `{}`
+*/
+
+static t_token g_token_glob_brace_pattern_range = {
+	"..",
+	NULL,
+	2,
+	TT_PATTERN,
+	TC_RANGE,
+	token_glob_brace_parse_pattern,
+	0
+};
+
+static t_token g_token_glob_brace_pattern_lbrace = {
+	"{",
+	NULL,
+	1,
+	TT_PATTERN,
+	TC_LBRACE,
+	token_glob_brace_parse_pattern,
+	0
+};
+
+static t_token g_token_glob_brace_pattern_rbrace = {
+	"}",
+	NULL,
+	1,
+	TT_PATTERN,
+	TC_RBRACE,
+	token_glob_brace_parse_pattern,
+	0
+};
+
+static t_token g_token_glob_brace_pattern_sep = {
+	",",
+	NULL,
+	1,
+	TT_PATTERN,
+	TC_COMMA,
+	token_glob_brace_parse_pattern,
+	0
+};
+
 #endif
