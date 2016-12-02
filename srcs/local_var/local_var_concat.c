@@ -1,6 +1,6 @@
 #include "shell.h"
 
-int				local_var_concat_input_output(char **output, char *input, int len)
+int				local_var_concat(char **output, char *input, int len)
 {
 	int			old_len;
 	char		*tmp;

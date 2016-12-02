@@ -1,6 +1,6 @@
 #include "shell.h"
 
-static char *s_replace_from_local(t_var *ptr, char *tmp)
+static char		*s_replace_from_local(t_var *ptr, char *tmp)
 {
 	while (ptr)
 	{
@@ -46,7 +46,7 @@ static int		s_local_var_replace_out_of_loop(char *input, char **output,
 {
 	if (i2 != i)
 	{
-		if (local_var_concat_input_output(output, input + i2, i - i2) != ST_OK)
+		if (local_var_concat(output, input + i2, i - i2) != ST_OK)
 			return (ST_MALLOC);
 	}
 	else if (i == 0)
@@ -75,7 +75,7 @@ static int		s_replace_char_or_loop(t_sh *sh, char *input,
 	}
 	else if ((tmp = s_local_var_replace_loop(sh, input + *i + 1, i)) == NULL)
 		return (ST_MALLOC);
-	if (local_var_concat_input_output(output, tmp, ft_strlen(tmp)) != ST_OK)
+	if (local_var_concat(output, tmp, ft_strlen(tmp)) != ST_OK)
 		return (ST_MALLOC);
 	free(tmp);
 	return (ST_OK);
@@ -94,7 +94,7 @@ int				local_var_replace(t_sh *sh, char *input, char **output)
 		{
 			if (i2 != i)
 			{
-				if (local_var_concat_input_output(output, input + i2, i - i2) != ST_OK)
+				if (local_var_concat(output, input + i2, i - i2) != ST_OK)
 					return (ST_MALLOC);
 			}
 			if ((s_replace_char_or_loop(sh, input, output, &i)) != ST_OK)

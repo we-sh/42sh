@@ -68,7 +68,8 @@ static int			s_single(t_list *list_head,
 	{
 		if ((opt = s_is_valid(available_opt, *argv, i, k)) < ST_OK)
 			return (-opt);
-		if ((ret = option_push(list_head, available_opt[opt], *argv, i)) != ST_OK)
+		if ((ret = option_push(list_head,
+			available_opt[opt], *argv, i)) != ST_OK)
 			return (ret);
 		k++;
 	}

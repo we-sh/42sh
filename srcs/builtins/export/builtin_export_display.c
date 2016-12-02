@@ -1,10 +1,10 @@
 #include "shell.h"
 #include "builtin_set_local.h"
 
-static void	s_display_local(t_proc *p, t_var *ptrvar)
+static void		s_display_local(t_proc *p, t_var *ptrvar)
 {
-	int				i;
-	int				key_len;
+	int			i;
+	int			key_len;
 
 	i = 0;
 	key_len = ft_strlen(ptrvar->key);
