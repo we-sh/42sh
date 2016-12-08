@@ -253,7 +253,8 @@ int				match_binaries(char **envp, char *lookfor,
 							t_list *matchs, size_t *ref_size);
 int				int_key_completion(char **envp, char *buf,
 								t_list *matchs, char **lookfor);
-int				display_completion(const int fd,
+int				display_completion(const size_t command_size,
+									const int fd,
 									t_list *matchs,
 									const int ref_size);
 
