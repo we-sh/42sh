@@ -104,3 +104,124 @@ int				key__completion(t_termcaps_context *context)
 	list_dir__destroy(&head);
 	return (1);
 }
+
+static int		s_get_matchs(char *path, char *lookfor, t_list *matchs, size_t *ref_size)
+{
+	DIR				*dp;
+	struct dirent	*ep;
+	t_node_dir		*new;
+
+	ASSERT(dp = opendir(path));
+	while ((ep = readdir(dp)))
+	{
+		if ((lookfor == NULL && ep->d_name[0] == '.') ||
+			ft_strcmp(lookfor, ep->d_name))
+			continue ;
+		new = node_dir__create(ep);
+		if (new == NULL)
+			return (0);
+		list_push_back(&new->list, matchs);
+		if (new->filename_size > *ref_size)
+			*ref_size = new->filename_size;
+	}
+	closedir(dp);
+	return (0);
+}
+
+static int		s_match_binaries(char *lookfor, t_list *matchs)
+{
+	char	*env_path;
+	char	**paths;
+	size_t	i;
+
+	env_path = env_get_path(NULL);
+	ASSERT(env_path != NULL);
+	paths = ft_strsplit(env_path, ':');
+	ASSERT(paths != NULL);
+	i = 0;
+	while (paths[i])
+	{
+		if (!s_get_matchs(paths[i], lookfor, matchs))
+			return (0);
+		free(paths[i]);
+		i++;
+	}
+	free(paths);
+	return (1);
+}
+
+static int		s_identify_lookfor(char *word, size_t word_size,
+									char **path, char **lookfor)
+{
+	size_t		i;
+
+	i = word_size - 1;
+	while (i >= 0)
+	{
+		if (word[i] == '/')
+			break ;
+		i--;
+	}
+	if (i < 0)
+	{
+		i = 0;
+		*path = NULL;
+		*lookfor = word;
+	}
+	else
+	{
+		// not safe ?
+		i += 1;
+		ft_memmove(word + i + 1, word + i, word_size - i);
+		word[i] = '\0';
+		word[word_size + 1] = '\0';
+		*path = word;
+		if (i == word_size - 1)
+			*lookfor = NULL;
+		else
+			*lookfor = word + i + 1;
+	}
+	return (1);
+}
+
+static void		s_match_last_word(char *cmd, size_t cmd_size, size_t *word_size)
+{
+	size_t		start;
+	size_t		len;
+	size_t		i;
+
+	i = cmd_size - 1;
+	while (i >= 0)
+	{
+		if (ft_isspace(cmd[i]))
+			break ;
+		i--;
+	}
+	if (i < 0)
+		i = 0;
+	start = i;
+	len = cmd_size - i;
+	ft_memmove(cmd, cmd + start, len);
+	*word_size = len;
+}
+
+extern int		key__completion(t_termcaps_context *context)
+{
+	size_t		buf_size;
+	char		buf[1024];
+	char		*path;
+	char		*lookfor;
+	t_list		matchs;
+
+	ASSERT(command_to_buffer(&context->command,
+				sizeof(buf) - 1, &buf_size, buf));
+	s_match_last_word(buf, buf_size, &buf_size);
+	s_split_word(buf, buf_size, &path, &lookfor);
+	INIT_LIST_HEAD(&matchs);
+	if (path == NULL)
+		s_match_binaries(lookfor, &matchs);
+	else
+		s_get_matchs(path.bytes, lookfor, &matchs);
+	if (list_size(matchs) == 1)
+		s_update_command(lookfor, 
+}
