@@ -253,7 +253,9 @@ SRCS	=	\
 			termcaps/key__share_words.c									\
 			termcaps/key__completion.c									\
 			termcaps/key__completion_s.c								\
-			termcaps/key__completion_list_dir.c							\
+			termcaps/key__completion_int.c								\
+			termcaps/key__completion_match.c							\
+			termcaps/key__completion_display.c							\
 			termcaps/key__ctrl_c.c										\
 			termcaps/key__clear.c										\
 			termcaps/key__search_history.c								\

@@ -247,6 +247,15 @@ int				termcaps_read_loop(t_termcaps_context *context,
 
 t_node_dir		*node_dir__create(const struct dirent *ep);
 void			list_dir__destroy(t_list *head);
+int				get_matchs(char *path, char *lookfor,
+							t_list *matchs, size_t *ref_size);
+int				match_binaries(char **envp, char *lookfor,
+							t_list *matchs, size_t *ref_size);
+int				int_key_completion(char **envp, char *buf,
+								t_list *matchs, char **lookfor);
+int				display_completion(const int fd,
+									t_list *matchs,
+									const int ref_size);
 
 /*
 ** conf
