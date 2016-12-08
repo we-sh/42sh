@@ -32,6 +32,7 @@ int		match_binaries(char **envp, char *lookfor,
 {
 	char	*env_path;
 	char	**paths;
+	int		ret;
 	size_t	i;
 
 	if (lookfor == NULL)
@@ -44,10 +45,13 @@ int		match_binaries(char **envp, char *lookfor,
 	while (paths[i])
 	{
 		if (!get_matchs(paths[i], lookfor, matchs, ref_size))
-			return (0);
+			break ;
 		free(paths[i]);
 		i++;
 	}
+	ret = paths[i] == NULL ? 1 : 0;
+	while (paths[i])
+		free(paths[i++]);
 	free(paths);
-	return (1);
+	return (ret);
 }
