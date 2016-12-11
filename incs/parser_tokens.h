@@ -275,16 +275,6 @@ static t_token g_token_globing_inhibitor_quote = {
 	0
 };
 
-static t_token g_token_globing_name_tilde = {
-	"~",
-	NULL,
-	1,
-	TT_NAME,
-	TC_TILDE,
-	token_globing_parse_none,
-	0
-};
-
 
 /*
 ** Tokens for glob brace expansion `{}`

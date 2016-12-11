@@ -63,6 +63,7 @@ SRCS	=	\
 			parser/build/parser_build_list_unstack_lexer_glob_brace.c	\
 			parser/expand/expand.c										\
 			parser/expand/expand_glob_brace.c							\
+			parser/expand/expand_tilde.c								\
 			parser/lexer/lexer_bufferize.c								\
 			parser/lexer/lexer_token_add.c								\
 			parser/lexer/lexer_tokens_alloc.c							\

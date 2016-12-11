@@ -55,6 +55,7 @@ int		parser_build_list_unstack_lexer_glob_brace(t_parser *parser,
 
 int		expand(t_lexer *lexer, t_proc *p, int *i);
 int		expand_glob_brace(t_sh *sh, t_list **argv_list);
+int		expand_tilde(t_sh *sh, t_list **argv_list);
 
 /*
 ** Function pointers for the parser.

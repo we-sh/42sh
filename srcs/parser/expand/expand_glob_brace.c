@@ -10,6 +10,7 @@ int			expand_glob_brace(t_sh *sh, t_list **argv_list)
 
 	if ((new_argv_list = (t_list *)malloc(sizeof(t_list))) == NULL)
 		return (ST_MALLOC);
+	ret = ST_OK;
 	INIT_LIST_HEAD(new_argv_list);
 	safe = (*argv_list)->next;
 	while ((pos = safe) && safe != *argv_list)
