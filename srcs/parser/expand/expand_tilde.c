@@ -5,7 +5,6 @@ static int	s_replace_tilde_with(t_argv *argument, char *str, int offset)
 	char	*new_buffer;
 	size_t	len;
 
-	log_debug("1");
 	if (str == NULL)
 		return (ST_OK);
 	len = ft_strlen(str);
@@ -15,7 +14,6 @@ static int	s_replace_tilde_with(t_argv *argument, char *str, int offset)
 	ft_strcat(new_buffer + len, argument->buffer + offset);
 	free(argument->buffer);
 	argument->buffer = new_buffer;
-	log_debug("2");
 	return (ST_OK);
 }
 
@@ -66,7 +64,6 @@ int			expand_tilde(t_sh *sh, t_list **argv_list)
 		return (ST_OK);
 	argument = CONTAINER_OF(pos, t_argv, argv_list);
 	argument_next = NULL;
-	log_debug("--> %s", argument->buffer);
 	if (pos->next != *argv_list)
 		argument_next = CONTAINER_OF(pos->next, t_argv, argv_list);
 	if (!(argument->buffer != NULL && argument->buffer[0] == '~'))
