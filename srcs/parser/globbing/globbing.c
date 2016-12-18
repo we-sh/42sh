@@ -10,7 +10,7 @@ int	globbing(t_list **argv_list)
 {
 	int	st;
 
-	log_info("entering globbing");
+	log_info(">> entering globbing");
 	if ((st = globbing_run(argv_list)) != ST_OK)
 		return (st);
 	return (ST_OK);

@@ -56,6 +56,23 @@ static char	*s_join_free(char *s1, char *s2)
 	return (ret);
 }
 
+typedef struct s_mylist
+{
+	struct s_mylist		*next;
+	char				*content;
+}					t_mylist;
+
+void globbing_bracket(t_mylist **list, char *input)
+{
+	log_debug("\t\tproduce bracket list expansion on `%s'", input);
+
+	if (*list == NULL)
+	{
+		*list = ft_memalloc(sizeof(t_mylist));
+	}
+	(*list)->content = ft_strdup(input);
+}
+
 /*
 ** This function create the list of what it must be compared
 */
@@ -67,24 +84,38 @@ static void	s_globbing_run_parse(char *arg, t_list *list_glob)
 	struct dirent	*e;
 	char			*m;
 
+	t_mylist *list = NULL;
+
 	globbing_load_context(&c, arg);
+	log_debug("left context   : `%s'", c->l);
+	log_debug("middle context : `%s'", c->m);
+	log_debug("right context  : `%s'", c->r);
 	if ((dp = (!(c->l)) ? opendir(".") : opendir(c->l)))
 	{
 		while ((e = readdir(dp)))
 		{
-			if ((e->d_name[0] != '.' || (c->m && c->m[0] == '.'))
-					&& check_globbing(c->m, e->d_name))
-			{
-				m = (c->l) ? ft_strjoin(c->l, e->d_name) : ft_strdup(e->d_name);
-				c->r ? s_globbing_run_parse(m = s_join_free(m, c->r), list_glob)
-					: s_add_node_to_list(list_glob, m);
-				ft_strdel(&m);
+			if (e->d_name[0] != '.' || (c->m && c->m[0] == '.'))
+			{		
+				log_debug("\tperforming globbing on (middle context) `%s' with (file name) `%s'", c->m, e->d_name);
+				globbing_bracket(&list, c->m);
+				while (list)
+				{
+					if (check_globbing(list->content, e->d_name))
+					{
+						m = (c->l) ? ft_strjoin(c->l, e->d_name) : ft_strdup(e->d_name);
+						log_info("\tperforming globbing on (middle context) `%s' with (file name) `%s' => produce `%s'", c->m, e->d_name, m);
+						c->r ? s_globbing_run_parse(m = s_join_free(m, c->r), list_glob) : s_add_node_to_list(list_glob, m);
+						ft_strdel(&m);
+					}
+					ft_strdel(&(list->content));
+					list = list->next;
+				}
 			}
 		}
 		closedir(dp);
 	}
-	if (list_is_empty(list_glob) && dp != NULL
-			&& (ft_strchr(arg, '?') || ft_strchr(arg, '*')))
+	//if (list_is_empty(list_glob) && dp != NULL && (ft_strchr(arg, '?') || ft_strchr(arg, '*')))
+	if (list_is_empty(list_glob) && (ft_strchr(arg, '?') || ft_strchr(arg, '*')))
 		s_add_node_to_list(list_glob, arg);
 	globbing_context_delete(c);
 }
@@ -108,7 +139,8 @@ int			globbing_run(t_list **argv_list)
 	{
 		safe = safe->next;
 		arg = CONTAINER_OF(pos, t_argv, argv_list);
-		if (ft_strchr(arg->buffer, '?') || ft_strchr(arg->buffer, '*'))
+		log_info("proceed globbing on `%s'", arg->buffer);
+		if (ft_strchr(arg->buffer, '?') || ft_strchr(arg->buffer, '*') || ft_strchr(arg->buffer, '['))
 			s_globbing_run_parse(arg->buffer, &list_glob);
 		else
 			s_add_node_to_list(&list_glob, arg->buffer);
