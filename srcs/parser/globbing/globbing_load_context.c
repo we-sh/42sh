@@ -63,7 +63,7 @@ static char	*s_get_r_ctx(char **arg)
 		if (token_detected == 1)
 		{
 			ptr = ret;
-			ret = ft_strjoin3_safe("/", ptr, arg[i]);
+			ret = ft_strjoin3_safe(ptr, "/", arg[i]);
 			if (ptr)
 				ft_strdel(&ptr);
 		}
