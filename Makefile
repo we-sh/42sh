@@ -63,7 +63,8 @@ SRCS	=	\
 			parser/expand/expand.c										\
 			parser/globbing/globbing.c									\
 			parser/globbing/globbing_bracket.c						\
-			parser/globbing/globbing_run.c								\
+			parser/globbing/globbing_run_parse.c						\
+			parser/globbing/globbing_add_node_to_list.c				\
 			parser/globbing/globbing_load_context.c						\
 			parser/lexer/lexer_bufferize.c								\
 			parser/lexer/lexer_token_add.c								\

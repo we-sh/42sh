@@ -83,9 +83,39 @@ static void s_expand_bracket_params(t_mylist **list, char *input, char *after_fi
 	before = ft_strsub(input, 0, len);
 	len = ft_strlen(input) - ft_strlen(after_first_brack);
 	after = ft_strdup(endofinput+1);
+			log_debug("value:%s",value);
+			log_debug("before:%s",before);
+			log_debug("after:%s",after);
 	while (value[i] != '\0')
 	{
-		s_add_new_arg(list, before, after, value[i]);
+
+		//subsequence
+		unsigned int range_start;
+		unsigned int range_end;
+		int first;
+		
+		first = 0;
+		if (value[i+1] == '-' && 
+			(value[i+2] != ']' && value[i+2] != '-' && value[i+2] != '\0'))
+		{
+			range_start = value[i];
+			range_end = value[i+2];
+			log_debug("Display range limit: value[%d]=%c value[%d]=%c",i,range_start,i+2,range_end);
+			
+			while (range_start <= range_end)
+			{
+				log_debug("Display range start:%d=%c range_end: %d=%c",range_start,range_start,range_end,range_end);
+				if (ft_isalnum((unsigned char)range_start) || first == 0)
+				{
+					s_add_new_arg(list, before, after, (unsigned char)range_start);
+					first++;
+				}
+				range_start++;
+			}
+			i +=3;
+		}
+		else
+			s_add_new_arg(list, before, after, value[i]);
 		i++;
 	}
 //				log_success("Value :%s", value);
@@ -105,7 +135,7 @@ void globbing_bracket(t_mylist **list, char *input)
 		if ((endofinput = (s_check_last_bracket(input))) == NULL)
 		{
 				log_error("Ending bracket Missing%s", input);
-				return (s_happend_to_list(list, input));
+				s_happend_to_list(list, input);
 		}
 		else
 		{
@@ -114,12 +144,11 @@ void globbing_bracket(t_mylist **list, char *input)
 				log_success("str after first [ :%s", after_first_brack);
 				log_success("str after ] :%s", endofinput);
 				s_expand_bracket_params(list, input, after_first_brack, endofinput);
-				return ;
 		}
 	}
 	else
 	{
 		log_success("No bracket inside input");
-		return (s_happend_to_list(list, input));
+		s_happend_to_list(list, input);
 	}
 }
