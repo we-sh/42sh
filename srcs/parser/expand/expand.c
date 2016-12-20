@@ -17,6 +17,7 @@ static int	s_list_argv_to_char_argv(t_proc *p, t_list *argv_list)
 	t_list	*safe;
 	int		st;
 
+	log_info("IN");
 	if ((st = globbing(&argv_list)) != ST_OK)
 		return (st);
 	safe = argv_list->next;

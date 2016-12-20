@@ -57,9 +57,6 @@ int		expand(t_lexer *lexer, t_proc *p, int *i);
 ** Globbing.
 */
 
-int		globbing(t_list **argv_list);
-int		globbing_run(t_list **argv_list);
-
 /*
 ** Function pointers for the parser.
 */

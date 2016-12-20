@@ -8,8 +8,16 @@ typedef struct	s_ctx
 	char		*r;
 }				t_ctx;
 
-int				globbing_load_context(t_ctx **ctx, char *arg);
+typedef struct			s_mylist
+{
+	struct s_mylist		*next;
+	char							*content;
+}                   t_mylist;
 
-void			globbing_context_delete(t_ctx *ctx);
+int		globbing(t_list **argv_list);
+int		globbing_run(t_list **argv_list);
+int		globbing_load_context(t_ctx **ctx, char *arg);
+void	globbing_context_delete(t_ctx *ctx);
+void	globbing_bracket(t_mylist **list, char *input);
 
 #endif

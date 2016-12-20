@@ -27,6 +27,12 @@ static int	check_globbing(char *pattern, char *input)
 {
 	if (!pattern || !input)
 		return (0);
+	log_error("Pattern:%c, input:%c",*pattern, *input);
+	if (ft_strchr(pattern,'[') || ft_strchr(pattern, ']'))
+	{
+		log_error("if [ or ] are still a part of the string, an error occured");
+		return (-1);
+	}
 	if (*pattern == '?')
 	{
 		return (*input && check_globbing(pattern + 1, input + 1));
@@ -56,23 +62,6 @@ static char	*s_join_free(char *s1, char *s2)
 	return (ret);
 }
 
-typedef struct s_mylist
-{
-	struct s_mylist		*next;
-	char				*content;
-}					t_mylist;
-
-void globbing_bracket(t_mylist **list, char *input)
-{
-	log_debug("\t\tproduce bracket list expansion on `%s'", input);
-
-	if (*list == NULL)
-	{
-		*list = ft_memalloc(sizeof(t_mylist));
-	}
-	(*list)->content = ft_strdup(input);
-}
-
 /*
 ** This function create the list of what it must be compared
 */
@@ -83,34 +72,67 @@ static void	s_globbing_run_parse(char *arg, t_list *list_glob)
 	DIR				*dp;
 	struct dirent	*e;
 	char			*m;
+	int i=0;//debug
+	int ret=0;//debug
 
-	t_mylist *list = NULL;
+	t_mylist *list;
 
+	list = NULL;
 	globbing_load_context(&c, arg);
 	log_debug("left context   : `%s'", c->l);
 	log_debug("middle context : `%s'", c->m);
 	log_debug("right context  : `%s'", c->r);
 	if ((dp = (!(c->l)) ? opendir(".") : opendir(c->l)))
 	{
+		log_info("Before while readdir");
 		while ((e = readdir(dp)))
 		{
+			//log_success("turn  : `%d' -> %s", i,e->d_name);
 			if (e->d_name[0] != '.' || (c->m && c->m[0] == '.'))
-			{		
-				log_debug("\tperforming globbing on (middle context) `%s' with (file name) `%s'", c->m, e->d_name);
+			{
+				log_debug("\tWHILE readit(dp) performing globbing on (middle context) `%s' \n\t\t\t\twith (file name) `%s'", c->m, e->d_name);
 				globbing_bracket(&list, c->m);
 				while (list)
 				{
-					if (check_globbing(list->content, e->d_name))
+					log_debug("after globbing_bracket list->content:%s", list->content);
+					log_debug("after globbing_bracket e->d_name:%s", e->d_name);
+					if ((ret = check_globbing(list->content, e->d_name)) > 0)
 					{
-						m = (c->l) ? ft_strjoin(c->l, e->d_name) : ft_strdup(e->d_name);
-						log_info("\tperforming globbing on (middle context) `%s' with (file name) `%s' => produce `%s'", c->m, e->d_name, m);
-						c->r ? s_globbing_run_parse(m = s_join_free(m, c->r), list_glob) : s_add_node_to_list(list_glob, m);
+					log_debug("Value of RET:%d", ret);
+						if (c->l)
+							m = ft_strjoin(c->l, e->d_name);
+						else
+							m = ft_strdup(e->d_name);
+
+						log_info("\t2performing globbing on (middle context) `%s' \n\t\t\t\twith (file name) `%s' => produce `%s'", c->m, e->d_name, m);
+						log_info("c->l:%s", c->l);
+						log_info("c->m:%s", c->m);
+						log_info("c->r:%s", c->r);
+						if (c->r)
+						 s_globbing_run_parse(m = s_join_free(m, c->r), list_glob);
+						else
+							s_add_node_to_list(list_glob, m);
 						ft_strdel(&m);
 					}
+					else if (ret == -1)// ret of check-globing equal -1 so we didn't replace bracket and return input
+					{
+					log_debug("Value of RET:%d", ret);
+							s_add_node_to_list(list_glob, arg);
+							return ;
+					}
+					// else if (ret == 0)
+					// {
+					// 		log_debug("Value of RET:%d", ret);
+					// 		s_add_node_to_list(list_glob, arg);
+					// 		return ;
+					// }
+					log_debug("Value of RET:%d", ret);
 					ft_strdel(&(list->content));
 					list = list->next;
 				}
+
 			}
+			i++;//debug
 		}
 		closedir(dp);
 	}
@@ -144,12 +166,15 @@ int			globbing_run(t_list **argv_list)
 			s_globbing_run_parse(arg->buffer, &list_glob);
 		else
 			s_add_node_to_list(&list_glob, arg->buffer);
-		if (arg->buffer)
-			free(arg->buffer);
-		if (arg)
-			free(arg);
+		// if (arg->buffer)
+		// 	free(arg->buffer);
+		// if (arg)
+		// 	free(arg);
 	}
+	log_info("OUT");
 	list_del(*argv_list);
+	log_info("OUT");
 	*argv_list = &list_glob;
+	log_info("OUT");
 	return (ST_OK);
 }
