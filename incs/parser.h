@@ -54,10 +54,6 @@ int		parser_build_list_unstack_lexer_globing(t_parser *parser,
 int		expand(t_lexer *lexer, t_proc *p, int *i);
 
 /*
-** Globbing.
-*/
-
-/*
 ** Function pointers for the parser.
 */
 

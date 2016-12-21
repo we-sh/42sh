@@ -1,6 +1,6 @@
 #include "shell.h"
 
-static char *s_check_last_bracket(char *input)
+char *globbing_check_last_bracket(char *input)
 {
 	char *endofbracket;
 
@@ -20,7 +20,7 @@ void globbing_bracket(t_mylist **list, char *input)
 	log_debug("AA Globbing_bracket list expansion on `%s'", input);
 	if ((after_open_brack = ft_strchr(input, '[')) != NULL)
 	{
-		if ((after_closing_brack = (s_check_last_bracket(input))) == NULL)
+		if ((after_closing_brack = (globbing_check_last_bracket(input))) == NULL)
 		{
 				log_error("Ending bracket Missing%s", input);
 				globbing_happend_to_list(list, input);
