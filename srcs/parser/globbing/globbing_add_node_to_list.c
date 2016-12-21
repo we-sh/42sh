@@ -27,11 +27,9 @@ int globbing_add_node_to_list(t_list *argv_list, char *content)
     {
       free(argument->buffer);
       free(argument);
-      return(ST_OK);//change return
+      return(ST_OK);//change
     }
   }
   list_push_back(&argument->argv_list, argv_list);
-  free(argument->buffer);
-  free(argument);
   return (ST_OK);
 }
