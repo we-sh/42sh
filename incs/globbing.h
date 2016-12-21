@@ -12,6 +12,9 @@ typedef struct			s_mylist
 {
 	struct s_mylist		*next;
 	char							*content;
+	char 							*value;
+	char							*before;
+	char							*after;
 }                   t_mylist;
 
 int		globbing(t_list **argv_list);
@@ -20,5 +23,10 @@ void	globbing_context_delete(t_ctx *ctx);
 void	globbing_bracket(t_mylist **list, char *input);
 void	globbing_run_parse(char *arg, t_list *list_glob);
 int		globbing_add_node_to_list(t_list *argv_list, char *content);
+void  globbing_exp_param_bracket(t_mylist **list,
+																	char *input,
+																	char *after_first_brack,
+																	char *endofinput);
+void globbing_happend_to_list(t_mylist **list, char *input);
 
 #endif

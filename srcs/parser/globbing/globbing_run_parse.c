@@ -46,52 +46,6 @@ static char	*s_join_free(char *s1, char *s2)
 	return (ret);
 }
 
-// static void s_iter_on_list(t_mylist *list,
-// 														t_ctx *c,
-// 														t_list * list_glob,
-// 														struct dirent *e,
-// 														int *i,
-// 														char *arg)
-// {
-// 	int ret;
-// 	char      *m;
-
-// 	ret = 0;
-// 	while (list)
-// 	{
-// 		log_debug("after globbing_bracket list->content:%s", list->content);
-// 		log_debug("after globbing_bracket e->d_name:%s", e->d_name);
-// 		if ((ret = s_check_globbing(list->content, e->d_name)) > 0)
-// 		{
-// 			log_debug("Value of RET:%d", ret);
-// 			if (c->l)
-// 				m = ft_strjoin(c->l, e->d_name);
-// 			else
-// 				m = ft_strdup(e->d_name);
-
-// 			log_info("\t2performing globbing on (middle context) `%s' \n\t\t\t\twith (file name) `%s' => produce `%s'", c->m, e->d_name, m);
-// 			log_info("c->l:%s", c->l);
-// 			log_info("c->m:%s", c->m);
-// 			log_info("c->r:%s", c->r);
-// 			if (c->r)
-// 			 globbing_run_parse(m = s_join_free(m, c->r), list_glob);
-// 			else
-// 				globbing_add_node_to_list(list_glob, m);
-// 			ft_strdel(&m);
-// 			*i += 1;//debug
-// 		}
-// 		else if (ret == -1)// ret of check-globing equal -1 so we didn't replace bracket and return input
-// 		{
-// 				log_debug("Value of RET:%d", ret);
-// 				globbing_add_node_to_list(list_glob, arg);
-// 				return ;
-// 		}
-// 		log_debug("Value of RET:%d", ret);
-// 		ft_strdel(&(list->content));
-// 		list = list->next;
-// 	}
-// }
-
 /*
 ** This function create the list of what it must be compared
 */
@@ -120,10 +74,7 @@ void 				globbing_run_parse(char *arg, t_list *list_glob)
 			{
 				log_debug("\tWHILE readit(dp) performing globbing on (middle context) `%s' \n\t\t\t\twith (file name) `%s'", c->m, e->d_name);
 				globbing_bracket(&list, c->m);
-				//s_iter_on_list(list, c, list_glob, e, &i, arg);
-			
-
-				
+				//s_iter_on_list(list, c, list_glob, e, &i, arg);	
 					int ret;
 					char      *m;
 
