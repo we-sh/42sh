@@ -6,10 +6,10 @@ static void s_add_new_arg(t_mylist **list, char value_i)
 	char *full;
 	char c[2];
 
-	ptr = *list;
 	// log_success("before :%s", before);
 	// log_success("Value[%d] :%c",i, value[i]);
 	// log_success("after :%s", after);
+	ptr = *list;
 	c[0] = value_i;
 	c[1] = '\0';
 	log_success("valeur de c :%s", c);
