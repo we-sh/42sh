@@ -73,7 +73,7 @@ void 				globbing_run_parse(char *arg, t_list *list_glob)
 			if (e->d_name[0] != '.' || (c->m && c->m[0] == '.'))
 			{
 				log_debug("\tWHILE readit(dp) performing globbing on (middle context) `%s' \n\t\t\t\twith (file name) `%s'", c->m, e->d_name);
-				globbing_bracket(&list, c->m);
+				globbing_bracket(&list, c->m, e->d_name);
 				//s_iter_on_list(list, c, list_glob, e, &i, arg);	
 					int ret;
 					char      *m;

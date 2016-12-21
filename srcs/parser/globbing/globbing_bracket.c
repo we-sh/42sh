@@ -12,7 +12,7 @@ char *globbing_check_last_bracket(char *input)
 }
 
 
-void globbing_bracket(t_mylist **list, char *input)
+void globbing_bracket(t_mylist **list, char *input, char *match)
 {
 	char 				*after_open_brack;
 	char 				*after_closing_brack;
@@ -31,7 +31,7 @@ void globbing_bracket(t_mylist **list, char *input)
 				log_success("Full input :%s", input);
 				log_success("str after first [ :%s", after_open_brack);
 				log_success("str after ] :%s", after_closing_brack);
-				globbing_exp_param_bracket(list, input, after_open_brack, after_closing_brack);
+				globbing_exp_param_bracket(list, input, after_open_brack, after_closing_brack, match);
 		}
 	}
 	else
