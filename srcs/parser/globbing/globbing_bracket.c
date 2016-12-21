@@ -14,13 +14,13 @@ static char *s_check_last_bracket(char *input)
 
 void globbing_bracket(t_mylist **list, char *input)
 {
-	char 				*after_first_brack;
-	char 				*endofinput;
+	char 				*after_open_brack;
+	char 				*after_closing_brack;
 
 	log_debug("AA Globbing_bracket list expansion on `%s'", input);
-	if ((after_first_brack = ft_strchr(input, '[')) != NULL)
+	if ((after_open_brack = ft_strchr(input, '[')) != NULL)
 	{
-		if ((endofinput = (s_check_last_bracket(input))) == NULL)
+		if ((after_closing_brack = (s_check_last_bracket(input))) == NULL)
 		{
 				log_error("Ending bracket Missing%s", input);
 				globbing_happend_to_list(list, input);
@@ -29,14 +29,14 @@ void globbing_bracket(t_mylist **list, char *input)
 		{
 				log_success("Ending bracket Succes");
 				log_success("Full input :%s", input);
-				log_success("str after first [ :%s", after_first_brack);
-				log_success("str after ] :%s", endofinput);
-				globbing_exp_param_bracket(list, input, after_first_brack, endofinput);
+				log_success("str after first [ :%s", after_open_brack);
+				log_success("str after ] :%s", after_closing_brack);
+				globbing_exp_param_bracket(list, input, after_open_brack, after_closing_brack);
 		}
 	}
 	else
 	{
-		log_success("No bracket inside input");
+		log_success("No open bracket inside input return mal formed string");
 		globbing_happend_to_list(list, input);
 	}
 }

@@ -53,7 +53,7 @@ static void s_globbing_bracket_subsequence(t_mylist **list, int i)
 	}
 }
 
-void  globbing_exp_param_bracket(t_mylist **list, char *input, char *after_first_brack, char *endofinput)
+void  globbing_exp_param_bracket(t_mylist **list, char *input, char *after_open_brack, char *after_closing_brack)
 {
 	int i=0;
 
@@ -61,10 +61,10 @@ void  globbing_exp_param_bracket(t_mylist **list, char *input, char *after_first
   *list = (t_mylist*)ft_memalloc(sizeof(t_mylist));
 	(*list)->content = NULL;
 	(*list)->next = NULL;
-	(*list)->value = ft_strsub(after_first_brack+1, 0, (ft_strlen(after_first_brack+1) - ft_strlen(endofinput)));
+	(*list)->value = ft_strsub(after_open_brack+1, 0, (ft_strlen(after_open_brack+1) - ft_strlen(after_closing_brack)));
 //	len = ft_strlen(input) - ft_strlen(after_first_brack);
-	(*list)->before = ft_strsub(input, 0, (ft_strlen(input) - ft_strlen(after_first_brack)));
-	(*list)->after = ft_strdup(endofinput+1);
+	(*list)->before = ft_strsub(input, 0, (ft_strlen(input) - ft_strlen(after_open_brack)));
+	(*list)->after = ft_strdup(after_closing_brack+1);
 			log_debug("value:%s",(*list)->value);
 			log_debug("before:%s", (*list)->before);
 			log_debug("after:%s",(*list)->after);

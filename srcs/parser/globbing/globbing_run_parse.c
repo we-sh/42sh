@@ -96,9 +96,15 @@ void 				globbing_run_parse(char *arg, t_list *list_glob)
 							log_info("c->m:%s", c->m);
 							log_info("c->r:%s", c->r);
 							if (c->r)
+							{
+								log_info("Recurse");
 							 globbing_run_parse(m = s_join_free(m, c->r), list_glob);
+							}
 							else
+							{
+								log_info("Add_node_to_list");
 								globbing_add_node_to_list(list_glob, m);
+							}
 							ft_strdel(&m);
 							i += 1;//debug
 						}
