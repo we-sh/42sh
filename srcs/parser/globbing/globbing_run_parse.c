@@ -7,7 +7,7 @@
 ** It returns 0 if it doesn't match, 1 otherwise.
 */
 
-static int	s_check_globbing(char *pattern, char *input)
+int	check_globbing(char *pattern, char *input)
 {
 	if (!pattern || !input)
 		return (0);
@@ -19,17 +19,17 @@ static int	s_check_globbing(char *pattern, char *input)
 	}
 	if (*pattern == '?')
 	{
-		return (*input && s_check_globbing(pattern + 1, input + 1));
+		return (*input && check_globbing(pattern + 1, input + 1));
 	}
 	else if (*pattern == '*')
 	{
-		return (s_check_globbing(pattern + 1, input) ||
-				(*input && s_check_globbing(pattern, input + 1)));
+		return (check_globbing(pattern + 1, input) ||
+				(*input && check_globbing(pattern, input + 1)));
 	}
 	else
 	{
 		return (*input == *pattern++ && ((*input++ == '\0') ||
-					s_check_globbing(pattern, input)));
+					check_globbing(pattern, input)));
 	}
 }
 
@@ -83,7 +83,7 @@ void 				globbing_run_parse(char *arg, t_list *list_glob)
 					{
 						log_debug("after globbing_bracket list->content:%s", list->content);
 						log_debug("after globbing_bracket e->d_name:%s", e->d_name);
-						if ((ret = s_check_globbing(list->content, e->d_name)) > 0)
+						if ((ret = check_globbing(list->content, e->d_name)) > 0)
 						{
 							log_debug("Value of RET:%d", ret);
 							if (c->l)

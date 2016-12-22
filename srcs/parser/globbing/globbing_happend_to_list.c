@@ -18,11 +18,21 @@ void globbing_happend_to_list(t_mylist **list, char *input)
     log_info("Second: %s", input);
     newm = (t_mylist*)ft_memalloc(sizeof(t_mylist));
     ptr = *list;
-    while (ptr->next)
-    {
-      log_info("Value of ptr->content `%s'", ptr->content);
-      ptr = ptr->next;
-    }
+
+
+// FIX LE HAPPEN
+
+
+    // while (ptr->next)
+    // {
+    //   log_info("Value of ptr->content `%s'", ptr->content);
+    //   if (ft_strcmp(ptr->content, input) == 0)
+    //   {
+    //     free(newm);
+    //     return ;
+    //   }
+    //   ptr = ptr->next;
+    // }
     ptr->next = newm;
     newm->content = ft_strdup(input);
     newm->next = NULL;
