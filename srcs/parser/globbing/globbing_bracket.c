@@ -13,17 +13,17 @@ char		*globbing_check_last_bracket(char *input)
 
 	while (input[i])
 	{
-		if (input[i] == ']' && i != 1)
+		if (input[i] == ']' && i > 1)
 		{
 			last_bracket = i;
 			break ;
 		}
 		i++;
 	}
-	if (last_bracket == 0)
-		return NULL;
 	endofbracket = input + last_bracket;
 	log_info("Start with bracket %s et end with:%s", input, endofbracket);
+	if (last_bracket == 0)
+		return NULL;
 	return (endofbracket);
 }
 
@@ -38,16 +38,16 @@ void globbing_bracket(t_mylist **list, char *input, char *match)
 	{
 		if ((after_closing_brack = (globbing_check_last_bracket(input))) == NULL)
 		{
-				log_error("Ending bracket Missing%s", input);
-				globbing_happend_to_list(list, input);
+			log_error("Ending bracket Missing: %s, after_closing:%s", input,after_closing_brack);
+			globbing_happend_to_list(list, input);
 		}
 		else
 		{
-				log_success("Ending bracket Succes");
-				log_success("Full input :%s", input);
-				log_success("str after first [ :%s", after_open_brack);
-				log_success("str after ] :%s", after_closing_brack);
-				globbing_exp_param_bracket(list, input, after_open_brack, after_closing_brack, match);
+			log_success("Ending bracket Succes");
+			log_success("Full input :%s", input);
+			log_success("str after first [ :%s", after_open_brack);
+			log_success("str after ] :%s", after_closing_brack);
+			globbing_exp_param_bracket(list, input, after_open_brack, after_closing_brack, match);
 		}
 	}
 	else

@@ -21,7 +21,11 @@ int			globbing(t_list **argv_list)
 		arg = CONTAINER_OF(pos, t_argv, argv_list);
 		log_info("proceed globbing on `%s'", arg->buffer);
 		if (ft_strchr(arg->buffer, '?') || ft_strchr(arg->buffer, '*') || ft_strchr(arg->buffer, '['))
+		{
 			globbing_run_parse(arg->buffer, &list_glob);
+			if (list_is_empty(&list_glob))
+				globbing_add_node_to_list(&list_glob, arg->buffer);
+		}
 		else
 			globbing_add_node_to_list(&list_glob, arg->buffer);
 		// if (arg->buffer)

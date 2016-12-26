@@ -23,6 +23,29 @@ static void s_add_new_arg(t_mylist **list, t_tmp *concat, char value_i)
 	free(full);
 }
 
+static int s_is_total_make_sense(char *pattern)
+{
+	int i;
+	int sign1;
+	int sign2;
+
+	sign1 = 0;
+	sign2 = 0;
+	i = 0;
+	while (pattern[i] != '\0')
+	{
+		if (pattern[i] == '[')
+			sign1++;
+		if (pattern[i] == ']')
+			sign2++;
+		i++;
+	}
+	log_error("MAke sense return :%d", (sign1 == sign2));
+	if (sign1 == sign2)
+		return (1);
+	return (0);
+}
+
 int	s_check_globbing_brack(char *pattern, char *input)
 {
 	char *is_valid;
@@ -31,21 +54,32 @@ int	s_check_globbing_brack(char *pattern, char *input)
 	if (!pattern || !input)
 		return (0);
 	log_error("Pattern:%s, input:%s",pattern, input);
-	if (ft_strchr(pattern,'[') || ft_strchr(pattern, ']'))
+	if ((ft_strchr(pattern,'[') || ft_strchr(pattern, ']')))
 	{
+
 		log_error("if [ or ] are still a part of the string, an error occured");
-  		if ((is_valid = ft_strchr(pattern, '[')) && (is_valid[1] == '['))
+  		if ((is_valid = ft_strchr(pattern, '[')) && (input[0] == '['))
   		{
 			log_success("1 Is_valid:%s ?",is_valid);
-  			return (1);
+  			return (-1);
   		}
-  		else if ((is_valid = ft_strchr(pattern, ']')) && (is_valid[1]== ']'))
+  		else if ((is_valid = ft_strchr(pattern, ']')) && (input[0] == ']'))
   		{
 			log_success("2 Is_valid:%s, input:%s ?",is_valid, input);
-  			return (1);
+  			return (-1);
   		}
-			log_error("3 Is_valid:%s, input:%s ?",is_valid, input);
-  		return (-1);
+		// if (s_is_total_make_sense(pattern))
+		// {
+		// 	log_error("3 Is_valid:%s, input:%s ?",is_valid, input);
+  // 			return (*input && s_check_globbing_brack(pattern + 1, input));
+		// }
+		// else
+		if (s_is_total_make_sense(pattern))
+		{
+			log_success("Make sense 1");
+//  			return (*input && s_check_globbing_brack(pattern + 1, input));
+			return -1;
+		}
 	}
 	if (*pattern == '?')
 	{
@@ -92,10 +126,13 @@ static int  globbing_bracket_recurse(t_mylist **list, t_tmp *concat, char *match
 		** match pas donc on ne va pas en recursif
 		** sauf si le char est une * ou un ?
 		*/
-		log_info("Match And Recurs -1 ret:%d, value: %c",ret,concat->value[i]);
+		log_info("Match And Recurs -1 ret:%d, value: %s",ret,concat->value);
+		// if (concat->value[i] == ']')
+		// 	match++;
+		// else 
 		if (concat->value[i] != '*' &&
-				concat->value[i] != '?' &&
-				!(ft_strchr(match, concat->value[i])))
+			concat->value[i] != '?' &&
+			!(ft_strchr(match, concat->value[i])))
 			return -1;
 	}
 	else if (ret > 0)
@@ -133,7 +170,10 @@ void					globbing_exp_param_bracket(t_mylist **list,
 	log_debug("after:%s",concat->after);
 	
 	globbing_bracket_exp_subsequence(&concat, i);
-	
+	// if (concat->after)
+	// {
+
+	// }
 	log_info(" NEW!! Concat->value:%s",concat->value);
 	while (concat->value[i] != '\0')
 	{
@@ -145,7 +185,13 @@ void					globbing_exp_param_bracket(t_mylist **list,
 			{
 				if ((ret = globbing_bracket_recurse(list, concat, match, i)) == 1)
 				{
-					s_add_new_arg(list, concat, concat->value[i]);
+					// if (concat->value[i] == ']' || concat->value[i] == '[')
+					// {
+					// 	i++;
+					// 	globbing_bracket_recurse(list, concat, match, i);
+					// }
+					// else
+						s_add_new_arg(list, concat, concat->value[i]);
 //					break ;
 				}
 				else if (ret == -1)

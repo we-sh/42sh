@@ -12,7 +12,7 @@ static char *s_globbing_increment_range(unsigned char	range_start, unsigned char
 	
 	while (range_start <= range_end)
 	{
-		if (ft_isalnum((unsigned char)range_start))
+		if ((unsigned char)range_start)
 		{
 			log_debug("Display range start:%d=%c range_end: %d=%c",range_start,range_start,range_end,range_end);
 			new_value[j] = range_start;
@@ -86,12 +86,13 @@ void					globbing_bracket_exp_subsequence(t_tmp **concat, int i)
 		if (i + 2 < len)
 		{
 			if ((*concat)->value[i+1] == '-' && 
-						(ft_isalnum((*concat)->value[i+2]))) // il y a une range
+						((*concat)->value[i+2])) // il y a une range
 			{
 				log_info("Is range:%s", ((*concat)->value+i));
 				log_info("Value of len: %d",len);
 				log_info("Value of i: %d",i);
 				tmp_value_after_range = ft_strdup((*concat)->value + i + 3); // verifier ca
+				log_info("tmp_value_after_range: %s",tmp_value_after_range);
 				if ((ret = s_globbing_expand_range(concat, (*concat)->before, i)) != 0)
 				{
 					log_info("EXP SUB value of ret:%d", ret);
