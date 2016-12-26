@@ -151,7 +151,7 @@ static int  globbing_bracket_recurse(t_mylist **list, t_tmp *concat, char *match
 	return 0;
 }
 
-void					globbing_exp_param_bracket(t_mylist **list,
+int					globbing_exp_param_bracket(t_mylist **list,
 													char *input,
 													char *after_open_brack,
 													char *after_closing_brack,
@@ -168,8 +168,10 @@ void					globbing_exp_param_bracket(t_mylist **list,
 	log_debug("before:%s", concat->before);
 	log_debug("value:%s",concat->value);
 	log_debug("after:%s",concat->after);
-	
-	globbing_bracket_exp_subsequence(&concat, i);
+	if (concat->value)
+		globbing_bracket_exp_subsequence(&concat, i);
+	else
+		return (-1); // cas d un tring mal formate du type awd][*
 	// if (concat->after)
 	// {
 
@@ -210,4 +212,5 @@ void					globbing_exp_param_bracket(t_mylist **list,
 	// free(concat->before);
 	// free(concat->after);
 	// free(concat);
+	return (0);
 }

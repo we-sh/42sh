@@ -77,7 +77,12 @@ void				globbing_run_parse(char *arg, t_list *list_glob)
 				{
 					log_debug("\tWHILE readit(dp) performing globbing on (middle context) `%s' \n\t\t\t\twith (file name) `%s'", c->m, e->d_name);
 				
-    	    		globbing_bracket(&list, c->m, e->d_name);
+    	    		if (globbing_bracket(&list, c->m, e->d_name) == -1)
+    	    		{
+						globbing_add_node_to_list(list_glob, arg);
+						return ;
+    	    		}
+
 					//s_iter_on_list(list, c, list_glob, e, &i, arg);	
 						int ret;
 						char      *m;
