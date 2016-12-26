@@ -9,14 +9,28 @@
 
 int	check_globbing(char *pattern, char *input)
 {
+	char *is_valid;
+
+	is_valid = 0;
 	if (!pattern || !input)
 		return (0);
-	log_error("Pattern:%c, input:%c",*pattern, *input);
-	if (ft_strchr(pattern,'[') || ft_strchr(pattern, ']'))
-	{
-		log_error("if [ or ] are still a part of the string, an error occured");
-  	return (-1);
-	}
+	log_error("Pattern:%s, input:%s",pattern, input);
+	// if (ft_strchr(pattern,'[') || ft_strchr(pattern, ']'))
+	// {
+	// 	log_error("if [ or ] are still a part of the string, an error occured");
+ //  		if ((is_valid = ft_strchr(pattern, '[')) && (is_valid[1] == '['))
+ //  		{
+	// 		log_success("1 Is_valid:%s ?",is_valid);
+ //  			return (1);
+ //  		}
+ //  		else if ((is_valid = ft_strchr(pattern, ']')) && (is_valid[1]== ']'))
+ //  		{
+	// 		log_success("2 Is_valid:%s, input:%s ?",is_valid, input);
+ //  			return (1);
+ //  		}
+	// 		log_error("3 Is_valid:%s, input:%s ?",is_valid, input);
+ //  		return (-1);
+	// }
 	if (*pattern == '?')
 	{
 		return (*input && check_globbing(pattern + 1, input + 1));
@@ -50,11 +64,11 @@ static char	*s_join_free(char *s1, char *s2)
 ** This function create the list of what it must be compared
 */
 
-void 				globbing_run_parse(char *arg, t_list *list_glob)
+void				globbing_run_parse(char *arg, t_list *list_glob)
 {
-	t_ctx     *c;
-	DIR       *dp;
-	struct dirent *e;
+	t_ctx			*c;
+	DIR				*dp;
+	struct dirent	*e;
 	int i=0;//debug
 
 	t_mylist *list;
@@ -74,7 +88,7 @@ void 				globbing_run_parse(char *arg, t_list *list_glob)
 			{
 				log_debug("\tWHILE readit(dp) performing globbing on (middle context) `%s' \n\t\t\t\twith (file name) `%s'", c->m, e->d_name);
 				
-        globbing_bracket(&list, c->m, e->d_name);
+        		globbing_bracket(&list, c->m, e->d_name);
 				//s_iter_on_list(list, c, list_glob, e, &i, arg);	
 					int ret;
 					char      *m;

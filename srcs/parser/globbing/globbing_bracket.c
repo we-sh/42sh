@@ -1,13 +1,29 @@
 #include "shell.h"
 
-char *globbing_check_last_bracket(char *input)
+char		*globbing_check_last_bracket(char *input)
 {
-	char *endofbracket;
+	char	*endofbracket;
+	int		i;
+	int		last_bracket;
 
-	endofbracket = input;
-	if ((endofbracket = ft_strchr(endofbracket, ']')) == NULL)
-		return (NULL);
-	log_info("Start with bracket %s et end with:%s", input, endofbracket);		
+	// if ((endofbracket = ft_strchr(input, ']')) == NULL)
+	// 	return (NULL);
+	i = 0;
+	last_bracket = 0;
+
+	while (input[i])
+	{
+		if (input[i] == ']' && i != 1)
+		{
+			last_bracket = i;
+			break ;
+		}
+		i++;
+	}
+	if (last_bracket == 0)
+		return NULL;
+	endofbracket = input + last_bracket;
+	log_info("Start with bracket %s et end with:%s", input, endofbracket);
 	return (endofbracket);
 }
 

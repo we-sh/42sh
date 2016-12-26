@@ -23,6 +23,46 @@ static void s_add_new_arg(t_mylist **list, t_tmp *concat, char value_i)
 	free(full);
 }
 
+int	s_check_globbing_brack(char *pattern, char *input)
+{
+	char *is_valid;
+
+	is_valid = 0;
+	if (!pattern || !input)
+		return (0);
+	log_error("Pattern:%s, input:%s",pattern, input);
+	if (ft_strchr(pattern,'[') || ft_strchr(pattern, ']'))
+	{
+		log_error("if [ or ] are still a part of the string, an error occured");
+  		if ((is_valid = ft_strchr(pattern, '[')) && (is_valid[1] == '['))
+  		{
+			log_success("1 Is_valid:%s ?",is_valid);
+  			return (1);
+  		}
+  		else if ((is_valid = ft_strchr(pattern, ']')) && (is_valid[1]== ']'))
+  		{
+			log_success("2 Is_valid:%s, input:%s ?",is_valid, input);
+  			return (1);
+  		}
+			log_error("3 Is_valid:%s, input:%s ?",is_valid, input);
+  		return (-1);
+	}
+	if (*pattern == '?')
+	{
+		return (*input && s_check_globbing_brack(pattern + 1, input + 1));
+	}
+	else if (*pattern == '*')
+	{
+		return (s_check_globbing_brack(pattern + 1, input) ||
+				(*input && s_check_globbing_brack(pattern, input + 1)));
+	}
+	else
+	{
+		return (*input == *pattern++ && ((*input++ == '\0') ||
+					s_check_globbing_brack(pattern, input)));
+	}
+}
+
 static int  globbing_bracket_recurse(t_mylist **list, t_tmp *concat, char *match, int i)
 {
 	int j;
@@ -40,7 +80,7 @@ static int  globbing_bracket_recurse(t_mylist **list, t_tmp *concat, char *match
 	log_success("Compare int cmp:%d, Char match:%c, char:%c", i, c[0], match[j]);
 	log_success("Compare concat->value[%d]:%s,", i, c);
 
-	if ((ret = (check_globbing(sub_list, match))) == 0)
+	if ((ret = (s_check_globbing_brack(sub_list, match))) == 0)
 	{
 		free(sub_list);//ADD A LA DERNIERE MINUTE PEU CRASH
 		log_info("Match And Recurs ret:%d",ret);
@@ -52,6 +92,7 @@ static int  globbing_bracket_recurse(t_mylist **list, t_tmp *concat, char *match
 		** match pas donc on ne va pas en recursif
 		** sauf si le char est une * ou un ?
 		*/
+		log_info("Match And Recurs -1 ret:%d, value: %c",ret,concat->value[i]);
 		if (concat->value[i] != '*' &&
 				concat->value[i] != '?' &&
 				!(ft_strchr(match, concat->value[i])))
@@ -74,10 +115,10 @@ static int  globbing_bracket_recurse(t_mylist **list, t_tmp *concat, char *match
 }
 
 void					globbing_exp_param_bracket(t_mylist **list,
-																				char *input,
-																				char *after_open_brack,
-																				char *after_closing_brack,
-																				char *match)
+													char *input,
+													char *after_open_brack,
+													char *after_closing_brack,
+													char *match)
 {
 	t_tmp				*concat;
 	int					i=0;
