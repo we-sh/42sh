@@ -15,22 +15,6 @@ int	check_globbing(char *pattern, char *input)
 	if (!pattern || !input)
 		return (0);
 	log_error("Pattern:%s, input:%s",pattern, input);
-	// if (ft_strchr(pattern,'[') || ft_strchr(pattern, ']'))
-	// {
-	// 	log_error("if [ or ] are still a part of the string, an error occured");
- //  		if ((is_valid = ft_strchr(pattern, '[')) && (is_valid[1] == '['))
- //  		{
-	// 		log_success("1 Is_valid:%s ?",is_valid);
- //  			return (1);
- //  		}
- //  		else if ((is_valid = ft_strchr(pattern, ']')) && (is_valid[1]== ']'))
- //  		{
-	// 		log_success("2 Is_valid:%s, input:%s ?",is_valid, input);
- //  			return (1);
- //  		}
-	// 		log_error("3 Is_valid:%s, input:%s ?",is_valid, input);
- //  		return (-1);
-	// }
 	if (*pattern == '?')
 	{
 		return (*input && check_globbing(pattern + 1, input + 1));
@@ -140,16 +124,16 @@ void				globbing_run_parse(char *arg, t_list *list_glob)
 						}
 				}
 			}
-			if (i ==0)
+			if (i <= 0)
 			{
 				log_info("RET=%d..et a toujours ete 0");
-				globbing_add_node_to_list(list_glob, c->m);
+				globbing_add_node_to_list(list_glob, arg);
 			}
 			closedir(dp);
 		}
 	}
 	//if (list_is_empty(list_glob) && dp != NULL && (ft_strchr(arg, '?') || ft_strchr(arg, '*')))
-//	if (list_is_empty(list_glob) && (ft_strchr(arg, '?') || ft_strchr(arg, '*')))
-//	 	globbing_add_node_to_list(list_glob, arg);
+	// if (list_is_empty(list_glob) && (ft_strchr(arg, '?') || ft_strchr(arg, '*')))
+	//  	globbing_add_node_to_list(list_glob, arg);
 	globbing_context_delete(c);
 }
