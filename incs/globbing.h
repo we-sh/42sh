@@ -16,6 +16,7 @@ typedef struct			s_mylist
 
 typedef struct s_tmp
 {
+	int								reverse;
 	char							*value;
 	char							*before;
 	char							*after;

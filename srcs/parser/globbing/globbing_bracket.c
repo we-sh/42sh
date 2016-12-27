@@ -13,7 +13,12 @@ char		*globbing_check_last_bracket(char *input)
 
 	while (input[i])
 	{
-		if (input[i] == ']' && i > 1)
+		if (input[i-1] != '!' && input[i] == ']' && i > 1)
+		{
+			last_bracket = i;
+			break ;
+		}
+		else if (input[i-1] == '!' && input[i] == ']' && i > 2)
 		{
 			last_bracket = i;
 			break ;

@@ -93,7 +93,7 @@ int	s_check_globbing_brack(char *pattern, char *input)
 	else
 	{
 		return (*input == *pattern++ && ((*input++ == '\0') ||
-					s_check_globbing_brack(pattern, input)));
+				s_check_globbing_brack(pattern, input)));
 	}
 }
 
@@ -117,7 +117,7 @@ static int  globbing_bracket_recurse(t_mylist **list, t_tmp *concat, char *match
 	if ((ret = (s_check_globbing_brack(sub_list, match))) == 0)
 	{
 		free(sub_list);//ADD A LA DERNIERE MINUTE PEU CRASH
-		log_info("Match And Recurs ret:%d",ret);
+		log_info("Not match ret:%d",ret);
 		return 0;
 	}
 	else if (ret == -1) 
@@ -162,24 +162,31 @@ int					globbing_exp_param_bracket(t_mylist **list,
 	int					ret=0;
 
 	concat = (t_tmp*)ft_memalloc(sizeof(t_tmp));
-	concat->value = ft_strsub(after_open_brack+1, 0, (ft_strlen(after_open_brack+1) - ft_strlen(after_closing_brack)));
+	concat->value = ft_strsub(after_open_brack+1, 0,
+						(ft_strlen(after_open_brack+1) - ft_strlen(after_closing_brack)));
 	concat->before = ft_strsub(input, 0, (ft_strlen(input) - ft_strlen(after_open_brack)));
 	concat->after = ft_strdup(after_closing_brack+1);
+	concat->reverse = 0;
 	log_debug("before:%s", concat->before);
 	log_debug("value:%s",concat->value);
 	log_debug("after:%s",concat->after);
-	if (concat->value)
-		globbing_bracket_exp_subsequence(&concat, i);
-	else
-		return (-1); // cas d un tring mal formate du type awd][*
-	// if (concat->after)
-	// {
 
-	// }
+	if (!concat->value)
+		return (-1); // cas d un tring mal formate du type awd][*
+	if (concat->value[i] == '!' && i == 0) // verifier si on accepte le ! comme un char
+	{
+		concat->reverse = 1;
+		i++;// A VOIR BUG POSSIBLE
+	}
+	globbing_bracket_exp_subsequence(&concat, i);
+
 	log_info(" NEW!! Concat->value:%s",concat->value);
+	log_info(" NEW!! input:%s",input);
+
 	while (concat->value[i] != '\0')
 	{
-		if (!(ft_strchr(match, concat->value[i])))
+
+		if (!ft_strchr(match, concat->value[i]))
 			i++;
 		else
 		{
@@ -187,20 +194,15 @@ int					globbing_exp_param_bracket(t_mylist **list,
 			{
 				if ((ret = globbing_bracket_recurse(list, concat, match, i)) == 1)
 				{
-					// if (concat->value[i] == ']' || concat->value[i] == '[')
-					// {
-					// 	i++;
-					// 	globbing_bracket_recurse(list, concat, match, i);
-					// }
-					// else
-						s_add_new_arg(list, concat, concat->value[i]);
-//					break ;
+					s_add_new_arg(list, concat, concat->value[i]);
+					break ;
 				}
 				else if (ret == -1)
 				{
 					s_add_new_arg(list, concat, concat->value[i]);
-					break ;	
+					break ;
 				}
+				// Alors 0 on continue de parser la string concat value pour voir si un autre char match
 			}
 			else
 				s_add_new_arg(list, concat, concat->value[i]);
