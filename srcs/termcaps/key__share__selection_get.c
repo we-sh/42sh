@@ -15,17 +15,17 @@ int						key__share__selection_get(
 		log_error("selection offset start is undefined %s", "");
 		return (0);
 	}
-	if (in_context->selection_offset_start < in_context->command_line.offset)
+	if (in_context->selection_offset_start < in_context->command.offset)
 	{
 		*out_selection_start = in_context->selection_offset_start;
-		*out_selection_size = in_context->command_line.offset -
+		*out_selection_size = in_context->command.offset -
 								in_context->selection_offset_start;
 	}
 	else
 	{
-		*out_selection_start = in_context->command_line.offset;
+		*out_selection_start = in_context->command.offset;
 		*out_selection_size = in_context->selection_offset_start -
-								in_context->command_line.offset;
+								in_context->command.offset;
 	}
 	return (1);
 }

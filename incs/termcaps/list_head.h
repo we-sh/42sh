@@ -14,8 +14,8 @@
 typedef struct		s_list_head
 {
 	t_list	list;
-	size_t	size;
 	size_t	offset;
+	size_t	size;
 }					t_list_head;
 
 /*
@@ -49,59 +49,106 @@ void				list_head__slice(t_list_head *new,
 */
 # define CHARACTER_SIZE_MAX		(size_t)sizeof (wchar_t)
 
-typedef struct		s_list_node_cmd
+typedef struct		s_node_cmd
 {
 	t_list	list;
 	size_t	character_size;
 	char	character[CHARACTER_SIZE_MAX];
-}					t_list_node_cmd;
+}					t_node_cmd;
 
 /*
-** list node cmd_line create
+** command add
 */
-t_list_node_cmd		*list_node__command_line_create(const size_t character_size,
-												const char *character);
+int					command_add(const size_t character_size,
+												const char *character,
+												t_list_head *command);
 
 /*
-** list node command line destroy
+** command clear
 */
-void				list_node__command_line_destroy(t_list *entry);
+void				command_clear(t_list_head *command);
+
+/*
+** command clear
+*/
+void				command_del(t_list *entry);
 
 /*
 ** list head command line dup
 */
-t_list_head			*list_head__command_line_dup(t_list_head *dst,
-											t_list_head *src);
+t_list_head			*command_dup(t_list_head *dst,
+								t_list_head *src);
 
 /*
 ** list head command line destroy
 */
-void				list_head__command_line_destroy(t_list_head *head);
+void				command_clear(t_list_head *head);
 
 /*
 ** list head command line to buffer
 */
-int					list_head__command_line_to_buffer(const t_list_head *head,
+int					command_to_buffer(const t_list_head *head,
 			const size_t buffer_size_max, size_t *buffer_size, char *buffer);
 
 /*
 ** -- History node structure --
 */
-typedef struct		s_list_node_history
+typedef struct		s_node_history
 {
 	t_list		list;
-	t_buffer	command_line;
-}					t_list_node_history;
+	t_buffer	command;
+	int			is_modified;
+}					t_node_history;
 
 /*
-** list node history create
+** add history
 */
-t_list_node_history	*list_node__history_create(t_list_head *cmd_line,
-												size_t index);
+t_node_history		*history_add(const char *str, t_list_head *history);
 
 /*
-** list head history destroy
+** clear history
 */
-void				list_head__history_destroy(t_list_head *head);
+void				history_clear(t_list_head *history);
+
+/*
+** history search
+*/
+int					history_search(t_list_head *history,
+									const char *str,
+									const size_t size,
+									int direction);
+
+/*
+** history search prefix
+*/
+int					history_search_prefix(t_list_head *history,
+											const char *str,
+											const size_t size,
+											int direction);
+
+/*
+** history get
+*/
+int					history_get(t_list_head *history, const int index,
+								t_buffer *out_history_elem);
+
+/*
+** history remove
+*/
+void				history_remove(t_list_head *history, const int index);
+
+/*
+** history load
+*/
+
+int					history_load(char **envp, t_list_head *history,
+								size_t *from);
+
+/*
+** history write
+*/
+
+int					history_write(char **envp, t_list_head *history,
+								int append);
 
 #endif

@@ -7,7 +7,7 @@ static int	s_none(t_lexer *lexer, int *i)
 	k = *i - 1;
 	while (k >= 0 && TOKEN_TYPE(k) == TT_SEPARATOR)
 		k--;
-	if (k < 0 || TOKEN_TYPE(k) == TT_JOBS)
+	if (k < 0 || TOKEN_TYPE(k) == TT_JOBS || TOKEN_CODE(k) == TC_LPAREN)
 	{
 		if (lexer->notify == 1)
 			display_status(ST_PARSER_TOKEN, NULL, TOKEN_CONTENT(*i));

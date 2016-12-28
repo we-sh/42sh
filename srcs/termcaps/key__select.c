@@ -6,7 +6,7 @@ int		key__select(t_termcaps_context *in_context)
 	{
 		ft_putstr(SELECTBLEU);
 		in_context->state = STATE_SELECTION;
-		in_context->selection_offset_start = in_context->command_line.offset;
+		in_context->selection_offset_start = in_context->command.offset;
 		in_context->selection_offset_end =
 			MINISHELL_KEY__SHARE__SELECTION_OFFSET_UNDEFINED;
 	}
@@ -14,15 +14,15 @@ int		key__select(t_termcaps_context *in_context)
 	{
 		ft_putstr(SELECTBLANC);
 		in_context->state = STATE_REGULAR;
-		if (in_context->command_line.offset >
+		if (in_context->command.offset >
 			in_context->selection_offset_start)
-			in_context->selection_offset_end = in_context->command_line.offset;
+			in_context->selection_offset_end = in_context->command.offset;
 		else
 		{
 			in_context->selection_offset_end =
 			in_context->selection_offset_start;
 			in_context->selection_offset_start =
-			in_context->command_line.offset;
+			in_context->command.offset;
 		}
 	}
 	return (1);

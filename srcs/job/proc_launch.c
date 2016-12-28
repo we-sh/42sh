@@ -93,26 +93,10 @@ void		proc_launch(t_sh *sh, t_job *j, t_proc *p)
 {
 	int		ret;
 
-	// TODO : remove, this is a part just for debug
-	int		i = 0;
-	char	*tmp = ft_strdup("");
-	char	*tmp2;
-	while (i < p->argc)
-	{
-		tmp2 = ft_strjoin(tmp, (p->argv)[i]);
-		free(tmp);
-		tmp = ft_strjoin(tmp2, " ");
-		free(tmp2);
-		i++;
-	}
-	log_success("processus command received       : `%s'", p->command);
-	log_success("processus command after globbing : `%s'", tmp);
-	free(tmp);
-
-	ret = 0;
 	p->pid = getpid();
 	s_interactive_mode_callback(sh, j, p);
 	s_dup2_and_close(STDIN_FILENO, p->stdin);
+	ret = ST_OK;
 	if (p->stdout == STDERR_FILENO)
 	{
 		s_dup2_and_close(STDERR_FILENO, p->stderr);
@@ -127,6 +111,8 @@ void		proc_launch(t_sh *sh, t_job *j, t_proc *p)
 		p->is_valid = 0;
 	if (p->is_valid != 1)
 		exit(p->is_valid == 0 ? EXIT_SUCCESS : EXIT_FAILURE);
+	if (p->is_subshell == 1)
+		proc_subshell(sh, j, p);
 	builtin_callback(BLTIN_CB_EXEC, sh, p);
 	if ((ret = (s_proc_launch_execve(p))) != ST_OK)
 		display_status(ret, p->argv[0], NULL);

@@ -80,7 +80,7 @@ static int	s_env_fill_shenv(t_sh *sh, char **envp)
 		}
 		else if (ft_strncmp(envp[i], "SHELL", 5) == 0)
 		{
-			if((sh->envp[i] = ft_strdup("SHELL=wesh")) == NULL)
+			if ((sh->envp[i] = ft_strdup("SHELL=wesh")) == NULL)
 				return (ST_MALLOC);
 		}
 		else if ((sh->envp[i] = ft_strdup(envp[i])) == NULL)

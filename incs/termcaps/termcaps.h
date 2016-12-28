@@ -35,8 +35,19 @@ typedef enum	e_state_word
 */
 typedef struct	s_node_dir
 {
-	t_buffer		filename;
+	char			filename[256];
+	size_t			filename_size;
+	unsigned char	d_type;
 	t_list			list;
 }				t_node_dir;
+
+void			termcaps_error(t_termcaps_context *context,
+							char *cmd, size_t cmd_size, char *msg);
+
+int				history_init(t_sh *sh);
+int				history_get_filename(char **envp,
+								size_t size_max, char *filename);
+
+int				count_func(const char *s, int (*test)(int c), int expected);
 
 #endif

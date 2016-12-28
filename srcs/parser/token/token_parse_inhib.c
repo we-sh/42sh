@@ -26,6 +26,7 @@ int			token_parse_inhib(void *target, t_parser *parser, t_lexer *lexer,
 	int		ret;
 
 	(void)parser;
+	log_warn("Token INIB debug lexer number %d", lexer->size);
 	ret = ST_OK;
 	if (parser->mode == F_PARSING_JOBS)
 		ret = s_jobs((t_job *)target, lexer, i);

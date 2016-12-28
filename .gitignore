@@ -9,6 +9,7 @@
 *.a
 *.o
 *.d
+.deps
 
 # editors
 .*.swp

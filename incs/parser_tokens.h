@@ -201,11 +201,31 @@ static t_token g_token_name_backslash = {
 	0
 };
 
+static t_token g_token_subshell_lparen = {
+	"(",
+	NULL,
+	1,
+	TT_SUBSHELL,
+	TC_LPAREN,
+	token_parse_subshell,
+	0
+};
+
+static t_token g_token_subshell_rparen = {
+	")",
+	NULL,
+	1,
+	TT_SUBSHELL,
+	TC_RPAREN,
+	token_parse_subshell,
+	0
+};
+
 static t_token g_token_name_bquote = {
 	"`",
 	NULL,
 	1,
-	TT_NAME,
+	TT_INHIBITOR,
 	TC_BQUOTE,
 	token_parse_none,
 	0
@@ -235,16 +255,6 @@ static t_token g_token_name_rbrace = {
 ** Tokens for parameters expansion (globing)
 */
 
-static t_token g_token_globing_name_lastexitstatus = {
-	"$?",
-	NULL,
-	2,
-	TT_NAME,
-	TC_LASTEXITSTATUS,
-	token_globing_parse_none,
-	0
-};
-
 static t_token g_token_globing_inhibitor_dquote = {
 	"\"",
 	NULL,
@@ -265,13 +275,48 @@ static t_token g_token_globing_inhibitor_quote = {
 	0
 };
 
-static t_token g_token_globing_name_tilde = {
-	"~",
+
+/*
+** Tokens for glob brace expansion `{}`
+*/
+
+static t_token g_token_glob_brace_pattern_range = {
+	"..",
+	NULL,
+	2,
+	TT_PATTERN,
+	TC_RANGE,
+	token_glob_brace_parse_pattern,
+	0
+};
+
+static t_token g_token_glob_brace_pattern_lbrace = {
+	"{",
 	NULL,
 	1,
-	TT_NAME,
-	TC_TILDE,
-	token_globing_parse_none,
+	TT_PATTERN,
+	TC_LBRACE,
+	token_glob_brace_parse_pattern,
+	0
+};
+
+static t_token g_token_glob_brace_pattern_rbrace = {
+	"}",
+	NULL,
+	1,
+	TT_PATTERN,
+	TC_RBRACE,
+	token_glob_brace_parse_pattern,
+	0
+};
+
+static t_token g_token_glob_brace_pattern_sep = {
+	",",
+	NULL,
+	1,
+	TT_PATTERN,
+	TC_COMMA,
+	token_glob_brace_parse_pattern,
 	0
 };
 

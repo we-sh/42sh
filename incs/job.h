@@ -47,6 +47,7 @@ struct						s_proc
 	char					*bltin_char;
 	t_list					bltin_opt_head;
 	int						is_valid;
+	int						is_subshell;
 };
 
 struct						s_job

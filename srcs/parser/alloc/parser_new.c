@@ -5,20 +5,31 @@
 ** Functions to initialize a new parser
 */
 
+static int	s_build_token_glob_brace(t_parser *parser)
+{
+	int		i;
+
+	i = 0;
+	parser->token_list[i++] = &g_token_glob_brace_pattern_range;
+	parser->token_list[i++] = &g_token_glob_brace_pattern_rbrace;
+	parser->token_list[i++] = &g_token_glob_brace_pattern_lbrace;
+	parser->token_list[i++] = &g_token_glob_brace_pattern_sep;
+	parser->token_list[i++] = NULL;
+	return (ST_OK);
+}
+
 static int	s_build_token_globing(t_parser *parser)
 {
 	int		i;
 
 	i = 0;
-	parser->token_list[i++] = &g_token_globing_name_lastexitstatus;
 	parser->token_list[i++] = &g_token_globing_inhibitor_dquote;
 	parser->token_list[i++] = &g_token_globing_inhibitor_quote;
-	parser->token_list[i++] = &g_token_globing_name_tilde;
 	parser->token_list[i++] = NULL;
 	return (ST_OK);
 }
 
-static int	s_build_token_command_line_part2(t_parser *parser, int i)
+static int	s_build_token_command_part2(t_parser *parser, int i)
 {
 	parser->token_list[i++] = &g_token_separator_space;
 	parser->token_list[i++] = &g_token_separator_tab;
@@ -30,7 +41,7 @@ static int	s_build_token_command_line_part2(t_parser *parser, int i)
 	return (ST_OK);
 }
 
-static int	s_build_token_command_line(t_parser *parser)
+static int	s_build_token_command(t_parser *parser)
 {
 	int		i;
 
@@ -49,10 +60,12 @@ static int	s_build_token_command_line(t_parser *parser)
 	parser->token_list[i++] = &g_token_redir_less;
 	parser->token_list[i++] = &g_token_redir_pipe;
 	parser->token_list[i++] = &g_token_special_and;
+	parser->token_list[i++] = &g_token_subshell_lparen;
+	parser->token_list[i++] = &g_token_subshell_rparen;
 	parser->token_list[i++] = &g_token_inhibitor_dquote;
 	parser->token_list[i++] = &g_token_inhibitor_quote;
 	parser->token_list[i++] = &g_token_name_backslash;
-	return (s_build_token_command_line_part2(parser, i));
+	return (s_build_token_command_part2(parser, i));
 }
 
 static int	s_parser_new_part2(t_parser **parser, int mode)
@@ -67,6 +80,8 @@ static int	s_parser_new_part2(t_parser **parser, int mode)
 		(*parser)->unstack_func = &parser_build_list_unstack_lexer_none;
 	else if (mode == F_PARSING_GLOBING)
 		(*parser)->unstack_func = &parser_build_list_unstack_lexer_globing;
+	else if (mode == F_PARSING_GLOB_BRACE)
+		(*parser)->unstack_func = &parser_build_list_unstack_lexer_glob_brace;
 	else
 		return (ST_EINVAL);
 	return (ST_OK);
@@ -83,6 +98,7 @@ int			parser_new(t_parser **parser, const char *in, t_sh *sh, int mode)
 	(*parser)->lexer->sh = sh;
 	(*parser)->lexer->size = 0;
 	(*parser)->lexer->notify = 1;
+	(*parser)->lexer->parenthesis_count = 0;
 	(*parser)->mode = mode;
 	(*parser)->target_list_head = NULL;
 	(*parser)->sh = sh;
@@ -95,7 +111,9 @@ int			parser_new(t_parser **parser, const char *in, t_sh *sh, int mode)
 		return (ST_MALLOC);
 	if (mode == F_PARSING_GLOBING)
 		s_build_token_globing(*parser);
+	else if (mode == F_PARSING_GLOB_BRACE)
+		s_build_token_glob_brace(*parser);
 	else
-		s_build_token_command_line(*parser);
+		s_build_token_command(*parser);
 	return (s_parser_new_part2(parser, mode));
 }

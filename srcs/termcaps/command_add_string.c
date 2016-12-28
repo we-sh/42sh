@@ -4,9 +4,9 @@
 ** Add a string to the current command line
 */
 
-int		termcaps_string_to_command_line(const size_t input_buff_size,
+int		command_add_string(const size_t input_buff_size,
 										const char *input_buffer,
-										t_list_head *command_line)
+										t_list_head *command)
 {
 	size_t			input_buffer_index;
 	size_t			char_b_count;
@@ -24,10 +24,10 @@ int		termcaps_string_to_command_line(const size_t input_buff_size,
 			log_error("get_char_b_count() error", char_b_count, char_miss_bcnt);
 			return (0);
 		}
-		if (!termcaps_character_to_command_line(char_b_count,
-			input_buffer + input_buffer_index, command_line))
+		if (!command_add(char_b_count,
+			input_buffer + input_buffer_index, command))
 		{
-			log_error("minishell__character_to_command_line() failed");
+			log_error("minishell__character_to_command() failed");
 			return (0);
 		}
 		input_buffer_index += char_b_count;

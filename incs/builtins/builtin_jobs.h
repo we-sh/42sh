@@ -8,10 +8,12 @@ static t_option				g_builtin_jobs_option_l = {
 	.index = ST_BLTIN_JOBS_OPT_L,
 	.is_single_char = 1,
 	.has_value = 0,
+	.has_multiple_values = 0,
 	.value_is_numeric = 0,
 	.value_is_alnum = 0,
 	.value_is_indexof = NULL,
-	.value = NULL
+	.value = NULL,
+	.values = NULL
 };
 
 static t_option				g_builtin_jobs_option_p = {
@@ -19,10 +21,12 @@ static t_option				g_builtin_jobs_option_p = {
 	.index = ST_BLTIN_JOBS_OPT_P,
 	.is_single_char = 1,
 	.has_value = 0,
+	.has_multiple_values = 0,
 	.value_is_numeric = 0,
 	.value_is_alnum = 0,
 	.value_is_indexof = NULL,
-	.value = NULL
+	.value = NULL,
+	.values = NULL
 };
 
 static const t_option		*g_builtin_jobs_options[] = {

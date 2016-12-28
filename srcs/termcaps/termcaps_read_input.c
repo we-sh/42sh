@@ -25,12 +25,11 @@ int					s_set_new_prompt(t_termcaps_context *context)
 	char		*tmp;
 
 	free(context->prompt.bytes);
-	if ((tmp = env_get(context->sh->envp, "PS1")) == NULL)
+	if (!(tmp = env_get(context->sh->envp, "PS1")))
 	{
 		tmp = shell_set_prompt(context->sh);
 		context->prompt.size = ft_strlen(tmp);
-		context->prompt.bytes = ft_strdup(tmp);
-		free(tmp);
+		context->prompt.bytes = tmp;
 	}
 	else
 	{
@@ -52,10 +51,10 @@ char				*termcaps_read_input(t_termcaps_context *context)
 	ASSERT(s_check_cursor_pos(context));
 	if (context->option == OPTION_NONE)
 		s_set_new_prompt(context);
-	ASSERT(termcaps_string_to_command_line(context->prompt.size,
+	ASSERT(command_add_string(context->prompt.size,
 											context->prompt.bytes,
-											&context->command_line));
-	ASSERT(termcaps_display_command_line(context));
+											&context->command));
+	ASSERT(termcaps_display_command(context));
 	context->state = STATE_REGULAR;
 	context->buffer = NULL;
 	ASSERT(termcaps_read_loop(context, input_buffer_size,

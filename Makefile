@@ -60,15 +60,18 @@ SRCS	=	\
 			parser/build/parser_build_list_unstack_lexer_job.c			\
 			parser/build/parser_build_list_unstack_lexer_proc.c			\
 			parser/build/parser_build_list_unstack_lexer_globing.c		\
+			parser/build/parser_build_list_unstack_lexer_glob_brace.c	\
 			parser/expand/expand.c										\
+			parser/expand/expand_glob_brace.c							\
+			parser/expand/expand_tilde.c								\
 			parser/globbing/globbing.c									\
-			parser/globbing/globbing_bracket.c						\
+			parser/globbing/globbing_bracket.c							\
 			parser/globbing/globbing_run_parse.c						\
-			parser/globbing/globbing_add_node_to_list.c				\
+			parser/globbing/globbing_add_node_to_list.c					\
 			parser/globbing/globbing_exp_param_bracket.c				\
-			parser/globbing/globbing_happend_to_list.c				\
+			parser/globbing/globbing_happend_to_list.c					\
 			parser/globbing/globbing_load_context.c						\
-			parser/globbing/globbing_bracket_exp_subsequence.c \
+			parser/globbing/globbing_bracket_exp_subsequence.c 			\
 			parser/lexer/lexer_bufferize.c								\
 			parser/lexer/lexer_token_add.c								\
 			parser/lexer/lexer_tokens_alloc.c							\
@@ -77,6 +80,8 @@ SRCS	=	\
 			parser/lexer/lexer.c										\
 			parser/lexer/lexer_tokenize.c								\
 			parser/lexer/lexer_token_recognizer.c						\
+			parser/token/token_glob_brace_parse_none.c					\
+			parser/token/token_glob_brace_parse_pattern.c				\
 			parser/token/token_globing_parse_none.c						\
 			parser/token/token_globing_parse_inhib.c					\
 			parser/token/token_parse_none.c								\
@@ -94,6 +99,10 @@ SRCS	=	\
 			parser/token/token_parse_dgreat.c							\
 			parser/token/token_parse_inhib.c							\
 			parser/token/token_parse_separator.c						\
+			parser/token/token_parse_subshell.c							\
+			parser/token/utils/token_glob_brace_parse_ascii_range.c		\
+			parser/token/utils/token_glob_brace_parse_list.c			\
+			parser/token/utils/token_glob_brace_parse_numeric_range.c	\
 			parser/token/utils/token_parse_utils_get_full_word.c		\
 			parser/token/utils/token_parse_utils_get_word_and_inhib.c	\
 			parser/token/utils/token_parse_utils_open_new_fd.c			\
@@ -112,15 +121,35 @@ SRCS	=	\
 			builtins/echo/builtin_echo.c								\
 			builtins/echo/builtin_echo_escape.c							\
 			builtins/exit/builtin_exit.c								\
+			builtins/export/builtin_export.c							\
+			builtins/export/builtin_export_display.c							\
+			builtins/export/builtin_export_n_option.c					\
+			builtins/export/builtin_export_set.c						\
+			builtins/export/builtin_export_set_no_value.c				\
+			builtins/export/builtin_export_set_local_and_env.c			\
+			builtins/export/builtin_export_update_local_with_value.c	\
 			builtins/fg/builtin_fg.c									\
 			builtins/help/builtin_help.c								\
+			builtins/history/builtin_history.c							\
+			builtins/history/default_history.c							\
+			builtins/history/read_history.c								\
+			builtins/history/write_history.c							\
+			builtins/history/append_history.c							\
+			builtins/history/print_history.c							\
+			builtins/history/wrap_histfile.c							\
 			builtins/jobs/builtin_jobs.c								\
 			builtins/env/builtin_env.c									\
 			builtins/language/builtin_language.c						\
 			builtins/setenv/builtin_setenv.c							\
 			builtins/setenv/builtin_setenv_argv_is_valid.c				\
+			builtins/set_local/builtin_set_local.c						\
+			builtins/set_local/builtin_local_var_set_local_loop.c		\
+			builtins/set_local/builtin_local_var_add.c					\
+			builtins/set_local/builtin_local_var_update.c				\
+			builtins/set_local/builtin_local_var_delete.c				\
 			builtins/termcaps/builtin_termcaps.c						\
 			builtins/unsetenv/builtin_unsetenv.c						\
+			builtins/unset/builtin_unset.c								\
 			builtins/builtin_callback.c									\
 			builtins/builtin_usage.c									\
 			env/env_get.c												\
@@ -131,7 +160,8 @@ SRCS	=	\
 			env/env_set.c												\
 			env/env_unset.c												\
 			env/env_index_value.c										\
-			env/env_update_from_cmd_line.c								\
+			env/env_or_var_update_from_cmd_line.c						\
+			env/env_get_value_and_remove_equal_sign.c					\
 			display/display_status.c									\
 			i18n/i18n_translate.c										\
 			init/shell_init.c											\
@@ -155,19 +185,25 @@ SRCS	=	\
 			job/job_kill.c												\
 			job/job_launch.c											\
 			job/job_list_clean.c										\
+			job/job_list_clean_except_job.c								\
 			job/job_set_stopped.c										\
 			job/job_wait.c												\
 			job/proc_find.c												\
 			job/proc_free.c												\
 			job/proc_launch.c											\
+			job/proc_subshell.c											\
 			job/proc_update_status.c									\
 			job/redir_alloc.c											\
 			job/redir_free.c											\
 			job/redir_list_free.c										\
+			loop/loop_job_launcher.c									\
 			loop/loop_main.c											\
+			local_var/local_var_replace.c								\
+			local_var/local_var_concat.c								\
 			options/option_get_value.c									\
+			options/option_get_values.c									\
 			options/option_is_set.c										\
-			options/list_node__option_alloc.c							\
+			options/option_push.c										\
 			options/option_free.c										\
 			options/option_parse.c										\
 			path/path_init_hasht.c										\
@@ -189,14 +225,18 @@ SRCS	=	\
 			termcaps/termcaps_read_input.c								\
 			termcaps/termcaps_read_loop.c								\
 			termcaps/termcaps_get_character_bytes_count.c				\
-			termcaps/termcaps_string_to_command_line.c					\
-			termcaps/termcaps_character_to_command_line.c				\
-			termcaps/termcaps_display_command_line.c					\
+			termcaps/command_add_string.c								\
+			termcaps/termcaps_display_command.c							\
 			termcaps/termcaps_isunicode.c								\
 			termcaps/termcaps_identify_input.c							\
 			termcaps/list_head.c										\
 			termcaps/list_head_command.c								\
 			termcaps/list_head_history.c								\
+			termcaps/list_head_history_search.c							\
+			termcaps/history_init.c										\
+			termcaps/history_get_filename.c								\
+			termcaps/history_load.c										\
+			termcaps/history_write.c									\
 			termcaps/key__backspace.c									\
 			termcaps/key__copy.c										\
 			termcaps/key__cursor_to_begin_of_line.c						\
@@ -211,25 +251,30 @@ SRCS	=	\
 			termcaps/key__cursor_to_prev_word.c							\
 			termcaps/key__cut.c											\
 			termcaps/key__cut_to_end_of_line.c							\
-			termcaps/key__delete_command_line.c							\
+			termcaps/key__delete_command.c								\
 			termcaps/key__delete_under_cursor.c							\
 			termcaps/key__paste.c										\
 			termcaps/key__select.c										\
 			termcaps/key__send.c										\
-			termcaps/key__share__command_line_to_history.c				\
 			termcaps/key__share__copy_build_copy.c						\
 			termcaps/key__share__cut_build_copy.c						\
 			termcaps/key__share__selection_get.c						\
 			termcaps/key__share_words.c									\
 			termcaps/key__completion.c									\
 			termcaps/key__completion_s.c								\
-			termcaps/key__completion_list_dir.c							\
+			termcaps/key__completion_int.c								\
+			termcaps/key__completion_match.c							\
+			termcaps/key__completion_display.c							\
 			termcaps/key__ctrl_c.c										\
 			termcaps/key__clear.c										\
 			termcaps/key__search_history.c								\
-			termcaps/termcaps_history_search.c							\
 			termcaps/termcaps_write.c									\
+			termcaps/events.c											\
+			termcaps/events_info.c										\
+			termcaps/events_word.c										\
 			conf/conf_check_color_mode.c								\
+			termcaps/termcaps_error.c									\
+			termcaps/count_func.c										\
 			conf/conf_file_init.c										\
 
 # ---------------------------------------------------------------------------- #
@@ -259,17 +304,11 @@ RM		=	rm -f
 # ---------------------------------------------------------------------------- #
 # PROJECT COMPILATION                                                          #
 # ---------------------------------------------------------------------------- #
-# - The 'LIBS' lists the libaries path.                                        #
 # - The 'LDFLAGS' tells the linker where to find external libraries (-L flag). #
 # - The 'LDLIBS' tells the linker the prefix of external libraries (-l flag).  #
 # - The 'CPPFLAGS' tells the compiler where to find preprocessors (-I flag).   #
 # - The 'CFLAGS' configures the compiler options.                              #
 # ---------------------------------------------------------------------------- #
-
-LIBS		=	\
-				$(DIRLIB)/libft/libft.a			\
-				$(DIRLIB)/logger/liblogger.a	\
-				$(DIRLIB)/libcaps/libcaps.a		\
 
 LDFLAGS		=	\
 				-L $(DIRLIB)/logger				\
@@ -341,7 +380,7 @@ $(DIRDEP)	:
 all			:	libs $(NAME)
 	@printf "\033[32m[ %s ]\033[0m %s\n" "$(NAME)" "finish to build $(NAME)"
 
-$(NAME)		:	$(DIROBJ) $(DIRDEP) $(OBJ) $(LIBS)
+$(NAME)		:	$(DIROBJ) $(DIRDEP) $(OBJ)
 	@printf "\033[32m[ %s ]\033[0m %s\n" "$(NAME)" "link objects..."
 	@$(CC) $(OBJ) -o $(NAME) $(LDFLAGS) $(LDLIBS)
 
@@ -373,7 +412,7 @@ re			:	fcleanlibs fclean all
 
 test		:	re
 	@printf "\033[32m[ %s ]\033[0m %s\n" "$(NAME)" "run tests..."
-	@cd $(DIRTST) && sh 42ShellTester.sh $$PWD/../$(NAME) --hard
+	@cd $(DIRTST) && bash 42ShellTester.sh $$PWD/../$(NAME) --hard
 
 submodule	:
 	@printf "\033[32m[ %s ]\033[0m %s\n" "$(NAME)" "retrieve submodules..."
@@ -404,7 +443,7 @@ $(DIROBJ)/%.o	:	$(DIRSRC)/%.c $(DIRDEP)/%.d
 $(DIRDEP)/%.d	:	;
 .PRECIOUS		:	$(DIRDEP)/%.d
 
--include $(patsubst %,$(DIRDEP)/%.d,$(basename $(SRCS)))
+-include $(patsubst %,$(DIRDEP)/%.d,$(basename $(SRC)))
 
 # ---------------------------------------------------------------------------- #
 

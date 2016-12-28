@@ -7,6 +7,7 @@
 # include "termcaps_struct.h"
 # include "option.h"
 # include "statuses.h"
+# include "local_struct.h"
 
 /*
 ** Shell structure
@@ -19,11 +20,13 @@ struct					s_sh
 	int					fd;
 	char				**argv;
 	char				**envp;
+	t_var				*local_vars;
 	t_termcaps_context	termcaps_context;
 	int					last_exit_status;
 	t_list				opt_head;
 	char				*pwd;
 	t_list				redir_head;
+	int					is_subshell;
 };
 
 /*

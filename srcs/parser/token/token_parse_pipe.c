@@ -4,11 +4,13 @@ static int	s_none(t_lexer *lexer, int *i)
 {
 	int		index;
 
-	index = *i;
+	index = *i - 1;
 	while (index >= 0)
 	{
 		if (TOKEN_TYPE(index) == TT_NAME)
 			return (ST_OK);
+		if (TOKEN_CODE(index) == TC_PIPE)
+			break ;
 		index--;
 	}
 	if (lexer->notify == 1)
@@ -30,7 +32,8 @@ static int	s_proc(t_proc *p, t_lexer *lexer, int *i)
 	{
 		if (lexer->notify == 1)
 			display_status(ST_PARSER_TOKEN, NULL, TOKEN_CONTENT(*i));
-		return (ST_PARSER);
+		p->is_valid = 0;
+		return (ST_OK);
 	}
 	return (ST_OK);
 }

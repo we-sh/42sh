@@ -54,8 +54,9 @@ static int	s_shell_job_control(t_sh *sh)
 	}
 	if ((ret = signal_to_ignore()) != ST_OK)
 		return (ret);
-	if (setpgid(sh->pgid, sh->pgid) < 0)
-		return (ST_SETPGID);
+	//let's keep these two lines just in case :-) (@jgigault)
+	//if (setpgid(sh->pgid, sh->pgid) < 0)
+	//	return (ST_SETPGID);
 	if (ioctl(STDIN_FILENO, TIOCSPGRP, &sh->pgid) < 0)
 		return (ST_TCSETPGRP);
 	return (ST_OK);
@@ -87,8 +88,10 @@ int			shell_init(t_sh *sh, char *envp[])
 
 	INIT_LIST_HEAD(&g_current_jobs_list_head);
 	INIT_LIST_HEAD(&sh->redir_head);
+	sh->local_vars = NULL;
 	sh->last_exit_status = 0;
 	sh->pgid = getpid();
+	sh->is_subshell = 0;
 	if ((ret = s_shell_environment(sh, envp)) != ST_OK)
 		return (ret);
 	if ((ret = s_shell_fd_init(sh)) != ST_OK)
@@ -99,6 +102,8 @@ int			shell_init(t_sh *sh, char *envp[])
 			return (ret);
 		if ((ret = s_shell_termcaps(sh)) != ST_OK)
 			return (ret);
+		if (!history_init(sh))
+			return (ST_HISTORY_INIT);
 	}
 	return (ST_OK);
 }

@@ -14,14 +14,18 @@ typedef enum		e_builtin_index
 	BLTIN_CD,
 	BLTIN_ECHO,
 	BLTIN_EXIT,
+	BLTIN_EXPORT,
 	BLTIN_HELP,
+	BLTIN_HISTORY,
 	BLTIN_FG,
 	BLTIN_JOBS,
 	BLTIN_ENV,
 	BLTIN_LANGUAGE,
 	BLTIN_SETENV,
+	BLTIN_SET_LOCAL,
 	BLTIN_TERMCAPS,
 	BLTIN_UNSETENV,
+	BLTIN_UNSET,
 	BLTIN_TOTAL
 }					t_builtin_index;
 
@@ -54,9 +58,13 @@ int					builtin_echo(t_builtin const *builtin,
 								int callback, t_sh *sh, t_proc *p);
 int					builtin_exit(t_builtin const *builtin,
 								int callback, t_sh *sh, t_proc *p);
+int					builtin_export(t_builtin const *builtin,
+								int callback, t_sh *sh, t_proc *p);
 int					builtin_fg(t_builtin const *builtin,
 								int callback, t_sh *sh, t_proc *p);
 int					builtin_help(t_builtin const *builtin,
+								int callback, t_sh *sh, t_proc *p);
+int					builtin_history(t_builtin const *builtin,
 								int callback, t_sh *sh, t_proc *p);
 int					builtin_jobs(t_builtin const *builtin,
 								int callback, t_sh *sh, t_proc *p);
@@ -66,9 +74,12 @@ int					builtin_language(t_builtin const *builtin,
 								int callback, t_sh *sh, t_proc *p);
 int					builtin_setenv(t_builtin const *builtin,
 								int callback, t_sh *sh, t_proc *p);
+int					builtin_set_local(t_builtin const *builtin,
+								int callback, t_sh *sh, t_proc *p);
 int					builtin_termcaps(t_builtin const *builtin,
 								int callback, t_sh *sh, t_proc *p);
 int					builtin_unsetenv(t_builtin const *builtin,
 								int callback, t_sh *sh, t_proc *p);
-
+int					builtin_unset(t_builtin const *builtin,
+								int callback, t_sh *sh, t_proc *p);
 #endif

@@ -2,17 +2,17 @@
 
 static int				s_get_next_command(t_termcaps_context *context)
 {
-	t_list				*history_entry;
-	t_list_node_history	*history_node;
+	t_list			*history_entry;
+	t_node_history	*history_node;
 
 	history_entry = list_nth(&context->history.list,
 			context->history.offset + 1);
 	history_node = CONTAINER_OF(history_entry,
-								t_list_node_history, list);
-	ASSERT(termcaps_string_to_command_line(history_node->command_line.size,
-											history_node->command_line.bytes,
-											&context->command_line));
-	context->command_line.offset = context->command_line.size;
+								t_node_history, list);
+	ASSERT(command_add_string(history_node->command.size,
+											history_node->command.bytes,
+											&context->command));
+	context->command.offset = context->command.size;
 	return (1);
 }
 
@@ -23,11 +23,11 @@ int						key__cursor_to_next_command(t_termcaps_context *context)
 	if (context->history.offset == context->history.size)
 		return (1);
 	context->history.offset += 1;
-	list_head__command_line_destroy(&context->command_line);
-	list_head__init(&context->command_line);
-	ASSERT(termcaps_string_to_command_line(context->prompt.size,
+	command_clear(&context->command);
+	list_head__init(&context->command);
+	ASSERT(command_add_string(context->prompt.size,
 											context->prompt.bytes,
-											&context->command_line));
+											&context->command));
 	if (context->history.offset != context->history.size)
 	{
 		return (s_get_next_command(context));

@@ -10,25 +10,23 @@ static int		s_key_delete_selection(t_termcaps_context *context)
 	context->state = STATE_REGULAR;
 	key__share__selection_get(context, &selection_start, &selection_size);
 	list_head__init(&head);
-	list_head__slice(&head, &context->command_line,
+	list_head__slice(&head, &context->command,
 					selection_start, selection_size);
-	list_head__command_line_destroy(&head);
-	context->command_line.offset = selection_start;
+	command_clear(&head);
+	context->command.offset = selection_start;
 	return (ST_OK);
 }
 
-int				key__delete_command_line(t_termcaps_context *context)
+int				key__delete_command(t_termcaps_context *context)
 {
 	if (context->state == STATE_REGULAR)
 	{
-		list_head__command_line_destroy(&context->command_line);
-		list_head__init(&context->command_line);
-		context->command_line.offset = 0;
-		if (!termcaps_string_to_command_line(context->prompt.size,
+		command_clear(&context->command);
+		if (!command_add_string(context->prompt.size,
 											context->prompt.bytes,
-											&context->command_line))
+											&context->command))
 		{
-			log_error("minishell__string_to_command_line() failed %.*s",
+			log_error("minishell__string_to_command() failed %.*s",
 				(int)context->prompt.size, context->prompt.bytes);
 			return (0);
 		}

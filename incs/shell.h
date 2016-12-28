@@ -12,6 +12,7 @@
 */
 
 # ifdef __linux__
+
 #  define SELECTBLANC "\e]12;white\a"
 #  define SELECTBLEU "\e]12;blue\a"
 #  define LSOPTCOLOR "--color=auto"
@@ -21,10 +22,19 @@
 #  define LSOPTCOLOR "-G"
 # endif
 
-# define ANSI_COLOR_RESET_SIZE (sizeof("\033[0m") - 1)
-# define ANSI_COLOR_RESET "\033[0m"
-# define ANSI_COLOR_LIGHT_BLUE_SIZE (sizeof("\033[94m") - 1)
-# define ANSI_COLOR_LIGHT_BLUE "\033[94m"
+# define PROMPT_COLOR
+
+# ifdef PROMPT_COLOR
+#  define ANSI_COLOR_RESET_SIZE (sizeof("\033[0m") - 1)
+#  define ANSI_COLOR_RESET "\033[0m"
+#  define ANSI_COLOR_LIGHT_BLUE_SIZE (sizeof("\033[94m") - 1)
+#  define ANSI_COLOR_LIGHT_BLUE "\033[94m"
+# else
+#  define ANSI_COLOR_RESET_SIZE (0)
+#  define ANSI_COLOR_RESET ""
+#  define ANSI_COLOR_LIGHT_BLUE_SIZE (0)
+#  define ANSI_COLOR_LIGHT_BLUE ""
+# endif
 
 # define MIN(x, y) (x < y ? x : y)
 # define MAX(x, y) (x > y ? x : y)
@@ -53,6 +63,7 @@
 # include "list.h"
 # include "htabl.h"
 # include "termcaps.h"
+# include "events.h"
 # include "redirection.h"
 # include "libft.h"
 # include "libftprintf.h"
@@ -66,6 +77,7 @@
 # include "parser.h"
 # include "builtin.h"
 # include "globbing.h"
+# include "parser_struct.h"
 
 /*
 ** List of current jobs
@@ -96,7 +108,8 @@ char			*env_get_term(char **envp);
 int				env_set(char ***envp, char *key, char *value);
 int				env_unset(char ***envp, char *argv);
 int				env_index_value(char **envp, char *variable);
-int				env_update_from_cmd_line(char ***argv, int *argc, char ***envp);
+int				env_or_var_update_from_cmd_line(t_proc **p, t_sh **sh);
+char			*env_get_value_and_remove_equal_sign(char *arg);
 
 /*
 ** log_status /
@@ -139,6 +152,7 @@ t_proc			*proc_alloc(t_job *j);
 int				job_wait(t_job *j);
 int				job_kill(t_sh *sh, t_job *j, int status);
 void			job_list_clean(int notified);
+void			job_list_clean_except_job(t_job *j);
 void			job_free(t_job **j);
 void			proc_free(t_proc **p);
 t_job			*job_by_name(char const *name, int const foreground);
@@ -150,12 +164,14 @@ void			job_set_stopped(t_job *j, int const stopped);
 t_redir			*redir_alloc(int fd);
 void			redir_free(t_redir **redir);
 void			redir_list_free(t_list *redir_head);
+void			proc_subshell(t_sh *sh, t_job *j, t_proc *p);
 
 /*
 ** loop/
 */
 
 int				loop_main(t_sh *sh);
+int				loop_job_launcher(t_sh *sh, char *input);
 
 /*
 ** options/
@@ -163,10 +179,11 @@ int				loop_main(t_sh *sh);
 
 int				option_is_set(t_list *list_option_head, int option_index);
 char			*option_get_value(t_list *list_option_head, int option_index);
+char			**option_get_values(t_list *list_option_head, int option_index);
 int				option_parse(t_list *list_head,
 					t_option const **available_options,
 					char ***argv, size_t start);
-t_list			*list_node__option_alloc(t_option const *option_ref,
+int				option_push(t_list *list_head, t_option const *option_ref,
 											char **argv, size_t i);
 void			option_free(t_option **opt);
 
@@ -205,20 +222,18 @@ int				signal_to_pgid(int pgid);
 int				termcaps_initialize(t_sh *sh, const char *prompt,
 									t_termcaps_context *context);
 int				termcaps_finalize(t_termcaps_context *context);
-int				termcaps_character_to_command_line(const size_t char_bytes_cnt,
+int				command_add(const size_t char_bytes_cnt,
 											const char *character_bytes,
-											t_list_head *command_line);
-int				termcaps_display_command_line(const t_termcaps_context *cont);
+											t_list_head *command);
+int				termcaps_display_command(const t_termcaps_context *cont);
 size_t			termcaps_get_character_bytes_count(const size_t input_bytes_cnt,
 								const char *input_bytes,
 								size_t *out_missing_bytes_count);
 int				termcaps_isunicode(const char c, size_t *out_char_bytes_cnt);
 char			*termcaps_read_input(t_termcaps_context *context);
-int				termcaps_string_to_command_line(const size_t input_buffer_size,
+int				command_add_string(const size_t input_buffer_size,
 										const char *input_buffer,
-										t_list_head *command_line);
-int				termcaps_history_search(t_termcaps_context *context,
-										t_buffer *out_match);
+										t_list_head *command);
 int				termcaps_write(int fd, char *buffer, size_t buffer_size);
 int				termcaps_line_print(t_termcaps_context *context,
 									t_buffer *history_search);
@@ -231,8 +246,18 @@ int				termcaps_read_loop(t_termcaps_context *context,
 									size_t input_buffer_size,
 									size_t input_size_missing);
 
-t_node_dir		*node_dir__create(const char *filename);
+t_node_dir		*node_dir__create(const struct dirent *ep);
 void			list_dir__destroy(t_list *head);
+int				get_matchs(char *path, char *lookfor,
+							t_list *matchs, size_t *ref_size);
+int				match_binaries(char **envp, char *lookfor,
+							t_list *matchs, size_t *ref_size);
+int				int_key_completion(char **envp, char *buf,
+								t_list *matchs, char **lookfor);
+int				display_completion(const size_t command_size,
+									const int fd,
+									t_list *matchs,
+									const int ref_size);
 
 /*
 ** conf
@@ -241,4 +266,9 @@ void			list_dir__destroy(t_list *head);
 int				conf_file_init(char **env);
 int				conf_check_color_mode(char **env);
 
+/*
+** local_var
+*/
+int				local_var_replace(t_sh *sh, char *input, char **output);
+int				local_var_concat(char **output, char *input, int len);
 #endif
