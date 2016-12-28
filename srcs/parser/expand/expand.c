@@ -84,6 +84,8 @@ int			expand(t_lexer *lexer, t_proc *p, int *i)
 	{
 		// NOTE:
 		// F_PARSING_GLOBING probably should work with the same behavior
+		if ((ret = expand_tilde(lexer->sh, &argv_list)) != ST_OK)
+			return (ret);
 		if ((ret = expand_glob_brace(lexer->sh, &argv_list)) != ST_OK)
 			return (ret);
 	}

@@ -1,28 +1,5 @@
 #include "shell.h"
 
-static int	s_replace_tilde(t_parser *parser, void *target, char *output)
-{
-	t_argv	*argument;
-	char	*tmp;
-	char	*tmp2;
-	int		ret;
-
-	ret = ST_OK;
-	argument = (t_argv *)target;
-	tmp = env_get_home(parser->sh->envp);
-	if (tmp)
-	{
-		tmp2 = argument->buffer;
-		if ((argument->buffer = ft_strjoin(tmp, output + 1)) == NULL)
-			return (ST_MALLOC);
-		free(tmp2);
-	}
-	else
-		ret = token_globing_parse_utils_push_str(parser->target_list_head,
-					output);
-	return (ret);
-}
-
 int			token_globing_parse_none(void *target, t_parser *parser,
 				t_lexer *lexer, int *i)
 {
@@ -37,14 +14,7 @@ int			token_globing_parse_none(void *target, t_parser *parser,
 	if (output[0] != '\0')
 	{
 		((t_argv *)target)->is_null = 0;
-		if (*i == 0 &&
-			(output[0] == '~' && (output[1] == '\0' || output[1] == '/')))
-		{
-			if ((s_replace_tilde(parser, target, output)) == ST_MALLOC)
-				return (ST_MALLOC);
-		}
-		else
-			ret = token_globing_parse_utils_push_str(parser->target_list_head,
+		ret = token_globing_parse_utils_push_str(parser->target_list_head,
 						output);
 	}
 	(*i)++;

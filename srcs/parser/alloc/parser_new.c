@@ -25,7 +25,6 @@ static int	s_build_token_globing(t_parser *parser)
 	i = 0;
 	parser->token_list[i++] = &g_token_globing_inhibitor_dquote;
 	parser->token_list[i++] = &g_token_globing_inhibitor_quote;
-	parser->token_list[i++] = &g_token_globing_name_tilde;
 	parser->token_list[i++] = NULL;
 	return (ST_OK);
 }

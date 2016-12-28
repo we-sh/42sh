@@ -64,7 +64,6 @@ typedef enum			e_token_code
 	TC_SPACE,
 	TC_TAB,
 	TC_NEWLINE,
-	TC_TILDE,
 	TC_LPAREN,
 	TC_RPAREN,
 	TC_RANGE,
