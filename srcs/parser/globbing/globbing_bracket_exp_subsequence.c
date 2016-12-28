@@ -92,39 +92,29 @@ static void s_remove_double(t_tmp **concat)
 	log_warn("putin de lenchar_tab[(int)(*concat)->value[%d]]: %d", i, char_tab[(int)(*concat)->value[i]]);
 		i++;
 	}
-
-
 	i = 0;
-
 	while (i < 127)
 	{
 		if (char_tab[i] == 1)
 			len++;
 		i++;
 	}
-
 	ft_bzero(char_tab, 127);
 	log_warn("putin de len: %d", len);
 	if ((new_value = (char *)malloc(sizeof(char) * len + 1)) == NULL)
 		return ;
-
 	i = 0;
-
 	while((*concat)->value[i])
 	{
 		if (char_tab[(int)(*concat)->value[i]] == 0)
 		{
-
 			new_value[j] = (*concat)->value[i];
-
 			char_tab[(int)(*concat)->value[i]] = 1;
-			
 			j++;
 		}
-
 		i++;
 	}
-
+  new_value[j] = '\0';
 	free((*concat)->value);
 	(*concat)->value = ft_strdup(new_value);
 }

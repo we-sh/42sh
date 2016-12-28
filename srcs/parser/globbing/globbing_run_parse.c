@@ -140,5 +140,7 @@ void				globbing_run_parse(char *arg, t_list *list_glob)
 	//if (list_is_empty(list_glob) && dp != NULL && (ft_strchr(arg, '?') || ft_strchr(arg, '*')))
 	// if (list_is_empty(list_glob) && (ft_strchr(arg, '?') || ft_strchr(arg, '*')))
 	//  	globbing_add_node_to_list(list_glob, arg);
-	globbing_context_delete(c);
+	
+
+  globbing_context_delete(c);
 }

@@ -39,12 +39,12 @@ static int	s_list_argv_to_char_argv(t_proc *p, t_list *argv_list, int entry_toke
 	t_argv	*argument;
 	t_list	*pos;
 	t_list	*safe;
-	//int		st;
+	// int		st;
 
 	log_info("IN");
 	// IT SHOULD NOT BE PLACED HERE
-	//if ((st = globbing(&argv_list)) != ST_OK)
-	//	return (st);
+	// if ((st = globbing(&argv_list)) != ST_OK)
+	// 	return (st);
 	safe = argv_list->next;
 	while ((pos = safe) && safe != argv_list)
 	{
@@ -61,6 +61,7 @@ static int	s_list_argv_to_char_argv(t_proc *p, t_list *argv_list, int entry_toke
 		free(argument->buffer);
 		free(argument);
 	}
+  log_info("OUT");
 	return (ST_OK);
 }
 
@@ -89,14 +90,16 @@ int			expand(t_lexer *lexer, t_proc *p, int *i)
 	{
 		// NOTE:
 		// F_PARSING_GLOBING probably should work with the same behavior
-		if ((ret = expand_tilde(lexer->sh, &argv_list)) != ST_OK)
-			return (ret);
+
+    if ((ret = globbing(&argv_list)) != ST_OK)
+      return (ret);
+    if ((ret = expand_tilde(lexer->sh, &argv_list)) != ST_OK)
+      return (ret);
 		if ((ret = expand_glob_brace(lexer->sh, &argv_list)) != ST_OK)
 			return (ret);
 
 		// BUT IT SHOULD BE PLACED HERE :-)
-		if ((ret = globbing(&argv_list)) != ST_OK)
-			return (ret);
+
 	}
 
 	if ((ret = s_list_argv_to_char_argv(p, argv_list, entry_token_type)) != ST_OK)
