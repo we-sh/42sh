@@ -59,7 +59,7 @@ SRCS	=	\
 			parser/build/parser_build_list_unstack_lexer_none.c			\
 			parser/build/parser_build_list_unstack_lexer_job.c			\
 			parser/build/parser_build_list_unstack_lexer_proc.c			\
-			parser/build/parser_build_list_unstack_lexer_globing.c		\
+			parser/build/parser_build_list_unstack_lexer_var.c			\
 			parser/build/parser_build_list_unstack_lexer_glob_brace.c	\
 			parser/expand/expand.c										\
 			parser/expand/expand_glob_brace.c							\
@@ -82,8 +82,8 @@ SRCS	=	\
 			parser/lexer/lexer_token_recognizer.c						\
 			parser/token/token_glob_brace_parse_none.c					\
 			parser/token/token_glob_brace_parse_pattern.c				\
-			parser/token/token_globing_parse_none.c						\
-			parser/token/token_globing_parse_inhib.c					\
+			parser/token/token_var_parse_none.c							\
+			parser/token/token_var_parse_inhib.c						\
 			parser/token/token_parse_none.c								\
 			parser/token/token_parse_and.c								\
 			parser/token/token_parse_andgreat.c							\

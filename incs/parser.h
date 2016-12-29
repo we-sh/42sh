@@ -44,7 +44,7 @@ int		parser_build_list_unstack_lexer_job(t_parser *parser,
 										t_lexer *lexer, int *i);
 int		parser_build_list_unstack_lexer_proc(t_parser *parser,
 										t_lexer *lexer, int *i);
-int		parser_build_list_unstack_lexer_globing(t_parser *parser,
+int		parser_build_list_unstack_lexer_var(t_parser *parser,
 										t_lexer *lexer, int *i);
 int		parser_build_list_unstack_lexer_glob_brace(t_parser *parser,
 										t_lexer *lexer, int *i);
@@ -127,9 +127,9 @@ int		token_parse_lbrace(void *target, t_parser *parser, t_lexer *lexer,
 int		token_parse_rbrace(void *target, t_parser *parser, t_lexer *lexer,
 			int *i);
 
-int		token_globing_parse_none(void *target, t_parser *parser,
+int		token_var_parse_none(void *target, t_parser *parser,
 			t_lexer *lexer, int *i);
-int		token_globing_parse_inhib(void *target, t_parser *parser,
+int		token_var_parse_inhib(void *target, t_parser *parser,
 			t_lexer *lexer, int *i);
 
 int		token_glob_brace_parse_none(void *target, t_parser *parser,

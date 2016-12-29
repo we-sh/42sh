@@ -123,7 +123,7 @@ typedef enum			e_parsing_mode
 	F_PARSING_TERMCAPS,
 	F_PARSING_JOBS,
 	F_PARSING_PROCS,
-	F_PARSING_GLOBING,
+	F_PARSING_VAR,
 	F_PARSING_GLOB_BRACE
 }						t_parsing_mode;
 

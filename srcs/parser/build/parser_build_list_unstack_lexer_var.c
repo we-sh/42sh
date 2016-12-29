@@ -11,7 +11,7 @@ static t_argv	*s_argv_alloc(void)
 	return (argument);
 }
 
-int				parser_build_list_unstack_lexer_globing(t_parser *parser,
+int				parser_build_list_unstack_lexer_var(t_parser *parser,
 					t_lexer *lexer, int *i)
 {
 	int			ret;

@@ -255,23 +255,23 @@ static t_token g_token_name_rbrace = {
 ** Tokens for parameters expansion (globing)
 */
 
-static t_token g_token_globing_inhibitor_dquote = {
+static t_token g_token_var_inhibitor_dquote = {
 	"\"",
 	NULL,
 	1,
 	TT_INHIBITOR,
 	TC_DQUOTE,
-	token_globing_parse_inhib,
+	token_var_parse_inhib,
 	0
 };
 
-static t_token g_token_globing_inhibitor_quote = {
+static t_token g_token_var_inhibitor_quote = {
 	"'",
 	NULL,
 	1,
 	TT_INHIBITOR,
 	TC_QUOTE,
-	token_globing_parse_inhib,
+	token_var_parse_inhib,
 	0
 };
 

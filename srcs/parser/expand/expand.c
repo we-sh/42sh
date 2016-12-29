@@ -42,9 +42,6 @@ static int	s_list_argv_to_char_argv(t_proc *p, t_list *argv_list, int entry_toke
 	// int		st;
 
 	log_info("IN");
-	// IT SHOULD NOT BE PLACED HERE
-	// if ((st = globbing(&argv_list)) != ST_OK)
-	// 	return (st);
 	safe = argv_list->next;
 	while ((pos = safe) && safe != argv_list)
 	{
@@ -81,24 +78,53 @@ int			expand(t_lexer *lexer, t_proc *p, int *i)
 												lexer, i)) != ST_OK)
 		return (ret);
 	INIT_LIST_HEAD(argv_list);
-	ret = parser(lexer->sh, words, F_PARSING_GLOBING, argv_list);
+	ret = parser(lexer->sh, words, F_PARSING_VAR, argv_list);
 	if (ret != ST_OK)
 		return (ret);
+
 	free(words);
 
 	if (entry_token_type == TT_NAME)
 	{
-		// NOTE:
-		// F_PARSING_GLOBING probably should work with the same behavior
 
-    if ((ret = globbing(&argv_list)) != ST_OK)
-      return (ret);
-    if ((ret = expand_tilde(lexer->sh, &argv_list)) != ST_OK)
-      return (ret);
+		if ((ret = expand_tilde(lexer->sh, &argv_list)) != ST_OK)
+			return (ret);
+
+
+
+
 		if ((ret = expand_glob_brace(lexer->sh, &argv_list)) != ST_OK)
 			return (ret);
 
-		// BUT IT SHOULD BE PLACED HERE :-)
+		t_list *el;
+		t_argv *ar;
+		el = argv_list;
+		log_info("EXPAND_GLOB_BRACE OUTPUT-------------------------------------");
+		while (el->next != argv_list)
+		{
+			el = el->next;
+			ar = CONTAINER_OF(el, t_argv, argv_list);
+			log_info("ar->buffer: `%s`", ar->buffer);
+		}
+
+
+
+
+		if ((ret = globbing(&argv_list)) != ST_OK)
+			return (ret);
+
+		t_list *el;
+		t_argv *ar;
+		el = argv_list;
+		log_info("GLOBBING OUTPUT-------------------------------------");
+		while (el->next != argv_list)
+		{
+			el = el->next;
+			ar = CONTAINER_OF(el, t_argv, argv_list);
+			log_info("ar->buffer: `%s`", ar->buffer);
+		}
+
+
 
 	}
 
