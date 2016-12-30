@@ -16,6 +16,7 @@ int globbing_add_node_to_list(t_list *argv_list, char *content)
     return (ST_MALLOC);
   if ((argument->buffer = ft_strdup(content)) == NULL)
     return (ST_MALLOC);
+	argument->is_null = 0;
  // ptrlist = argv_list;
   // NEED TO CHECK IF IT ALREADYON THE STRING BEFORE ADDING IT
   safe = argv_list->next;

@@ -90,41 +90,11 @@ int			expand(t_lexer *lexer, t_proc *p, int *i)
 		if ((ret = expand_tilde(lexer->sh, &argv_list)) != ST_OK)
 			return (ret);
 
-
-
-
 		if ((ret = expand_glob_brace(lexer->sh, &argv_list)) != ST_OK)
 			return (ret);
 
-		t_list *el;
-		t_argv *ar;
-		el = argv_list;
-		log_info("EXPAND_GLOB_BRACE OUTPUT-------------------------------------");
-		while (el->next != argv_list)
-		{
-			el = el->next;
-			ar = CONTAINER_OF(el, t_argv, argv_list);
-			log_info("ar->buffer: `%s`", ar->buffer);
-		}
-
-
-
-
 		if ((ret = globbing(&argv_list)) != ST_OK)
 			return (ret);
-
-		t_list *el;
-		t_argv *ar;
-		el = argv_list;
-		log_info("GLOBBING OUTPUT-------------------------------------");
-		while (el->next != argv_list)
-		{
-			el = el->next;
-			ar = CONTAINER_OF(el, t_argv, argv_list);
-			log_info("ar->buffer: `%s`", ar->buffer);
-		}
-
-
 
 	}
 
