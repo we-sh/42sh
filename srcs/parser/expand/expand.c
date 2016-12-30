@@ -74,8 +74,7 @@ int			expand(t_lexer *lexer, t_proc *p, int *i)
 	if ((argv_list = (t_list *)malloc(sizeof(t_list))) == NULL)
 		return (ST_MALLOC);
 
-	if ((ret = token_parse_utils_get_word_and_inhib(&words,
-												lexer, i)) != ST_OK)
+	if ((ret = expand_get_words(&words, lexer, i)) != ST_OK)
 		return (ret);
 	INIT_LIST_HEAD(argv_list);
 	ret = parser(lexer->sh, words, F_PARSING_VAR, argv_list);
@@ -90,13 +89,13 @@ int			expand(t_lexer *lexer, t_proc *p, int *i)
 		if ((ret = expand_tilde(lexer->sh, &argv_list)) != ST_OK)
 			return (ret);
 
-		if ((ret = expand_glob_brace(lexer->sh, &argv_list)) != ST_OK)
-			return (ret);
-
-		if ((ret = globbing(&argv_list)) != ST_OK)
-			return (ret);
-
 	}
+
+	if ((ret = expand_glob_brace(lexer->sh, &argv_list)) != ST_OK)
+		return (ret);
+
+	if ((ret = globbing(&argv_list)) != ST_OK)
+		return (ret);
 
 	if ((ret = s_list_argv_to_char_argv(p, argv_list, entry_token_type)) != ST_OK)
 		return (ret);

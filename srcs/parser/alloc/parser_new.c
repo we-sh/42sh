@@ -34,8 +34,6 @@ static int	s_build_token_command_part2(t_parser *parser, int i)
 	parser->token_list[i++] = &g_token_separator_space;
 	parser->token_list[i++] = &g_token_separator_tab;
 	parser->token_list[i++] = &g_token_separator_newline;
-	parser->token_list[i++] = &g_token_name_rbrace;
-	parser->token_list[i++] = &g_token_name_lbrace;
 	parser->token_list[i++] = &g_token_name_bquote;
 	parser->token_list[i++] = NULL;
 	return (ST_OK);
