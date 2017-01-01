@@ -6,9 +6,6 @@ static void s_add_new_arg(t_mylist **list, t_tmp *concat, char value_i)
 	char *full;
 	char c[2];
 
-	// log_success("before :%s", before);
-	// log_success("Value[%d] :%c",i, value[i]);
-	// log_success("after :%s", after);
 	ptr = *list;
 	if (value_i)
 	{
@@ -68,18 +65,8 @@ int	s_check_globbing_brack(char *pattern, char *input)
 			log_success("2 Is_valid:%s, input:%s ?",is_valid, input);
   			return (-1);
   		}
-		// if (s_is_total_make_sense(pattern))
-		// {
-		// 	log_error("3 Is_valid:%s, input:%s ?",is_valid, input);
-  // 			return (*input && s_check_globbing_brack(pattern + 1, input));
-		// }
-		// else
 		if (s_is_total_make_sense(pattern))
-		{
-			log_success("Make sense 1");
-//  			return (*input && s_check_globbing_brack(pattern + 1, input));
 			return -1;
-		}
 	}
 	if (*pattern == '?')
 	{
@@ -109,8 +96,6 @@ static int  globbing_bracket_recurse(t_mylist **list, t_tmp *concat, char *match
 	c[1] = '\0';
 	sub_list = ft_strjoin3_safe(concat->before, c, concat->after);
 	log_success("Sub_list: %s", sub_list);
-//	log_success("Compare if Char match:%c, string:%s, char:%c", sub_list[i], match, match[i]);
-
 	log_success("Compare int cmp:%d, Char match:%c, char:%c", i, c[0], match[j]);
 	log_success("Compare concat->value[%d]:%s,", i, c);
 
@@ -127,9 +112,6 @@ static int  globbing_bracket_recurse(t_mylist **list, t_tmp *concat, char *match
 		** sauf si le char est une * ou un ?
 		*/
 		log_info("Match And Recurs -1 ret:%d, value: %s",ret,concat->value);
-		// if (concat->value[i] == ']')
-		// 	match++;
-		// else 
 		if (concat->value[i] != '*' &&
 			concat->value[i] != '?' &&
 			!(ft_strchr(match, concat->value[i])))

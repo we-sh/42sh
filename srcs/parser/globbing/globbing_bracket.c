@@ -2,15 +2,12 @@
 
 char		*globbing_check_last_bracket(char *input)
 {
+  int   last_bracket;
 	char	*endofbracket;
 	int		i;
-	int		last_bracket;
 
-	// if ((endofbracket = ft_strchr(input, ']')) == NULL)
-	// 	return (NULL);
 	i = 0;
 	last_bracket = 0;
-
 	while (input[i])
 	{
 		if (input[i-1] != '!' && input[i] == ']' && i > 1)

@@ -1,13 +1,11 @@
 #include <shell.h>
 
-static char *s_globbing_increment_range(char *concat_value, unsigned char range_start, unsigned char range_end, int len)
+static char			*s_globbing_increment_range(unsigned char range_start, unsigned char range_end, int len)
 {
-	char *new_value;
-	// char *tmp_value;
-	int						j;
-	char					tmp_start;
+	char			*new_value;
+	char			tmp_start;
+	int				j;
 
-	(void)concat_value;
 	j = 0;
 	tmp_start = range_start;
 	if ((new_value = (char*)malloc(sizeof(char) * len + 1)) == NULL)
@@ -32,31 +30,22 @@ static int			s_globbing_expand_range(t_tmp **concat, char *concat_before, int i)
 {
 	unsigned char	range_start;
 	unsigned char	range_end;
-	int						len;
-	char 					*new_value;
-	char 					*tmp_value;
-
-
-	//check tous les ranges a venir et les expandes
+	int				len;
+	char 			*new_value;
+	char 			*tmp_value;
 
 	log_info("concat_before:%s", concat_before);
 	log_info("Value de i:%d", i);
-	// log_info("concat_after:%s", concat_after);
 	range_start = (*concat)->value[i];
 	range_end = (*concat)->value[i + 2];
 	log_debug("Display range limit: value[%d]=%c value[%d]=%c",i,range_start,i+2,range_end);
-
 	len = range_end - range_start; // verife de l'ordre
 	if (len <= 0) // recherche [Z-A] pas prise en compte ?
 		return 0;
 	else
-		new_value = s_globbing_increment_range((*concat)->value, range_start, range_end, len);
-
-//  tmp_value = ft_strdup((*concat)->value+3);
+		new_value = s_globbing_increment_range(range_start, range_end, len);
 	log_info("concat_before=%s, value of new-value: %s",concat_before, new_value);
-
-
- 	if (i > 0) //chope le before
+	if (i > 0) //chope le before
 	{
 		tmp_value = ft_strnew(i);
 		tmp_value = ft_strncpy(tmp_value, (*concat)->value, i);
@@ -85,7 +74,6 @@ static void s_remove_double(t_tmp **concat)
 	j = 0;
 	len = 0;
 	ft_bzero(char_tab, 127);
-
 	while ((*concat)->value[i])
 	{
 		char_tab[(int)(*concat)->value[i]] = 1;
@@ -114,9 +102,9 @@ static void s_remove_double(t_tmp **concat)
 		}
 		i++;
 	}
-  new_value[j] = '\0';
+	new_value[j] = '\0';
 	free((*concat)->value);
-	(*concat)->value = ft_strdup(new_value);
+	(*concat)->value = new_value;
 }
 
 static void s_reverse_it(t_tmp **concat) // Mettre un return sur la fonction pour check memory alloc

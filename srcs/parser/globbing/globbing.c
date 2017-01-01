@@ -34,10 +34,9 @@ int			globbing(t_list **argv_list)
 
 	log_info("Value of arg->buffer", arg->buffer);
 
-		// if (arg->buffer)
-		// 	free(arg->buffer);
-		// if (arg)
-		// 	free(arg);
+		if (arg->buffer)
+			free(arg->buffer);
+
 	}
 	log_info("before list_del(argv_list)");
 	list_del(*argv_list);
