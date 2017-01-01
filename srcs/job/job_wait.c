@@ -24,12 +24,16 @@ static void	s_proc_status(t_job *j, t_proc *p)
 static void	s_notify(t_job *j)
 {
 	int		sig;
+	int		wait_i;
 
 	sig = job_is_signaled(j);
 	if (sig != 0 || (job_is_stopped(j) == 1 && job_is_completed(j) == 0))
 	{
 		if (sig != SIGINT && sig != SIGQUIT)
 		{
+			wait_i = 0;
+			while (wait_i < 1000000)
+				wait_i++;
 			ft_putchar('\n');
 			job_display_status(j, 1);
 		}
