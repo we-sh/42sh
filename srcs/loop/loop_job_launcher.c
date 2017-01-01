@@ -61,7 +61,8 @@ int				loop_job_launcher(t_sh *sh, char *input)
 	int			ret;
 
 	ret = parser(sh, input, F_PARSING_NONE, NULL);
-	if (ret != ST_OK && ret != ST_PARSER && ret != ST_LEXER)
+	if (ret != ST_OK && ((ret != ST_PARSER && ret != ST_LEXER)
+		|| sh->is_interactive == 0))
 		return (ret);
 	if (ret == ST_OK)
 		if ((ret = s_loop(sh, input)) != ST_OK)
