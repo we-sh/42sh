@@ -2,7 +2,7 @@
 
 static int	s_is_token(char c)
 {
-	if (c == '{' || c == '[' || c == '*' || c == '?')
+	if (c == '\\' || c == '{' || c == '[' || c == '*' || c == '?')
 		return (1);
 	return (0);
 }

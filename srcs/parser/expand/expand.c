@@ -34,7 +34,7 @@ static char	*s_expand_escape_char_not_inhibited(char *str)
 	return (str);
 }
 
-static int	s_list_argv_to_char_argv(t_proc *p, t_list *argv_list, int entry_token_type)
+static int	s_list_argv_to_char_argv(t_proc *p, t_list *argv_list)
 {
 	t_argv	*argument;
 	t_list	*pos;
@@ -49,8 +49,7 @@ static int	s_list_argv_to_char_argv(t_proc *p, t_list *argv_list, int entry_toke
 		argument = CONTAINER_OF(pos, t_argv, argv_list);
 		if (argument->is_null == 0)
 		{
-			if (entry_token_type == TT_NAME)
-				s_expand_escape_char_not_inhibited(argument->buffer);
+			s_expand_escape_char_not_inhibited(argument->buffer);
 			if ((ft_array_push_back(&p->argv, argument->buffer)) < 0)
 				return (ST_MALLOC);
 			p->argc++;
@@ -97,7 +96,7 @@ int			expand(t_lexer *lexer, t_proc *p, int *i)
 	if ((ret = globbing(&argv_list)) != ST_OK)
 		return (ret);
 
-	if ((ret = s_list_argv_to_char_argv(p, argv_list, entry_token_type)) != ST_OK)
+	if ((ret = s_list_argv_to_char_argv(p, argv_list)) != ST_OK)
 		return (ret);
 	free(argv_list);
 	return (ST_OK);
