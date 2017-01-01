@@ -23,16 +23,16 @@ void globbing_happend_to_list(t_mylist **list, char *input)
 // FIX LE HAPPEN
 
 
-    // while (ptr->next)
-    // {
-    //   log_info("Value of ptr->content `%s'", ptr->content);
-    //   if (ft_strcmp(ptr->content, input) == 0)
-    //   {
-    //     free(newm);
-    //     return ;
-    //   }
-    //   ptr = ptr->next;
-    // }
+    while (ptr->next)
+    {
+      log_info("Value of ptr->content `%s'", ptr->content);
+      if (ft_strcmp(ptr->content, input) == 0)
+      {
+        free(newm);
+        return ;
+      }
+      ptr = ptr->next;
+    }
     ptr->next = newm;
     newm->content = ft_strdup(input);
     newm->next = NULL;
