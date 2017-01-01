@@ -57,7 +57,7 @@ int			expand_tilde(t_sh *sh, t_list **argv_list)
 	argument = CONTAINER_OF(pos, t_argv, argv_list);
 	if (!(argument->buffer != NULL && argument->buffer[0] == '~'))
 		return (ST_OK);
-	if (argument->buffer[1] == '/')
+	if (argument->buffer[1] == '/' || argument->buffer[1] == '\0')
 		return (s_replace_tilde_with(argument, env_get_home(sh->envp), 1));
 	if (argument->buffer[1] == '+' || argument->buffer[1] == '-')
 		return (s_process_pwd(sh, argument));
