@@ -64,6 +64,7 @@ SRCS	=	\
 			parser/expand/expand.c										\
 			parser/expand/expand_glob_brace.c							\
 			parser/expand/expand_tilde.c								\
+			parser/expand/expand_get_words.c							\
 			parser/globbing/globbing.c									\
 			parser/globbing/globbing_bracket.c							\
 			parser/globbing/globbing_run_parse.c						\

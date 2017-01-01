@@ -231,26 +231,6 @@ static t_token g_token_name_bquote = {
 	0
 };
 
-static t_token g_token_name_lbrace = {
-	"{",
-	NULL,
-	1,
-	TT_NAME,
-	TC_LBRACE,
-	token_parse_none,
-	0
-};
-
-static t_token g_token_name_rbrace = {
-	"}",
-	NULL,
-	1,
-	TT_NAME,
-	TC_RBRACE,
-	token_parse_none,
-	0
-};
-
 /*
 ** Tokens for parameters expansion (globing)
 */
