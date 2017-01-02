@@ -76,15 +76,14 @@ static int	s_proc_launch_execve(t_proc *p)
 		lowerargv = ft_strtolower(match);
 	else
 		lowerargv = match;
-	if ((ret = path_hash_finder(p->envp, &lowerargv)) == ST_OK)
-	{
-		if ((conf_check_color_mode(p->envp) == ST_OK))
-			s_add_color_to_cmd(p);
-		if ((execve(lowerargv, p->argv, p->envp)) == -1)
-			return (ST_OK);
-	}
-	else
+	if ((ret = path_hash_finder(p->envp, &lowerargv)) != ST_OK)
 		return (ret);
+	if ((conf_check_color_mode(p->envp) == ST_OK))
+		s_add_color_to_cmd(p);
+	if (p != CONTAINER_OF(p->j->proc_head.prev, t_proc, list_proc))
+		signal(SIGUSR1, signal_sigusr1);
+	if ((execve(lowerargv, p->argv, p->envp)) == -1)
+		return (ST_OK);
 	free(lowerargv);
 	return (ST_OK);
 }

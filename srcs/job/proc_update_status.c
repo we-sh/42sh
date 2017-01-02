@@ -3,6 +3,11 @@
 /*
 ** This function saves the status of a process retrieved through
 ** the function `waitpid`.
+**
+** If the process has terminated and its standard input is piped
+** with a standard output, a signal SIGUSR1 is sent to the previous
+** process to tell him to close its standard output.
+** Please refer to the file `signal_sigusr1.c`
 */
 
 static void	s_set_flags(t_job *j, t_proc *p, int const status)
@@ -22,6 +27,9 @@ static void	s_set_flags(t_job *j, t_proc *p, int const status)
 				p->signaled = WTERMSIG(status);
 			if (p->signaled == SIGINT)
 				j->is_interrupted = p->signaled;
+			if (p != CONTAINER_OF(j->proc_head.next, t_proc, list_proc))
+				kill(CONTAINER_OF(p->list_proc.prev, t_proc, list_proc)->pid,
+																	SIGUSR1);
 		}
 	}
 	if (job_is_stopped(j) == 1 && job_is_completed(j) == 0)
