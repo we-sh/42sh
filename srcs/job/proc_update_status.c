@@ -10,13 +10,21 @@
 ** Please refer to the file `signal_sigusr1.c`
 */
 
+static void	s_send_sigusr1(t_proc *p)
+{
+	int		wait_i;
+
+	wait_i = 0;
+	while (wait_i < 10000000)
+		wait_i++;
+	kill(CONTAINER_OF(p->list_proc.prev, t_proc, list_proc)->pid, SIGUSR1);
+}
+
 static void	s_set_flags(t_job *j, t_proc *p, int const status)
 {
 	p->exit_status = WEXITSTATUS(status);
 	if (WIFSTOPPED(status))
-	{
 		p->stopped = WSTOPSIG(status);
-	}
 	else
 	{
 		p->stopped = 0;
@@ -28,8 +36,7 @@ static void	s_set_flags(t_job *j, t_proc *p, int const status)
 			if (p->signaled == SIGINT)
 				j->is_interrupted = p->signaled;
 			if (p != CONTAINER_OF(j->proc_head.next, t_proc, list_proc))
-				kill(CONTAINER_OF(p->list_proc.prev, t_proc, list_proc)->pid,
-																	SIGUSR1);
+				s_send_sigusr1(p);
 		}
 	}
 	if (job_is_stopped(j) == 1 && job_is_completed(j) == 0)
