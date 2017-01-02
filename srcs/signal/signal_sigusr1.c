@@ -6,7 +6,7 @@
 **
 ** For example: `base64 /dev/urandom | head -c 100`
 ** When the process `head` get terminated, a signal SIGUSR1
-** is sent to the process `base64` to tell him it is no long
+** is sent to the process `base64` to tell him it is no longer
 ** necessary to write into the pipe.
 */
 
