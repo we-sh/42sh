@@ -10,7 +10,7 @@ static void	s_set_flags(t_job *j, t_proc *p, int const status)
 	p->exit_status = WEXITSTATUS(status);
 	if (WIFSTOPPED(status))
 	{
-		p->stopped = 1;
+		p->stopped = WSTOPSIG(status);
 	}
 	else
 	{
