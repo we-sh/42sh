@@ -10,14 +10,19 @@
 ** Please refer to the file `signal_sigusr1.c`
 */
 
-static void	s_send_sigusr1(t_proc *p)
+static void	s_send_sigusr1(t_job *j, t_proc *p)
 {
 	int		wait_i;
+	t_proc	*prev;
 
 	wait_i = 0;
 	while (wait_i < 10000000)
 		wait_i++;
-	kill(CONTAINER_OF(p->list_proc.prev, t_proc, list_proc)->pid, SIGUSR1);
+	prev = CONTAINER_OF(p->list_proc.prev, t_proc, list_proc);
+	if (prev->pid == 0
+		|| p->pid == CONTAINER_OF(j->proc_head.next, t_proc, list_proc)->pid)
+		return ;
+	kill(prev->pid, SIGUSR1);
 }
 
 static void	s_set_flags(t_job *j, t_proc *p, int const status)
@@ -35,8 +40,7 @@ static void	s_set_flags(t_job *j, t_proc *p, int const status)
 				p->signaled = WTERMSIG(status);
 			if (p->signaled == SIGINT)
 				j->is_interrupted = p->signaled;
-			if (p != CONTAINER_OF(j->proc_head.next, t_proc, list_proc))
-				s_send_sigusr1(p);
+			s_send_sigusr1(j, p);
 		}
 	}
 	if (job_is_stopped(j) == 1 && job_is_completed(j) == 0)
