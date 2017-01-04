@@ -45,25 +45,62 @@ static int	s_replace_command(t_termcaps_context *context,
 	return (1);
 }
 
+static void	s_inib_teardown(t_inib *inib)
+{
+	inib[0].open = '\'';
+	inib[0].close = '\'';
+	inib[0].state = 0;
+	inib[1].open = '[';
+	inib[1].close = ']';
+	inib[1].state = 0;
+}
+
+static int	s_inib(char c, t_inib *inib)
+{
+	size_t	i;
+
+	if (c == '\\')
+		return (1);
+	i = 0;
+	while (i < TERMCAPS_INIB_COUNT)
+	{
+		if (inib[i].state == 1)
+		{
+			if (c == inib[i].close)
+				inib[i].state = 0;
+			return (1);
+		}
+		i++;
+	}
+	i = 0;
+	while (i < TERMCAPS_INIB_COUNT)
+	{
+		if (c == inib[i].open)
+		{
+			inib[i].state = 1;
+			return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
 int			replace_events(t_termcaps_context *context,
 							const size_t buf_size_max,
 							t_buffer *buf)
 {
-	size_t	buf_offset;
-	int		inib;
-	size_t	event_size;
+	size_t			buf_offset;
+	size_t			event_size;
+	static t_inib	inib[TERMCAPS_INIB_COUNT];
 
+	s_inib_teardown(inib);
 	event_size = 0;
-	inib = 0;
 	buf_offset = 0;
 	while (buf_offset < buf->size)
 	{
-		if (buf->bytes[buf_offset] == '\\')
-			buf_offset++;
-		else if (buf->bytes[buf_offset] == '\'')
-			inib = inib == 0 ? 1 : 0;
-		else if (inib == 0 && buf->bytes[buf_offset] == '!' &&
-		buf_offset + 1 < buf->size && !ft_isspace(buf->bytes[buf_offset + 1]))
+		if (!s_inib(buf->bytes[buf_offset], inib) &&
+			buf->bytes[buf_offset] == '!' && buf_offset + 1 < buf->size &&
+			!ft_isspace(buf->bytes[buf_offset + 1]))
 		{
 			if ((event_size =
 				s_replace_event(context, buf_size_max, buf, buf_offset)) == 0)
