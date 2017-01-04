@@ -41,6 +41,21 @@ typedef struct	s_node_dir
 	t_list			list;
 }				t_node_dir;
 
+/*
+** inhibitors
+** ' '
+** [ ]
+*/
+
+# define TERMCAPS_INIB_COUNT	2
+
+typedef struct	s_inib
+{
+	char	open;
+	char	close;
+	int		state;
+} 				t_inib;
+
 void			termcaps_error(t_termcaps_context *context,
 							char *cmd, size_t cmd_size, char *msg);
 
