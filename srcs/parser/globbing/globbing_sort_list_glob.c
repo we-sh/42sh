@@ -44,7 +44,10 @@ void		globbing_sort_list_glob(t_list **argv_list)
 		pos = list_nth(*argv_list, i + 1);
 		argv_next = CONTAINER_OF(pos, t_argv, argv_list);
 		if (ft_strcmp(argv_cur->buffer, argv_next->buffer) > 0)
+		{
 			list_move_tail(&argv_next->argv_list, &argv_cur->argv_list);
+			i = 0;
+		}
 		i++;
 	}
 }
