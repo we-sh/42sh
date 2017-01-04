@@ -77,7 +77,6 @@ static void s_remove_double(t_tmp **concat)
 	while ((*concat)->value[i])
 	{
 		char_tab[(int)(*concat)->value[i]] = 1;
-	log_warn("putin de lenchar_tab[(int)(*concat)->value[%d]]: %d", i, char_tab[(int)(*concat)->value[i]]);
 		i++;
 	}
 	i = 0;
@@ -88,7 +87,6 @@ static void s_remove_double(t_tmp **concat)
 		i++;
 	}
 	ft_bzero(char_tab, 127);
-	log_warn("putin de len: %d", len);
 	if ((new_value = (char *)malloc(sizeof(char) * len + 1)) == NULL)
 		return ;
 	i = 0;
@@ -119,12 +117,17 @@ static void s_reverse_it(t_tmp **concat) // Mettre un return sur la fonction pou
 	len = ft_strlen((*concat)->value);
 	len = 127 - 32 - len;
 
-	if ((tmp_value = (char *)malloc(sizeof(char) * len) + 1) == NULL)
+  log_warn("Reverse it Len:%d", len);
+  log_warn("Concat Len:%d", ft_strlen((*concat)->value));
+  log_success("Start concat :%s", (*concat)->value);
+
+	if ((tmp_value = (char *)malloc(sizeof(char) * len)) == NULL)
 		return ;
 	while (ptr < 127)
 	{
-		if (!ft_strchr((*concat)->value, ptr) || ptr == '!')
+		if (!ft_strchr((*concat)->value, ptr))
 		{
+      log_warn("Ptr[%d]:%d", j, ptr);
 			tmp_value[j] = ptr;
 			j++;
 		}
@@ -132,7 +135,8 @@ static void s_reverse_it(t_tmp **concat) // Mettre un return sur la fonction pou
 	}
 	tmp_value[j] = '\0';
 	free((*concat)->value);
-	(*concat)->value = tmp_value;
+	(*concat)->value = ft_strdup(tmp_value);
+  free(tmp_value);
 	log_success("!Globbing_increment_range new_value:%s", (*concat)->value);
 }
 
@@ -183,9 +187,9 @@ void					globbing_bracket_exp_subsequence(t_tmp **concat, int i)
 			i++;
 		}
 	}
-	log_info(" OLD!! Concat->value:%s", (*concat)->value);
 	s_remove_double(concat);
 	log_info(" OLD!! Concat->value:%s", (*concat)->value);
 	if ((*concat)->reverse == 1)
 		s_reverse_it(concat);
+  log_info(" After reverse!! Concat->value:%s", (*concat)->value);
 }
