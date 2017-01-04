@@ -37,5 +37,6 @@ void globbing_happend_to_list(t_mylist **list, char *input);
 char *globbing_check_last_bracket(char *input);
 int	check_globbing(char *pattern, char *input);
 void  globbing_bracket_exp_subsequence(t_tmp **concat, int i);
+void  globbing_sort_list_glob(t_list **argv_list);
 
 #endif

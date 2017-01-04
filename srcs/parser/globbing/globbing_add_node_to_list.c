@@ -7,7 +7,6 @@
 int globbing_add_node_to_list(t_list *argv_list, char *content)
 {
   t_argv    *argument;
-  // t_list    *ptrlist;
   t_argv    *arg;
   t_list  *pos;
   t_list  *safe;
@@ -17,8 +16,6 @@ int globbing_add_node_to_list(t_list *argv_list, char *content)
   if ((argument->buffer = ft_strdup(content)) == NULL)
     return (ST_MALLOC);
 	argument->is_null = 0;
- // ptrlist = argv_list;
-  // NEED TO CHECK IF IT ALREADYON THE STRING BEFORE ADDING IT
   safe = argv_list->next;
   while ((pos = safe) && pos != argv_list)
   {
@@ -31,6 +28,7 @@ int globbing_add_node_to_list(t_list *argv_list, char *content)
       return(ST_OK);//change
     }
   }
+ // globbing_sort_list_glob(&argument->argv_list, argv_list);
   list_push_back(&argument->argv_list, argv_list);
   return (ST_OK);
 }
