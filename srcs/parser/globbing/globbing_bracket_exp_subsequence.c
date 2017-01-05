@@ -147,8 +147,8 @@ int					globbing_bracket_exp_subsequence(t_tmp **concat, int i)
 	{
 		if (i + 2 < len)
 		{
-			if ((*concat)->value[i+1] == '-' && 
-						((*concat)->value[i+2])) // il y a une range
+			if ((*concat)->value[i + 1] == '-' && 
+						((*concat)->value[i + 2])) // il y a une range
 			{
 				if ((tmp_value_after_range = ft_strdup((*concat)->value + i + 3)) == NULL)
 					return (ST_MALLOC);
@@ -168,7 +168,7 @@ int					globbing_bracket_exp_subsequence(t_tmp **concat, int i)
 				free(tmp_value_after_range);
 			}
 		}
-		if ((*concat)->value[i])// && ft_isalnum((*concat)->value[i])) //Doit on check is allnum ?
+		if ((*concat)->value[i])
 			i++;
 	}
 	if ((s_remove_double(concat)) == ST_MALLOC)
