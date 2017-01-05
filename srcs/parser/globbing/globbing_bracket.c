@@ -23,40 +23,56 @@ char		*globbing_check_last_bracket(char *input)
 		i++;
 	}
 	endofbracket = input + last_bracket;
-	log_info("Start with bracket %s et end with:%s", input, endofbracket);
 	if (last_bracket == 0)
 		return NULL;
 	return (endofbracket);
 }
 
+static void s_free_concat(t_tmp *concat)
+{
+	free(concat->value);
+	free(concat->before);
+	free(concat->after);
+	free(concat);
+}
 
 int globbing_bracket(t_mylist **list, char *input, char *match)
 {
 	char 				*after_open_brack;
 	char 				*after_closing_brack;
+	t_tmp				*concat;
 
-	log_debug("AA Globbing_bracket list expansion on `%s'", input);
 	if ((after_open_brack = ft_strchr(input, '[')) != NULL)
 	{
 		if ((after_closing_brack = (globbing_check_last_bracket(input))) == NULL)
 		{
-			log_error("Ending bracket Missing: %s, after_closing:%s", input,after_closing_brack);
-			globbing_happend_to_list(list, input);
+			if ((globbing_happend_to_list(list, input)) == ST_MALLOC)
+				return (ST_MALLOC);
 		}
 		else
 		{
-			log_success("Ending bracket Succes");
-			log_success("Full input :%s", input);
-			log_success("str after first [ :%s", after_open_brack);
-			log_success("str after ] :%s", after_closing_brack);
-			if ((globbing_exp_param_bracket(list, input, after_open_brack, after_closing_brack, match)) == -1)
+			if ((concat = (t_tmp*)ft_memalloc(sizeof(t_tmp))) == NULL)
+				return (ST_MALLOC);
+			if ((concat->value = ft_strsub(after_open_brack + 1, 0,
+				(ft_strlen(after_open_brack + 1) - ft_strlen(after_closing_brack)))) == NULL)
+				return (ST_MALLOC);
+			if ((concat->before = ft_strsub(input, 0, (ft_strlen(input) - ft_strlen(after_open_brack)))) == NULL)
+				return (ST_MALLOC);
+			if ((concat->after = ft_strdup(after_closing_brack + 1)) == NULL)
+				return (ST_MALLOC);
+			concat->reverse = 0;
+			if ((globbing_exp_param_bracket(list, input, concat, match)) == -1)
+			{
+				s_free_concat(concat);
 				return (-1);
+			}
+			s_free_concat(concat);
 		}
 	}
 	else
 	{
-		log_success("No open bracket inside input return mal formed string");
-		globbing_happend_to_list(list, input);
+		if ((globbing_happend_to_list(list, input)) == ST_MALLOC)
+			return (ST_MALLOC);
 	}
 	return (ST_OK);
 }

@@ -10,14 +10,11 @@ static char			*s_globbing_increment_range(unsigned char range_start, unsigned ch
 	tmp_start = range_start;
 	if ((new_value = (char*)malloc(sizeof(char) * len + 1)) == NULL)
 		return (NULL);
-	log_info("len of subsequence: %d",len);
-	
 	while (tmp_start <= range_end)
 	{
 		if (tmp_start)
 		{
-			log_debug("Display range start:%d=%c range_end: %d=%c", tmp_start, tmp_start, range_end, range_end);
-				new_value[j] = tmp_start;
+			new_value[j] = tmp_start;
 			j++;
 		}
 		tmp_start++;
@@ -26,43 +23,7 @@ static char			*s_globbing_increment_range(unsigned char range_start, unsigned ch
 	return (new_value);
 }
 
-static int			s_globbing_expand_range(t_tmp **concat, char *concat_before, int i)
-{
-	unsigned char	range_start;
-	unsigned char	range_end;
-	int				len;
-	char 			*new_value;
-	char 			*tmp_value;
-
-	log_info("concat_before:%s", concat_before);
-	log_info("Value de i:%d", i);
-	range_start = (*concat)->value[i];
-	range_end = (*concat)->value[i + 2];
-	log_debug("Display range limit: value[%d]=%c value[%d]=%c",i,range_start,i+2,range_end);
-	len = range_end - range_start; // verife de l'ordre
-	if (len <= 0) // recherche [Z-A] pas prise en compte ?
-		return 0;
-	else
-		new_value = s_globbing_increment_range(range_start, range_end, len);
-	log_info("concat_before=%s, value of new-value: %s",concat_before, new_value);
-	if (i > 0) //chope le before
-	{
-		tmp_value = ft_strnew(i);
-		tmp_value = ft_strncpy(tmp_value, (*concat)->value, i);
-		(*concat)->value = ft_strjoin(tmp_value, new_value);
-		log_info("Apres Expend 1 concat->value: %s",(*concat)->value);
-		free(tmp_value);
-	}
-	else
-	{
-		(*concat)->value = ft_strdup(new_value);
-		log_info("Apres Expend 2 concat->value: %s",(*concat)->value);	
-	}
-	free(new_value);
-	return (len);
-}
-
-static void s_remove_double(t_tmp **concat)
+static int s_remove_double(t_tmp **concat)
 {
 	char	char_tab[127];
 	int 	i;
@@ -88,7 +49,7 @@ static void s_remove_double(t_tmp **concat)
 	}
 	ft_bzero(char_tab, 127);
 	if ((new_value = (char *)malloc(sizeof(char) * len + 1)) == NULL)
-		return ;
+		return (ST_MALLOC);
 	i = 0;
 	while((*concat)->value[i])
 	{
@@ -102,10 +63,12 @@ static void s_remove_double(t_tmp **concat)
 	}
 	new_value[j] = '\0';
 	free((*concat)->value);
-	(*concat)->value = new_value;
+	if (((*concat)->value = ft_strdup(new_value)) == NULL)
+		return (ST_MALLOC);
+	return (ST_OK);
 }
 
-static void s_reverse_it(t_tmp **concat) // Mettre un return sur la fonction pour check memory alloc
+static int s_reverse_it(t_tmp **concat)
 {
 	char ptr;
 	char *tmp_value;
@@ -116,18 +79,12 @@ static void s_reverse_it(t_tmp **concat) // Mettre un return sur la fonction pou
 	ptr = 32;	
 	len = ft_strlen((*concat)->value);
 	len = 127 - 32 - len;
-
-  log_warn("Reverse it Len:%d", len);
-  log_warn("Concat Len:%d", ft_strlen((*concat)->value));
-  log_success("Start concat :%s", (*concat)->value);
-
 	if ((tmp_value = (char *)malloc(sizeof(char) * len)) == NULL)
-		return ;
+		return (ST_MALLOC);
 	while (ptr < 127)
 	{
 		if (!ft_strchr((*concat)->value, ptr))
 		{
-      log_warn("Ptr[%d]:%d", j, ptr);
 			tmp_value[j] = ptr;
 			j++;
 		}
@@ -135,12 +92,50 @@ static void s_reverse_it(t_tmp **concat) // Mettre un return sur la fonction pou
 	}
 	tmp_value[j] = '\0';
 	free((*concat)->value);
-	(*concat)->value = ft_strdup(tmp_value);
-  free(tmp_value);
-	log_success("!Globbing_increment_range new_value:%s", (*concat)->value);
+	if (((*concat)->value = ft_strdup(tmp_value)) == NULL)
+		return (ST_MALLOC);
+	free(tmp_value);
+	return (ST_OK);
 }
 
-void					globbing_bracket_exp_subsequence(t_tmp **concat, int i)
+static int			s_globbing_expand_range(t_tmp **concat, int i, int *len)
+{
+	unsigned char	range_start;
+	unsigned char	range_end;
+	char 			*new_value;
+	char 			*tmp_value;
+
+	range_start = (*concat)->value[i];
+	range_end = (*concat)->value[i + 2];
+	*len = range_end - range_start;
+	if (*len <= 0)
+		return -1;
+	else
+	{
+		if ((new_value = s_globbing_increment_range(range_start, range_end, *len)) == NULL)
+			return (ST_MALLOC);
+	}
+	if (i > 0)
+	{
+		if ((tmp_value = ft_strnew(i)) == NULL)
+			return (ST_MALLOC);
+		tmp_value = ft_strncpy(tmp_value, (*concat)->value, i);
+		free((*concat)->value);
+		if (((*concat)->value = ft_strjoin(tmp_value, new_value)) == NULL)
+			return (ST_MALLOC);
+		free(tmp_value);
+	}
+	else
+	{
+		free((*concat)->value);
+		if (((*concat)->value = ft_strdup(new_value)) == NULL)
+			return (ST_MALLOC);
+	}
+	free(new_value);
+	return (ST_OK);
+}
+
+int					globbing_bracket_exp_subsequence(t_tmp **concat, int i)
 {
 	char				*tmp_value_after_range;
 	char				*tmp_concat_value;
@@ -148,10 +143,6 @@ void					globbing_bracket_exp_subsequence(t_tmp **concat, int i)
 	int					ret;
 
 	len = ft_strlen((*concat)->value);
-	log_info("Value of concat inside subsequence: %s",(*concat)->value);
-	log_info("Value of i: %d",i);
-	log_info("Value of len: %d",len);
-
 	while ((*concat)->value[i] != '\0')
 	{
 		if (i + 2 < len)
@@ -159,22 +150,18 @@ void					globbing_bracket_exp_subsequence(t_tmp **concat, int i)
 			if ((*concat)->value[i+1] == '-' && 
 						((*concat)->value[i+2])) // il y a une range
 			{
-				log_info("Is range:%s", ((*concat)->value+i));
-				log_info("Value of len: %d",len);
-				log_info("Value of i: %d",i);
-				tmp_value_after_range = ft_strdup((*concat)->value + i + 3); // verifier ca
-				log_info("tmp_value_after_range: %s",tmp_value_after_range);
-
-
-				if ((ret = s_globbing_expand_range(concat, (*concat)->before, i)) != 0)
+				if ((tmp_value_after_range = ft_strdup((*concat)->value + i + 3)) == NULL)
+					return (ST_MALLOC);
+				if ((ret = s_globbing_expand_range(concat, i, &len)) != -1)
 				{
-					log_info("EXP SUB value of ret:%d", ret);
-					log_info("Expend range (*concat)->value:%s", (*concat)->value);
-					tmp_concat_value = ft_strdup((*concat)->value);//check le return
+					if (ret == ST_MALLOC)
+						return (ST_MALLOC);
+					if ((tmp_concat_value = ft_strdup((*concat)->value)) == NULL)
+						return (ST_MALLOC);
 					free((*concat)->value);
-					(*concat)->value = ft_strjoin(tmp_concat_value , tmp_value_after_range); //check le return, check value inside each param
+					if (((*concat)->value = ft_strjoin(tmp_concat_value , tmp_value_after_range)) == NULL)
+						return (ST_MALLOC);
 					free(tmp_concat_value);
-					log_info("Expend range (*concat)->value + after:%s", (*concat)->value);
 					len = ft_strlen((*concat)->value);
 					i += ret;
 				}
@@ -182,14 +169,14 @@ void					globbing_bracket_exp_subsequence(t_tmp **concat, int i)
 			}
 		}
 		if ((*concat)->value[i])// && ft_isalnum((*concat)->value[i])) //Doit on check is allnum ?
-		{
-			log_info("Normal i=%d, char  = %c", i, (*concat)->value[i]);
 			i++;
-		}
 	}
-	s_remove_double(concat);
-	log_info(" OLD!! Concat->value:%s", (*concat)->value);
+	if ((s_remove_double(concat)) == ST_MALLOC)
+		return (ST_MALLOC);
 	if ((*concat)->reverse == 1)
-		s_reverse_it(concat);
-  log_info(" After reverse!! Concat->value:%s", (*concat)->value);
+	{
+		if ((s_reverse_it(concat)) == ST_MALLOC)
+			return (ST_MALLOC);
+	}
+	return (ST_OK);
 }

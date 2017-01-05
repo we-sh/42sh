@@ -30,13 +30,12 @@ void	globbing_run_parse(char *arg, t_list *list_glob);
 int		globbing_add_node_to_list(t_list *argv_list, char *content);
 int  globbing_exp_param_bracket(t_mylist **list,
 																	char *input,
-																	char *after_first_brack,
-																	char *endofinput,
+																	t_tmp *concat,
 																	char *match);
-void globbing_happend_to_list(t_mylist **list, char *input);
+int globbing_happend_to_list(t_mylist **list, char *input);
 char *globbing_check_last_bracket(char *input);
 int	check_globbing(char *pattern, char *input);
-void  globbing_bracket_exp_subsequence(t_tmp **concat, int i);
+int  globbing_bracket_exp_subsequence(t_tmp **concat, int i);
 void  globbing_sort_list_glob(t_list **argv_list);
 
 #endif
