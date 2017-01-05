@@ -36,10 +36,11 @@ int			globbing(t_list **argv_list)
 
 		if (arg->buffer)
 			free(arg->buffer);
-
+		if (arg)
+			free(arg);
 	}
 	log_info("before list_del(argv_list)");
-	list_del(*argv_list);
+	free(*argv_list);
 	log_info("After list_del(argv_list)");
 	globbing_sort_list_glob(&list_glob);
 	*argv_list = list_glob;

@@ -56,6 +56,7 @@ void				globbing_run_parse(char *arg, t_list *list_glob)
 	int i=0;//debug
 
 	t_mylist *list;
+	t_mylist *tmplist;
 
 	list = NULL;
 	log_debug("%s", arg);
@@ -125,7 +126,9 @@ void				globbing_run_parse(char *arg, t_list *list_glob)
 							}
 							log_debug("Value of RET:%d", ret);
 							ft_strdel(&(list->content));
-							list = list->next;
+							tmplist = list->next;
+							free(list);
+							list = tmplist;
 						}
 				}
 			}
