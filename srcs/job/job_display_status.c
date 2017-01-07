@@ -20,12 +20,13 @@ static void	s_proc_display_status(t_job *j, t_proc *p, char c, int show_pid)
 		status = ST_SIGNAL + p->signaled;
 	else if (p->completed == 1)
 		status = ST_DONE;
-	else if (p->stopped == 1)
+	else if (p->stopped != 0)
 		status = ST_STOPPED;
-	status =
-	ft_printf("%-11s\t %s\n",
-		i18n_translate(status),
-		p->command);
+	if (status == ST_STOPPED && p->stopped != SIGTSTP)
+		ft_printf("%-11s (%s)\t %s\n", i18n_translate(status),
+			i18n_translate(ST_SIGNAL + p->stopped), p->command);
+	else
+		ft_printf("%-11s\t %s\n", i18n_translate(status), p->command);
 }
 
 int			job_display_status(t_job *j, int show_pid)
