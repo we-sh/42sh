@@ -11,6 +11,7 @@ static int	s_check_argv_validity(t_proc *p, int flag, int *index)
 	env_get_value_and_remove_equal_sign(tmp);
 	if ((ret = setenv_argv_is_valid(tmp)) != ST_OK)
 	{
+		p->bltin_status = ret;
 		if (flag == BLTIN_CB_EXEC)
 			display_status(ST_BLTIN_SETENV_INVALID_IDENTIFIER,
 				p->argv[*index], NULL);
@@ -41,14 +42,15 @@ static int	s_exec(t_sh *sh, t_builtin const *builtin, t_proc *p)
 	i = 0;
 	ret = 0;
 	ptr = sh->local_vars;
-	while (p->argv[i])
-	{
-		if ((ret = s_check_argv_validity(p, BLTIN_CB_EXEC, &i)) == ST_DONE)
-			continue ;
-		else if (ret == ST_MALLOC)
-			return (ST_MALLOC);
-		i++;
-	}
+	if (p->bltin_status == ST_OK)
+		while (p->argv[i])
+		{
+			if ((ret = s_check_argv_validity(p, BLTIN_CB_EXEC, &i)) == ST_DONE)
+				continue ;
+			else if (ret == ST_MALLOC)
+				return (ST_MALLOC);
+			i++;
+		}
 	if (p->bltin_status == ST_OK)
 		s_display_and_usage(sh, p);
 	else
