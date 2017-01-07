@@ -71,11 +71,12 @@ void				globbing_run_parse(char *arg, t_list *list_glob)
 	t_ctx			*c;
 	DIR				*dp;
 	struct dirent	*e;
-	int				i=0;
+	int				i;
 	int				ret;
 	char			*m;
 	t_mylist		*list;
 
+	i = 0;
 	list = NULL;
 	globbing_load_context(&c, arg);
 	if (!(c->m))
@@ -88,12 +89,11 @@ void				globbing_run_parse(char *arg, t_list *list_glob)
 			{
 				if (e->d_name[0] != '.' || (c->m && c->m[0] == '.'))
 				{
-				
-    	    		if (globbing_bracket(&list, c->m, e->d_name) == -1)
-    	    		{
+					if (globbing_bracket(&list, c->m, e->d_name) == -1)
+					{
 						globbing_add_node_to_list(list_glob, arg);
 						return ;
-    	    		}
+					}
 					ret = 0;
 					while (list)
 					{
@@ -112,8 +112,8 @@ void				globbing_run_parse(char *arg, t_list *list_glob)
 						}
 						else if (ret == -1)
 						{
-								globbing_add_node_to_list(list_glob, arg);
-								return ;
+							globbing_add_node_to_list(list_glob, arg);
+							return ;
 						}
 						list = s_mylist_del_safe(&list);
 					}
