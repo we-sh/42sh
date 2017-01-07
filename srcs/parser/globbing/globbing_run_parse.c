@@ -44,6 +44,25 @@ static char	*s_join_free(char *s1, char *s2)
 }
 
 /*
+** Delete a node list and return the next node.
+*/
+
+static t_mylist *s_mylist_del_safe(t_mylist **list)
+{
+	t_mylist	*ret;
+
+	ret = NULL;
+	if (list && *list && (*list)->content)
+	{
+		ret = (*list)->next;
+		ft_strdel(&((*list)->content));
+		free(*list);
+		list = NULL;
+	}
+	return (ret);
+}
+
+/*
 ** This function create the list of what it must be compared
 */
 
@@ -56,7 +75,6 @@ void				globbing_run_parse(char *arg, t_list *list_glob)
 	int				ret;
 	char			*m;
 	t_mylist		*list;
-	t_mylist		*tmplist;
 
 	list = NULL;
 	globbing_load_context(&c, arg);
@@ -97,10 +115,7 @@ void				globbing_run_parse(char *arg, t_list *list_glob)
 								globbing_add_node_to_list(list_glob, arg);
 								return ;
 						}
-						ft_strdel(&(list->content));
-						tmplist = list->next;
-						free(list);
-						list = tmplist;
+						list = s_mylist_del_safe(&list);
 					}
 				}
 			}
