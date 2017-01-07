@@ -52,10 +52,11 @@ void				globbing_run_parse(char *arg, t_list *list_glob)
 	t_ctx			*c;
 	DIR				*dp;
 	struct dirent	*e;
-	int i=0;//debug
-
-	t_mylist *list;
-	t_mylist *tmplist;
+	int				i=0;
+	int				ret;
+	char			*m;
+	t_mylist		*list;
+	t_mylist		*tmplist;
 
 	list = NULL;
 	globbing_load_context(&c, arg);
@@ -75,49 +76,38 @@ void				globbing_run_parse(char *arg, t_list *list_glob)
 						globbing_add_node_to_list(list_glob, arg);
 						return ;
     	    		}
-
-						int ret;
-						char      *m;
-
-						ret = 0;
-						while (list)
+					ret = 0;
+					while (list)
+					{
+						if ((ret = check_globbing(list->content, e->d_name)) > 0)
 						{
-							if ((ret = check_globbing(list->content, e->d_name)) > 0)
-							{
-								if (c->l)
-									m = ft_strjoin(c->l, e->d_name);
-								else
-									m = ft_strdup(e->d_name);
-
-								if (c->r)
-								{
-								 globbing_run_parse(m = s_join_free(m, c->r), list_glob);
-								}
-								else
-								{
-									globbing_add_node_to_list(list_glob, m);
-								}
-								ft_strdel(&m);
-								i += 1;
-							}
-							else if (ret == -1)
-							{
-									globbing_add_node_to_list(list_glob, arg);
-									return ;
-							}
-							ft_strdel(&(list->content));
-							tmplist = list->next;
-							free(list);
-							list = tmplist;
+							if (c->l)
+								m = ft_strjoin(c->l, e->d_name);
+							else
+								m = ft_strdup(e->d_name);
+							if (c->r)
+								globbing_run_parse(m = s_join_free(m, c->r), list_glob);
+							else
+								globbing_add_node_to_list(list_glob, m);
+							ft_strdel(&m);
+							i += 1;
 						}
+						else if (ret == -1)
+						{
+								globbing_add_node_to_list(list_glob, arg);
+								return ;
+						}
+						ft_strdel(&(list->content));
+						tmplist = list->next;
+						free(list);
+						list = tmplist;
+					}
 				}
 			}
 			if (i <= 0)
-			{
 				globbing_add_node_to_list(list_glob, arg);
-			}
 			closedir(dp);
 		}
 	}
-  globbing_context_delete(c);
+	globbing_context_delete(c);
 }
