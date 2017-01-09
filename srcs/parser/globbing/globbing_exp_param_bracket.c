@@ -49,9 +49,9 @@ int	s_check_globbing_brack(char *pattern, char *input)
 		return (0);
 	if ((ft_strchr(pattern,'[') || ft_strchr(pattern, ']')))
 	{
-  		if ((is_valid = ft_strchr(pattern, '[')) && (input[0] == '['))
+  		if ((is_valid = ft_strchr(pattern, '[')))
   			return (-1);
-  		else if ((is_valid = ft_strchr(pattern, ']')) && (input[0] == ']'))
+  		else if ((is_valid = ft_strchr(pattern, ']')))
   			return (-1);
 		if (s_is_total_make_sense(pattern))
 			return (-1);
