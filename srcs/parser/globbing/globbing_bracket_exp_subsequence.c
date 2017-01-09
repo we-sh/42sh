@@ -23,51 +23,6 @@ static char			*s_globbing_increment_range(unsigned char range_start, unsigned ch
 	return (new_value);
 }
 
-static int s_remove_double(t_tmp **concat)
-{
-	char	char_tab[127];
-	int 	i;
-	int 	j;
-	int 	len;
-	char 	*new_value;
-
-	i = 0;
-	j = 0;
-	len = 0;
-	ft_bzero(char_tab, 127);
-	while ((*concat)->value[i])
-	{
-		char_tab[(int)(*concat)->value[i]] = 1;
-		i++;
-	}
-	i = 0;
-	while (i < 127)
-	{
-		if (char_tab[i] == 1)
-			len++;
-		i++;
-	}
-	ft_bzero(char_tab, 127);
-	if ((new_value = (char *)malloc(sizeof(char) * len + 1)) == NULL)
-		return (ST_MALLOC);
-	i = 0;
-	while((*concat)->value[i])
-	{
-		if (char_tab[(int)(*concat)->value[i]] == 0)
-		{
-			new_value[j] = (*concat)->value[i];
-			char_tab[(int)(*concat)->value[i]] = 1;
-			j++;
-		}
-		i++;
-	}
-	new_value[j] = '\0';
-	free((*concat)->value);
-	if (((*concat)->value = ft_strdup(new_value)) == NULL)
-		return (ST_MALLOC);
-	return (ST_OK);
-}
-
 static int s_reverse_it(t_tmp **concat)
 {
 	char ptr;
@@ -171,7 +126,7 @@ int					globbing_bracket_exp_subsequence(t_tmp **concat, int i)
 		if ((*concat)->value[i])
 			i++;
 	}
-	if ((s_remove_double(concat)) == ST_MALLOC)
+	if ((globbing_remove_double(concat)) == ST_MALLOC)
 		return (ST_MALLOC);
 	if ((*concat)->reverse == 1)
 	{

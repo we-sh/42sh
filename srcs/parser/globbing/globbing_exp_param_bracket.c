@@ -87,10 +87,16 @@ static int  globbing_bracket_recurse(t_mylist **list, t_tmp *concat, char *match
 	{
 		if (concat->value[i] != '*' && concat->value[i] != '?' &&
 			!(ft_strchr(match, concat->value[i])))
+		{
+			free(sub_list);
 			return -1;
+		}
 	}
 	else if (ret > 0)
+	{
+		free(sub_list);
 		return ret;
+	}
 	if ((globbing_bracket(list, sub_list, match)) == ST_MALLOC)
 		return (ST_MALLOC);
 	free(sub_list);

@@ -42,6 +42,8 @@ static void	s_globbing_proceed_on_token(t_list *list_glob, t_argv *arg)
 		{
 			globbing_add_node_to_list(list_glob, arg->buffer);
 		}
+		else
+			globbing_sort_list_glob(&list_glob);
 	}
 	else
 	{
@@ -76,7 +78,6 @@ int			globbing(t_list **argv_list)
 		s_delete_argv(&arg);
 	}
 	free(*argv_list);
-	globbing_sort_list_glob(&list_glob);
 	*argv_list = list_glob;
 	return (ST_OK);
 }
