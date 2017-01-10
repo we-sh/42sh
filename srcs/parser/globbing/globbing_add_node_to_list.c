@@ -1,15 +1,11 @@
 #include "shell.h"
 
-/*
-** Add a node composed of a string at the end of the list in argument.
-*/
-
-int globbing_add_node_to_list(t_list *argv_list, char *content)
+int			globbing_add_node_to_list(t_list *argv_list, char *content)
 {
-	t_argv    *argument;
-	t_argv    *arg;
-	t_list  *pos;
-	t_list  *safe;
+	t_argv	*argument;
+	t_argv	*arg;
+	t_list	*pos;
+	t_list	*safe;
 
 	if (!(argument = (t_argv *)malloc(sizeof(t_argv))))
 		return (ST_MALLOC);

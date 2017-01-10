@@ -9,9 +9,6 @@ static void	s_delete_argv(t_argv **arg)
 		arg = NULL;
 	}
 }
-/*
-** Check whether a string contains globbing tokens.
-*/
 
 static int	s_globbing_is_matching_token(char *arg)
 {

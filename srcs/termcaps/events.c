@@ -50,9 +50,6 @@ static void	s_inib_teardown(t_inib *inib)
 	inib[0].open = '\'';
 	inib[0].close = '\'';
 	inib[0].state = 0;
-	inib[1].open = '[';
-	inib[1].close = ']';
-	inib[1].state = 0;
 }
 
 static int	s_inib(char c, t_inib *inib)
@@ -89,9 +86,9 @@ int			replace_events(t_termcaps_context *context,
 							const size_t buf_size_max,
 							t_buffer *buf)
 {
-	size_t			buf_offset;
-	size_t			event_size;
-	static t_inib	inib[TERMCAPS_INIB_COUNT];
+	size_t	buf_offset;
+	size_t	event_size;
+	t_inib	inib[TERMCAPS_INIB_COUNT];
 
 	s_inib_teardown(inib);
 	event_size = 0;

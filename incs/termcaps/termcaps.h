@@ -44,10 +44,9 @@ typedef struct	s_node_dir
 /*
 ** inhibitors
 ** ' '
-** [ ]
 */
 
-# define TERMCAPS_INIB_COUNT	2
+# define TERMCAPS_INIB_COUNT	1
 
 typedef struct	s_inib
 {
