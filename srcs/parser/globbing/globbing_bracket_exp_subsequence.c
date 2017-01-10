@@ -53,23 +53,10 @@ static int			s_reverse_it(t_tmp **concat)
 	return (ST_OK);
 }
 
-static int			s_globbing_expand_range(t_tmp **concat, int i, int *len)
+static int s_before_expand_range(t_tmp **concat, char *new_value, int i)
 {
-	unsigned char	range_start;
-	unsigned char	range_end;
-	char			*new_value;
 	char			*tmp_value;
 
-	range_start = (*concat)->value[i];
-	range_end = (*concat)->value[i + 2];
-	*len = range_end - range_start;
-	if (*len <= 0)
-		return -1;
-	else
-	{
-		if ((new_value = s_globbing_increment_range(range_start, range_end, *len)) == NULL)
-			return (ST_MALLOC);
-	}
 	if (i > 0)
 	{
 		if ((tmp_value = ft_strnew(i)) == NULL)
@@ -86,6 +73,27 @@ static int			s_globbing_expand_range(t_tmp **concat, int i, int *len)
 		if (((*concat)->value = ft_strdup(new_value)) == NULL)
 			return (ST_MALLOC);
 	}
+		return (ST_OK);
+}
+
+static int			s_globbing_expand_range(t_tmp **concat, int i, int *len)
+{
+	unsigned char	range_start;
+	unsigned char	range_end;
+	char			*new_value;
+
+	range_start = (*concat)->value[i];
+	range_end = (*concat)->value[i + 2];
+	*len = range_end - range_start;
+	if (*len <= 0)
+		return -1;
+	else
+	{
+		if ((new_value = s_globbing_increment_range(range_start, range_end, *len)) == NULL)
+			return (ST_MALLOC);
+	}
+	if (s_before_expand_range(concat, new_value, i) == ST_MALLOC)
+		return (ST_MALLOC);
 	free(new_value);
 	return (ST_OK);
 }
