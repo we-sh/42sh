@@ -93,17 +93,9 @@ void		proc_launch(t_sh *sh, t_job *j, t_proc *p)
 {
 	int		ret;
 
-	int		i = 0;
-	while (p->argv[i] != NULL)
-	{
-		log_info("p->argv[%d]: `%s`", i, p->argv[i]);
-		i++;
-	}
-
 	p->pid = getpid();
 	s_interactive_mode_callback(sh, j, p);
 	s_dup2_and_close(STDIN_FILENO, p->stdin);
-	ret = ST_OK;
 	if (p->stdout == STDERR_FILENO)
 	{
 		s_dup2_and_close(STDERR_FILENO, p->stderr);
