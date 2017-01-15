@@ -1,12 +1,13 @@
 #ifndef GLOBBING_H
 # define GLOBBING_H
 
-typedef struct	s_ctx
+typedef struct		s_ctx
 {
-	char		*l;
-	char		*m;
-	char		*r;
-}				t_ctx;
+	char			*l;
+	char			*m;
+	char			*r;
+	struct dirent	*c_file;
+}					t_ctx;
 
 typedef struct			s_mylist
 {
@@ -39,4 +40,6 @@ void  	globbing_sort_list_glob(t_list **argv_list);
 int 	globbing_remove_double(t_tmp **concat);
 int  	globbing_bracket_recurse(t_mylist **list, t_tmp *concat, char *match, int i);
 int		globbing_before_expand(t_tmp **concat, int i, int len);
+int		globbing_check(char *pattern, char *input);
+
 #endif

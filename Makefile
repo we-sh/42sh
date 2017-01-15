@@ -77,6 +77,7 @@ SRCS	=	\
 			parser/globbing/globbing_remove_double.c 					\
 			parser/globbing/globbing_bracket_recurse.c 					\
 			parser/globbing/globbing_before_expand.c 					\
+			parser/globbing/globbing_check.c 							\
 			parser/lexer/lexer_bufferize.c								\
 			parser/lexer/lexer_token_add.c								\
 			parser/lexer/lexer_tokens_alloc.c							\
