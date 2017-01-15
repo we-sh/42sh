@@ -15,7 +15,9 @@ static void	s_proc_status(t_job *j, t_proc *p)
 		errno = 0;
 		pid = waitpid(p->pid, &status, WUNTRACED);
 		if (pid < 0 && errno == ECHILD)
+		{
 			p->completed = 1;
+		}
 		else
 			proc_update_status(j, pid, status);
 	}
@@ -28,7 +30,7 @@ static void	s_notify(t_job *j)
 	sig = job_is_signaled(j);
 	if (sig != 0 || (job_is_stopped(j) == 1 && job_is_completed(j) == 0))
 	{
-		if (sig != SIGINT && sig != SIGQUIT)
+		if (sig != SIGINT && sig != SIGQUIT && sig != SIGUSR1)
 		{
 			ft_putchar('\n');
 			job_display_status(j, 1);
@@ -51,7 +53,7 @@ int			job_wait(t_job *j_orig)
 			if (j->launched == 1 && j->foreground == 1)
 			{
 				p_pos = &j->proc_head;
-				while ((p_pos = p_pos->next) && p_pos != &j->proc_head)
+				while ((p_pos = p_pos->prev) && p_pos != &j->proc_head)
 				{
 					s_proc_status(j, CONTAINER_OF(p_pos, t_proc, list_proc));
 				}

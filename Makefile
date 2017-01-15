@@ -210,6 +210,7 @@ SRCS	=	\
 			signal/signal_to_default.c									\
 			signal/signal_to_ignore.c									\
 			signal/signal_to_pgid.c										\
+			signal/signal_sigusr1.c										\
 			termcaps/termcaps_initialize.c								\
 			termcaps/termcaps_finalize.c								\
 			termcaps/termcaps_line_print.c								\
