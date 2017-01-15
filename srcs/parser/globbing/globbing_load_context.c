@@ -14,8 +14,7 @@ static char	*s_get_l_ctx(char **arg, int is_root)
 		ret = ft_strdup("/");
 	while (arg[i])
 	{
-		if (ft_strchr(arg[i], '*') == NULL 
-			&& ft_strchr(arg[i], '?') == NULL
+		if (ft_strchr(arg[i], '*') == NULL && ft_strchr(arg[i], '?') == NULL
 			&& ft_strchr(arg[i], '[') == NULL)
 		{
 			ptr = ret;
