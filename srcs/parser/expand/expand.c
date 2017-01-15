@@ -5,8 +5,8 @@
 ** the following order (as described here: http://pubs.opengroup.org/onlinep
 ** ubs/009604499/utilities/xcu_chap02.html#tag_02_06):
 ** 1. Tilde `~` expansion
-** 2.
-** 3.
+** 2. Glob braces {...}
+** 3. Globbing [...], ? and *
 ** 4. Escape character `\`
 */
 
@@ -39,9 +39,7 @@ static int	s_list_argv_to_char_argv(t_proc *p, t_list *argv_list)
 	t_argv	*argument;
 	t_list	*pos;
 	t_list	*safe;
-	// int		st;
 
-	log_info("IN");
 	safe = argv_list->next;
 	while ((pos = safe) && safe != argv_list)
 	{
@@ -57,7 +55,6 @@ static int	s_list_argv_to_char_argv(t_proc *p, t_list *argv_list)
 		free(argument->buffer);
 		free(argument);
 	}
-  log_info("OUT");
 	return (ST_OK);
 }
 
