@@ -74,7 +74,7 @@ int			globbing_bracket(t_mylist **list, char *in, char *match)
 	char	*after_closing_b;
 	t_tmp	*concat;
 
-	if ((after_open_brack = ft_strchr(in, '[')) != NULL)
+	if ((after_open_brack = ft_strchr(in, -'[')) != NULL)
 	{
 		if ((after_closing_b = (globbing_check_last_bracket(in))) == NULL)
 		{

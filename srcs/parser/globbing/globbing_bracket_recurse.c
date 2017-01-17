@@ -11,7 +11,7 @@ static int	s_is_total_make_sense(char *pattern)
 	i = 0;
 	while (pattern[i] != '\0')
 	{
-		if (pattern[i] == '[')
+		if (pattern[i] == -'[')
 			sign1++;
 		if (pattern[i] == ']')
 			sign2++;
@@ -29,18 +29,18 @@ static int	s_check_globbing_brack(char *pattern, char *input)
 	is_valid = 0;
 	if (!pattern || !input)
 		return (0);
-	if ((ft_strchr(pattern, '[') || ft_strchr(pattern, ']')))
+	if ((ft_strchr(pattern, -'[') || ft_strchr(pattern, ']')))
 	{
-		if ((is_valid = ft_strchr(pattern, '[')))
+		if ((is_valid = ft_strchr(pattern, -'[')))
 			return (-1);
 		else if ((is_valid = ft_strchr(pattern, ']')))
 			return (-1);
 		if (s_is_total_make_sense(pattern))
 			return (-1);
 	}
-	if (*pattern == '?')
+	if (*pattern == -'?')
 		return (*input && s_check_globbing_brack(pattern + 1, input + 1));
-	else if (*pattern == '*')
+	else if (*pattern == -'*')
 		return (s_check_globbing_brack(pattern + 1, input) ||
 				(*input && s_check_globbing_brack(pattern, input + 1)));
 	else
@@ -62,7 +62,7 @@ static int	s_check_before_bracket(t_tmp *concat,
 	}
 	else if (ret < 0)
 	{
-		if (concat->value[i] != '*' && concat->value[i] != '?' &&
+		if (concat->value[i] != -'*' && concat->value[i] != -'?' &&
 			!(ft_strchr(match, concat->value[i])))
 		{
 			free(sub_list);

@@ -14,11 +14,11 @@ int	globbing_check(char *pattern, char *input)
 	is_valid = 0;
 	if (!pattern || !input)
 		return (0);
-	if (*pattern == '?')
+	if (*pattern == -'?')
 	{
 		return (*input && globbing_check(pattern + 1, input + 1));
 	}
-	else if (*pattern == '*')
+	else if (*pattern == -'*')
 	{
 		return (globbing_check(pattern + 1, input) ||
 				(*input && globbing_check(pattern, input + 1)));

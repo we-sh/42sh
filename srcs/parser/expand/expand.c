@@ -25,7 +25,7 @@ static char	*s_expand_escape_char_not_inhibited(char *str)
 		{
 			if (str[j] == '\\')
 				j++;
-			str[i] = str[j];
+			str[i] = str[j] < 0 ? -(str[j]) : str[j];
 			i++;
 			j++;
 		}
