@@ -68,6 +68,7 @@ static int		s_globbing_run_parse_arg(t_list *list_glob, t_ctx *c,
 	int				ret;
 
 	list = NULL;
+	log_info("inside s_globbing_run_parse_arg:%s ",c->c_file->d_name);
 	if (!(ret = 0) && globbing_bracket(&list, c->m, c->c_file->d_name) == -1)
 	{
 		globbing_add_node_to_list(list_glob, arg);
@@ -101,6 +102,7 @@ int					globbing_run_parse(char *arg, t_list *list_glob)
 	DIR				*dp;
 	int				i;
 
+	log_info("inside globbing_run_parse value of arg->content:%s", arg);
 	globbing_load_context(&c, arg);
 	if (!(i = 0) && !(c->m))
 		globbing_add_node_to_list(list_glob, arg);
