@@ -16,7 +16,7 @@ static int	s_globbing_is_matching_token(char *arg)
 	{
 		return (0);
 	}
-	if (ft_strchr(arg, '?') || ft_strchr(arg, '*') || ft_strchr(arg, '['))
+	if (ft_strchr(arg, -'?') || ft_strchr(arg, -'*') || ft_strchr(arg, -'['))
 	{
 		return (1);
 	}

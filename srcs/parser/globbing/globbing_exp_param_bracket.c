@@ -69,7 +69,7 @@ int			globbing_exp_param_bracket(t_mylist **l,
 	{
 		if (ft_strchr(match, concat->value[i]))
 		{
-			if (ft_strchr(input, '[') != NULL)
+			if (ft_strchr(input, -'[') != NULL)
 			{
 				if ((ret = s_before_recurse(concat, l, match, i)) == ST_MALLOC)
 					return (ST_MALLOC);
