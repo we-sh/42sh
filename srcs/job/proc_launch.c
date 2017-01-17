@@ -96,7 +96,7 @@ void		proc_launch(t_sh *sh, t_job *j, t_proc *p)
 	p->pid = getpid();
 	s_interactive_mode_callback(sh, j, p);
 	s_dup2_and_close(STDIN_FILENO, p->stdin);
-	if ((ret = 0) && p->stdout == STDERR_FILENO)
+	if (p->stdout == STDERR_FILENO)
 	{
 		s_dup2_and_close(STDERR_FILENO, p->stderr);
 		s_dup2_and_close(STDOUT_FILENO, p->stdout);

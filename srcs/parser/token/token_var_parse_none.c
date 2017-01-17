@@ -1,6 +1,6 @@
 #include "shell.h"
 
-int			token_globing_parse_none(void *target, t_parser *parser,
+int			token_var_parse_none(void *target, t_parser *parser,
 				t_lexer *lexer, int *i)
 {
 	int		ret;
