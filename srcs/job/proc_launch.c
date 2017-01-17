@@ -80,8 +80,6 @@ static int	s_proc_launch_execve(t_proc *p)
 		return (ret);
 	if ((conf_check_color_mode(p->envp) == ST_OK))
 		s_add_color_to_cmd(p);
-	if (p != CONTAINER_OF(p->j->proc_head.prev, t_proc, list_proc))
-		signal(SIGUSR1, signal_sigusr1);
 	if ((execve(lowerargv, p->argv, p->envp)) == -1)
 		return (ST_OK);
 	free(lowerargv);

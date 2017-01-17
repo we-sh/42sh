@@ -86,7 +86,6 @@ int			shell_init(t_sh *sh, char *envp[])
 {
 	int		ret;
 
-	signal(SIGUSR1, SIG_IGN);
 	INIT_LIST_HEAD(&g_current_jobs_list_head);
 	INIT_LIST_HEAD(&sh->redir_head);
 	sh->local_vars = NULL;

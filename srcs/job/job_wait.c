@@ -31,7 +31,7 @@ static void	s_notify(t_job *j)
 	sig = job_is_signaled(j);
 	if (sig != 0 || (job_is_stopped(j) == 1 && job_is_completed(j) == 0))
 	{
-		if (sig != SIGINT && sig != SIGQUIT && sig != SIGUSR1)
+		if (sig != SIGINT && sig != SIGQUIT)
 		{
 			wait_i = 0;
 			while (wait_i < 1000000)

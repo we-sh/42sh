@@ -214,7 +214,6 @@ int				concat_new_input(char **cmd,
 int				signal_to_ignore(void);
 int				signal_to_default(void);
 int				signal_to_pgid(int pgid);
-void			signal_sigusr1(int sig);
 
 /*
 ** termcaps/
