@@ -56,6 +56,7 @@ int		parser_build_list_unstack_lexer_glob_brace(t_parser *parser,
 int		expand(t_lexer *lexer, t_proc *p, int *i);
 int		expand_glob_brace(t_sh *sh, t_list **argv_list);
 int		expand_tilde(t_sh *sh, t_list **argv_list);
+int		expand_tilde_through_buffer(t_sh *sh, char **buffer);
 int		expand_get_words(char **content, t_lexer *lexer, int *i);
 char	*expand_get_words_special_build_str(char *content, char *input);
 

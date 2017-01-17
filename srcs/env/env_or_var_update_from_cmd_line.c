@@ -38,42 +38,54 @@ static int		s_add_to_local_var(char ***argv, int *argc, t_sh **sh,
 {
 	char		*value;
 	int			ret;
+	char		*tmp;
 
 	while ((*argv)[0] != NULL && (*argv)[0][0] != '\0' && (*argv)[0][0] != '='
 		&& (value = env_get_value_and_remove_equal_sign((*argv)[0])) != NULL)
 	{
+		if ((tmp = ft_strdup(value)) == NULL)
+			return (ST_MALLOC);
+		if ((ret = expand_tilde_through_buffer(*sh, &tmp)) != ST_OK)
+			return (ret);
 		if (env_get(*envp, (*argv)[0]) != NULL)
 		{
-			if ((ret = env_set(&(*sh)->envp, (*argv)[0], value)) != ST_OK)
+			if ((ret = env_set(&(*sh)->envp, (*argv)[0], tmp)) != ST_OK)
 				return (ret);
 		}
 		else
 		{
-			if ((ret = builtin_local_var_set_local_loop(sh, (*argv)[0], value))
+			if ((ret = builtin_local_var_set_local_loop(sh, (*argv)[0], tmp))
 				!= ST_OK)
 				return (ret);
 		}
+		free(tmp);
 		*argc -= 1;
 		ft_array_pop(argv, 0, 1);
 	}
 	return (ST_OK);
 }
 
-static int		s_add_to_env(char ***envp, int *argc, char ***argv)
+static int		s_add_to_env(t_sh *sh, char ***envp, int *argc, char ***argv)
 {
 	char		*value;
 	int			ret;
+	char		*tmp;
 
 	ret = 0;
 	value = NULL;
 	while ((*argv)[0] != NULL && (*argv)[0][0] != '\0' && (*argv)[0][0] != '='
 		&& (value = env_get_value_and_remove_equal_sign((*argv)[0])) != NULL)
 	{
+		if ((tmp = ft_strdup(value)) == NULL)
+			return (ST_MALLOC);
+		if ((ret = expand_tilde_through_buffer(sh, &tmp)) != ST_OK)
+			return (ret);
 		if (envp != NULL)
 		{
-			if ((ret = env_set(envp, (*argv)[0], value)) != ST_OK)
+			if ((ret = env_set(envp, (*argv)[0], tmp)) != ST_OK)
 				return (ret);
 		}
+		free(tmp);
 		*argc -= 1;
 		ft_array_pop(argv, 0, 1);
 	}
@@ -99,7 +111,7 @@ int				env_or_var_update_from_cmd_line(t_proc **p,
 	}
 	else
 	{
-		if ((ret = s_add_to_env(&(*p)->envp, &(*p)->argc, &(*p)->argv))
+		if ((ret = s_add_to_env(*sh, &(*p)->envp, &(*p)->argc, &(*p)->argv))
 			!= ST_OK)
 			return (ret);
 	}
