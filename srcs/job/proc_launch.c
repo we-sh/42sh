@@ -28,7 +28,7 @@ static int	s_interactive_mode_callback(t_sh *sh, t_job *j, t_proc *p)
 	return (ST_OK);
 }
 
-static int	s_dup2_and_close(int from, int to)
+static int	s_dup2_and_close(t_proc *p, int from, int to)
 {
 	if (to != from)
 	{
@@ -41,6 +41,11 @@ static int	s_dup2_and_close(int from, int to)
 				&& !(to == STDOUT_FILENO && from == STDERR_FILENO))
 				close(to);
 		}
+	}
+	if (from == STDIN_FILENO)
+	{
+		close(p->pipe[0]);
+		close(p->pipe[1]);
 	}
 	return (ST_OK);
 }
@@ -92,16 +97,16 @@ void		proc_launch(t_sh *sh, t_job *j, t_proc *p)
 
 	p->pid = getpid();
 	s_interactive_mode_callback(sh, j, p);
-	s_dup2_and_close(STDIN_FILENO, p->stdin);
+	s_dup2_and_close(p, STDIN_FILENO, p->stdin);
 	if (p->stdout == STDERR_FILENO)
 	{
-		s_dup2_and_close(STDERR_FILENO, p->stderr);
-		s_dup2_and_close(STDOUT_FILENO, p->stdout);
+		s_dup2_and_close(p, STDERR_FILENO, p->stderr);
+		s_dup2_and_close(p, STDOUT_FILENO, p->stdout);
 	}
 	else
 	{
-		s_dup2_and_close(STDOUT_FILENO, p->stdout);
-		s_dup2_and_close(STDERR_FILENO, p->stderr);
+		s_dup2_and_close(p, STDOUT_FILENO, p->stdout);
+		s_dup2_and_close(p, STDERR_FILENO, p->stderr);
 	}
 	if (p->is_valid == 1 && p->argc == 0)
 		p->is_valid = 0;

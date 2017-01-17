@@ -48,6 +48,7 @@ struct						s_proc
 	t_list					bltin_opt_head;
 	int						is_valid;
 	int						is_subshell;
+	int						pipe[2];
 };
 
 struct						s_job

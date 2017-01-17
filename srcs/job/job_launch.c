@@ -35,28 +35,30 @@ static int			s_fork_it(t_sh *sh, t_job *j, t_proc *p)
 	return (ST_OK);
 }
 
-static int			s_proc_setup(t_proc *proc, t_sh *sh, t_list *head, int *fds)
+static int			s_proc_setup(t_proc *p, t_sh *sh, t_list *head, int *fds)
 {
 	int		ret;
 
-	fds[FD_STDERR] = proc->stderr;
-	if (proc->list_proc.next != head)
+	fds[FD_STDERR] = p->stderr;
+	if (p->list_proc.next != head)
 	{
 		if (pipe(fds) < 0)
 			return (ST_PIPE);
 		fds[FD_STDOUT] = fds[FD_PIPE_OUT];
 	}
 	else
-		fds[FD_STDOUT] = proc->stdout;
-	if (proc->list_proc.prev == head)
-		fds[FD_STDIN] = proc->stdin;
-	if (proc->stdin == proc->j->stdin)
-		proc->stdin = fds[FD_STDIN];
-	if (proc->stdout == proc->j->stdout)
-		proc->stdout = fds[FD_STDOUT];
-	if (proc->stderr == proc->j->stderr)
-		proc->stderr = fds[FD_STDERR];
-	if ((ret = s_fork_it(sh, proc->j, proc)) != ST_OK)
+		fds[FD_STDOUT] = p->stdout;
+	p->pipe[0] = fds[0];
+	p->pipe[1] = fds[1];
+	if (p->list_proc.prev == head)
+		fds[FD_STDIN] = p->stdin;
+	if (p->stdin == STDIN_FILENO)
+		p->stdin = fds[FD_STDIN];
+	if (p->stdout == STDOUT_FILENO)
+		p->stdout = fds[FD_STDOUT];
+	if (p->stderr == STDERR_FILENO)
+		p->stderr = fds[FD_STDERR];
+	if ((ret = s_fork_it(sh, p->j, p)) != ST_OK)
 		return (ret);
 	return (ST_OK);
 }
