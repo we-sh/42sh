@@ -52,12 +52,9 @@ static int		s_add_to_local_var(char ***argv, int *argc, t_sh **sh,
 			if ((ret = env_set(&(*sh)->envp, (*argv)[0], tmp)) != ST_OK)
 				return (ret);
 		}
-		else
-		{
-			if ((ret = builtin_local_var_set_local_loop(sh, (*argv)[0], tmp))
+		else if ((ret = builtin_local_var_set_local_loop(sh, (*argv)[0], tmp))
 				!= ST_OK)
-				return (ret);
-		}
+			return (ret);
 		free(tmp);
 		*argc -= 1;
 		ft_array_pop(argv, 0, 1);
