@@ -9,7 +9,7 @@ static void	s_remove_variables(char ***envp, char **vars_to_be_removed)
 	}
 }
 
-static int	s_exec_display(t_proc *p)
+static int	s_exec_display(t_proc *p, t_sh *sh)
 {
 	if (option_is_set(&p->bltin_opt_head, ST_BLTIN_ENV_OPT_I) == 1)
 	{
@@ -23,7 +23,7 @@ static int	s_exec_display(t_proc *p)
 														ST_BLTIN_ENV_OPT_U));
 	p->argc--;
 	ft_array_pop(&p->argv, 0, 1);
-	env_or_var_update_from_cmd_line(&p, NULL);
+	env_or_var_update_from_cmd_line(&p, &sh);
 	if (p->argc == 0)
 	{
 		while (*p->envp)
@@ -36,10 +36,10 @@ static int	s_exec_display(t_proc *p)
 	return (ST_OK);
 }
 
-static int	s_exec(t_builtin const *builtin, t_proc *p)
+static int	s_exec(t_builtin const *builtin, t_proc *p, t_sh *sh)
 {
 	if (p->bltin_status == ST_OK)
-		s_exec_display(p);
+		s_exec_display(p, sh);
 	else
 	{
 		builtin_usage(builtin, p->bltin_status);
@@ -51,11 +51,10 @@ static int	s_exec(t_builtin const *builtin, t_proc *p)
 int			builtin_env(t_builtin const *builtin,
 						int callback, t_sh *sh, t_proc *p)
 {
-	(void)sh;
 	if (callback == BLTIN_CB_BEFORE)
 		return (ST_OK);
 	if (callback == BLTIN_CB_EXEC)
-		return (s_exec(builtin, p));
+		return (s_exec(builtin, p, sh));
 	if (callback == BLTIN_CB_AFTER)
 		return (ST_OK);
 	return (ST_OK);
