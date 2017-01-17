@@ -32,7 +32,10 @@ static int		s_read_with_gnl(t_sh *sh, char **input)
 		if (ret == 0)
 		{
 			if (*input && parser(sh, *input, F_PARSING_TERMCAPS, NULL) != ST_OK)
+			{
+				sh->last_exit_status = EXIT_FAILURE;
 				return (ST_PARSER);
+			}
 			return (*input == NULL ? ST_EXIT : ST_OK);
 		}
 		if ((ret = s_read_with_gnl_concat_input(input, &input_tmp)) != ST_OK)

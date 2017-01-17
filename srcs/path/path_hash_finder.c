@@ -68,7 +68,7 @@ static int		s_path_look_inside_hast(char **cmd, int index, int *ret)
 
 static int		s_path_full(int *ret, char **cmd)
 {
-	if (*ret != ST_OK && access(*cmd, F_OK) != -1)
+	if (*ret != ST_OK && (access(*cmd, F_OK) != -1))
 	{
 		if ((*ret = s_path_return_file_type(*cmd)) != ST_OK)
 		{
@@ -81,6 +81,10 @@ static int		s_path_full(int *ret, char **cmd)
 		}
 		return (*ret);
 	}
+	else if (errno == ELOOP)
+		return (ST_ELOOP);
+	else if (errno == ENOENT)
+		return (ST_ENOENT);
 	return (ST_OK);
 }
 
@@ -103,7 +107,9 @@ int				path_hash_finder(char **envp, char **cmd)
 	}
 	if ((ft_strncmp(*cmd, "/", 1) == 0 || ft_strncmp(*cmd, ".", 1) == 0))
 		return (s_path_full(&ret, cmd));
-	if (ret != ST_OK && access(*cmd, X_OK) == -1)
+	if (ret != ST_OK && ((ret = access(*cmd, X_OK)) == -1))
+	{
 		return (ST_EACCES);
+	}
 	return (ST_OK);
 }

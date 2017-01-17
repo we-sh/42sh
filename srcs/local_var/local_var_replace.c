@@ -81,6 +81,21 @@ static int		s_replace_char_or_loop(t_sh *sh, char *input,
 	return (ST_OK);
 }
 
+static int		s_is_inhibited(char *start, char *c)
+{
+	int		odd;
+
+	odd = 0;
+	while (c != start)
+	{
+		c--;
+		if (c[0] != '\\')
+			return (odd);
+		odd = (odd == 0) ? 1 : 0;
+	}
+	return (odd);
+}
+
 int				local_var_replace(t_sh *sh, char *input, char **output)
 {
 	int			i;
@@ -90,7 +105,7 @@ int				local_var_replace(t_sh *sh, char *input, char **output)
 	i2 = 0;
 	while (input[i])
 	{
-		if (input[i] == '$')
+		if (input[i] == '$' && s_is_inhibited(input, input + i) == 0)
 		{
 			if (i2 != i)
 			{

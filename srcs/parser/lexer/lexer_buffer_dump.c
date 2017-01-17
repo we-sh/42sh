@@ -10,8 +10,8 @@ int				lexer_buffer_dump(t_parser *parser, t_lexer *lexer)
 		t.len = lexer->buf_index;
 		t.type = TT_NAME;
 		t.code = TC_NONE;
-		if (parser->mode == F_PARSING_GLOBING)
-			t.parse = token_globing_parse_none;
+		if (parser->mode == F_PARSING_VAR)
+			t.parse = token_var_parse_none;
 		else if (parser->mode == F_PARSING_GLOB_BRACE)
 			t.parse = token_glob_brace_parse_none;
 		else

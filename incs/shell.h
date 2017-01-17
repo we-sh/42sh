@@ -76,6 +76,7 @@
 # include "get_next_line.h"
 # include "parser.h"
 # include "builtin.h"
+# include "globbing.h"
 # include "parser_struct.h"
 
 /*

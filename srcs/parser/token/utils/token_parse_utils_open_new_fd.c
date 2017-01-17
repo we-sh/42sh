@@ -12,7 +12,9 @@ static int	s_check_symlink(char *f)
 	if ((status = builtin_cd_chk_path(&path, 1)) == ST_OK)
 	{
 		status = ST_ENOENT;
-		if (access(path, X_OK) == -1)
+		if (access(f, F_OK) == -1)
+			status = ST_ENOENT;
+		else if (access(path, X_OK) == -1)
 			status = ST_EACCES;
 		if (lstat(path, &stat) == 0)
 		{
@@ -32,7 +34,9 @@ int			token_parse_utils_open_new_fd(t_proc *p, char *f, int *fd, int flag)
 	if ((*fd = open(f, flag, 0644)) < 0)
 	{
 		status = ST_ENOENT;
-		if (access(f, X_OK) == -1)
+		if (access(f, F_OK) == -1)
+			status = ST_ENOENT;
+		else if (access(f, X_OK) == -1)
 			status = ST_EACCES;
 		if (lstat(f, &stat) == 0)
 		{
