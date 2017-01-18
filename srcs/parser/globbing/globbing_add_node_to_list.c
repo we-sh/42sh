@@ -20,7 +20,11 @@ int    globbing_add_node_alpha_to_list(t_list *argv_list, char *content)
 	safe = safe->next;
 	arg = CONTAINER_OF(pos, t_argv, argv_list);
 	ret = ft_strcmp(content, arg->buffer);
-
+	// if ((ret = ft_strcmp(content, arg->buffer)) < 0)
+	// {
+	// 	list_insert(&argument->argv_list, argv_list, index);
+	// 	return (ST_OK) ;
+	// }
 	while ((pos = safe) &&  pos != argv_list && (ret = ft_strcmp(content, arg->buffer)) > 0)
 	{
 	  safe = safe->next;
@@ -28,6 +32,7 @@ int    globbing_add_node_alpha_to_list(t_list *argv_list, char *content)
 	  if ((ret = ft_strcmp(content, arg->buffer)) < 0)
 	  {
 		index++;
+		log_success("insert at index:%d :%d ", index, ret);
 		list_insert(&argument->argv_list, argv_list, index);
 		return (ST_OK) ;
 	  }
@@ -44,6 +49,7 @@ int    globbing_add_node_alpha_to_list(t_list *argv_list, char *content)
 	if (ret != 0)
 		index++;
   }
+	log_success("insert at index:%d :%d ", index, ret);
   list_insert(&argument->argv_list, argv_list, index);
   return (ST_OK);
 }

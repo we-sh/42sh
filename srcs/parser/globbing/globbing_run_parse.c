@@ -33,7 +33,7 @@ static t_mylist	*s_mylist_del_safe(t_mylist **list)
 	return (ret);
 }
 
-static int		s_apply_globbing(t_list *list_glob, t_ctx *c)
+static int		s_apply_globbing(t_list *list_glob, t_ctx *c, t_argv *arg)
 {
 	char	*m;
 
@@ -51,10 +51,13 @@ static int		s_apply_globbing(t_list *list_glob, t_ctx *c)
 	{
 		if ((m = s_join_free(m, c->r)) == NULL)
 			return (ST_MALLOC);
-		globbing_run_parse(m, list_glob);
+		free(arg->buffer);
+		arg->buffer = m;
+		globbing_run_parse(arg, list_glob);
 	}
 	else
 	{
+		log_success("Go inside add_node_alpha:%s ", m);
 		globbing_add_node_alpha_to_list(list_glob, m);
 	}
 	ft_strdel(&m);
@@ -62,33 +65,38 @@ static int		s_apply_globbing(t_list *list_glob, t_ctx *c)
 }
 
 static int		s_globbing_run_parse_arg(t_list *list_glob, t_ctx *c,
-		char *arg, int *i)
+		t_argv *arg, int *i)
 {
 	t_mylist		*list;
 	int				ret;
 
 	list = NULL;
-	log_info("inside s_globbing_run_parse_arg:%s ",c->c_file->d_name);
+	log_debug("inside s_globbing_run_parse_arg c->c_file->d_name:%s ",c->c_file->d_name);
 	if (!(ret = 0) && globbing_bracket(&list, c->m, c->c_file->d_name) == -1)
 	{
-		globbing_add_node_to_list(list_glob, arg);
+		log_success("Add arg in run parse if glob brack -q:%s ", arg);
+		globbing_add_node_to_list(list_glob, arg->buffer);
 		return (ST_OK);
 	}
+	log_debug("Before while list");
 	while (list)
 	{
+		log_warn("list->content:%s ", list->content);
 		if ((ret = globbing_check(list->content, c->c_file->d_name)) > 0)
 		{
-			if ((s_apply_globbing(list_glob, c)) == ST_MALLOC)
+			if ((s_apply_globbing(list_glob, c, arg)) == ST_MALLOC)
 				return (ST_MALLOC);
 			*i = *i + 1;
 		}
 		else if (ret == -1)
 		{
-			globbing_add_node_to_list(list_glob, arg);
+			log_success("Add arg in run parse if ret -1:%s ", arg->buffer);
+			globbing_add_node_to_list(list_glob, arg->buffer);
 			return (ST_OK);
 		}
 		list = s_mylist_del_safe(&list);
 	}
+	log_error("OUT");
 	return (ST_OK);
 }
 
@@ -96,16 +104,19 @@ static int		s_globbing_run_parse_arg(t_list *list_glob, t_ctx *c,
 ** This function create the list of what it must be compared
 */
 
-int					globbing_run_parse(char *arg, t_list *list_glob)
+int					globbing_run_parse(t_argv *arg, t_list *list_glob)
 {
 	t_ctx			*c;
 	DIR				*dp;
 	int				i;
 
-	log_info("inside globbing_run_parse value of arg->content:%s", arg);
-	globbing_load_context(&c, arg);
+	log_info("inside globbing_run_parse value of arg->content:%s", arg->buffer);
+	globbing_load_context(&c, arg->buffer);
 	if (!(i = 0) && !(c->m))
-		globbing_add_node_to_list(list_glob, arg);
+	{
+		log_success("add node inside run parse:%s", arg->buffer);		
+		globbing_add_node_to_list(list_glob, arg->buffer);
+	}
 	else
 	{
 		if ((dp = (!(c->l)) ? opendir(".") : opendir(c->l)))
@@ -119,7 +130,10 @@ int					globbing_run_parse(char *arg, t_list *list_glob)
 				}
 			}
 			if (i <= 0)
-				globbing_add_node_to_list(list_glob, arg);
+			{
+				log_success("add node inside run parse:%s", arg->buffer);
+				globbing_add_node_to_list(list_glob, arg->buffer);
+			}
 			closedir(dp);
 		}
 	}

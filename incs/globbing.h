@@ -27,7 +27,7 @@ int		globbing(t_list **argv_list);
 int		globbing_load_context(t_ctx **ctx, char *arg);
 void	globbing_context_delete(t_ctx *ctx);
 int		globbing_bracket(t_mylist **list, char *input, char *match);
-int	globbing_run_parse(char *arg, t_list *list_glob);
+int		globbing_run_parse(t_argv *arg, t_list *list_glob);
 int		globbing_add_node_to_list(t_list *argv_list, char *content);
 int  	globbing_exp_param_bracket(t_mylist **list,
 									char *input,

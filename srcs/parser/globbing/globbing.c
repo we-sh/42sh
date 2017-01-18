@@ -34,7 +34,7 @@ static int	s_globbing_proceed_on_token(t_list *list_glob, t_argv *arg)
 	}
 	if (s_globbing_is_matching_token(arg->buffer))
 	{
-		if ((globbing_run_parse(arg->buffer, list_glob)) == ST_MALLOC)
+		if ((globbing_run_parse(arg, list_glob)) == ST_MALLOC)
 			return (ST_MALLOC);
 		if (list_is_empty(list_glob))
 			globbing_add_node_to_list(list_glob, arg->buffer);
@@ -56,7 +56,9 @@ int			globbing(t_list **argv_list)
 	t_argv	*arg;
 	t_list	*pos;
 	t_list	*safe;
+	int		index;
 
+	index = 0;
 	if ((list_glob = (t_list *)malloc(sizeof(t_list))) == NULL)
 		return (ST_MALLOC);
 	INIT_LIST_HEAD(list_glob);
@@ -65,10 +67,12 @@ int			globbing(t_list **argv_list)
 	{
 		safe = safe->next;
 		arg = CONTAINER_OF(pos, t_argv, argv_list);
-		log_info(arg->buffer);
+		arg->pos = index;
+		log_info("arg->buffer:%s, arg->pos: %d", arg->buffer, arg->pos);
 		if((s_globbing_proceed_on_token(list_glob, arg)) == ST_MALLOC)
 			return (ST_MALLOC);
 		s_delete_argv(&arg);
+		index++;
 	}
 	free(*argv_list);
 	*argv_list = list_glob;
