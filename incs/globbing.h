@@ -28,7 +28,7 @@ int		globbing_load_context(t_ctx **ctx, char *arg);
 void	globbing_context_delete(t_ctx *ctx);
 int		globbing_bracket(t_mylist **list, char *input, char *match);
 int		globbing_run_parse(t_argv *arg, t_list *list_glob);
-int		globbing_add_node_to_list(t_list *argv_list, char *content);
+int		globbing_add_node_to_list(t_list *argv_list, t_argv *arg);
 int  	globbing_exp_param_bracket(t_mylist **list,
 									char *input,
 									t_tmp *concat,
@@ -41,5 +41,6 @@ int 	globbing_remove_double(t_tmp **concat);
 int  	globbing_bracket_recurse(t_mylist **list, t_tmp *concat, char *match, int i);
 int		globbing_before_expand(t_tmp **concat, int i, int len);
 int		globbing_check(char *pattern, char *input);
-int       globbing_add_node_alpha_to_list(t_list *argv_list, char *content);
+int    globbing_add_node_alpha_to_list(t_list *argv_list, char *content, t_argv *arg_base);
+
 #endif

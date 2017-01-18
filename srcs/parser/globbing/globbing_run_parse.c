@@ -49,6 +49,7 @@ static int		s_apply_globbing(t_list *list_glob, t_ctx *c, t_argv *arg)
 	}
 	if (c->r)
 	{
+		log_success("HERE ");
 		if ((m = s_join_free(m, c->r)) == NULL)
 			return (ST_MALLOC);
 		free(arg->buffer);
@@ -58,7 +59,7 @@ static int		s_apply_globbing(t_list *list_glob, t_ctx *c, t_argv *arg)
 	else
 	{
 		log_success("Go inside add_node_alpha:%s ", m);
-		globbing_add_node_alpha_to_list(list_glob, m);
+		globbing_add_node_alpha_to_list(list_glob, m, arg);
 	}
 	ft_strdel(&m);
 	return (ST_OK);
@@ -71,17 +72,15 @@ static int		s_globbing_run_parse_arg(t_list *list_glob, t_ctx *c,
 	int				ret;
 
 	list = NULL;
-	log_debug("inside s_globbing_run_parse_arg c->c_file->d_name:%s ",c->c_file->d_name);
+	log_debug("readdir file->d_name:%s ",c->c_file->d_name);
 	if (!(ret = 0) && globbing_bracket(&list, c->m, c->c_file->d_name) == -1)
 	{
 		log_success("Add arg in run parse if glob brack -q:%s ", arg);
-		globbing_add_node_to_list(list_glob, arg->buffer);
+		globbing_add_node_to_list(list_glob, arg);
 		return (ST_OK);
 	}
-	log_debug("Before while list");
 	while (list)
 	{
-		log_warn("list->content:%s ", list->content);
 		if ((ret = globbing_check(list->content, c->c_file->d_name)) > 0)
 		{
 			if ((s_apply_globbing(list_glob, c, arg)) == ST_MALLOC)
@@ -91,12 +90,11 @@ static int		s_globbing_run_parse_arg(t_list *list_glob, t_ctx *c,
 		else if (ret == -1)
 		{
 			log_success("Add arg in run parse if ret -1:%s ", arg->buffer);
-			globbing_add_node_to_list(list_glob, arg->buffer);
+			globbing_add_node_to_list(list_glob, arg);
 			return (ST_OK);
 		}
 		list = s_mylist_del_safe(&list);
 	}
-	log_error("OUT");
 	return (ST_OK);
 }
 
@@ -110,12 +108,12 @@ int					globbing_run_parse(t_argv *arg, t_list *list_glob)
 	DIR				*dp;
 	int				i;
 
-	log_info("inside globbing_run_parse value of arg->content:%s", arg->buffer);
+	log_info("inside globbing_run_parse value of arg->content:%s, pos:%d", arg->buffer, arg->pos);
 	globbing_load_context(&c, arg->buffer);
 	if (!(i = 0) && !(c->m))
 	{
 		log_success("add node inside run parse:%s", arg->buffer);		
-		globbing_add_node_to_list(list_glob, arg->buffer);
+		globbing_add_node_to_list(list_glob, arg);
 	}
 	else
 	{
@@ -132,7 +130,7 @@ int					globbing_run_parse(t_argv *arg, t_list *list_glob)
 			if (i <= 0)
 			{
 				log_success("add node inside run parse:%s", arg->buffer);
-				globbing_add_node_to_list(list_glob, arg->buffer);
+				globbing_add_node_to_list(list_glob, arg);
 			}
 			closedir(dp);
 		}

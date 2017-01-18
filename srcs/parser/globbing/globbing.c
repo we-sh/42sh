@@ -37,10 +37,15 @@ static int	s_globbing_proceed_on_token(t_list *list_glob, t_argv *arg)
 		if ((globbing_run_parse(arg, list_glob)) == ST_MALLOC)
 			return (ST_MALLOC);
 		if (list_is_empty(list_glob))
-			globbing_add_node_to_list(list_glob, arg->buffer);
+		{
+			log_success("add node inside proceed_on_token:%s", arg->buffer);
+			globbing_add_node_to_list(list_glob, arg);
+		}
 	}
-	else
-		globbing_add_node_to_list(list_glob, arg->buffer);
+	else{
+		log_success("add node inside proceed_on_token:%s", arg->buffer);
+		globbing_add_node_to_list(list_glob, arg);
+	}
 	return (ST_OK);
 }
 
