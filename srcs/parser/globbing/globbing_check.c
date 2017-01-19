@@ -7,9 +7,9 @@
 ** It returns 0 if it doesn't match, 1 otherwise.
 */
 
-int	globbing_check(char *pattern, char *input)
+int			globbing_check(char *pattern, char *input)
 {
-	char *is_valid;
+	char	*is_valid;
 
 	is_valid = 0;
 	if (!pattern || !input)

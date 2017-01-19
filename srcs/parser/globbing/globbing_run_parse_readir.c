@@ -2,7 +2,7 @@
 
 static char		*s_join_free(char *s1, char *s2)
 {
-	char *ret;
+	char		*ret;
 
 	ret = NULL;
 	if (s1 && s2)
@@ -35,7 +35,7 @@ static t_mylist	*s_mylist_del_safe(t_mylist **list)
 
 static int		s_apply_globbing(t_list *list_glob, t_ctx *c, t_argv *arg)
 {
-	char	*m;
+	char		*m;
 
 	if (c->l)
 	{
@@ -61,11 +61,13 @@ static int		s_apply_globbing(t_list *list_glob, t_ctx *c, t_argv *arg)
 	return (ST_OK);
 }
 
-static int		s_globbing_run_parse_arg(t_list *list_glob, t_ctx *c,
-		t_argv *arg, int *i)
+static int		s_globbing_run_parse_arg(t_list *list_glob,
+										t_ctx *c,
+										t_argv *arg,
+										int *i)
 {
-	t_mylist		*list;
-	int				ret;
+	t_mylist	*list;
+	int			ret;
 
 	list = NULL;
 	if (!(ret = 0) && globbing_bracket(&list, c->m, c->c_file->d_name) == -1)
