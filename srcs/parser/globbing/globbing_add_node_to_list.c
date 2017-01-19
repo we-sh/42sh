@@ -80,8 +80,8 @@ int				globbing_add_node_alpha_to_list(t_list *list_glob, char *content, t_argv 
 		if (ret != 0)
 			index += 1;
 	}
-	free(container);
 	list_insert(&container->argument->argv_list, list_glob, index);
+	free(container);
 	return (ST_OK);
 }
 
