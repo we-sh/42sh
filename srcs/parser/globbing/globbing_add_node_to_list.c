@@ -44,6 +44,18 @@ static int		s_add_node_loop(t_utils *ctn,
 	return (ST_OK);
 }
 
+static t_utils	*s_set_container(t_list *list_glob, char *content, t_argv *arg_base)
+{
+	t_utils		*container;
+
+	if ((container = (t_utils *)malloc(sizeof(t_utils))) == NULL)
+		return (NULL);
+	if ((container->argument = s_set_arg(content, arg_base)) == NULL)
+		return (NULL);
+	container->safe = list_glob->next;
+	return (container);
+}
+
 int				globbing_add_node_alpha_to_list(t_list *list_glob, char *content, t_argv *arg_base)
 {
 	t_utils		*container;
@@ -51,9 +63,8 @@ int				globbing_add_node_alpha_to_list(t_list *list_glob, char *content, t_argv 
 	int			ret;
 
 	index = 0;
-	container = (t_utils *)malloc(sizeof(t_utils));
-	container->argument = s_set_arg(content, arg_base);
-	container->safe = list_glob->next;
+	if ((container = s_set_container(list_glob, content, arg_base)) == NULL)
+		return (ST_MALLOC);
 	while ((container->pos = container->safe) && container->pos != list_glob)
 	{
 		container->safe = container->safe->next;
@@ -80,7 +91,8 @@ int				globbing_add_node_to_list(t_list *argv_list, t_argv *arg_base)
 	t_list		*pos;
 	t_list		*safe;
 
-	argument = s_set_arg(arg_base->buffer, arg_base);
+	if ((argument = s_set_arg(arg_base->buffer, arg_base)) == NULL)
+		return (ST_MALLOC);
 	safe = argv_list->next;
 	while ((pos = safe) && pos != argv_list)
 	{
