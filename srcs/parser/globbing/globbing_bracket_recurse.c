@@ -13,7 +13,7 @@ static int	s_is_total_make_sense(char *pattern)
 	{
 		if (pattern[i] == -'[')
 			sign1++;
-		if (pattern[i] == ']')
+		if (pattern[i] == -']')
 			sign2++;
 		i++;
 	}
@@ -29,11 +29,11 @@ static int	s_check_globbing_brack(char *pattern, char *input)
 	is_valid = 0;
 	if (!pattern || !input)
 		return (0);
-	if ((ft_strchr(pattern, -'[') || ft_strchr(pattern, ']')))
+	if ((ft_strchr(pattern, -'[') || ft_strchr(pattern, -']')))
 	{
 		if ((is_valid = ft_strchr(pattern, -'[')))
 			return (-1);
-		else if ((is_valid = ft_strchr(pattern, ']')))
+		else if ((is_valid = ft_strchr(pattern, -']')))
 			return (-1);
 		if (s_is_total_make_sense(pattern))
 			return (-1);

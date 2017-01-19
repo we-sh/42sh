@@ -10,12 +10,7 @@ char		*globbing_check_last_bracket(char *input)
 	last_bracket = 0;
 	while (input[i])
 	{
-		if (input[i - 1] != '^' && input[i] == ']' && i > 1)
-		{
-			last_bracket = i;
-			break ;
-		}
-		else if (input[i - 1] == '^' && input[i] == ']' && i > 2)
+		if (input[i] == -']')
 		{
 			last_bracket = i;
 			break ;

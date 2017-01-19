@@ -83,13 +83,13 @@ int			expand_get_words(char **content, t_lexer *lexer,
 		if (is_inhibited != 0)
 			tmp = s_build_str(*content, TOKEN_CONTENT(*i), is_inhibited);
 		else
-			tmp = expand_get_words_special_build_str(*content,
-													TOKEN_CONTENT(*i));
+			tmp = ft_strjoin(*content, TOKEN_CONTENT(*i));
 		if (tmp == NULL)
 			return (ST_MALLOC);
 		free(*content);
 		*content = tmp;
 		(*i)++;
 	}
+	expand_prepare_globbing_tokens(*content);
 	return (ST_OK);
 }
