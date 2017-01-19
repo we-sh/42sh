@@ -70,6 +70,7 @@ SRCS	=	\
 			parser/globbing/globbing.c									\
 			parser/globbing/globbing_bracket.c							\
 			parser/globbing/globbing_run_parse.c						\
+			parser/globbing/globbing_run_parse_readir.c						\
 			parser/globbing/globbing_add_node_to_list.c					\
 			parser/globbing/globbing_exp_param_bracket.c				\
 			parser/globbing/globbing_happend_to_list.c					\

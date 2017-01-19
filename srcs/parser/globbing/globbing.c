@@ -73,7 +73,6 @@ int			globbing(t_list **argv_list)
 		safe = safe->next;
 		arg = CONTAINER_OF(pos, t_argv, argv_list);
 		arg->pos = index;
-		log_info("arg->buffer:%s, arg->pos: %d", arg->buffer, arg->pos);
 		if((s_globbing_proceed_on_token(list_glob, arg)) == ST_MALLOC)
 			return (ST_MALLOC);
 		s_delete_argv(&arg);

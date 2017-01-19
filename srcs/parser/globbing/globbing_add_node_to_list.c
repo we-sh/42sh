@@ -1,83 +1,93 @@
 #include "shell.h"
 
-int    globbing_add_node_alpha_to_list(t_list *list_glob, char *content, t_argv *arg_base)
+static t_argv	*s_set_arg(char *content, t_argv *arg_base)
 {
-  t_argv    *argument;
-  t_argv    *arg;
-  t_list    *pos;
-  t_list    *safe;
-  int     index=0;
-  int     ret=0;
-
-  if (!(argument = (t_argv *)malloc(sizeof(t_argv))))
-	return (ST_MALLOC);
-  if ((argument->buffer = ft_strdup(content)) == NULL)
-	return (ST_MALLOC);
-  argument->is_null = 0;
-  argument->pos = arg_base->pos;
-  safe = list_glob->next;
-log_error("Valeur of arg_base->pos:%d, arg_base->buffer:%s ", arg_base->pos, arg_base->buffer);  
-  while ((pos = safe) && pos != list_glob)
-  {
-	safe = safe->next;
-	arg = CONTAINER_OF(pos, t_argv, argv_list);
-	ret = ft_strcmp(content, arg->buffer);
-	log_error("Valeur of arg_base->pos:%d, arg_base->buffer:%s ", arg->pos, arg->buffer);  
-	if ((arg->pos == arg_base->pos) && (ret = ft_strcmp(content, arg->buffer)) < 0)
-	{
-		list_insert(&argument->argv_list, list_glob, index);
-		return (ST_OK) ;
-	}
-	while ((pos = safe) &&  pos != list_glob && (ret = ft_strcmp(content, arg->buffer)) > 0)
-	{
-	  safe = safe->next;
-	  arg = CONTAINER_OF(pos, t_argv, argv_list);
-	  if ((ret = ft_strcmp(content, arg->buffer)) < 0)
-	  {
-		index++;
-		log_success("insert at index:%d :%d ", index, ret);
-		list_insert(&argument->argv_list, list_glob, index);
-		return (ST_OK) ;
-	  }
-	  else if (ret == 0)
-	  {
-		index++;
-		free(arg->buffer);
-		free(arg);
-		return (ST_OK) ;
-	  }
-	  ret = 1;
-	  index++;
-	}
-	if (ret != 0)
-		index++;
-  }
-	log_success("insert at index:%d :%d ", index, ret);
-  list_insert(&argument->argv_list, list_glob, index);
-  return (ST_OK);
-}
-
-
-int			globbing_add_node_to_list(t_list *argv_list, t_argv *arg_base)
-{
-	t_argv	*argument;
-	t_argv	*arg;
-	t_list	*pos;
-	t_list	*safe;
+	t_argv		*argument;
 
 	if (!(argument = (t_argv *)malloc(sizeof(t_argv))))
-		return (ST_MALLOC);
-	if ((argument->buffer = ft_strdup(arg_base->buffer)) == NULL)
-		return (ST_MALLOC);
-	argument->is_null = 0;
+		return (NULL);
+	if ((argument->buffer = ft_strdup(content)) == NULL)
+		return (NULL);
 	argument->pos = arg_base->pos;
+	argument->is_null = 0;
+	return (argument);
+}
+
+static int		s_add_node_loop(t_utils *ctn,
+									t_list *list_glob,
+									int *index,
+									int *ret)
+{
+	t_list		*pos;
+
+	while ((pos = ctn->safe) &&  pos != list_glob &&
+		(*ret = ft_strcmp(ctn->argument->buffer, ctn->arg->buffer)) > 0)
+	{
+		ctn->safe = ctn->safe->next;
+		ctn->arg = CONTAINER_OF(pos, t_argv, argv_list);
+		if ((*ret = ft_strcmp(ctn->argument->buffer, ctn->arg->buffer)) < 0)
+		{
+			*index += 1;
+			list_insert(&ctn->argument->argv_list, list_glob, *index);
+			return (ST_DONE);
+		}
+		else if (*ret == 0)
+		{
+			*index += 1;
+			free(ctn->arg->buffer);
+			free(ctn->arg);
+			return (ST_DONE);
+		}
+		*ret = 1;
+		*index += 1;
+	}
+	return (ST_OK);
+}
+
+int				globbing_add_node_alpha_to_list(t_list *list_glob, char *content, t_argv *arg_base)
+{
+	t_utils		*container;
+	int			index;
+	int			ret;
+
+	index = 0;
+	container = (t_utils *)malloc(sizeof(t_utils));
+	container->argument = s_set_arg(content, arg_base);
+	container->safe = list_glob->next;
+	while ((container->pos = container->safe) && container->pos != list_glob)
+	{
+		container->safe = container->safe->next;
+		container->arg = CONTAINER_OF(container->pos, t_argv, argv_list);
+		ret = ft_strcmp(content, container->arg->buffer);
+		if ((container->arg->pos == arg_base->pos) && ret < 0)
+		{
+			list_insert(&container->argument->argv_list, list_glob, index);
+			return (ST_OK) ;
+		}
+		if ((s_add_node_loop(container, list_glob, &index, &ret)) == ST_DONE)
+			return (ST_OK);
+		if (ret != 0)
+			index += 1;
+	}
+	list_insert(&container->argument->argv_list, list_glob, index);
+	return (ST_OK);
+}
+
+int				globbing_add_node_to_list(t_list *argv_list, t_argv *arg_base)
+{
+	t_argv		*argument;
+	t_argv		*arg;
+	t_list		*pos;
+	t_list		*safe;
+
+	argument = s_set_arg(arg_base->buffer, arg_base);
 	safe = argv_list->next;
 	while ((pos = safe) && pos != argv_list)
 	{
 		safe = safe->next;
 		arg = CONTAINER_OF(pos, t_argv, argv_list);
 		arg->pos = arg_base->pos;
-			if (ft_strcmp(arg->buffer, arg_base->buffer) == 0)
+		if (ft_strcmp(arg->buffer, arg_base->buffer) == 0)
 		{
 			free(argument->buffer);
 			free(argument);
