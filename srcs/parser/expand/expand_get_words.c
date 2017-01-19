@@ -2,7 +2,8 @@
 
 static int	s_is_token(char *c, int inhibiter_code)
 {
-	if (c[0] == '{' || c[0] == '[' || c[0] == '*' || c[0] == '?')
+	if (c[0] == '{' || c[0] == '[' || c[0] == '*' || c[0] == '?'
+														|| c[0] == ']' )
 		return (1);
 	if (c[0] == '\\' && inhibiter_code == TC_QUOTE)
 		return (1);
