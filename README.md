@@ -6,8 +6,8 @@ credits : @jgigault, @gkuma, @anouvel
 
 Branch     | Travis-CI status
 -----------| ---
-master     | [![Build Status](https://travis-ci.org/42shTests/42sh.svg?branch=master)](https://travis-ci.org/42shTests/42sh)
-develop    | [![Build Status](https://travis-ci.org/42shTests/42sh.svg?branch=develop)](https://travis-ci.org/42shTests/42sh)
+master     | [![Build Status](https://travis-ci.org/42shTests/42sh.svg?branch=master)](https://travis-ci.org/we-sh/42sh)
+develop    | [![Build Status](https://travis-ci.org/42shTests/42sh.svg?branch=develop)](https://travis-ci.org/we-sh/42sh)
 
 
 
