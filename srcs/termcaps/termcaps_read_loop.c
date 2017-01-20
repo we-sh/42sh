@@ -7,9 +7,12 @@ static int			s_termcaps_treat_input(const t_input_type it,
 {
 	if (it == MINISHELL__INPUT_TYPE_PRINT)
 	{
+		if (context->state != STATE_REGULAR &&
+			context->state != STATE_SEARCH_HISTORY)
+			return (0);
 		ASSERT(command_add_string(ib_size,
-											ib,
-											&context->command));
+									ib,
+									&context->command));
 	}
 	else if (it == MINISHELL__INPUT_TYPE_CAPS)
 	{
