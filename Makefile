@@ -223,6 +223,7 @@ SRCS	=	\
 			path/path_hash_finder.c										\
 			path/path_add_folder_content_to_hasht.c						\
 			path/path_commande_not_found_in_hasht.c						\
+			path/path_set_struct_display.c								\
 			quoting/quoting_new_context.c								\
 			quoting/quoting_concat_new_input.c							\
 			signal/signal_to_default.c									\

@@ -193,10 +193,14 @@ void			option_free(t_option **opt);
 
 int				path_init_hasht(char **envp);
 int				path_hash_finder(char **envp, char **commande);
-int				path_add_folder_content_to_hasht(char *name, char *dirname);
+int				path_add_folder_content_to_hasht(char *name,
+													char *dirname,
+													t_display_h *display,
+													char **envp);
 void			path_free_hasht(void);
 int				path_commande_not_found_in_hasht(char **envp, char **cmd);
 int				path_get_new_cmd(char **commande, char *name, char *path);
+void			path_set_struct_display(t_display_h *display);
 
 /*
 ** quoting

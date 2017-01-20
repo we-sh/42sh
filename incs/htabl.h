@@ -14,6 +14,14 @@ typedef struct			s_hasht
 	struct s_hasht		*next;
 }						t_hasht;
 
+typedef struct			s_display_h
+{
+	int					i;
+	int					max;
+	int					total_binaries;
+	int					folders_nbr;
+}						t_display_h;
+
 struct					s_body
 {
 	t_hasht				*head;
