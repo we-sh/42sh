@@ -1,5 +1,5 @@
-#include "shell.h"
 
+#include "shell.h"
 static int		s_key_delete_selection(t_termcaps_context *context)
 {
 	t_list_head	head;
@@ -25,11 +25,7 @@ int				key__delete_command(t_termcaps_context *context)
 		if (!command_add_string(context->prompt.size,
 											context->prompt.bytes,
 											&context->command))
-		{
-			log_error("minishell__string_to_command() failed %.*s",
-				(int)context->prompt.size, context->prompt.bytes);
 			return (0);
-		}
 		context->history.offset = context->history.size;
 	}
 	else if (context->state == STATE_SELECTION)

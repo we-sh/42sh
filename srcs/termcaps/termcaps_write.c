@@ -11,10 +11,7 @@ int		termcaps_write(int fd, char *buffer, size_t buffer_size)
 		nb_write = write(fd, buffer + nb_write_total,
 						buffer_size - nb_write_total);
 		if (nb_write < 0)
-		{
-			log_fatal("write() failed");
 			return (0);
-		}
 		nb_write_total += nb_write;
 	}
 	return (1);

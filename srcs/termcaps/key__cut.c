@@ -9,10 +9,7 @@ static int		s_key_cut_selection(t_termcaps_context *in_context,
 	if (!key__share__selection_get(in_context,
 									selection_start,
 									selection_size))
-	{
-		log_error("key__share__selection_get() failed %s\r", "");
 		return (0);
-	}
 	return (1);
 }
 

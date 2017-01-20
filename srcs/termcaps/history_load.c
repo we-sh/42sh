@@ -15,7 +15,6 @@ static int	s_stupidgetnextline(t_list_head *history, size_t *from,
 	{
 		if (!history_add(line, history))
 		{
-			log_error("history_add failed line {%s}", line);
 			free(line);
 			return (0);
 		}
@@ -60,21 +59,14 @@ int			history_load(char **envp, t_list_head *history, size_t *from)
 	int		fd;
 
 	if (!history_get_filename(envp, sizeof(filename), filename))
-	{
-		log_error("history_get_filename failed");
 		return (1);
-	}
 	if (!file_exists(filename))
 		return (1);
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
-	{
-		log_error("open: %s failed errno %d", filename, errno);
 		return (ST_OPEN);
-	}
 	if (!read_history(fd, history, from))
 	{
-		log_error("read_history %s failed", filename);
 		close(fd);
 		return (ST_HISTORY_FILE_TOO_BIG);
 	}

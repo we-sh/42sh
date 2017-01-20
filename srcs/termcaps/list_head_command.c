@@ -11,11 +11,7 @@ int					command_add(const size_t character_size,
 	t_node_cmd	*new;
 
 	if (!character_size || character_size > CHARACTER_SIZE_MAX || !character)
-	{
-		log_error("character_size %zu size_max %zu character %p",
-			character_size, CHARACTER_SIZE_MAX, (void *)character);
 		return (0);
-	}
 	ASSERT(new = (t_node_cmd *)malloc(sizeof(t_node_cmd)));
 	new->character_size = character_size;
 	ft_memcpy(new->character, character, character_size);
