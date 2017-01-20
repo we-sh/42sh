@@ -1,44 +1,18 @@
 #include "shell.h"
 
-static char		*s_replace_from_local(t_var *ptr, char *tmp)
+static int		s_is_inhibited(char *start, char *c)
 {
-	while (ptr)
-	{
-		if (ft_strcmp(tmp, ptr->key) == 0)
-		{
-			free(tmp);
-			if (ptr->value)
-				return (ft_strdup(ptr->value));
-		}
-		ptr = ptr->next;
-	}
-	return (NULL);
-}
+	int		odd;
 
-static char		*s_local_var_replace_loop(t_sh *sh, char *input, int *i)
-{
-	t_var		*ptr;
-	int			pos;
-	char		*tmp;
-	char		*value;
-
-	pos = 0;
-	ptr = sh->local_vars;
-	while (ft_isalnum(input[pos]) || input[pos] == '_')
-		pos++;
-	if ((tmp = ft_strnew(pos)) == NULL)
-		return (NULL);
-	tmp = ft_strncpy(tmp, input, pos);
-	*i = *i + pos;
-	if ((value = (s_replace_from_local(ptr, tmp))) != NULL)
-		return (value);
-	else if ((value = env_get(sh->envp, tmp)) != NULL)
+	odd = 0;
+	while (c != start)
 	{
-		free(tmp);
-		return (ft_strdup(value));
+		c--;
+		if (c[0] != '\\')
+			return (odd);
+		odd = (odd == 0) ? 1 : 0;
 	}
-	free(tmp);
-	return (ft_strnew(0));
+	return (odd);
 }
 
 static int		s_local_var_replace_out_of_loop(char *input, char **output,
@@ -57,45 +31,6 @@ static int		s_local_var_replace_out_of_loop(char *input, char **output,
 	return (ST_OK);
 }
 
-static int		s_replace_char_or_loop(t_sh *sh, char *input,
-										char **output, int *i)
-{
-	char		*tmp;
-	int			ret;
-
-	if (input[*i + 1] == '$' || input[*i + 1] == '?')
-	{
-		if (input[*i + 1] == '$')
-			ret = sh->pgid;
-		else
-			ret = sh->last_exit_status;
-		if ((tmp = ft_itoa(ret)) == NULL)
-			return (ST_MALLOC);
-		*i += 1;
-	}
-	else if ((tmp = s_local_var_replace_loop(sh, input + *i + 1, i)) == NULL)
-		return (ST_MALLOC);
-	if (local_var_concat(output, tmp, ft_strlen(tmp)) != ST_OK)
-		return (ST_MALLOC);
-	free(tmp);
-	return (ST_OK);
-}
-
-static int		s_is_inhibited(char *start, char *c)
-{
-	int		odd;
-
-	odd = 0;
-	while (c != start)
-	{
-		c--;
-		if (c[0] != '\\')
-			return (odd);
-		odd = (odd == 0) ? 1 : 0;
-	}
-	return (odd);
-}
-
 int				local_var_replace(t_sh *sh, char *input, char **output)
 {
 	int			i;
@@ -112,7 +47,7 @@ int				local_var_replace(t_sh *sh, char *input, char **output)
 				if (local_var_concat(output, input + i2, i - i2) != ST_OK)
 					return (ST_MALLOC);
 			}
-			if ((s_replace_char_or_loop(sh, input, output, &i)) != ST_OK)
+			if ((local_var_replace_char_or_loop(sh, input, output, &i)) != ST_OK)
 				return (ST_MALLOC);
 			i++;
 			i2 = i;

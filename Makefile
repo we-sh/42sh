@@ -208,6 +208,7 @@ SRCS	=	\
 			loop/loop_job_launcher.c									\
 			loop/loop_main.c											\
 			local_var/local_var_replace.c								\
+			local_var/local_var_replace_char_or_loop.c					\
 			local_var/local_var_concat.c								\
 			options/option_get_value.c									\
 			options/option_get_values.c									\

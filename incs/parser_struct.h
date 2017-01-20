@@ -148,10 +148,10 @@ struct					s_parser
 
 typedef struct			s_argv
 {
-	t_list					argv_list;
-	char					*buffer;
-	int						pos;
-	int						is_null;
+	t_list				argv_list;
+	char				*buffer;
+	int					pos;
+	int					is_null;
 }						t_argv;
 
 #endif

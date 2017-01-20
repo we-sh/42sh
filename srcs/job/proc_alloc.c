@@ -3,7 +3,8 @@
 /*
 ** Allocate a new processus with default values.
 */
-static void	s_init_fds(t_proc *p)
+
+static void		s_init_fds(t_proc *p)
 {
 	p->stdin = STDIN_FILENO;
 	p->stdout = STDOUT_FILENO;
@@ -12,9 +13,9 @@ static void	s_init_fds(t_proc *p)
 	p->pipe[1] = -1;
 }
 
-t_proc	*proc_alloc(t_job *j)
+t_proc			*proc_alloc(t_job *j)
 {
-	t_proc	*p;
+	t_proc		*p;
 
 	if (!(p = ft_memalloc(sizeof(t_proc))))
 		return (NULL);

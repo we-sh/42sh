@@ -53,7 +53,7 @@ typedef struct	s_inib
 	char	open;
 	char	close;
 	int		state;
-} 				t_inib;
+}				t_inib;
 
 void			termcaps_error(t_termcaps_context *context,
 							char *cmd, size_t cmd_size, char *msg);

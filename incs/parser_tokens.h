@@ -255,7 +255,6 @@ static t_token g_token_var_inhibitor_quote = {
 	0
 };
 
-
 /*
 ** Tokens for glob brace expansion `{}`
 */
