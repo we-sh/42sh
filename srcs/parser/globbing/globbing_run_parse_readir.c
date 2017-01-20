@@ -42,11 +42,8 @@ static int		s_apply_globbing(t_list *list_glob, t_ctx *c, t_argv *arg)
 		if ((m = ft_strjoin(c->l, c->c_file->d_name)) == NULL)
 			return (ST_MALLOC);
 	}
-	else
-	{
-		if ((m = ft_strdup(c->c_file->d_name)) == NULL)
-			return (ST_MALLOC);
-	}
+	else if ((m = ft_strdup(c->c_file->d_name)) == NULL)
+		return (ST_MALLOC);
 	if (c->r)
 	{
 		if ((m = s_join_free(m, c->r)) == NULL)
