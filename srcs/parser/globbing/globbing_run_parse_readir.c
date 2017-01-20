@@ -56,8 +56,10 @@ static int		s_apply_globbing(t_list *list_glob, t_ctx *c, t_argv *arg)
 		globbing_run_parse(arg, list_glob);
 	}
 	else
+	{
 		globbing_add_node_alpha_to_list(list_glob, m, arg);
-	ft_strdel(&m);
+		ft_strdel(&m);
+	}
 	return (ST_OK);
 }
 
