@@ -30,6 +30,20 @@ static int	s_usage(int status)
 	return (EXIT_SUCCESS);
 }
 
+void		s_interactive_mode(t_sh *sh)
+{
+	if (sh->is_interactive == 1)
+	{
+		if (!history_write(sh->envp, &sh->termcaps_context.history, 0))
+			display_status(ST_HISTORY, NULL, NULL);
+		if (!termcaps_finalize(&sh->termcaps_context))
+			exit(display_status(ST_TERMCAPS_FINALIZE, NULL, NULL));
+		if (close(sh->fd) != 0)
+			exit(display_status(ST_CLOSE, NULL, NULL));
+		caps__finalize();
+	}
+}
+
 int			main(int argc, char *argv[], char *envp[])
 {
 	int		ret;
@@ -48,16 +62,7 @@ int			main(int argc, char *argv[], char *envp[])
 		exit(display_status(ret, NULL, NULL));
 	if ((ret = loop_main(&sh)) != ST_END_OF_INPUT && ret != ST_EXIT)
 		exit(display_status(ret, NULL, NULL));
-	if (sh.is_interactive == 1)
-	{
-		if (!history_write(sh.envp, &sh.termcaps_context.history, 0))
-			log_error("history_write failed");
-		if (!termcaps_finalize(&sh.termcaps_context))
-			exit(display_status(ST_TERMCAPS_FINALIZE, NULL, NULL));
-		if (close(sh.fd) != 0)
-			exit(display_status(ST_CLOSE, NULL, NULL));
-		caps__finalize();
-	}
+	s_interactive_mode(&sh);
 	logger_close();
 	return (sh.last_exit_status);
 }
