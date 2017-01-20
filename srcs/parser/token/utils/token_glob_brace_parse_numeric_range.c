@@ -42,7 +42,7 @@ static t_argv	*s_iterate_on_arguments(t_argv *argument, t_list *prev,
 	while (1)
 	{
 		if (start != start_original)
-			if ((argument =  s_alloc_new_argv(prev)) == NULL)
+			if ((argument = s_alloc_new_argv(prev)) == NULL)
 				return (NULL);
 		if (s_update_buffer_itoa(argument, original_str, start) != ST_OK)
 			return (NULL);

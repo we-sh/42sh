@@ -20,7 +20,7 @@ static int		s_add_node_loop(t_utils *ctn,
 {
 	t_list		*pos;
 
-	while ((pos = ctn->safe) &&  pos != list_glob &&
+	while ((pos = ctn->safe) && pos != list_glob &&
 		(*ret = ft_strcmp(ctn->argument->buffer, ctn->arg->buffer)) > 0)
 	{
 		ctn->safe = ctn->safe->next;
@@ -44,7 +44,9 @@ static int		s_add_node_loop(t_utils *ctn,
 	return (ST_OK);
 }
 
-static t_utils	*s_set_container(t_list *list_glob, char *content, t_argv *arg_base)
+static t_utils	*s_set_container(t_list *list_glob,
+									char *content,
+									t_argv *arg_base)
 {
 	t_utils		*container;
 
@@ -56,13 +58,15 @@ static t_utils	*s_set_container(t_list *list_glob, char *content, t_argv *arg_ba
 	return (container);
 }
 
-int				globbing_add_node_alpha_to_list(t_list *list_glob, char *content, t_argv *arg_base)
+int				globbing_add_node_alpha_to_list(t_list *list_glob,
+													char *content,
+													t_argv *arg_base)
 {
 	t_utils		*container;
 	int			index;
 	int			ret;
 
-	index = 0; 
+	index = 0;
 	if ((container = s_set_container(list_glob, content, arg_base)) == NULL)
 		return (ST_MALLOC);
 	while ((container->pos = container->safe) && container->pos != list_glob)
@@ -73,7 +77,7 @@ int				globbing_add_node_alpha_to_list(t_list *list_glob, char *content, t_argv 
 		if ((container->arg->pos == arg_base->pos) && ret < 0)
 		{
 			list_insert(&container->argument->argv_list, list_glob, index);
-			return (ST_OK) ;
+			return (ST_OK);
 		}
 		if ((s_add_node_loop(container, list_glob, &index, &ret)) == ST_DONE)
 			return (ST_OK);

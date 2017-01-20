@@ -31,23 +31,23 @@ static int		s_local_var_replace_out_of_loop(char *input, char **output,
 	return (ST_OK);
 }
 
-int				local_var_replace(t_sh *sh, char *input, char **output)
+int				local_var_replace(t_sh *sh, char *in, char **out)
 {
 	int			i;
 	int			i2;
 
 	i = 0;
 	i2 = 0;
-	while (input[i])
+	while (in[i])
 	{
-		if (input[i] == '$' && s_is_inhibited(input, input + i) == 0)
+		if (in[i] == '$' && s_is_inhibited(in, in + i) == 0)
 		{
 			if (i2 != i)
 			{
-				if (local_var_concat(output, input + i2, i - i2) != ST_OK)
+				if (local_var_concat(out, in + i2, i - i2) != ST_OK)
 					return (ST_MALLOC);
 			}
-			if ((local_var_replace_char_or_loop(sh, input, output, &i)) != ST_OK)
+			if ((local_var_replace_char_or_loop(sh, in, out, &i)) != ST_OK)
 				return (ST_MALLOC);
 			i++;
 			i2 = i;
@@ -55,7 +55,7 @@ int				local_var_replace(t_sh *sh, char *input, char **output)
 		else
 			i++;
 	}
-	if ((s_local_var_replace_out_of_loop(input, output, i, i2)) == ST_MALLOC)
+	if ((s_local_var_replace_out_of_loop(in, out, i, i2)) == ST_MALLOC)
 		return (ST_MALLOC);
 	return (ST_OK);
 }

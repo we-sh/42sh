@@ -34,7 +34,7 @@ static int	s_process_user(char **buffer)
 
 	len = 0;
 	user = (*buffer) + 1;
-	while(user[len] != '\0' && user[len] != '/')
+	while (user[len] != '\0' && user[len] != '/')
 		len++;
 	if ((user = ft_strnew(len)) == NULL)
 		return (ST_MALLOC);

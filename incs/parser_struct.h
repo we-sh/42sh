@@ -72,7 +72,7 @@ typedef enum			e_token_code
 }						t_token_code;
 
 /*
-* Patterns defintion for GLOB_BRACE
+** Patterns defintion for GLOB_BRACE
 */
 
 typedef enum			e_glob_brace_pattern_type

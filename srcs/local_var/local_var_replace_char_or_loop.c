@@ -41,7 +41,7 @@ static char		*s_local_var_replace_loop(t_sh *sh, char *input, int *i)
 	return (ft_strnew(0));
 }
 
-int		local_var_replace_char_or_loop(t_sh *sh, char *input,
+int				local_var_replace_char_or_loop(t_sh *sh, char *input,
 										char **output, int *i)
 {
 	char		*tmp;

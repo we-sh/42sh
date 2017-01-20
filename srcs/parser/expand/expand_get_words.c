@@ -3,7 +3,7 @@
 static int	s_is_token(char *c, int inhibiter_code)
 {
 	if (c[0] == '{' || c[0] == '[' || c[0] == '*' || c[0] == '?'
-														|| c[0] == ']' )
+														|| c[0] == ']')
 		return (1);
 	if (c[0] == '\\' && inhibiter_code == TC_QUOTE)
 		return (1);
@@ -72,8 +72,9 @@ int			expand_get_words(char **content, t_lexer *lexer,
 				int *i)
 {
 	char	*tmp;
-	int		is_inhibited = 0;
+	int		is_inhibited;
 
+	is_inhibited = 0;
 	if ((*content = ft_strnew(0)) == NULL)
 		return (ST_MALLOC);
 	while (*i < lexer->size && (TOKEN_TYPE(*i) == TT_INHIBITOR

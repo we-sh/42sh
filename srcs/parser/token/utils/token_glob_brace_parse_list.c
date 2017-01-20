@@ -31,7 +31,8 @@ static t_argv	*s_iterate_on_arguments(t_argv *argument, t_list *prev,
 		return (NULL);
 	while (1)
 	{
-		if (s_update_buffer(argument, original_str, P_TOKEN_CONTENT(i)) != ST_OK)
+		if (s_update_buffer(argument, original_str, P_TOKEN_CONTENT(i))
+			!= ST_OK)
 			return (NULL);
 		prev->next = &argument->argv_list;
 		prev = &argument->argv_list;

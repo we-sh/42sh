@@ -80,7 +80,7 @@ static int	s_jobs(t_job *j, t_lexer *lexer, int *i)
 	}
 	(*i)--;
 	if (parenthesis_count > 0)
-		return (ST_PARSER); // todo
+		return (ST_PARSER);
 	return (ST_OK);
 }
 

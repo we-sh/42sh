@@ -93,10 +93,12 @@ static int		s_globbing_run_parse_arg(t_list *list_glob,
 	return (ST_OK);
 }
 
-int					globbing_run_parse_readir(t_argv *arg, t_list *list_glob, t_ctx *c)
+int				globbing_run_parse_readir(t_argv *arg,
+												t_list *list_glob,
+												t_ctx *c)
 {
-	DIR				*dp;
-	int				i;
+	DIR			*dp;
+	int			i;
 
 	i = 0;
 	if ((dp = (!(c->l)) ? opendir(".") : opendir(c->l)))
@@ -105,7 +107,8 @@ int					globbing_run_parse_readir(t_argv *arg, t_list *list_glob, t_ctx *c)
 		{
 			if (c->c_file->d_name[0] != '.' || (c->m && c->m[0] == '.'))
 			{
-				if ((s_globbing_run_parse_arg(list_glob, c, arg, &i)) == ST_MALLOC)
+				if ((s_globbing_run_parse_arg(list_glob, c, arg, &i))
+					== ST_MALLOC)
 					return (ST_MALLOC);
 			}
 		}

@@ -10,7 +10,7 @@ int			globbing_run_parse(t_argv *arg, t_list *list_glob)
 	else
 	{
 		if (globbing_run_parse_readir(arg, list_glob, c) == ST_MALLOC)
-		return (ST_MALLOC);
+			return (ST_MALLOC);
 	}
 	globbing_context_delete(c);
 	return (ST_OK);

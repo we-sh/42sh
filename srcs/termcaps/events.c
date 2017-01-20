@@ -56,9 +56,8 @@ static int	s_inib(char c, t_inib *inib)
 {
 	size_t	i;
 
-	if (c == '\\')
+	if (!(i = 0) && c == '\\')
 		return (1);
-	i = 0;
 	while (i < TERMCAPS_INIB_COUNT)
 	{
 		if (inib[i].state == 1)
