@@ -29,7 +29,7 @@ static int			s_fork_it(t_sh *sh, t_job *j, t_proc *p)
 		{
 			errno = 0;
 			if (waitpid(p->pid, NULL, WNOHANG) && errno != ECHILD)
-				return (ST_SETPGID);
+				display_status(ST_SETPGID, NULL, NULL);
 		}
 	}
 	return (ST_OK);

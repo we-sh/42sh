@@ -13,7 +13,7 @@ static void		s_init_fds(t_proc *p)
 	p->pipe[1] = -1;
 }
 
-t_proc			*proc_alloc(t_job *j)
+t_proc			*proc_alloc(t_sh *sh, t_job *j)
 {
 	t_proc		*p;
 
@@ -35,6 +35,7 @@ t_proc			*proc_alloc(t_job *j)
 	p->exit_status = EXIT_SUCCESS;
 	p->bltin_char = NULL;
 	p->bltin_status = ST_OK;
+	p->sh = sh;
 	s_init_fds(p);
 	INIT_LIST_HEAD(&p->bltin_opt_head);
 	return (p);

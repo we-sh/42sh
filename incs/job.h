@@ -49,6 +49,7 @@ struct						s_proc
 	int						is_valid;
 	int						is_subshell;
 	int						pipe[2];
+	t_sh					*sh;
 };
 
 struct						s_job

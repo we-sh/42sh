@@ -70,7 +70,7 @@ int			parser_build_list_unstack_lexer_proc(t_parser *parser,
 	j = CONTAINER_OF(parser->target_list_head, t_job, proc_head);
 	while (*i < lexer->size)
 	{
-		if (!(p = proc_alloc(j)))
+		if (!(p = proc_alloc(parser->sh, j)))
 			return (ST_MALLOC);
 		if ((ret = s_build_command_string(p, lexer, *i)) != ST_OK)
 			return (ret);
