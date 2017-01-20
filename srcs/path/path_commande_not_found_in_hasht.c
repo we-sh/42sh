@@ -29,6 +29,18 @@ static int		s_path_cmd_match_folder(char **cmd,
 	return (ST_CMD_NOT_FOUND);
 }
 
+static char		*s_set_value(char **envp)
+{
+	char		*value;
+
+	value = NULL;
+	if ((value = env_get(envp, "PATH")) == NULL || value[0] == '\0')
+		value = getcwd(NULL, 0);
+	else
+		value = ft_strdup(value);
+	return (value);
+}
+
 int				path_commande_not_found_in_hasht(char **envp, char **cmd)
 {
 	char		**folders;
@@ -37,10 +49,13 @@ int				path_commande_not_found_in_hasht(char **envp, char **cmd)
 	t_display_h	display;
 
 	path_set_struct_display(&display);
-	if ((value = env_get(envp, "PATH")) == NULL)
-		return (ST_CMD_NOT_FOUND);
+	log_warn("NOT FOUND");
+	if ((value = s_set_value(envp)) == NULL)
+		return (ST_MALLOC);
 	if ((folders = ft_strsplit(value, ':')) == NULL)
 		return (ST_MALLOC);
+	log_warn("folder:%s, value:%s", folders[0], value);
+	free(value);
 	while (folders[display.i] != NULL)
 	{
 		if ((ret = s_path_cmd_match_folder(cmd,
