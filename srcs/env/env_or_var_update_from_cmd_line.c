@@ -8,27 +8,43 @@
 ** into the specified environment.
 */
 
-static int		s_set_tab_return_action(char ***argv)
+static int		s_is_valid_name(char *arg)
+{
+	char	*equal_sign;
+	char	old;
+	int		is_valid;
+
+	is_valid = -1;
+	if ((equal_sign = ft_strstr(arg, "=")) != NULL)
+	{
+		is_valid = 0;
+		old = arg[equal_sign - arg];
+		arg[equal_sign - arg] = '\0';
+		if (setenv_argv_is_valid(arg) == ST_OK)
+			is_valid = 1;
+		arg[equal_sign - arg] = old;
+	}
+	return (is_valid);
+}
+
+
+static int		s_set_tab_return_action(char **argv)
 {
 	int			add_to_env;
-	int			i;
-	char		*tmp;
+	int			is_valid;
 
-	i = 0;
 	add_to_env = 0;
-	while ((*argv)[i] != NULL && (*argv)[i][0] != '\0'
-		&& (*argv)[i][0] != '=')
+	while (*argv != NULL)
 	{
-		if ((tmp = ft_strdup((*argv)[i])) == NULL)
-			return (ST_MALLOC);
-		if ((env_get_value_and_remove_equal_sign(tmp) == NULL))
+		if ((is_valid = s_is_valid_name(*argv)) != 1)
 		{
 			add_to_env = 1;
-			free(tmp);
-			break ;
+			if (is_valid == -1)
+				break ;
 		}
-		i++;
-		free(tmp);
+		else if (is_valid == 0)
+			return (0);
+		argv++;
 	}
 	return (add_to_env);
 }
@@ -97,7 +113,7 @@ int				env_or_var_update_from_cmd_line(t_proc **p,
 
 	if (((*p)->is_subshell == 1) || (&(*p)->argv) == NULL)
 		return (ST_OK);
-	if ((add_to_env = s_set_tab_return_action(&(*p)->argv)) == ST_MALLOC)
+	if ((add_to_env = s_set_tab_return_action((*p)->argv)) == ST_MALLOC)
 		return (ST_MALLOC);
 	if (add_to_env == 0)
 	{
@@ -106,7 +122,7 @@ int				env_or_var_update_from_cmd_line(t_proc **p,
 				&(*p)->envp)) != ST_OK)
 			return (ret);
 	}
-	else
+	else if (add_to_env == 1)
 	{
 		if ((ret = s_add_to_env(*sh, &(*p)->envp, &(*p)->argc, &(*p)->argv))
 			!= ST_OK)
