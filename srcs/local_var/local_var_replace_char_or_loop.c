@@ -47,7 +47,7 @@ int				local_var_replace_char_or_loop(t_sh *sh, char *input,
 	char		*tmp;
 	int			ret;
 
-	if (input[*i + 1] == '$' || input[*i + 1] == '?')
+	if (input[*i + 1] == '$' || input[*i + 1] == -'?')
 	{
 		if (input[*i + 1] == '$')
 			ret = sh->pgid;
