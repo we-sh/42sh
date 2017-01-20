@@ -12,7 +12,7 @@ static int	s_none_part1(t_lexer *lexer, int *i)
 		if (index < 0)
 			return (ST_OK);
 		if (TOKEN_TYPE(index) != TT_JOBS
-			&& TOKEN_TYPE(index) != TT_SUBSHELL
+			&& TOKEN_CODE(index) != TC_LPAREN
 			&& TOKEN_CODE(index) != TC_PIPE)
 		{
 			if (lexer->notify == 1)
