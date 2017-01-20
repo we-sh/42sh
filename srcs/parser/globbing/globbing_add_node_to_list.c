@@ -77,10 +77,14 @@ int				globbing_add_node_alpha_to_list(t_list *list_glob,
 		if ((container->arg->pos == arg_base->pos) && ret < 0)
 		{
 			list_insert(&container->argument->argv_list, list_glob, index);
+			free(container);
 			return (ST_OK);
 		}
 		if ((s_add_node_loop(container, list_glob, &index, &ret)) == ST_DONE)
+		{
+			free(container);
 			return (ST_OK);
+		}
 		if (ret != 0)
 			index += 1;
 	}

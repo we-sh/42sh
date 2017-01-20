@@ -35,8 +35,6 @@ static int	read_history(int fd, t_list_head *history, size_t *from)
 			return (0);
 		offset++;
 	}
-	if (!s_stupidgetnextline(history, from, line, offset))
-		return (0);
 	*from = offset;
 	return (1);
 }
