@@ -1,5 +1,29 @@
 #include "parser.h"
 
+static int	s_none_part1(t_lexer *lexer, int *i)
+{
+	int		index;
+
+	if (TOKEN_CODE(*i) == TC_LPAREN)
+	{
+		index = *i - 1;
+		while (index >= 0 && TOKEN_TYPE(index) == TT_SEPARATOR)
+			index--;
+		if (index < 0)
+			return (ST_OK);
+		if (TOKEN_TYPE(index) != TT_JOBS
+			&& TOKEN_TYPE(index) != TT_SUBSHELL
+			&& TOKEN_CODE(index) != TC_PIPE)
+		{
+			if (lexer->notify == 1)
+				display_status(ST_PARSER_TOKEN, NULL,
+												lexer->tokens[index]->content);
+			return (ST_PARSER);
+		}
+	}
+	return (ST_OK);
+}
+
 static int	s_none(t_lexer *lexer, int *i)
 {
 	int		index;
@@ -11,13 +35,14 @@ static int	s_none(t_lexer *lexer, int *i)
 	index = *i + (TOKEN_CODE(*i) == TC_LPAREN ? 1 : -1);
 	parenthesis_count = 1;
 	has_tt_name = 0;
+	if (s_none_part1(lexer, i) != ST_OK)
+		return (ST_PARSER);
 	while ((TOKEN_CODE(*i) == TC_LPAREN ? index < lexer->size : index >= 0)
 		&& parenthesis_count > 0)
 	{
 		if (TOKEN_TYPE(index) == TT_NAME)
 			has_tt_name = 1;
-		else if (TOKEN_CODE(index) == TC_LPAREN
-			|| TOKEN_CODE(index) == TC_RPAREN)
+		else if (TOKEN_TYPE(index) == TT_SUBSHELL)
 			parenthesis_count += (TOKEN_CODE(index) == TOKEN_CODE(*i) ? 1 : -1);
 		index += (TOKEN_CODE(*i) == TC_LPAREN ? 1 : -1);
 	}
