@@ -50,7 +50,6 @@ int			main(int argc, char *argv[], char *envp[])
 	t_sh	sh;
 
 	(void)argc;
-	logger_init(D_TRACE, "/tmp/out.log");
 	if ((sh.argv = ft_array_dup(argv)) == NULL)
 		return (display_status(ST_MALLOC, NULL, NULL));
 	if ((ret = option_parse(&sh.opt_head, g_sh_options, &sh.argv, 1)) != ST_OK)
@@ -63,6 +62,5 @@ int			main(int argc, char *argv[], char *envp[])
 	if ((ret = loop_main(&sh)) != ST_END_OF_INPUT && ret != ST_EXIT)
 		exit(display_status(ret, NULL, NULL));
 	s_interactive_mode(&sh);
-	logger_close();
 	return (sh.last_exit_status);
 }

@@ -114,7 +114,6 @@ int					job_launch(t_sh *sh, t_job *j)
 {
 	int		ret;
 
-	log_info("launching job `%s`", j->command);
 	j->launched = 1;
 	ret = s_job_setup(sh, j);
 	if (ret != ST_OK)

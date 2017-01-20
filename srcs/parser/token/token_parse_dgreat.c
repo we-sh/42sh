@@ -10,7 +10,6 @@ static int	s_parse_right_redir(t_proc *p, t_lexer *lexer, int *i, int *fd)
 	if ((ret = token_parse_utils_get_full_word(&path,
 												lexer, i)) != ST_OK)
 		return (ret);
-	log_error(path);
 	if ((ret = token_parse_utils_open_new_fd(p, path, fd,
 								O_WRONLY | O_CREAT | O_APPEND)) != ST_OK)
 		return (ret);

@@ -28,7 +28,6 @@ int			builtin_callback(int callback, t_sh *sh, t_proc *p)
 				if (p->bltin_status != ST_OK
 					&& p->bltin_status != ST_EINVAL)
 				{
-					log_fatal("parsing builtin options failed");
 					return (p->bltin_status);
 				}
 			}

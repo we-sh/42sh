@@ -321,12 +321,10 @@ RM		=	rm -f
 # ---------------------------------------------------------------------------- #
 
 LDFLAGS		=	\
-				-L $(DIRLIB)/logger				\
 				-L $(DIRLIB)/libcaps			\
 				-L $(DIRLIB)/libft				\
 
 LDLIBS		=	\
-				-llogger						\
 				-lcaps							\
 				-lft							\
 				-ltermcap						\
@@ -336,7 +334,6 @@ CPPFLAGS	=	\
 				-I $(DIRINC)/termcaps/			\
 				-I $(DIRINC)/builtins/			\
 				-I $(DIRLIB)/libft/$(DIRINC)	\
-				-I $(DIRLIB)/logger/$(DIRINC)	\
 				-I $(DIRLIB)/libcaps/$(DIRINC)	\
 
 CFLAGS		=	\
@@ -396,12 +393,10 @@ $(NAME)		:	$(DIROBJ) $(DIRDEP) $(OBJ)
 
 libs		:
 	@make -C $(DIRLIB)/libft
-	@make -C $(DIRLIB)/logger
 	@make -C $(DIRLIB)/libcaps
 
 fcleanlibs	:
 	@make -C $(DIRLIB)/libft fclean
-	@make -C $(DIRLIB)/logger fclean
 	@make -C $(DIRLIB)/libcaps fclean
 
 clean		:

@@ -64,7 +64,6 @@ int			termcaps_display_command(const t_termcaps_context *context)
 	buffer = (char *)malloc(buffer_size_max + ENDL_SIZE);
 	if (!buffer)
 	{
-		log_error("malloc() failed command->size %zu", buffer_size_max);
 		return (0);
 	}
 	if (!command_to_buffer(&context->command,
@@ -72,7 +71,6 @@ int			termcaps_display_command(const t_termcaps_context *context)
 											&buffer_size,
 											buffer))
 	{
-		log_error("command_to_buffer()");
 		free(buffer);
 		return (0);
 	}

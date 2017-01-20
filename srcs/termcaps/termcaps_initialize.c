@@ -76,7 +76,6 @@ static int	s_termios_init(t_termcaps_context *context)
 {
 	if (tcgetattr(0, &context->termios_old) != 0)
 	{
-		log_fatal("tcgetattr() failed");
 		return (0);
 	}
 	context->termios_new = context->termios_old;
@@ -167,7 +166,6 @@ static int	s_termcaps_init_context(t_termcaps_context *context,
 	context->prompt.bytes = ft_strdup(prompt);
 	if (context->prompt.bytes == NULL)
 	{
-		log_error("ft_strdup() failed");
 		return (ST_MALLOC);
 	}
 	list_head__init(&context->history);
@@ -186,19 +184,15 @@ int			termcaps_initialize(t_sh *sh, const char *prompt,
 {
 	if (sh->fd < 0 || prompt == NULL || context == NULL)
 	{
-		log_error("fd %d prompt %p context %p", sh->fd,
-			(void *)prompt, (void *)context);
 		return (0);
 	}
 	if (!s_initialize_key_map_meta() || !s_initialize_key_map_cursor())
 	{
-		log_fatal("s_initialize_key_map() failed");
 		return (0);
 	}
 	context->state = STATE_REGULAR;
 	if (!s_termios_init(context))
 	{
-		log_fatal("s_termios_init() failed");
 		return (0);
 	}
 	if ((s_termcaps_init_context(context, sh, prompt)) != ST_OK)

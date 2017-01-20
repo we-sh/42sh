@@ -57,7 +57,6 @@ static int	s_jobs(t_job *j, t_lexer *lexer, int *i)
 {
 	int		ret;
 
-	log_error(TOKEN_CONTENT(*i));
 	ret = token_parse_utils_push_command(TOKEN_CONTENT(*i), &j->command);
 	if (ret != ST_OK)
 		return (ret);

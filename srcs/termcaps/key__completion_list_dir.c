@@ -97,7 +97,6 @@ size_t				key__completion_list_dir(t_termcaps_context *context,
 				&cmd_size,
 				cmd))
 	{
-		log_error("command_to_buffer() failed");
 		return (-1);
 	}
 	s_get_path_and_match(&path, match, &cmd_size, cmd);

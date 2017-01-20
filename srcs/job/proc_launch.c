@@ -12,16 +12,15 @@ static int	s_interactive_mode_callback(t_sh *sh, t_job *j, t_proc *p)
 			j->pgid = p->pid;
 		if (setpgid(p->pid, j->pgid) == -1)
 		{
-			log_warn("setpgid(%d, %d) errno: %d", p->pid, j->pgid, errno);
+			// delete the condition?
 		}
 		if (j->foreground == 1)
 			if (ioctl(sh->fd, TIOCSPGRP, &j->pgid) == -1)
 			{
-				log_warn("setpgid(%d, %d) errno: %d", p->pid, j->pgid, errno);
+				// delete the condition?
 			}
 		if (signal_to_default() != ST_OK)
 		{
-			log_fatal("signal_to_default error (pid: %d)", p->pid);
 			exit(EXIT_FAILURE);
 		}
 	}

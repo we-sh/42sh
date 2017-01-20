@@ -13,13 +13,11 @@ static int	s_history_histfile(char **envp, size_t size_max, char *filename)
 	histfile = env_get(envp, HISTFILE);
 	if (histfile == NULL)
 	{
-		log_info("env_get: %s fail", HISTFILE);
 		return (0);
 	}
 	size = ft_strlen(histfile);
 	if (size >= size_max)
 	{
-		log_error("histfile {%s} path too long", histfile);
 		return (0);
 	}
 	ft_memcpy(filename, histfile, size);
@@ -35,13 +33,11 @@ static int	s_history_default(char **envp, size_t size_max, char *filename)
 	home = env_get_home(envp);
 	if (home == NULL)
 	{
-		log_error("env_get_home failed");
 		return (0);
 	}
 	size = ft_strlen(home);
 	if (size + (sizeof("/") - 1) + HISTORY_FILENAME_SIZE > size_max)
 	{
-		log_error("Path too long {%s/%s}", home, HISTORY_FILENAME);
 		return (0);
 	}
 	ft_memcpy(filename, home, size);

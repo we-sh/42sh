@@ -5,7 +5,6 @@ static int	s_none(t_lexer *lexer, int *i)
 	char	*content;
 
 	content = TOKEN_CONTENT(*i);
-	log_error(content);
 	(*i)++;
 	token_parse_utils_skip_separators(lexer, i, NULL);
 	if (*i >= lexer->size || TOKEN_TYPE(*i) != TT_NAME)

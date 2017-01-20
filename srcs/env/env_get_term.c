@@ -10,7 +10,6 @@ char				*env_get_term(char **envp)
 	{
 		if (!tgetent(bd, "xterm"))
 		{
-			log_fatal("tgetent() failed termtype xterm");
 			return (NULL);
 		}
 		else

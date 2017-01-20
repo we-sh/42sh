@@ -9,7 +9,6 @@ int		history_init(t_sh *sh)
 	if (!history_load(sh->envp, &sh->termcaps_context.history,
 				&sh->termcaps_context.history_initial_size))
 	{
-		log_error("history_load failed");
 		return (0);
 	}
 	return (1);

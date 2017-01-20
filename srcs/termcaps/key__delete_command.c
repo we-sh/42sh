@@ -26,8 +26,6 @@ int				key__delete_command(t_termcaps_context *context)
 											context->prompt.bytes,
 											&context->command))
 		{
-			log_error("minishell__string_to_command() failed %.*s",
-				(int)context->prompt.size, context->prompt.bytes);
 			return (0);
 		}
 		context->history.offset = context->history.size;

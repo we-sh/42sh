@@ -85,7 +85,6 @@ int				display_completion(const size_t command_size,
 	y_diff = s_fill_buffer(command_size, matchs, ref_size, &buffer);
 	if (!y_diff)
 	{
-		log_error("s_fill_buffer() failed");
 		free(buffer.bytes);
 		return (0);
 	}

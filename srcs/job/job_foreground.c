@@ -15,7 +15,6 @@ static int	s_bask_to_shell(t_sh *sh)
 	ret = ST_OK;
 	if (ioctl(sh->fd, TIOCSPGRP, &sh->pgid) == -1)
 	{
-		log_fatal("s_bask_to_shell: tcsetpgrp failed");
 		ret = ST_TCSETPGRP;
 	}
 	signal_to_pgid(0);
@@ -36,17 +35,17 @@ int			job_foreground(t_sh *sh, t_job *j, int const sigcont)
 	{
 		if (kill(-j->pgid, SIGCONT) < 0)
 		{
-			log_error("failed to continue the stopped job %d", j->pgid);
 			return (job_kill(sh, j, ST_SIGCONT));
 		}
 	}
 	if (ioctl(sh->fd, TIOCSPGRP, &j->pgid) == -1 && errno != EINVAL)
 	{
-		log_error("failed to make the job %d to control terminal", j->pgid);
 		return (job_kill(sh, j, ST_TCSETPGRP));
 	}
 	job_wait(j);
 	if (job_is_completed(j) == 0 && tcgetattr(sh->fd, &j->tmodes) != 0)
-		log_error("failed to save termios structure a the job %d", j->pgid);
+	{
+		// can we delete this condition?
+	}
 	return (s_bask_to_shell(sh));
 }

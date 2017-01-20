@@ -67,7 +67,6 @@
 # include "redirection.h"
 # include "libft.h"
 # include "libftprintf.h"
-# include "logger.h"
 # include "statuses.h"
 # include "option.h"
 # include "job.h"

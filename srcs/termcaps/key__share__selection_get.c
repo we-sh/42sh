@@ -12,7 +12,6 @@ int						key__share__selection_get(
 	if (in_context->selection_offset_start ==
 			MINISHELL_KEY__SHARE__SELECTION_OFFSET_UNDEFINED)
 	{
-		log_error("selection offset start is undefined %s", "");
 		return (0);
 	}
 	if (in_context->selection_offset_start < in_context->command.offset)

@@ -12,8 +12,6 @@ int					command_add(const size_t character_size,
 
 	if (!character_size || character_size > CHARACTER_SIZE_MAX || !character)
 	{
-		log_error("character_size %zu size_max %zu character %p",
-			character_size, CHARACTER_SIZE_MAX, (void *)character);
 		return (0);
 	}
 	ASSERT(new = (t_node_cmd *)malloc(sizeof(t_node_cmd)));

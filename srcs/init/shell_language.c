@@ -18,13 +18,9 @@ int	shell_language(int lang)
 		if ((current_lang = (int *)malloc(sizeof(int))) == NULL)
 			return (-ST_MALLOC);
 		*current_lang = LANG_GET + 1;
-		log_info("default language: %s (%d)",
-			i18n_translate(ST_OK),
-			*current_lang);
 	}
 	if (lang != LANG_GET && lang != *current_lang)
 	{
-		log_info("changed language from %d to %d", *current_lang, lang);
 		*current_lang = lang;
 	}
 	return (*current_lang);
