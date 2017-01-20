@@ -10,7 +10,7 @@ static int	s_env_set_default_pwd(char **defaultenv)
 	char	*tmp;
 
 	if ((tmp = getcwd(NULL, 0)) == NULL)
-		return (ST_MALLOC);
+		return (ST_OK);
 	if ((*defaultenv = ft_strjoin("PWD=", tmp)) == NULL)
 		return (ST_MALLOC);
 	free(tmp);
