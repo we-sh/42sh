@@ -39,11 +39,13 @@ static int		s_update_command(char *lookfor, t_list *matchs,
 
 	lookfor_size = ft_strlen(lookfor);
 	node_dir = CONTAINER_OF(matchs->next, t_node_dir, list);
+	command->offset = command->size;
 	command_add_string(node_dir->filename_size - lookfor_size,
 						node_dir->filename + lookfor_size,
 						command);
 	if (node_dir->d_type == DT_DIR)
 		command_add_string(sizeof("/") - 1, "/", command);
+	command->offset = command->size;
 	return (1);
 }
 
