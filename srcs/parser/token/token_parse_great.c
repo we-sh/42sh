@@ -26,7 +26,7 @@ static int	s_proc(t_proc *p, t_parser *parser, t_lexer *lexer, int *i)
 	int		ret;
 
 	fd_l = STDOUT_FILENO;
-	if (TOKEN_CODE(*i) != TC_GREAT)
+	if (TOKEN_CODE(*i) != TC_GREAT && TOKEN_CODE(*i) != TC_CLOBBER)
 	{
 		ret = token_parse_utils_check_char_to_fd(TOKEN_CONTENT(*i), &fd_l);
 		if (ret != ST_OK)
@@ -49,7 +49,7 @@ static int	s_jobs(t_job *j, t_parser *parser, t_lexer *lexer, int *i)
 {
 	int		ret;
 
-	if (TOKEN_CODE(*i) != TC_GREAT)
+	if (TOKEN_CODE(*i) != TC_GREAT && TOKEN_CODE(*i) != TC_CLOBBER)
 	{
 		ret = lexer->tokens[*i]->parse((void *)j, parser, lexer, i);
 		if (ret != ST_OK)
@@ -65,7 +65,7 @@ static int	s_none(t_lexer *lexer, int *i)
 {
 	char	*content;
 
-	if (TOKEN_CODE(*i) != TC_GREAT)
+	if (TOKEN_CODE(*i) != TC_GREAT && TOKEN_CODE(*i) != TC_CLOBBER)
 		(*i)++;
 	content = TOKEN_CONTENT(*i);
 	(*i)++;
