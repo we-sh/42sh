@@ -49,12 +49,10 @@ int				path_commande_not_found_in_hasht(char **envp, char **cmd)
 	t_display_h	display;
 
 	path_set_struct_display(&display);
-	log_warn("NOT FOUND");
 	if ((value = s_set_value(envp)) == NULL)
 		return (ST_MALLOC);
 	if ((folders = ft_strsplit(value, ':')) == NULL)
 		return (ST_MALLOC);
-	log_warn("folder:%s, value:%s", folders[0], value);
 	free(value);
 	while (folders[display.i] != NULL)
 	{
