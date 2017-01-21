@@ -1,5 +1,7 @@
-#include "shell.h"
+#include <sys/types.h>
+#include <sys/wait.h>
 #include <errno.h>
+#include "shell.h"
 
 /*
 ** This function takes a job t_job as argument and iterates

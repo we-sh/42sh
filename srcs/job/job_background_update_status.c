@@ -1,5 +1,7 @@
-#include "shell.h"
+#include <sys/types.h>
+#include <sys/wait.h>
 #include <errno.h>
+#include "shell.h"
 
 /*
 ** This function check for the statuses of the background jobs

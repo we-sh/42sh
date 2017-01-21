@@ -1,5 +1,8 @@
-#include "shell.h"
+#include <sys/types.h>
+#include <sys/wait.h>
 #include <errno.h>
+#include <signal.h>
+#include "shell.h"
 
 /*
 ** This function waits for running jobs in foreground until they are
