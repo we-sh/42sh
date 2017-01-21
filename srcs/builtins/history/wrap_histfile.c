@@ -11,12 +11,12 @@ void	wrap_histfile(t_sh *sh, int opt, char *filename,
 		histfile = env_get(sh->envp, "HISTFILE");
 		if (histfile != NULL)
 			histfile = ft_strdup(histfile);
-		env_set(&sh->envp, "HISTFILE", filename);
+		env_set(&sh->envp, "HISTFILE", filename, HTABLE_MODIF);
 	}
 	fun(sh, opt);
 	if (filename != NULL)
 	{
 		if (histfile != NULL)
-			env_set(&sh->envp, "HISTFILE", histfile);
+			env_set(&sh->envp, "HISTFILE", histfile, HTABLE_MODIF);
 	}
 }

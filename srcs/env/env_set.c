@@ -54,7 +54,7 @@ static	char	**s_env_set_new_variable(char **envp, char *var, char *val)
 	return (tmp);
 }
 
-int				env_set(char ***envp, char *key, char *value)
+int				env_set(char ***envp, char *key, char *value, int htable_modif)
 {
 	int			i;
 	int			ret;
@@ -76,8 +76,9 @@ int				env_set(char ***envp, char *key, char *value)
 		ret = s_concat_variable(*envp, ret, key, value);
 	if (key && ft_strcmp(key, "PATH") == 0)
 	{
-		path_free_hasht();
-		if ((ret = path_init_hasht(*envp)) != ST_OK)
+		if (htable_modif)
+			path_free_hasht();
+		if (htable_modif && (ret = path_init_hasht(*envp)) != ST_OK)
 			return (ST_MALLOC);
 	}
 	return (ret);

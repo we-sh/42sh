@@ -86,9 +86,9 @@ static int	s_after(t_sh *sh, t_proc *p)
 			display_status(ST_ENOTDIR, "cd", p->bltin_char);
 			return (ST_OK);
 		}
-		if ((ret = env_set(&sh->envp, "OLDPWD", sh->pwd)) != ST_OK)
+		if ((ret = env_set(&sh->envp, "OLDPWD", sh->pwd, HTABLE_MODIF)) != ST_OK)
 			return (ret);
-		if ((ret = env_set(&sh->envp, "PWD", p->bltin_char)) != ST_OK)
+		if ((ret = env_set(&sh->envp, "PWD", p->bltin_char, HTABLE_MODIF)) != ST_OK)
 			return (ret);
 		ft_memdel((void **)&sh->pwd);
 		if ((sh->pwd = ft_strdup(p->bltin_char)) == NULL)

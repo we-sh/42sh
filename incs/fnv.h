@@ -57,4 +57,10 @@
 
 extern t_fnv fnv_a_str(char *buf);
 
+typedef enum			e_table_is_set
+{
+	HTABLE_NOT_MODIF = 0,
+	HTABLE_MODIF
+}						t_table_is_set;
+
 #endif

@@ -27,7 +27,7 @@ static int		s_update_env_from_local(t_sh **sh, t_var *ptrvar, char *argv)
 	{
 		if (ft_strcmp(ptrvar->key, argv) == 0)
 		{
-			ret = env_set(&(*sh)->envp, argv, ptrvar->value);
+			ret = env_set(&(*sh)->envp, argv, ptrvar->value, HTABLE_MODIF);
 			return (ret);
 		}
 		ptrvar = ptrvar->next;

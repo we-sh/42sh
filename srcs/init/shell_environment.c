@@ -108,6 +108,6 @@ int			shell_environment(t_sh *sh, char **envp)
 		return (ST_MALLOC);
 	s_env_fill_shenv(sh, envp);
 	if (env_get(sh->envp, "PATH") == NULL)
-		env_set(&sh->envp, "PATH", env_get_path(sh->envp));
+		env_set(&sh->envp, "PATH", env_get_path(sh->envp), HTABLE_MODIF);
 	return (ST_OK);
 }
