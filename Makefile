@@ -178,6 +178,7 @@ SRCS	=	\
 			init/shell_language.c										\
 			init/shell_environment.c									\
 			init/shell_set_prompt.c										\
+			init/shell_color_mode.c										\
 			job/job_alloc.c												\
 			job/proc_alloc.c											\
 			job/job_available_id.c										\

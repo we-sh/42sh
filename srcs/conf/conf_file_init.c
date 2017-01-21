@@ -17,7 +17,8 @@ int			conf_file_init(char **env)
 			free(path);
 			return (ST_OK);
 		}
-		write(fd, "color=on", 8);
+		write(fd, "color=on\n", 9);
+		write(fd, "lang=en\n", 8);
 		close(fd);
 	}
 	free(path);

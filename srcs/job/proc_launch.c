@@ -55,16 +55,21 @@ static int	s_dup2_and_close(t_proc *p, int from, int to)
 static int	s_add_color_to_cmd(t_proc *p)
 {
 	char	*value;
+	int		ret;
 
+	if (shell_color_mode(-1) == 0)
+		return (ST_OK);
 	value = NULL;
 	if (ft_strcmp("ls", p->argv[0]) == 0)
 		value = LSOPTCOLOR;
 	else if (ft_strcmp("grep", p->argv[0]) == 0)
 		value = "--color=auto";
 	if (p->argc > 1)
-		ft_array_push_index(&p->argv, value, 1);
+		ret = ft_array_push_index(&p->argv, value, 1);
 	else
-		ft_array_push_back(&p->argv, value);
+		ret = ft_array_push_back(&p->argv, value);
+	//if (ret == -1)
+	//	return (ST_MALLOC);
 	return (ST_OK);
 }
 
@@ -80,8 +85,8 @@ static int	s_proc_launch_execve(t_proc *p)
 		return (ST_MALLOC);
 	if ((ret = path_hash_finder(p->envp, &match)) != ST_OK)
 		return (ret);
-	if ((conf_check_color_mode(p->envp) == ST_OK))
-		s_add_color_to_cmd(p);
+	if ((ret = s_add_color_to_cmd(p)) != ST_OK)
+		return (ret);
 	if ((execve(match, p->argv, p->envp)) == -1)
 		return (ST_OK);
 	free(match);
