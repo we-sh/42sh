@@ -59,8 +59,7 @@ int				env_set(char ***envp, char *key, char *value, int htable_modif)
 	int			i;
 	int			ret;
 
-	i = 0;
-	if (!*envp)
+	if (!(i = 0) && !*envp)
 	{
 		if ((*envp = (char **)malloc(sizeof(char *) * 1)) == NULL)
 			return (ST_MALLOC);

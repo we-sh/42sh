@@ -44,7 +44,8 @@ static int	s_after(t_sh *sh, t_proc *p)
 	int		ret;
 
 	if (p->bltin_status == ST_OK && (p->argc == 2 || p->argc == 3))
-		if ((ret = env_set(&sh->envp, p->argv[1], p->argv[2], HTABLE_MODIF)) != ST_OK)
+		if ((ret = env_set(&sh->envp, p->argv[1], p->argv[2], HTABLE_MODIF))
+			!= ST_OK)
 			return (ret);
 	return (ST_OK);
 }

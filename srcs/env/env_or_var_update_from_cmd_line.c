@@ -64,7 +64,8 @@ static int		s_add_to_local_var(char ***argv, int *argc, t_sh **sh,
 			return (ret);
 		if (env_get(*envp, (*argv)[0]) != NULL)
 		{
-			if ((ret = env_set(&(*sh)->envp, (*argv)[0], tmp, HTABLE_MODIF)) != ST_OK)
+			if ((ret = env_set(&(*sh)->envp, (*argv)[0], tmp, HTABLE_MODIF))
+				!= ST_OK)
 				return (ret);
 		}
 		else if ((ret = builtin_local_var_set_local_loop(sh, (*argv)[0], tmp))
@@ -94,7 +95,8 @@ static int		s_add_to_env(t_sh *sh, char ***envp, int *argc, char ***argv)
 			return (ret);
 		if (envp != NULL)
 		{
-			if ((ret = env_set(envp, (*argv)[0], tmp, HTABLE_NOT_MODIF)) != ST_OK)
+			if ((ret = env_set(envp, (*argv)[0], tmp, HTABLE_NOT_MODIF))
+				!= ST_OK)
 				return (ret);
 		}
 		free(tmp);
