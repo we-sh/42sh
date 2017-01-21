@@ -51,9 +51,6 @@
 # include <termios.h>
 # include <errno.h>
 # include <dirent.h>
-# include <sys/stat.h>
-# include <sys/ioctl.h>
-# include <fcntl.h>
 
 /*
 ** Project headers

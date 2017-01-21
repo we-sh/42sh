@@ -1,4 +1,5 @@
 #include "shell.h"
+#include <sys/ioctl.h>
 
 int					s_check_cursor_pos(t_termcaps_context *context)
 {

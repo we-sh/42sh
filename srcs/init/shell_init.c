@@ -1,4 +1,5 @@
 #include "shell.h"
+#include <sys/ioctl.h>
 
 /*
 ** This function is called at initialization, and then returns the actual

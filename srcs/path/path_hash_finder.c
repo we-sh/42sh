@@ -1,4 +1,5 @@
 #include "shell.h"
+#include <sys/stat.h>
 
 static int		s_path_return_file_type(char *path)
 {
