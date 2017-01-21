@@ -1,4 +1,5 @@
 #include "shell.h"
+#include "i18n.h"
 
 /*
 ** This function returns a translation of a status set in the i18n structure.

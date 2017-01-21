@@ -56,7 +56,6 @@
 # include "option.h"
 # include "job.h"
 # include "caps.h"
-# include "i18n.h"
 # include "get_next_line.h"
 # include "parser.h"
 # include "builtin.h"

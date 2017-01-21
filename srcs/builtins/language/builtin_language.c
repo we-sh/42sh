@@ -1,4 +1,5 @@
 #include "shell.h"
+#include "i18n.h"
 
 static int	s_before(t_proc *p)
 {
