@@ -1,4 +1,5 @@
 #include "shell.h"
+#include "get_next_line.h"
 #include <sys/stat.h>
 #include <errno.h>
 
