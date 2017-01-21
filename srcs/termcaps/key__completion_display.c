@@ -1,5 +1,5 @@
 #include "shell.h"
-#include <dirent.h>
+#include <stdlib.h>
 
 #define NL_SIZE	(sizeof("\n") - 1)
 #define NL				"\n"
