@@ -4,7 +4,7 @@ static int		s_key_cut_selection(t_termcaps_context *in_context,
 									size_t *selection_start,
 									size_t *selection_size)
 {
-	ft_putstr(SELECTBLANC);
+	termcaps_write(in_context->fd, SELECTBLANC, sizeof(SELECTBLANC) - 1);
 	in_context->state = STATE_REGULAR;
 	if (!key__share__selection_get(in_context,
 									selection_start,
