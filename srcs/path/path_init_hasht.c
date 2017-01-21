@@ -1,4 +1,5 @@
 #include "shell.h"
+#include <dirent.h>
 
 static void				s_path_display_result(t_display_h *display)
 {

@@ -50,7 +50,6 @@
 # include <signal.h>
 # include <termios.h>
 # include <errno.h>
-# include <dirent.h>
 
 /*
 ** Project headers
