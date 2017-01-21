@@ -1,5 +1,6 @@
 #include "shell.h"
 #include <sys/ioctl.h>
+#include <errno.h>
 
 /*
 ** This function put a given job into foreground, may restart a stopped job

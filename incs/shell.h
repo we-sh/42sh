@@ -49,7 +49,6 @@
 # include <unistd.h>
 # include <signal.h>
 # include <termios.h>
-# include <errno.h>
 
 /*
 ** Project headers

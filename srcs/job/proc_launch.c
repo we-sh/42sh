@@ -1,5 +1,6 @@
 #include "shell.h"
 #include <sys/ioctl.h>
+#include <errno.h>
 
 /*
 ** This function is the entry point of a child process (freshly forked).

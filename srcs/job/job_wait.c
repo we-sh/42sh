@@ -1,4 +1,5 @@
 #include "shell.h"
+#include <errno.h>
 
 /*
 ** This function waits for running jobs in foreground until they are

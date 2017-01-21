@@ -1,4 +1,5 @@
 #include "shell.h"
+#include <errno.h>
 
 /*
 ** This function check for the statuses of the background jobs

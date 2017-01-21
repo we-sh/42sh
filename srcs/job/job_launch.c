@@ -1,4 +1,5 @@
 #include "shell.h"
+#include <errno.h>
 
 /*
 ** This function takes a job t_job as argument and iterates

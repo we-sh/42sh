@@ -1,5 +1,6 @@
 #include "shell.h"
 #include "builtin_cd.h"
+#include <errno.h>
 
 static int			s_builtin_cd_checkpath_element(char *path, char **t,
 						int i, int follow_lnk)

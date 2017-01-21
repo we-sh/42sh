@@ -1,4 +1,5 @@
 #include "shell.h"
+#include <errno.h>
 
 /*
 ** This function saves the status of a process retrieved through
