@@ -26,6 +26,8 @@ struct					s_sh
 	char				*pwd;
 	t_list				redir_head;
 	int					is_subshell;
+	int					conf_color;
+	int					conf_lang;
 };
 
 /*

@@ -1,50 +1,41 @@
 #include "shell.h"
 #include "get_next_line.h"
+#include "i18n.h"
 
-static int	s_conf_check_color(char *content, int fd)
+static int	s_conf_check_color(char *content)
 {
 	char	*mode;
 
 	mode = content + 6;
 	if (mode && *mode && ft_strncmp(mode, "on", 2) == 0)
 	{
-		free(content);
-		close(fd);
+		shell_color_mode(1);
 		return (ST_OK);
 	}
-	else
+	else if (mode && *mode && ft_strncmp(mode, "off", 2) == 0)
 	{
-		free(content);
-		close(fd);
-		return (-1);
+		shell_color_mode(0);
+		return (ST_OK);
 	}
+	return (-1);
 }
 
-static int	s_conf_check_lang(char *content, int fd)
+static int	s_conf_check_lang(char *content)
 {
 	char	*mode;
 
-	mode = content + 6;
+	mode = content + 5;
 	if (mode && *mode && ft_strncmp(mode, "fr", 2) == 0)
 	{
-		free(content);
-		shell_language(2);
-		close(fd);
+		shell_language(LANG_FR);
 		return (ST_OK);
 	}
 	else if (mode && *mode && ft_strncmp(mode, "en", 2) == 0)
 	{
-		free(content);
-		shell_language(1);
-		close(fd);
+		shell_language(LANG_EN);
 		return (ST_OK);
 	}
-	else
-	{
-		free(content);
-		close(fd);
-		return (-1);
-	}
+	return (-1);
 }
 
 int			conf_check_color_mode(char **env)
@@ -58,18 +49,19 @@ int			conf_check_color_mode(char **env)
 		return (ST_OK);
 	if ((path = ft_strjoin3(content, "/", CONFIGURATION_FILE)) == NULL)
 		return (ST_MALLOC);
-	if ((fd = open(path, O_RDONLY)) == -1)
-	{
-		free(path);
-		return (ST_OK);
-	}
+	fd = open(path, O_RDONLY);
 	free(path);
+	if (fd == -1)
+		return (ST_OK);
+	content = NULL;
 	while ((get_next_line(fd, &content)) == 1)
 	{
 		if (ft_strncmp(content, "color=", 6) == 0)
-			return (s_conf_check_color(content, fd));
-		if (ft_strncmp(content, "lang=", 6) == 0)
-			return (s_conf_check_lang(content, fd));
+			s_conf_check_color(content);
+		else if (ft_strncmp(content, "lang=", 5) == 0)
+			s_conf_check_lang(content);
+		free(content);
+		content = NULL;
 	}
 	free(content);
 	close(fd);
