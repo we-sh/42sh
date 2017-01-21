@@ -51,9 +51,8 @@ int			conf_check_color_mode(char **env)
 		return (ST_MALLOC);
 	fd = open(path, O_RDONLY);
 	free(path);
-	if (fd == -1)
+	if (!(content = NULL) && fd == -1)
 		return (ST_OK);
-	content = NULL;
 	while ((get_next_line(fd, &content)) == 1)
 	{
 		if (ft_strncmp(content, "color=", 6) == 0)
