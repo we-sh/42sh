@@ -10,9 +10,9 @@
 
 static int		s_is_valid_name(char *arg)
 {
-	char	*equal_sign;
-	char	old;
-	int		is_valid;
+	char		*equal_sign;
+	char		old;
+	int			is_valid;
 
 	is_valid = -1;
 	if ((equal_sign = ft_strstr(arg, "=")) != NULL)
@@ -26,7 +26,6 @@ static int		s_is_valid_name(char *arg)
 	}
 	return (is_valid);
 }
-
 
 static int		s_set_tab_return_action(char **argv)
 {

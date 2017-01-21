@@ -1,5 +1,5 @@
-
 #include "shell.h"
+
 static int		s_key_delete_selection(t_termcaps_context *context)
 {
 	t_list_head	head;

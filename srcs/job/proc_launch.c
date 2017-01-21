@@ -69,20 +69,14 @@ static int	s_add_color_to_cmd(t_proc *p)
 
 static int	s_proc_launch_execve(t_proc *p)
 {
-//	char	*lowerargv;
 	char	*match;
 	int		i;
 	int		ret;
 
 	i = 0;
 	ret = 0;
-	log_info(" 2 p->arg[0]: %s", p->argv[0]);
 	if ((match = ft_strdup(p->argv[0])) == NULL)
 		return (ST_MALLOC);
-	// if (ft_strncmp(match, "/", 1) != 0 && ft_strncmp(match, ".", 1) != 0)
-	// 	lowerargv = ft_strtolower(match);
-	// else
-	// 	lowerargv = match;
 	if ((ret = path_hash_finder(p->envp, &match)) != ST_OK)
 		return (ret);
 	if ((conf_check_color_mode(p->envp) == ST_OK))
@@ -97,7 +91,6 @@ void		proc_launch(t_sh *sh, t_job *j, t_proc *p)
 {
 	int		ret;
 
-	log_info("p->arg[0]: %s", p->argv[0]);
 	p->pid = getpid();
 	s_interactive_mode_callback(sh, j, p);
 	if (p->stdout == STDERR_FILENO)
@@ -118,7 +111,6 @@ void		proc_launch(t_sh *sh, t_job *j, t_proc *p)
 	if (p->is_subshell == 1)
 		proc_subshell(sh, j, p);
 	builtin_callback(BLTIN_CB_EXEC, sh, p);
-	log_info(" 1 p->arg[0]: %s", p->argv[0]);
 	if ((ret = (s_proc_launch_execve(p))) != ST_OK)
 		display_status(ret, p->argv[0], NULL);
 	exit(EXIT_FAILURE);

@@ -70,8 +70,9 @@ SRCS	=	\
 			parser/globbing/globbing.c									\
 			parser/globbing/globbing_bracket.c							\
 			parser/globbing/globbing_run_parse.c						\
-			parser/globbing/globbing_run_parse_readir.c						\
+			parser/globbing/globbing_run_parse_readir.c					\
 			parser/globbing/globbing_add_node_to_list.c					\
+			parser/globbing/globbing_add_node_alpha_to_list.c			\
 			parser/globbing/globbing_exp_param_bracket.c				\
 			parser/globbing/globbing_happend_to_list.c					\
 			parser/globbing/globbing_load_context.c						\
@@ -131,7 +132,7 @@ SRCS	=	\
 			builtins/echo/builtin_echo_escape.c							\
 			builtins/exit/builtin_exit.c								\
 			builtins/export/builtin_export.c							\
-			builtins/export/builtin_export_display.c							\
+			builtins/export/builtin_export_display.c					\
 			builtins/export/builtin_export_n_option.c					\
 			builtins/export/builtin_export_set.c						\
 			builtins/export/builtin_export_set_no_value.c				\
