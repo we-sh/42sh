@@ -68,8 +68,6 @@ static int	s_add_color_to_cmd(t_proc *p)
 		ret = ft_array_push_index(&p->argv, value, 1);
 	else
 		ret = ft_array_push_back(&p->argv, value);
-	//if (ret == -1)
-	//	return (ST_MALLOC);
 	return (ST_OK);
 }
 
