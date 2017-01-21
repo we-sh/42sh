@@ -45,9 +45,6 @@
 
 # include <sys/types.h>
 # include <sys/wait.h>
-# include <pwd.h>
-# include <unistd.h>
-# include <signal.h>
 # include <termios.h>
 
 /*

@@ -1,3 +1,4 @@
+#include <pwd.h>
 #include "shell.h"
 
 static int	s_replace_tilde_with(char **buffer, char *str, int offset)
