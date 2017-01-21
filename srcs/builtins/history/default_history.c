@@ -1,4 +1,5 @@
 #include "shell.h"
+#include "libftprintf.h"
 
 static void		s_print_node(t_node_history *node, size_t offset)
 {

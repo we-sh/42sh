@@ -1,5 +1,6 @@
 #include "shell.h"
 #include "i18n.h"
+#include "libftprintf.h"
 
 static int	s_before(t_proc *p)
 {

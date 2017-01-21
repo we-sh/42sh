@@ -1,4 +1,5 @@
 #include "shell.h"
+#include "libftprintf.h"
 
 t_list		g_current_jobs_list_head = {
 	.next = &g_current_jobs_list_head,
