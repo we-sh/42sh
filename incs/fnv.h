@@ -49,8 +49,6 @@
 #ifndef FNV_H
 # define FNV_H
 
-# include <stdint.h>
-
 # if ((ULONG_MAX) == (UINT_MAX))
 #  include "fnvhead32.h"
 # else

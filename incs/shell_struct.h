@@ -3,7 +3,6 @@
 
 # include "shell_typedef.h"
 # include "list.h"
-# include <unistd.h>
 # include "termcaps_struct.h"
 # include "option.h"
 # include "statuses.h"
