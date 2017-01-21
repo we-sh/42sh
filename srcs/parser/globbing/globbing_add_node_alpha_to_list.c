@@ -1,5 +1,18 @@
 #include "shell.h"
 
+static t_argv	*s_set_arg(char *content, t_argv *arg_base)
+{
+	t_argv		*argument;
+
+	if (!(argument = (t_argv *)malloc(sizeof(t_argv))))
+		return (NULL);
+	if ((argument->buffer = ft_strdup(content)) == NULL)
+		return (NULL);
+	argument->pos = arg_base->pos;
+	argument->is_null = 0;
+	return (argument);
+}
+
 static int		s_add_node_loop(t_utils *ctn,
 									t_list *list_glob,
 									int *index,

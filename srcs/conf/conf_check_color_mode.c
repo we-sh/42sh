@@ -1,7 +1,7 @@
 #include "shell.h"
 #include "get_next_line.h"
 
-static int	s_conf_check_mode(char *content, int fd)
+static int	s_conf_check_color(char *content, int fd)
 {
 	char	*mode;
 
@@ -9,6 +9,33 @@ static int	s_conf_check_mode(char *content, int fd)
 	if (mode && *mode && ft_strncmp(mode, "on", 2) == 0)
 	{
 		free(content);
+		close(fd);
+		return (ST_OK);
+	}
+	else
+	{
+		free(content);
+		close(fd);
+		return (-1);
+	}
+}
+
+static int	s_conf_check_lang(char *content, int fd)
+{
+	char	*mode;
+
+	mode = content + 6;
+	if (mode && *mode && ft_strncmp(mode, "fr", 2) == 0)
+	{
+		free(content);
+		shell_language(2);
+		close(fd);
+		return (ST_OK);
+	}
+	else if (mode && *mode && ft_strncmp(mode, "en", 2) == 0)
+	{
+		free(content);
+		shell_language(1);
 		close(fd);
 		return (ST_OK);
 	}
@@ -40,7 +67,9 @@ int			conf_check_color_mode(char **env)
 	while ((get_next_line(fd, &content)) == 1)
 	{
 		if (ft_strncmp(content, "color=", 6) == 0)
-			return (s_conf_check_mode(content, fd));
+			return (s_conf_check_color(content, fd));
+		if (ft_strncmp(content, "lang=", 6) == 0)
+			return (s_conf_check_lang(content, fd));
 	}
 	free(content);
 	close(fd);
