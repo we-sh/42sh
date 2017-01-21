@@ -62,7 +62,7 @@ extern int		key__completion(t_termcaps_context *context)
 	buf[buf_size] = '\0';
 	buf_size = s_replace_tilde(buf, buf_size, sizeof(buf) - 1,
 								context->sh->envp);
-	ASSERT(buf_size != 0)
+	ASSERT(buf_size != 0);
 	ref_size = int_key_completion(context->sh->envp, buf, &matchs, &lookfor);
 	if (list_is_empty(&matchs))
 		return (1);

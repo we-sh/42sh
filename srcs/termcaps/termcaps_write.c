@@ -1,4 +1,5 @@
 #include "shell.h"
+#include <unsitd.h>
 
 int		termcaps_write(int fd, char *buffer, size_t buffer_size)
 {
