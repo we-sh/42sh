@@ -1,5 +1,6 @@
 #include "shell.h"
 #include <sys/ioctl.h>
+#include <signal.h>
 
 int	job_kill(t_sh *sh, t_job *j, int status)
 {

@@ -40,13 +40,6 @@
 # define MAX(x, y) (x > y ? x : y)
 
 /*
-** Extern headers and structures
-*/
-
-# include <sys/types.h>
-# include <sys/wait.h>
-
-/*
 ** Project headers
 */
 

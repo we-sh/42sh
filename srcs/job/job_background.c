@@ -1,4 +1,5 @@
 #include "shell.h"
+#include <signal.h>
 
 int		job_background(t_sh *sh, t_job *j, int const sigcont)
 {
