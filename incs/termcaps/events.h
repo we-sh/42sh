@@ -20,4 +20,5 @@ int				event_info(t_list_head *history,
 							const char *pt,
 							t_event *event);
 int				event_word(t_event *info, t_buffer *event);
+
 #endif
