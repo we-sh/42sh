@@ -42,9 +42,10 @@ int						path_init_hasht(char **envp)
 	value = env_get(envp, "PATH");
 	if (env_get(envp, "HASH_TABLE"))
 		ft_putendl("Create a new hash table");
-	folders = ft_strsplit(!value || value[0] == '\0' ? "." : value, ':');
-	while (folders[display.i] != NULL && ft_strcmp(folders[display.i], ".")
-		!= 0)
+	if ((folders = ft_strsplit(!value || value[0] == '\0' ? "." : value, ':'))
+		== NULL)
+		return (ST_MALLOC);
+	while (folders[display.i] != NULL)
 	{
 		if ((s_path_opendir(folders, &display, envp)) != ST_OK)
 			return (ST_MALLOC);

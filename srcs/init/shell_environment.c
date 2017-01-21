@@ -37,7 +37,7 @@ static char	**s_environment_default(void)
 		return (NULL);
 	if ((defaultenv[6] = ft_strjoin("LOGNAME=", getlogin())) == NULL)
 		return (NULL);
-	if ((defaultenv[7] = ft_strdup("SHELL=bash")) == NULL)
+	if ((defaultenv[7] = ft_strdup("SHELL=/bin/bash")) == NULL)
 		return (NULL);
 	defaultenv[8] = NULL;
 	return (defaultenv);
@@ -80,7 +80,7 @@ static int	s_env_fill_shenv(t_sh *sh, char **envp)
 		}
 		else if (ft_strncmp(envp[i], "SHELL", 5) == 0)
 		{
-			if ((sh->envp[i] = ft_strdup("SHELL=bash")) == NULL)
+			if ((sh->envp[i] = ft_strdup("SHELL=/bin/bash")) == NULL)
 				return (ST_MALLOC);
 		}
 		else if ((sh->envp[i] = ft_strdup(envp[i])) == NULL)
