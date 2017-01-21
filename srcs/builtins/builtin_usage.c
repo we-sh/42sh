@@ -1,4 +1,5 @@
 #include "shell.h"
+#include "libftprintf.h"
 
 void	builtin_usage(t_builtin const *bltin, int status)
 {

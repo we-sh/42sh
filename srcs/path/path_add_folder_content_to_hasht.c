@@ -1,4 +1,5 @@
 #include "shell.h"
+#include "libftprintf.h"
 
 static int		s_add_new_node(char *name, char *dirname, int index, int *max)
 {

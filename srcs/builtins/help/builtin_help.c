@@ -1,5 +1,6 @@
 #include "shell.h"
 #include "builtin_struct.h"
+#include "libftprintf.h"
 
 static int	s_before(t_proc *p)
 {

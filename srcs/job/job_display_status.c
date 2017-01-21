@@ -1,4 +1,5 @@
 #include "shell.h"
+#include "libftprintf.h"
 
 static void	s_proc_display_status(t_job *j, t_proc *p, char c, int show_pid)
 {

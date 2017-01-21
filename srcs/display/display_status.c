@@ -1,4 +1,5 @@
 #include "shell.h"
+#include "libftprintf.h"
 
 /*
 ** - display a message error if `status` is different from ST_OK
