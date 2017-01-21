@@ -1,6 +1,7 @@
 #ifndef TERMCAPS_STRUCT_H
 # define TERMCAPS_STRUCT_H
 
+# include <termios.h>
 # include "list_head.h"
 # include "types.h"
 # include "shell_struct.h"

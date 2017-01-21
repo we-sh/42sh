@@ -45,7 +45,6 @@
 
 # include <sys/types.h>
 # include <sys/wait.h>
-# include <termios.h>
 
 /*
 ** Project headers
