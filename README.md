@@ -1,7 +1,7 @@
 # 42sh
 Shell implementation
 
-credits : @jgigault, @gkuma, @anouvel
+credits : @abombard, @jgigault, @gkuma, @anouvel
 
 
 Branch     | Travis-CI status
