@@ -37,12 +37,14 @@ static int	s_termcaps_display_control(const t_termcaps_context *context,
 	}
 	if (buffer_size >= context->prompt.size)
 	{
-		termcaps_write(context->fd,
-				ANSI_COLOR_LIGHT_BLUE, ANSI_COLOR_LIGHT_BLUE_SIZE);
+		if (shell_color_mode(-1))
+			termcaps_write(context->fd,
+					ANSI_COLOR_LIGHT_BLUE, ANSI_COLOR_LIGHT_BLUE_SIZE);
 		termcaps_write(context->fd,
 				context->prompt.bytes, context->prompt.size);
-		termcaps_write(context->fd,
-				ANSI_COLOR_RESET, ANSI_COLOR_RESET_SIZE);
+		if (shell_color_mode(-1))
+			termcaps_write(context->fd,
+					ANSI_COLOR_RESET, ANSI_COLOR_RESET_SIZE);
 		termcaps_write(context->fd,
 				buffer + context->prompt.size,
 				buffer_size - context->prompt.size);
