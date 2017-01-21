@@ -1,4 +1,5 @@
 #include "shell.h"
+#include <dirent.h>
 
 static char		*s_join_free(char *s1, char *s2)
 {

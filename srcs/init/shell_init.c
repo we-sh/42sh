@@ -1,5 +1,7 @@
 #include "shell.h"
+#include "i18n.h"
 #include <sys/ioctl.h>
+#include <signal.h>
 
 /*
 ** This function is called at initialization, and then returns the actual

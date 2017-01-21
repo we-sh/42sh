@@ -1,3 +1,4 @@
+#include <pwd.h>
 #include "shell.h"
 
 char				*env_get_home(char **envp)

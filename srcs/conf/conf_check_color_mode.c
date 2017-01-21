@@ -1,4 +1,5 @@
 #include "shell.h"
+#include "get_next_line.h"
 
 static int	s_conf_check_mode(char *content, int fd)
 {

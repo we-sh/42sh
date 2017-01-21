@@ -1,4 +1,5 @@
 #include "shell.h"
+#include "get_next_line.h"
 
 static int		s_read_with_gnl_concat_input(char **input, char **input_tmp)
 {

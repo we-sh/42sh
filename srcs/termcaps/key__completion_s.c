@@ -1,4 +1,5 @@
 #include "shell.h"
+#include <dirent.h>
 
 t_node_dir		*node_dir__create(const struct dirent *ep)
 {

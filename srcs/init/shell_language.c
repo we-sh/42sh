@@ -1,4 +1,5 @@
 #include "shell.h"
+#include "i18n.h"
 
 /*
 ** This function can set and get the runtime language.

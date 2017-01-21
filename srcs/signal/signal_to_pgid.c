@@ -1,4 +1,5 @@
 #include "shell.h"
+#include <signal.h>
 
 static void	s_sigtstp(int sig)
 {

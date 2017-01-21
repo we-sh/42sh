@@ -40,19 +40,6 @@
 # define MAX(x, y) (x > y ? x : y)
 
 /*
-** Extern headers and structures
-*/
-
-# include <sys/types.h>
-# include <sys/wait.h>
-# include <pwd.h>
-# include <unistd.h>
-# include <signal.h>
-# include <termios.h>
-# include <errno.h>
-# include <dirent.h>
-
-/*
 ** Project headers
 */
 
@@ -69,8 +56,6 @@
 # include "option.h"
 # include "job.h"
 # include "caps.h"
-# include "i18n.h"
-# include "get_next_line.h"
 # include "parser.h"
 # include "builtin.h"
 # include "parser_struct.h"

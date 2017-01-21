@@ -2,7 +2,6 @@
 # define BUILTIN_CD_H
 
 # include "builtin.h"
-# include <sys/stat.h>
 
 typedef struct stat			t_stat;
 

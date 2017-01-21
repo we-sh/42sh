@@ -1,3 +1,4 @@
+#include <sys/stat.h>
 #include "parser.h"
 #include "builtin_cd.h"
 

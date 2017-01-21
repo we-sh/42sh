@@ -1,3 +1,5 @@
+#include <sys/stat.h>
+#include <errno.h>
 #include "shell.h"
 #include "builtin_cd.h"
 

@@ -1,4 +1,5 @@
 #include "shell.h"
+#include <signal.h>
 
 /*
 ** This function sets all signal handlers to SIG_IGN except for SIGCHLD.
