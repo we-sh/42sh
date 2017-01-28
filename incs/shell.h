@@ -1,7 +1,7 @@
 #ifndef SHELL_H
 # define SHELL_H
 # define TTY_DEVICE "/dev/tty"
-# define PROGRAM_NAME "42sh"
+# define PROGRAM_NAME "weSH"
 # define CONFIGURATION_FILE ".weshrc"
 # define TERMCAPS_BUFFER_MAX 4096
 # define PATH_RT "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
