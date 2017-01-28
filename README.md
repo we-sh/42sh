@@ -1,4 +1,4 @@
-# 42sh
+# weSH
 Shell implementation
 
 credits : @abombard, @jgigault, @gkuma, @anouvel
@@ -35,7 +35,7 @@ Run ```make depend``` when :
 The rule use ```gcc -MM```, because of it, the static header should be quoted (```#include "libft.h"```) and not ```#include <libft.h>```.
 
 ### Git workflow
-The is the basic git workflow to work on the 42sh repository :
+The is the basic git workflow to work on the weSH repository :
 
 + setup the repository
 ```
