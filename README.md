@@ -9,9 +9,9 @@ Branch     | Travis-CI status
 master     | [![Build Status](https://travis-ci.org/42shTests/42sh.svg?branch=master)](https://travis-ci.org/we-sh/42sh)
 develop    | [![Build Status](https://travis-ci.org/42shTests/42sh.svg?branch=develop)](https://travis-ci.org/we-sh/42sh)
 
+## Install & launch
 
-
-### Makefile
+## Makefile
 #### custom rules
 **libs** : build the internal libraries (located in ./libs/)
 
@@ -89,7 +89,36 @@ $ git tag -a <x.y.z> -m <message>
 $ git push && git push --tags
 ```
 
-### Logger
+# Development
+
+## Coding convention
+
+### C Coding
+
+The prior code standard to be used in this project is the one from School 42 called `norme`. There is a binary called `norminette` - only available at school - that tells you if a file is code standard friendly (Use it with the option `-R CheckHeaders`). 
+
+Here are the additional rules to be applied in this project:
+
+- There must be only one non-static function per file.
+- Filename must exactly match with the non-static function it declares (e.g. `parser.c` declares the function `int parser(...);`).
+- Static functions must be prefixed by `s_` (e.g. `void s_do_something(void);`).
+- Functions that returns true `1` or false `0` must be prefixed with `is_`, or `s_is_` if it is a static function (e.g. `int job_is_stopped(...);`).
+- Non-static functions should mostly return a positive integer called "status". On success, a function should return the status `ST_OK`. The list of available statuses is described in the enumeration `e_status`.
+- Each status of the enumeration `e_status` should be translated in each language described in the header "i18n.h".
+- A single-character variable named `j` must be a `t_job` structure.
+- A single-character variable named `p` must be a `t_proc` structure.
+
+### Git workflow
+
+- The default branch on Github is the `develop` branch.
+- Each feature branch must start from `develop` branch and be linked with a PR on Github.
+- The name of the PR must be prefixed by `[WIP]` (that means Work In Progress) during the development phase.
+- When a code review is success, the feature branch is rebased on `develop` branch.
+- When the list of new features is acceptable by the team `we-sh`, it can be merged on `master` branch.
+
+### Submodules
+
+#### Logger
 The project includes the logger library, and its configured to display all log messages :
 
 ```logger_init(D_FATAL, "out.log");```
@@ -97,3 +126,113 @@ The project includes the logger library, and its configured to display all log m
 To see the output of the logging, run the following command in an other shell :
 
 ```$ tail -f out.log```
+
+#### Libft
+
+#### Libcaps
+
+## Statuses
+
+## Lists
+
+## Main loop
+
+## Job control
+
+```c
+
+struct                      s_job
+{
+    t_list                  list_job
+    t_list                  proc_head;
+    int                     id;
+    char                    *command;
+    int                     foreground;
+    int                     launched;
+    pid_t                   pgid;
+    int                     exit_status;
+    int                     notified;
+    int                     is_interrupted;
+    t_termios               tmodes;
+    t_flag_job_separator    separator;
+}                           t_job;
+
+```
+
+```c
+
+struct                      s_proc
+{
+    t_list                  list_proc;
+    t_job                   *j;
+    char                    *command;
+    int                     argc;
+    char                    **argv;
+    char                    **envp;
+    int                     stdin;
+    int                     stdout;
+    int                     stderr;
+    int                     is_valid;           // to be renamed
+    pid_t                   pid;
+    int                     exit_status;
+    char                    completed;
+    char                    stopped;
+    char                    signaled;
+    int                     bltin_status;
+    char                    *bltin_char;
+    t_list                  bltin_opt_head;
+};
+```
+
+### Launching jobs
+
+### Redirections
+
+## Environment and local variables
+
+## Parser
+
+```c
+int     parser( t_sh         *shell_configuration,
+                char const   *input,
+                int          parsing_mode,
+                t_list       *target_list_head     ); 
+```
+
+### Parsing modes
+
+#### `F_PARSING_TERMCAPS`
+
+#### `F_PARSING_NONE`
+
+#### `F_PARSING_JOBS`
+
+#### `F_PARSING_PROCS`
+
+#### `F_PARSING_GLOBING`
+
+#### `F_PARSING_PATHEXP`
+
+
+## Built-in Utilities
+
+```c
+int     builtin_template( t_builtin const   *builtin_configuration,
+                          int               callback_code,
+                          t_sh              *shell_configuration,
+                          t_proc            *process                );
+```
+
+### Callbacks
+
+#### `BLTIN_CB_BEFORE`
+
+#### `BLTIN_CB_EXEC`
+
+#### `BLTIN_CB_AFTER`
+
+## Options
+
+## Termcaps
+
+## Internationalization
