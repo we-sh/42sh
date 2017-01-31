@@ -1,7 +1,6 @@
 # ---------------------------------------------------------------------------- #
-# The purpose of the Makefile is to provide a tool which optimizes the build   #
-# of a project, The common problems are bad management of dependencies, relink #
-# build, uncompiled modified sources...                                        #
+# The purpose of the Makefile is to provide a tool to optimize the build of a  #
+# project using dependency rules.                                              #
 #                                                                              #
 # ---------------------------------------------------------------------------- #
 #                                                                              #
@@ -16,17 +15,25 @@
 # - see 'TARGET SETUP' to set the name of the target and the sources           #
 #                                                                              #
 # Third, configure the build options.                                          #
-# - see 'PROJECT COMPILATION' to setup prepocessor, flags and libraries        #
+# - see 'PROJECT COMPILATION' to setup preprocessor, flags and libraries       #
 #                                                                              #
 # Fourth, setup the linking rule.                                              #
 # - see 'PUBLIC RULES' to modify the $(NAME) rule                              #
 #                                                                              #
 # ---------------------------------------------------------------------------- #
-# The project must compile at this step.                                       #
-# ---------------------------------------------------------------------------- #
 #                                                                              #
 # To add custom rules, the concerned section is 'PUBLIC RULES'. Be sure to     #
 # keep at least the rules all, $(NAME), libs, clean, fclean and re.            #
+#                                                                              #
+# ---------------------------------------------------------------------------- #
+#                                                                              #
+# To add a library, the procedure is the following:                            #
+# - add the path to the library archive on LIBS                                #
+# - add the directory preceding by -L to LDFLAGS                               #
+# - add the reduced name of the library on LDLIBS preceding by -l              #
+# - add the header directories to CPPFLAGS preceding by -I                     #
+# The last step is to custom the libs and fcleanlibs rules to build and clean  #
+# the corresponding libraries.                                                 #
 #                                                                              #
 # ---------------------------------------------------------------------------- #
 #                                                                              #
@@ -36,6 +43,29 @@
 #                                                                              #
 # ---------------------------------------------------------------------------- #
 
+# ---------------------------------------------------------------------------- #
+# PROJECT CONFIGURATION                                                        #
+# ---------------------------------------------------------------------------- #
+# - The 'DIR*' variables describe all directories of the project.              #
+# ---------------------------------------------------------------------------- #
+
+DIRSRC	=	srcs
+DIRINC	=	incs
+DIRLIB	=	libs
+DIRTST	=	test
+DIROBJ	=	.objs
+DIRDEP	=	.deps
+
+# ---------------------------------------------------------------------------- #
+# EXTERNAL TOOLS SETTINGS                                                      #
+# ---------------------------------------------------------------------------- #
+# - Set the default external programs.                                         #
+# ---------------------------------------------------------------------------- #
+
+CC		=	clang
+AR		=	ar
+ARFLAGS	=	rc
+RM		=	rm -f
 
 # ---------------------------------------------------------------------------- #
 #                                                                              #
@@ -48,8 +78,6 @@
 # ---------------------------------------------------------------------------- #
 
 NAME	=	weSH
-
-# ---------------------------------------------------------------------------- #
 
 SRCS	=	\
 			main.c														\
@@ -290,38 +318,22 @@ SRCS	=	\
 			termcaps/count_func.c										\
 			conf/conf_file_init.c										\
 
-# ---------------------------------------------------------------------------- #
-# PROJECT CONFIGURATION                                                        #
-# ---------------------------------------------------------------------------- #
-# - The 'DIR*' variables describe all directories of the project.              #
-# ---------------------------------------------------------------------------- #
 
-DIRSRC	=	srcs
-DIRINC	=	incs
-DIRLIB	=	libs
-DIRTST	=	test
-DIROBJ	=	.objs
-DIRDEP	=	.deps
-
-# ---------------------------------------------------------------------------- #
-# EXTERNAL TOOLS SETTINGS                                                      #
-# ---------------------------------------------------------------------------- #
-# - Set the default external programs.                                         #
-# ---------------------------------------------------------------------------- #
-
-CC		=	clang
-AR		=	ar
-ARFLAGS	=	rc
-RM		=	rm -f
 
 # ---------------------------------------------------------------------------- #
 # PROJECT COMPILATION                                                          #
 # ---------------------------------------------------------------------------- #
+# - The 'LIBS' tells the compiler where to find libraries.                     #
 # - The 'LDFLAGS' tells the linker where to find external libraries (-L flag). #
 # - The 'LDLIBS' tells the linker the prefix of external libraries (-l flag).  #
 # - The 'CPPFLAGS' tells the compiler where to find preprocessors (-I flag).   #
 # - The 'CFLAGS' configures the compiler options.                              #
 # ---------------------------------------------------------------------------- #
+
+LIBS        =   \
+                $(DIRLIB)/libft/libft.a         \
+                $(DIRLIB)/logger/liblogger.a    \
+                $(DIRLIB)/libcaps/libcaps.a     \
 
 LDFLAGS		=	\
 				-L $(DIRLIB)/logger				\
@@ -347,7 +359,7 @@ CFLAGS		=	\
 				-Wall -Wextra -Werror			\
 
 # ---------------------------------------------------------------------------- #
-# /!\ COMPILATION RULES /!\                                                    #
+# /!\ SOURCE NORMALIZATION AND COMPILATION RULES /!\                           #
 # ---------------------------------------------------------------------------- #
 
 DEPFLAGS	=	\
@@ -357,12 +369,8 @@ COMPILE.c	=	$(CC) $(DEPFLAGS) $(CFLAGS) $(CPPFLAGS) -c
 
 POSTCOMPILE	=	mv -f $(DIRDEP)/$*.Td $(DIRDEP)/$*.d
 
-# ---------------------------------------------------------------------------- #
-# /!\ SOURCES NORMALIZATION /!\                                                #
-# ---------------------------------------------------------------------------- #
-
-SRC	=	$(addprefix $(DIRSRC)/, $(SRCS))
-OBJ	=	$(addprefix $(DIROBJ)/, $(SRCS:.c=.o))
+SRC	        =	$(addprefix $(DIRSRC)/, $(SRCS))
+OBJ         =	$(addprefix $(DIROBJ)/, $(SRCS:.c=.o))
 
 $(DIROBJ)	:
 	@mkdir -p $(DIROBJ)
@@ -393,7 +401,7 @@ $(DIRDEP)	:
 all			:	libs $(NAME)
 	@printf "\033[32m[ %s ]\033[0m %s\n" "$(NAME)" "finish to build $(NAME)"
 
-$(NAME)		:	$(DIROBJ) $(DIRDEP) $(OBJ)
+$(NAME)		:	$(DIROBJ) $(DIRDEP) $(OBJ) $(LIBS)
 	@printf "\033[32m[ %s ]\033[0m %s\n" "$(NAME)" "link objects..."
 	@$(CC) $(OBJ) -o $(NAME) $(LDFLAGS) $(LDLIBS)
 
